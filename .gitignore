@@ -1,0 +1,8 @@
+/client/bin
+
+/client/gen
+
+/api/.project
+/api/.settings
+/api/target
+/api/.classpath
