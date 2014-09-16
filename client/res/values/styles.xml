@@ -28,5 +28,13 @@
         <item name="android:shadowDy">1.0</item>
         <item name="android:shadowRadius">0.5</item>
     </style>
+    
+      <style name="ActionBarButton">
+        <item name="android:background">@drawable/action_bar_button_background</item>
+        <item name="android:layout_width">48dp</item>
+        <item name="android:layout_height">fill_parent</item>
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:scaleType">center</item>
+    </style>
 
 </resources>

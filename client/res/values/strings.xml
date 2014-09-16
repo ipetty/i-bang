@@ -7,7 +7,7 @@
     <string name="title_activity_splash">SplashActivity</string>
     <string name="app_copyright">CopyRight 2014 帮帮忙</string>
     <string name="app_version">v%1s</string>
-   
+
     <!-- welcome login or reg -->
     <string name="title_activity_login">登录</string>
     <string name="title_activity_register">注册</string>
@@ -40,6 +40,7 @@
     <string name="nickname">昵称</string>
     <string name="changeAccount">切换账号</string>
     <string name="logining">正在登录....</string>
- 	<string name="skip_button">跳过</string>
+    <string name="skip_button">跳过</string>
+    <string name="title_activity_user_profile">UserProfileActivity</string>
 
 </resources>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge  xmlns:android="http://schemas.android.com/apk/res/android">
+        <ImageView 
+             android:id="@+id/action_bar_left_image" 
+             android:src="@drawable/action_bar_back"
+           	 style="@style/ActionBarButton"/>
+        
+         <TextView
+             android:id="@+id/action_bar_title"
+             android:layout_width="0dp"
+             android:layout_height="wrap_content"
+             android:layout_gravity="center"
+             android:layout_weight="1.0"
+             android:background="@color/action_bar_bg"
+             android:gravity="left|center"
+             android:paddingLeft="12dp"
+             android:textColor="@color/base_color"
+             android:textSize="22sp" />
+         
+</merge>
