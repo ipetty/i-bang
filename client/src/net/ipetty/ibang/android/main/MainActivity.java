@@ -16,8 +16,8 @@ import android.widget.TextView;
 
 public class MainActivity extends FragmentActivity {
 	private ViewPager viewPager;
-	private final Fragment[] fragments = { new MainHomeFragment(), new MainHomeFragment(), new MainHomeFragment(),
-			new MainHomeFragment() };
+	private final Fragment[] fragments = { new MainHomeFragment(), new MainPublishFragment(),
+			new MainDiscoverFragment(), new MainMeFragment() };
 
 	private View home_layout;
 	private View publish_layout;
