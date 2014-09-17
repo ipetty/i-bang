@@ -1,0 +1,139 @@
+package net.ipetty.ibang.model;
+
+import java.util.Date;
+
+/**
+ * 用户
+ * 
+ * @author luocanfeng
+ * @date 2014年9月17日
+ */
+public class User extends AbstractEntity {
+
+	/** serialVersionUID */
+	private static final long serialVersionUID = -2109373072723898861L;
+
+	private Integer id; // 非业务主键
+	private String username; // 用户名
+	private String email; // 邮箱
+	private String password; // 密码
+	private String nickname; // 昵称
+	private String gender; // 性别
+	private String job; // 职位
+	private String avatar; // 头像
+	private String signature; // 个性签名
+	private String address; // 所在地
+	private Date createdAt; // 注册时间
+
+	private SeekerInfo seekerInfo; // 用户作为求助者身份的相应信息
+	private OffererInfo offererInfo; // 用户作为帮助者身份的相应信息
+
+	public User() {
+		super();
+	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public String getNickname() {
+		return nickname;
+	}
+
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
+	}
+
+	public String getGender() {
+		return gender;
+	}
+
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
+
+	public String getJob() {
+		return job;
+	}
+
+	public void setJob(String job) {
+		this.job = job;
+	}
+
+	public String getAvatar() {
+		return avatar;
+	}
+
+	public void setAvatar(String avatar) {
+		this.avatar = avatar;
+	}
+
+	public String getSignature() {
+		return signature;
+	}
+
+	public void setSignature(String signature) {
+		this.signature = signature;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	public Date getCreatedAt() {
+		return createdAt;
+	}
+
+	public void setCreatedAt(Date createdAt) {
+		this.createdAt = createdAt;
+	}
+
+	public SeekerInfo getSeekerInfo() {
+		return seekerInfo;
+	}
+
+	public void setSeekerInfo(SeekerInfo seekerInfo) {
+		this.seekerInfo = seekerInfo;
+	}
+
+	public OffererInfo getOffererInfo() {
+		return offererInfo;
+	}
+
+	public void setOffererInfo(OffererInfo offererInfo) {
+		this.offererInfo = offererInfo;
+	}
+
+}
