@@ -55,7 +55,7 @@
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name="net.ipetty.ibang.android.login.UserProfileActivity"
+            android:name="net.ipetty.ibang.android.user.UserProfileActivity"
             android:label="@string/title_activity_user_profile" >
         </activity>
     </application>

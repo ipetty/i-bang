@@ -1,4 +1,4 @@
-package net.ipetty.ibang.android.login;
+package net.ipetty.ibang.android.user;
 
 import net.ipetty.ibang.R;
 import android.app.Activity;

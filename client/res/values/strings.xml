@@ -42,5 +42,10 @@
     <string name="logining">正在登录....</string>
     <string name="skip_button">跳过</string>
     <string name="title_activity_user_profile">UserProfileActivity</string>
+    
+    <string name="home">首页</string>
+    <string name="help">求助</string>
+    <string name="discover">发现</string>
+    <string name="me">我的</string>
 
 </resources>
