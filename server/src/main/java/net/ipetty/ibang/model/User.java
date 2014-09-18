@@ -27,7 +27,7 @@ public class User extends AbstractEntity {
 	private String avatar; // 头像
 	private String signature; // 个性签名
 	private String address; // 所在地
-	private Date createdAt; // 注册时间
+	private Date createdOn; // 注册时间
 
 	private SeekerInfo seekerInfo; // 用户作为求助者身份的相应信息
 	private OffererInfo offererInfo; // 用户作为帮助者身份的相应信息
@@ -150,12 +150,12 @@ public class User extends AbstractEntity {
 		this.address = address;
 	}
 
-	public Date getCreatedAt() {
-		return createdAt;
+	public Date getCreatedOn() {
+		return createdOn;
 	}
 
-	public void setCreatedAt(Date createdAt) {
-		this.createdAt = createdAt;
+	public void setCreatedOn(Date createdOn) {
+		this.createdOn = createdOn;
 	}
 
 	public SeekerInfo getSeekerInfo() {

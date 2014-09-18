@@ -25,7 +25,7 @@ public class UserVO extends BaseVO {
 	private String avatar; // 头像
 	private String signature; // 个性签名
 	private String address; // 所在地
-	private Date createdAt; // 注册时间
+	private Date createdOn; // 注册时间
 
 	private int seekCount; // 总的完成求助次数
 	private int seekerTotalPoint; // 作为求助者身份的总积分
@@ -120,12 +120,12 @@ public class UserVO extends BaseVO {
 		this.address = address;
 	}
 
-	public Date getCreatedAt() {
-		return createdAt;
+	public Date getCreatedOn() {
+		return createdOn;
 	}
 
-	public void setCreatedAt(Date createdAt) {
-		this.createdAt = createdAt;
+	public void setCreatedOn(Date createdOn) {
+		this.createdOn = createdOn;
 	}
 
 	public int getSeekCount() {

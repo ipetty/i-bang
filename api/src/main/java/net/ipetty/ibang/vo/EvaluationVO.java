@@ -20,7 +20,7 @@ public class EvaluationVO extends BaseVO {
 	private Integer evaluationObjectId; // 评价对象人
 	private int point; // 评分
 	private String content; // 评价内容
-	private Date createdAt; // 评价日期
+	private Date createdOn; // 评价日期
 
 	public EvaluationVO() {
 		super();
@@ -82,12 +82,12 @@ public class EvaluationVO extends BaseVO {
 		this.content = content;
 	}
 
-	public Date getCreatedAt() {
-		return createdAt;
+	public Date getCreatedOn() {
+		return createdOn;
 	}
 
-	public void setCreatedAt(Date createdAt) {
-		this.createdAt = createdAt;
+	public void setCreatedOn(Date createdOn) {
+		this.createdOn = createdOn;
 	}
 
 }

@@ -17,7 +17,7 @@ public class BonusPoint extends AbstractEntity {
 	private Integer userId; // 积分所属用户ID
 	private Long delegationId; // 积分来自的委托ID
 	private Long evaluationId; // 积分来自的评价ID
-	private Date gainedAt; // 积分获取时间
+	private Date gainedOn; // 积分获取时间
 
 	public BonusPoint() {
 		super();
@@ -55,12 +55,12 @@ public class BonusPoint extends AbstractEntity {
 		this.evaluationId = evaluationId;
 	}
 
-	public Date getGainedAt() {
-		return gainedAt;
+	public Date getGainedOn() {
+		return gainedOn;
 	}
 
-	public void setGainedAt(Date gainedAt) {
-		this.gainedAt = gainedAt;
+	public void setGainedOn(Date gainedOn) {
+		this.gainedOn = gainedOn;
 	}
 
 }

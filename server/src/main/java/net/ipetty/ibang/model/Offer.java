@@ -24,7 +24,7 @@ public class Offer extends AbstractEntity {
 	private String content; // 应征内容
 	private String description; // 应征描述
 	private Date deadline; // 应征者承诺完成委托的截止日期
-	private Date createdAt; // 应征单创建日期
+	private Date createdOn; // 应征单创建日期
 	private int status; // 状态
 
 	public Offer() {
@@ -99,12 +99,12 @@ public class Offer extends AbstractEntity {
 		this.deadline = deadline;
 	}
 
-	public Date getCreatedAt() {
-		return createdAt;
+	public Date getCreatedOn() {
+		return createdOn;
 	}
 
-	public void setCreatedAt(Date createdAt) {
-		this.createdAt = createdAt;
+	public void setCreatedOn(Date createdOn) {
+		this.createdOn = createdOn;
 	}
 
 	public int getStatus() {

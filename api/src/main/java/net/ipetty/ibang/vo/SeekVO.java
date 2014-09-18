@@ -27,7 +27,7 @@ public class SeekVO extends BaseVO {
 	private int delegateNumber; // 委托数量
 	private String reward; // 奖励
 	private String additionalReward; // 附加奖励
-	private Date createdAt; // 求助创建时间
+	private Date createdOn; // 求助创建时间
 	private Date exipireDate; // 求助有效日期
 	private int status; // 状态
 
@@ -131,12 +131,12 @@ public class SeekVO extends BaseVO {
 		this.additionalReward = additionalReward;
 	}
 
-	public Date getCreatedAt() {
-		return createdAt;
+	public Date getCreatedOn() {
+		return createdOn;
 	}
 
-	public void setCreatedAt(Date createdAt) {
-		this.createdAt = createdAt;
+	public void setCreatedOn(Date createdOn) {
+		this.createdOn = createdOn;
 	}
 
 	public Date getExipireDate() {

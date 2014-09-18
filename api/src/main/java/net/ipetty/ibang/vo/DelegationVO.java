@@ -20,7 +20,7 @@ public class DelegationVO extends BaseVO {
 	private Long offerId; // 应征单ID
 	private Integer offererId; // 应征者ID
 	private Date deadline; // 应征者承诺完成委托的截止日期
-	private Date createdAt; // 委托单创建日期
+	private Date createdOn; // 委托单创建日期
 	private int status; // 状态
 
 	public DelegationVO() {
@@ -83,12 +83,12 @@ public class DelegationVO extends BaseVO {
 		this.deadline = deadline;
 	}
 
-	public Date getCreatedAt() {
-		return createdAt;
+	public Date getCreatedOn() {
+		return createdOn;
 	}
 
-	public void setCreatedAt(Date createdAt) {
-		this.createdAt = createdAt;
+	public void setCreatedOn(Date createdOn) {
+		this.createdOn = createdOn;
 	}
 
 	public int getStatus() {

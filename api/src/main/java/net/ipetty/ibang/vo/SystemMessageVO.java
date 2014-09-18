@@ -18,20 +18,20 @@ public class SystemMessageVO extends BaseVO {
 	private Integer receiverId; // 消息接收者用户ID
 	private String type; // 消息类型
 	private String content; // 消息内容
-	private Date createdAt; // 消息创建时间
+	private Date createdOn; // 消息创建时间
 
 	public SystemMessageVO() {
 		super();
 	}
 
-	public SystemMessageVO(Long id, Integer fromUserId, Integer receiverId, String type, String content, Date createdAt) {
+	public SystemMessageVO(Long id, Integer fromUserId, Integer receiverId, String type, String content, Date createdOn) {
 		super();
 		this.id = id;
 		this.fromUserId = fromUserId;
 		this.receiverId = receiverId;
 		this.type = type;
 		this.content = content;
-		this.createdAt = createdAt;
+		this.createdOn = createdOn;
 	}
 
 	public Long getId() {
@@ -74,12 +74,12 @@ public class SystemMessageVO extends BaseVO {
 		this.content = content;
 	}
 
-	public Date getCreatedAt() {
-		return createdAt;
+	public Date getCreatedOn() {
+		return createdOn;
 	}
 
-	public void setCreatedAt(Date createdAt) {
-		this.createdAt = createdAt;
+	public void setCreatedOn(Date createdOn) {
+		this.createdOn = createdOn;
 	}
 
 }
