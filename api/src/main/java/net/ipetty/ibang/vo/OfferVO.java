@@ -1,21 +1,17 @@
-package net.ipetty.ibang.model;
+package net.ipetty.ibang.vo;
 
 import java.util.Date;
-
-import net.ipetty.ibang.vo.OfferVO;
-
-import org.springframework.beans.BeanUtils;
 
 /**
  * 应征
  * 
  * @author luocanfeng
- * @date 2014年9月17日
+ * @date 2014年9月18日
  */
-public class Offer extends AbstractEntity {
+public class OfferVO extends BaseVO {
 
 	/** serialVersionUID */
-	private static final long serialVersionUID = -595839011713341379L;
+	private static final long serialVersionUID = -4134147941688141114L;
 
 	private Long id; // 非业务主键
 	private String sn; // 应征单流水号
@@ -27,20 +23,8 @@ public class Offer extends AbstractEntity {
 	private Date createdAt; // 应征单创建日期
 	private int status; // 状态
 
-	public Offer() {
+	public OfferVO() {
 		super();
-	}
-
-	public OfferVO toVO() {
-		OfferVO vo = new OfferVO();
-		BeanUtils.copyProperties(this, vo);
-		return vo;
-	}
-
-	public static Offer fromVO(OfferVO vo) {
-		Offer entity = new Offer();
-		BeanUtils.copyProperties(vo, entity);
-		return entity;
 	}
 
 	public Long getId() {

@@ -1,24 +1,19 @@
-package net.ipetty.ibang.model;
+package net.ipetty.ibang.vo;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import net.ipetty.ibang.vo.ImageVO;
-import net.ipetty.ibang.vo.SeekVO;
-
-import org.springframework.beans.BeanUtils;
-
 /**
  * 求助
  * 
  * @author luocanfeng
- * @date 2014年9月17日
+ * @date 2014年9月18日
  */
-public class Seek extends AbstractEntity {
+public class SeekVO extends BaseVO {
 
 	/** serialVersionUID */
-	private static final long serialVersionUID = 1278644154859768939L;
+	private static final long serialVersionUID = -3457713874329718078L;
 
 	private Long id; // 非业务主键
 	private String sn; // 求助单流水号
@@ -27,7 +22,7 @@ public class Seek extends AbstractEntity {
 	private String categoryL1; // 一级分类
 	private String categoryL2; // 二级分类
 	private String content; // 求助内容
-	private List<Image> images = new ArrayList<Image>(); // 图片
+	private List<ImageVO> images = new ArrayList<ImageVO>(); // 图片
 	private String requirement; // 要求
 	private int delegateNumber; // 委托数量
 	private String reward; // 奖励
@@ -36,26 +31,8 @@ public class Seek extends AbstractEntity {
 	private Date exipireDate; // 求助有效日期
 	private int status; // 状态
 
-	public Seek() {
+	public SeekVO() {
 		super();
-	}
-
-	public SeekVO toVO() {
-		SeekVO vo = new SeekVO();
-		BeanUtils.copyProperties(this, vo, "images");
-		for (Image image : images) {
-			vo.getImages().add(image.toVO());
-		}
-		return vo;
-	}
-
-	public static Seek fromVO(SeekVO vo) {
-		Seek entity = new Seek();
-		BeanUtils.copyProperties(vo, entity, "images");
-		for (ImageVO image : vo.getImages()) {
-			entity.getImages().add(Image.fromVO(image));
-		}
-		return entity;
 	}
 
 	public Long getId() {
@@ -114,11 +91,11 @@ public class Seek extends AbstractEntity {
 		this.content = content;
 	}
 
-	public List<Image> getImages() {
+	public List<ImageVO> getImages() {
 		return images;
 	}
 
-	public void setImages(List<Image> images) {
+	public void setImages(List<ImageVO> images) {
 		this.images = images;
 	}
 

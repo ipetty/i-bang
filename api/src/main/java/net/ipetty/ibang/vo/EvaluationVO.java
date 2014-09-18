@@ -1,21 +1,17 @@
-package net.ipetty.ibang.model;
+package net.ipetty.ibang.vo;
 
 import java.util.Date;
-
-import net.ipetty.ibang.vo.EvaluationVO;
-
-import org.springframework.beans.BeanUtils;
 
 /**
  * 评价
  * 
  * @author luocanfeng
- * @date 2014年9月17日
+ * @date 2014年9月18日
  */
-public class Evaluation extends AbstractEntity {
+public class EvaluationVO extends BaseVO {
 
 	/** serialVersionUID */
-	private static final long serialVersionUID = 3181415747184715319L;
+	private static final long serialVersionUID = 1724927813581572552L;
 
 	private Long id; // 非业务主键
 	private Long delegationId; // 委托单ID
@@ -26,20 +22,8 @@ public class Evaluation extends AbstractEntity {
 	private String content; // 评价内容
 	private Date createdAt; // 评价日期
 
-	public Evaluation() {
+	public EvaluationVO() {
 		super();
-	}
-
-	public EvaluationVO toVO() {
-		EvaluationVO vo = new EvaluationVO();
-		BeanUtils.copyProperties(this, vo);
-		return vo;
-	}
-
-	public static Evaluation fromVO(EvaluationVO vo) {
-		Evaluation entity = new Evaluation();
-		BeanUtils.copyProperties(vo, entity);
-		return entity;
 	}
 
 	public Long getId() {

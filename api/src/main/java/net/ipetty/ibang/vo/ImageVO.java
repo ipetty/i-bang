@@ -1,47 +1,31 @@
-package net.ipetty.ibang.model;
-
-import net.ipetty.ibang.vo.ImageVO;
-
-import org.springframework.beans.BeanUtils;
+package net.ipetty.ibang.vo;
 
 /**
  * 图片
  * 
  * @author luocanfeng
- * @date 2014年9月17日
+ * @date 2014年9月18日
  */
-public class Image extends AbstractEntity {
+public class ImageVO extends BaseVO {
 
 	/** serialVersionUID */
-	private static final long serialVersionUID = 8112495603277406732L;
+	private static final long serialVersionUID = 2834390400762995623L;
 
 	private Long id; // 非业务主键
 	private String sn; // 图片随机串号
 	private String smallUrl; // 缩略图URL
 	private String originalUrl; // 原图URL
 
-	public Image() {
+	public ImageVO() {
 		super();
 	}
 
-	public Image(Long id, String sn, String smallUrl, String originalUrl) {
+	public ImageVO(Long id, String sn, String smallUrl, String originalUrl) {
 		super();
 		this.id = id;
 		this.sn = sn;
 		this.smallUrl = smallUrl;
 		this.originalUrl = originalUrl;
-	}
-
-	public ImageVO toVO() {
-		ImageVO vo = new ImageVO();
-		BeanUtils.copyProperties(this, vo);
-		return vo;
-	}
-
-	public static Image fromVO(ImageVO vo) {
-		Image entity = new Image();
-		BeanUtils.copyProperties(vo, entity);
-		return entity;
 	}
 
 	public Long getId() {

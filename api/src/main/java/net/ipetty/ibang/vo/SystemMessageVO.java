@@ -1,21 +1,17 @@
-package net.ipetty.ibang.model;
+package net.ipetty.ibang.vo;
 
 import java.util.Date;
-
-import net.ipetty.ibang.vo.SystemMessageVO;
-
-import org.springframework.beans.BeanUtils;
 
 /**
  * 系统消息
  * 
  * @author luocanfeng
- * @date 2014年9月17日
+ * @date 2014年9月18日
  */
-public class SystemMessage extends AbstractEntity {
+public class SystemMessageVO extends BaseVO {
 
 	/** serialVersionUID */
-	private static final long serialVersionUID = -8994626162111085279L;
+	private static final long serialVersionUID = -1884321555326238001L;
 
 	private Long id; // 非业务主键
 	private Integer fromUserId; // 消息来源用户ID
@@ -24,11 +20,11 @@ public class SystemMessage extends AbstractEntity {
 	private String content; // 消息内容
 	private Date createdAt; // 消息创建时间
 
-	public SystemMessage() {
+	public SystemMessageVO() {
 		super();
 	}
 
-	public SystemMessage(Long id, Integer fromUserId, Integer receiverId, String type, String content, Date createdAt) {
+	public SystemMessageVO(Long id, Integer fromUserId, Integer receiverId, String type, String content, Date createdAt) {
 		super();
 		this.id = id;
 		this.fromUserId = fromUserId;
@@ -36,18 +32,6 @@ public class SystemMessage extends AbstractEntity {
 		this.type = type;
 		this.content = content;
 		this.createdAt = createdAt;
-	}
-
-	public SystemMessageVO toVO() {
-		SystemMessageVO vo = new SystemMessageVO();
-		BeanUtils.copyProperties(this, vo);
-		return vo;
-	}
-
-	public static SystemMessage fromVO(SystemMessageVO vo) {
-		SystemMessage entity = new SystemMessage();
-		BeanUtils.copyProperties(vo, entity);
-		return entity;
 	}
 
 	public Long getId() {

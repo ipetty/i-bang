@@ -1,21 +1,17 @@
-package net.ipetty.ibang.model;
+package net.ipetty.ibang.vo;
 
 import java.util.Date;
-
-import net.ipetty.ibang.vo.DelegationVO;
-
-import org.springframework.beans.BeanUtils;
 
 /**
  * 委托
  * 
  * @author luocanfeng
- * @date 2014年9月17日
+ * @date 2014年9月18日
  */
-public class Delegation extends AbstractEntity {
+public class DelegationVO extends BaseVO {
 
 	/** serialVersionUID */
-	private static final long serialVersionUID = -7220234745932488653L;
+	private static final long serialVersionUID = 8689978142647812958L;
 
 	private Long id; // 非业务主键
 	private String sn; // 委托单流水号
@@ -27,20 +23,8 @@ public class Delegation extends AbstractEntity {
 	private Date createdAt; // 委托单创建日期
 	private int status; // 状态
 
-	public Delegation() {
+	public DelegationVO() {
 		super();
-	}
-
-	public DelegationVO toVO() {
-		DelegationVO vo = new DelegationVO();
-		BeanUtils.copyProperties(this, vo);
-		return vo;
-	}
-
-	public static Delegation fromVO(DelegationVO vo) {
-		Delegation entity = new Delegation();
-		BeanUtils.copyProperties(vo, entity);
-		return entity;
 	}
 
 	public Long getId() {

@@ -11,36 +11,33 @@ public class SeekCategory extends BaseVO {
 	/** serialVersionUID */
 	private static final long serialVersionUID = -4022674935009452591L;
 
-	private int level; // 分类级别，目前总共两级
-	private String category; // 分类名称
-	private SeekCategory parent; // 父分类
+	private String categoryL1; // 一级分类
+	private String categoryL2; // 二级分类
 
 	public SeekCategory() {
 		super();
 	}
 
-	public int getLevel() {
-		return level;
+	public SeekCategory(String categoryL1, String categoryL2) {
+		super();
+		this.categoryL1 = categoryL1;
+		this.categoryL2 = categoryL2;
 	}
 
-	public void setLevel(int level) {
-		this.level = level;
+	public String getCategoryL1() {
+		return categoryL1;
 	}
 
-	public String getCategory() {
-		return category;
+	public void setCategoryL1(String categoryL1) {
+		this.categoryL1 = categoryL1;
 	}
 
-	public void setCategory(String category) {
-		this.category = category;
+	public String getCategoryL2() {
+		return categoryL2;
 	}
 
-	public SeekCategory getParent() {
-		return parent;
-	}
-
-	public void setParent(SeekCategory parent) {
-		this.parent = parent;
+	public void setCategoryL2(String categoryL2) {
+		this.categoryL2 = categoryL2;
 	}
 
 }

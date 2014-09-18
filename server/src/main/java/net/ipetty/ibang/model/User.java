@@ -2,6 +2,10 @@ package net.ipetty.ibang.model;
 
 import java.util.Date;
 
+import net.ipetty.ibang.vo.UserVO;
+
+import org.springframework.beans.BeanUtils;
+
 /**
  * 用户
  * 
@@ -30,6 +34,40 @@ public class User extends AbstractEntity {
 
 	public User() {
 		super();
+	}
+
+	public UserVO toVO() {
+		UserVO vo = new UserVO();
+		BeanUtils.copyProperties(this, vo);
+		if (seekerInfo != null) {
+			vo.setSeekCount(seekerInfo.getSeekCount());
+			vo.setSeekerTotalPoint(seekerInfo.getTotalPoint());
+			vo.setSeekerTitle(seekerInfo.getTitle());
+		}
+		if (offererInfo != null) {
+			vo.setOfferCount(offererInfo.getOfferCount());
+			vo.setOffererTotalPoint(offererInfo.getTotalPoint());
+			vo.setOffererTitle(offererInfo.getTitle());
+			vo.setOfferRange(offererInfo.getOfferRange());
+		}
+		return vo;
+	}
+
+	public static User fromVO(UserVO vo) {
+		User entity = new User();
+		BeanUtils.copyProperties(vo, entity);
+		SeekerInfo seekerInfo = new SeekerInfo();
+		seekerInfo.setSeekCount(vo.getSeekCount());
+		seekerInfo.setTotalPoint(vo.getSeekerTotalPoint());
+		seekerInfo.setTitle(vo.getSeekerTitle());
+		entity.setSeekerInfo(seekerInfo);
+		OffererInfo offererInfo = new OffererInfo();
+		offererInfo.setOfferCount(vo.getOfferCount());
+		offererInfo.setTotalPoint(vo.getOffererTotalPoint());
+		offererInfo.setTitle(vo.getOffererTitle());
+		offererInfo.setOfferRange(vo.getOfferRange());
+		entity.setOffererInfo(offererInfo);
+		return entity;
 	}
 
 	public Integer getId() {
