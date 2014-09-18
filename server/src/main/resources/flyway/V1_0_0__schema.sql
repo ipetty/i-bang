@@ -155,10 +155,10 @@ create table system_message (
 	id bigint primary key auto_increment,
 	from_user_id int,
 	receiver_id int not null,
-	message_type varchar(50),
+	type varchar(50),
 	content text,
 	created_on timestamp default current_timestamp,
 	foreign key(from_user_id) references users(id),
 	foreign key(receiver_id) references users(id)
 ) engine=innodb default charset=utf8;
-create index idx_message_type on system_message(message_type);
+create index idx_type on system_message(type);
