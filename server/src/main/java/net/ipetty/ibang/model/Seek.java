@@ -34,7 +34,7 @@ public class Seek extends AbstractEntity {
 	private String additionalReward; // 附加奖励
 	private Date createdOn; // 求助创建时间
 	private Date exipireDate; // 求助有效日期
-	private int status; // 状态
+	private String status; // 状态
 
 	public Seek() {
 		super();
@@ -170,11 +170,11 @@ public class Seek extends AbstractEntity {
 		this.exipireDate = exipireDate;
 	}
 
-	public int getStatus() {
+	public String getStatus() {
 		return status;
 	}
 
-	public void setStatus(int status) {
+	public void setStatus(String status) {
 		this.status = status;
 	}
 

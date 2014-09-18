@@ -30,3 +30,135 @@ create table user_refresh_token (
 ) engine=innodb default charset=utf8;
 create index idx_refresh_token on user_refresh_token(refresh_token);
 create index idx_device_uuid on user_refresh_token(device_uuid);
+
+-- seeker_info
+create table seeker_info (
+	user_id int primary key,
+	seek_count int default 0,
+	total_point int default 0,
+	title varchar(50),
+	foreign key(user_id) references users(id)
+) engine=innodb default charset=utf8;
+
+-- offerer_info
+create table offerer_info (
+	user_id int primary key,
+	offer_count int default 0,
+	total_point int default 0,
+	title varchar(50),
+	foreign key(user_id) references users(id)
+) engine=innodb default charset=utf8;
+
+-- offerer_range
+create table offerer_range (
+	user_id int not null,
+	category_l1 varchar(50),
+	category_l2 varchar(50),
+	foreign key(user_id) references users(id)
+) engine=innodb default charset=utf8;
+create index idx_category_l1 on offerer_range(category_l1);
+create index idx_category_l2 on offerer_range(category_l2);
+
+-- seek
+create table seek (
+	id bigint primary key auto_increment,
+	sn varchar(50),
+	seeker_id int not null,
+	contact_info_visible boolean default false,
+	category_l1 varchar(50),
+	category_l2 varchar(50),
+	content text,
+	requirement text,
+	delegate_number int default 1,
+	reward varchar(255),
+	additional_reward varchar(255),
+	created_on timestamp default current_timestamp,
+	expire_date date,
+	status varchar(20),
+	foreign key(seeker_id) references users(id)
+) engine=innodb default charset=utf8;
+create index idx_sn on seek(sn);
+create index idx_category_l1 on seek(category_l1);
+create index idx_category_l2 on seek(category_l2);
+create index idx_created_on on seek(created_on);
+create index idx_expire_date on seek(expire_date);
+create index idx_status on seek(status);
+
+-- image
+create table image (
+	id bigint primary key auto_increment,
+	sn varchar(50),
+	seek_id bigint,
+	idx int,
+	small_url varchar(255),
+	original_url varchar(255)
+) engine=innodb default charset=utf8;
+
+-- offer
+create table offer (
+	id bigint primary key auto_increment,
+	sn varchar(50),
+	offerer_id int not null,
+	seek_id bigint not null,
+	content text,
+	description text,
+	deadline date,
+	created_on timestamp default current_timestamp,
+	status varchar(20),
+	foreign key(offerer_id) references users(id),
+	foreign key(seek_id) references seek(id)
+) engine=innodb default charset=utf8;
+create index idx_sn on offer(sn);
+create index idx_deadline on offer(deadline);
+create index idx_created_on on offer(created_on);
+create index idx_status on offer(status);
+
+-- delegation
+create table delegation (
+	id bigint primary key auto_increment,
+	sn varchar(50),
+	seek_id bigint not null,
+	seeker_id int not null,
+	offer_id bigint not null,
+	offerer_id int not null,
+	deadline date,
+	created_on timestamp default current_timestamp,
+	status varchar(20),
+	foreign key(seek_id) references seek(id),
+	foreign key(seeker_id) references users(id),
+	foreign key(offer_id) references offer(id),
+	foreign key(offerer_id) references users(id)
+) engine=innodb default charset=utf8;
+create index idx_sn on delegation(sn);
+create index idx_deadline on delegation(deadline);
+create index idx_created_on on delegation(created_on);
+create index idx_status on delegation(status);
+
+-- evaluation
+create table evaluation (
+	id bigint primary key auto_increment,
+	delegation_id bigint not null,
+	type varchar(50),
+	evaluator_id int not null,
+	evaluation_object_id int not null,
+	point int,
+	content text,
+	created_on timestamp default current_timestamp,
+	foreign key(delegation_id) references delegation(id),
+	foreign key(evaluator_id) references users(id),
+	foreign key(evaluation_object_id) references users(id)
+) engine=innodb default charset=utf8;
+create index idx_type on evaluation(type);
+
+-- system_message
+create table system_message (
+	id bigint primary key auto_increment,
+	from_user_id int,
+	receiver_id int not null,
+	message_type varchar(50),
+	content text,
+	created_on timestamp default current_timestamp,
+	foreign key(from_user_id) references users(id),
+	foreign key(receiver_id) references users(id)
+) engine=innodb default charset=utf8;
+create index idx_message_type on system_message(message_type);

@@ -25,7 +25,7 @@ public class Delegation extends AbstractEntity {
 	private Integer offererId; // 应征者ID
 	private Date deadline; // 应征者承诺完成委托的截止日期
 	private Date createdOn; // 委托单创建日期
-	private int status; // 状态
+	private String status; // 状态
 
 	public Delegation() {
 		super();
@@ -107,11 +107,11 @@ public class Delegation extends AbstractEntity {
 		this.createdOn = createdOn;
 	}
 
-	public int getStatus() {
+	public String getStatus() {
 		return status;
 	}
 
-	public void setStatus(int status) {
+	public void setStatus(String status) {
 		this.status = status;
 	}
 
