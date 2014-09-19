@@ -11,7 +11,8 @@ create table users (
 	avatar varchar(100),
 	signature varchar(255),
 	address varchar(255),
-	created_on timestamp default current_timestamp
+	created_on timestamp default current_timestamp,
+	version int not null default 1
 ) engine=innodb default charset=utf8;
 create index idx_username on users(username);
 create index idx_email on users(email);

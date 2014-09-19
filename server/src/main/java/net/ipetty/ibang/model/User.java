@@ -21,6 +21,7 @@ public class User extends AbstractEntity {
 	private String username; // 用户名
 	private String email; // 邮箱
 	private String password; // 密码
+	private String salt; // 盐值
 	private String nickname; // 昵称
 	private String gender; // 性别
 	private String job; // 职位
@@ -100,6 +101,14 @@ public class User extends AbstractEntity {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public String getSalt() {
+		return salt;
+	}
+
+	public void setSalt(String salt) {
+		this.salt = salt;
 	}
 
 	public String getNickname() {
