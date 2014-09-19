@@ -24,8 +24,10 @@ import android.widget.Toast;
 public class RegisterActivity extends Activity {
 	private AutoCompleteTextView accountView;
 	private EditText passwordView;
+	private EditText nicknameView;
 	private String account = null;
 	private String password = null;
+	private String nickname = null;
 	private TextView toggleView = null;
 	private boolean psdDisplayFlg = false;
 	private ProgressDialog progressDialog;
@@ -51,6 +53,7 @@ public class RegisterActivity extends Activity {
 
 		accountView = (AutoCompleteTextView) this.findViewById(R.id.account);
 		passwordView = (EditText) this.findViewById(R.id.password);
+		nicknameView = (EditText) this.findViewById(R.id.nickname);
 
 		// 注册
 		View BtnView = (View) this.findViewById(R.id.button);
@@ -93,6 +96,7 @@ public class RegisterActivity extends Activity {
 	private boolean validateRegister() {
 		this.account = accountView.getText().toString();
 		this.password = passwordView.getText().toString();
+		this.nickname = nicknameView.getText().toString();
 
 		if (StringUtils.isBlank(this.account)) {
 			accountView.requestFocus();
@@ -105,6 +109,11 @@ public class RegisterActivity extends Activity {
 			return false;
 		}
 
+		if (StringUtils.isBlank(this.nickname)) {
+			nicknameView.requestFocus();
+			Toast.makeText(RegisterActivity.this, R.string.empty_nickname, Toast.LENGTH_SHORT).show();
+			return false;
+		}
 		return true;
 	}
 

@@ -10,7 +10,10 @@
      <color name="action_bar_bg">#F8F8F8</color>
      <color name="action_bar_btn_pressed">#1FF8F8F8</color>
      
-    
+	 <color name="un_login_bg_color"> #EDEDED</color>
+	 <color name="un_login_text_color"> #AAAAAA</color>
+	 <color name="soild_color"> #cccccc</color>
+
       <color name="tab_bg_color"> #FAFAFA</color>
       <color name="tab_gray_color">#717171</color>
 

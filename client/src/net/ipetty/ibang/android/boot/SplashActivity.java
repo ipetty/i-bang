@@ -15,7 +15,18 @@ public class SplashActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_splash);
 
-		goMain();
+		new Thread() {
+			@Override
+			public void run() {
+				try {
+					Thread.sleep(3000);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				goMain();
+				SplashActivity.this.finish();
+			}
+		}.start();
 
 	}
 

@@ -15,6 +15,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 public class MainActivity extends FragmentActivity {
+	private boolean isLogin = false;
+
 	private ViewPager viewPager;
 	private final Fragment[] fragments = { new MainHomeFragment(), new MainPublishFragment(),
 			new MainDiscoverFragment(), new MainMeFragment() };
@@ -34,13 +36,16 @@ public class MainActivity extends FragmentActivity {
 	private ImageView discover_image;
 	private ImageView me_image;
 
+	private MyFragmentPagerAdapter myFragmentPagerAdapter;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
 		viewPager = (ViewPager) findViewById(R.id.tabpager);
-		viewPager.setAdapter(new MyFragmentPagerAdapter(getSupportFragmentManager(), fragments));
+		myFragmentPagerAdapter = new MyFragmentPagerAdapter(getSupportFragmentManager(), fragments);
+		viewPager.setAdapter(myFragmentPagerAdapter);
 		viewPager.setOnPageChangeListener(myPageChangeListener);
 
 		home_layout = this.findViewById(R.id.home_layout);
@@ -138,6 +143,7 @@ public class MainActivity extends FragmentActivity {
 			publish_image.setImageResource(R.drawable.tab_publish_default);
 			discover_image.setImageResource(R.drawable.tab_search_default);
 			me_image.setImageResource(R.drawable.tab_me_default);
+
 			switch (arg0) {
 			case 0: {
 				home_text.setTextColor(getResources().getColor(R.color.base_color));

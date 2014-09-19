@@ -38,6 +38,10 @@
     <string name="user_info">用户信息</string>
     <string name="pet_info">宠物信息</string>
     <string name="nickname">昵称</string>
+     <string name="input_nickname_hint">请输入昵称</string>
+     <string name="empty_nickname">昵称不能为空</string>
+     
+    
     <string name="changeAccount">切换账号</string>
     <string name="logining">正在登录....</string>
     <string name="skip_button">跳过</string>
@@ -48,4 +52,8 @@
     <string name="discover">发现</string>
     <string name="me">我的</string>
 
+     <string name="un_login_me"> 登录后，您的个人资料会显示在这里</string>
+     <string name="un_login_home"> 登录后，您的可以看到与你相关的帮助信息</string>
+     <string name="un_login_publish"> 登录后，您的可以发布您需要的帮助</string>
+  
 </resources>

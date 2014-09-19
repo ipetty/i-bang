@@ -1,6 +1,7 @@
 package net.ipetty.ibang.android.main;
 
 import net.ipetty.ibang.R;
+import net.ipetty.ibang.android.core.ui.UnLoginView;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -8,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 public class MainMeFragment extends Fragment {
+	public UnLoginView unLoginView;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -23,7 +25,6 @@ public class MainMeFragment extends Fragment {
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-
+		unLoginView = new UnLoginView(getActivity(), getView(), R.string.un_login_me);
 	}
-
 }
