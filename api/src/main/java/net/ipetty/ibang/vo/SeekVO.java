@@ -29,6 +29,7 @@ public class SeekVO extends BaseVO {
 	private String additionalReward; // 附加奖励
 	private Date createdOn; // 求助创建时间
 	private Date exipireDate; // 求助有效日期
+	private Date closedOn; // 关闭时间
 	private String status; // 状态
 
 	public SeekVO() {
@@ -145,6 +146,14 @@ public class SeekVO extends BaseVO {
 
 	public void setExipireDate(Date exipireDate) {
 		this.exipireDate = exipireDate;
+	}
+
+	public Date getClosedOn() {
+		return closedOn;
+	}
+
+	public void setClosedOn(Date closedOn) {
+		this.closedOn = closedOn;
 	}
 
 	public String getStatus() {

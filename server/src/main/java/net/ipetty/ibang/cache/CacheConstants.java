@@ -9,18 +9,25 @@ package net.ipetty.ibang.cache;
 public interface CacheConstants {
 
 	/* user token */
-	public static final String CACHE_USER_TOKEN_TO_USER_ID = "mapUserToken2UserId";
+	public static final String CACHE_USER_TOKEN_TO_USER_ID = "cacheUserToken2UserId";
 
 	/* user refresh token */
-	public static final String CACHE_USER_REFRESH_TOKEN = "mapUserRefreshToken";
+	public static final String CACHE_USER_REFRESH_TOKEN = "cacheUserRefreshToken";
 
 	/* user */
-	public static final String CACHE_USER_ID_TO_USER = "mapUserId2User";
-	public static final String CACHE_USERNAME_TO_USER_ID = "mapUsername2UserId";
-	public static final String CACHE_EMAIL_TO_USER_ID = "mapEmail2UserId";
-	public static final String CACHE_LOGIN_NAME_TO_USER_ID = "mapLoginName2UserId";
+	public static final String CACHE_USER_ID_TO_USER = "cacheUserId2User";
+	public static final String CACHE_USERNAME_TO_USER_ID = "cacheUsername2UserId";
+	public static final String CACHE_EMAIL_TO_USER_ID = "cacheEmail2UserId";
+	public static final String CACHE_LOGIN_NAME_TO_USER_ID = "cacheLoginName2UserId";
+	public static final String CACHE_USER_ID_TO_SEEKER_INFO = "cacheUserId2SeekerInfo";
+	public static final String CACHE_USER_ID_TO_OFFERER_INFO = "cacheUserId2OffererInfo";
+	public static final String CACHE_USER_ID_TO_OFFER_RANGE = "cacheUserId2OfferRange";
+
+	/* seek */
+	public static final String CACHE_SEEK_ID_TO_SEEK = "cacheSeekId2Seek";
 
 	/* image */
-	public static final String CACHE_IMAGE_ID_TO_IMAGE = "mapImageId2Image";
+	public static final String CACHE_IMAGE_ID_TO_IMAGE = "cacheImageId2Image";
+	public static final String CACHE_SEEK_ID_TO_IMAGE_IDS = "cacheSeekId2ImageIds";
 
 }

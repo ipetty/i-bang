@@ -75,6 +75,7 @@ create table seek (
 	additional_reward varchar(255),
 	created_on timestamp default current_timestamp,
 	expire_date date,
+	closed_on datetime,
 	status varchar(20),
 	foreign key(seeker_id) references users(id)
 ) engine=innodb default charset=utf8;
@@ -105,6 +106,7 @@ create table offer (
 	description text,
 	deadline date,
 	created_on timestamp default current_timestamp,
+	closed_on datetime,
 	status varchar(20),
 	foreign key(offerer_id) references users(id),
 	foreign key(seek_id) references seek(id)
@@ -124,6 +126,7 @@ create table delegation (
 	offerer_id int not null,
 	deadline date,
 	created_on timestamp default current_timestamp,
+	closed_on datetime,
 	status varchar(20),
 	foreign key(seek_id) references seek(id),
 	foreign key(seeker_id) references users(id),

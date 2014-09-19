@@ -25,6 +25,7 @@ public class Delegation extends AbstractEntity {
 	private Integer offererId; // 应征者ID
 	private Date deadline; // 应征者承诺完成委托的截止日期
 	private Date createdOn; // 委托单创建日期
+	private Date closedOn; // 关闭时间
 	private String status; // 状态
 
 	public Delegation() {
@@ -105,6 +106,14 @@ public class Delegation extends AbstractEntity {
 
 	public void setCreatedOn(Date createdOn) {
 		this.createdOn = createdOn;
+	}
+
+	public Date getClosedOn() {
+		return closedOn;
+	}
+
+	public void setClosedOn(Date closedOn) {
+		this.closedOn = closedOn;
 	}
 
 	public String getStatus() {

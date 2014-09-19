@@ -21,6 +21,7 @@ public class OfferVO extends BaseVO {
 	private String description; // 应征描述
 	private Date deadline; // 应征者承诺完成委托的截止日期
 	private Date createdOn; // 应征单创建日期
+	private Date closedOn; // 关闭时间
 	private String status; // 状态
 
 	public OfferVO() {
@@ -89,6 +90,14 @@ public class OfferVO extends BaseVO {
 
 	public void setCreatedOn(Date createdOn) {
 		this.createdOn = createdOn;
+	}
+
+	public Date getClosedOn() {
+		return closedOn;
+	}
+
+	public void setClosedOn(Date closedOn) {
+		this.closedOn = closedOn;
 	}
 
 	public String getStatus() {
