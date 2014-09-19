@@ -37,15 +37,15 @@
     <string name="qq_login">QQ账号登录</string>
     <string name="user_info">用户信息</string>
     <string name="pet_info">宠物信息</string>
-    <string name="nickname">昵称</string>
-     <string name="input_nickname_hint">请输入昵称</string>
-     <string name="empty_nickname">昵称不能为空</string>
-     
+    <string name="nickname">姓名</string>
+     <string name="input_nickname_hint">请输入姓名</string>
+     <string name="empty_nickname">姓名不能为空</string>
+     <string name="empty_phone">请输入11位手机号</string>
     
     <string name="changeAccount">切换账号</string>
     <string name="logining">正在登录....</string>
     <string name="skip_button">跳过</string>
-    <string name="title_activity_user_profile">UserProfileActivity</string>
+    <string name="title_activity_user_profile">用户资料</string>
     
     <string name="home">首页</string>
     <string name="help">求助</string>

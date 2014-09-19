@@ -1,6 +1,7 @@
 package net.ipetty.ibang.android.main;
 
 import net.ipetty.ibang.R;
+import net.ipetty.ibang.android.core.ActivityManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -42,7 +43,7 @@ public class MainActivity extends FragmentActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-
+		ActivityManager.getInstance().addActivity(this);
 		viewPager = (ViewPager) findViewById(R.id.tabpager);
 		myFragmentPagerAdapter = new MyFragmentPagerAdapter(getSupportFragmentManager(), fragments);
 		viewPager.setAdapter(myFragmentPagerAdapter);
@@ -66,6 +67,12 @@ public class MainActivity extends FragmentActivity {
 		publish_image = (ImageView) this.findViewById(R.id.publish_image);
 		discover_image = (ImageView) this.findViewById(R.id.discover_image);
 		me_image = (ImageView) this.findViewById(R.id.me_image);
+
+		if (!isLogin) {
+			viewPager.setCurrentItem(2);
+		} else {
+			viewPager.setCurrentItem(0);
+		}
 	}
 
 	public class TabClickListener implements OnClickListener {

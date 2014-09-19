@@ -1,6 +1,7 @@
 package net.ipetty.ibang.android.login;
 
 import net.ipetty.ibang.R;
+import net.ipetty.ibang.android.core.ActivityManager;
 import net.ipetty.ibang.android.core.util.AppUtils;
 import net.ipetty.ibang.android.main.MainActivity;
 
@@ -33,6 +34,7 @@ public class LoginActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login);
+		ActivityManager.getInstance().addActivity(this);
 
 		TextView version = (TextView) this.findViewById(R.id.version_info);
 		String verStr = getResources().getString(R.string.app_version);

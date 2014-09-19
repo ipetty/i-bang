@@ -5,6 +5,8 @@
      <color name="gray_color">#8F8582</color>
      <color name="black_color">#000000</color>
      <color name="white_color">#FFFFFF</color>
+     
+     <color name="color_item_bg_click">#ffdddddd</color>
           
      <color name="btn_orange_state_pressed">#AAF4811F</color>
      <color name="action_bar_bg">#F8F8F8</color>
@@ -17,4 +19,6 @@
       <color name="tab_bg_color"> #FAFAFA</color>
       <color name="tab_gray_color">#717171</color>
 
+      <color name="yellow_bg_color">#FFFAF6</color>
+     
 </resources>

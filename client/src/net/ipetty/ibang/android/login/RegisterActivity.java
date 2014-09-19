@@ -1,14 +1,13 @@
 package net.ipetty.ibang.android.login;
 
 import net.ipetty.ibang.R;
+import net.ipetty.ibang.android.core.ActivityManager;
 import net.ipetty.ibang.android.core.ui.BackClickListener;
-import net.ipetty.ibang.android.main.MainActivity;
 
 import org.apache.commons.lang3.StringUtils;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputType;
@@ -31,12 +30,14 @@ public class RegisterActivity extends Activity {
 	private TextView toggleView = null;
 	private boolean psdDisplayFlg = false;
 	private ProgressDialog progressDialog;
+	private EditText phoneView = null;
+	private String phone = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_register);
-
+		ActivityManager.getInstance().addActivity(this);
 		/* action bar */
 		ImageView btnBack = (ImageView) this.findViewById(R.id.action_bar_left_image);
 		TextView text = (TextView) this.findViewById(R.id.action_bar_title);
@@ -54,6 +55,7 @@ public class RegisterActivity extends Activity {
 		accountView = (AutoCompleteTextView) this.findViewById(R.id.account);
 		passwordView = (EditText) this.findViewById(R.id.password);
 		nicknameView = (EditText) this.findViewById(R.id.nickname);
+		phoneView = (EditText) this.findViewById(R.id.phone);
 
 		// 注册
 		View BtnView = (View) this.findViewById(R.id.button);
@@ -65,12 +67,14 @@ public class RegisterActivity extends Activity {
 		@Override
 		public void onClick(View loginBtnView) {
 			if (!validateRegister()) {
-				return;
+				// return;
 			}
 
-			Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
-			startActivity(intent);
-			RegisterActivity.this.finish();
+			// Intent intent = new Intent(RegisterActivity.this,
+			// UserProfileActivity.class);
+			// startActivity(intent);
+			finish();
+			ActivityManager.getInstance().finishLoginAndRegister();
 		}
 	};
 
@@ -114,7 +118,12 @@ public class RegisterActivity extends Activity {
 			Toast.makeText(RegisterActivity.this, R.string.empty_nickname, Toast.LENGTH_SHORT).show();
 			return false;
 		}
+		if (StringUtils.isBlank(this.phone) || this.phone.length() != 11) {
+			phoneView.requestFocus();
+			Toast.makeText(RegisterActivity.this, R.string.empty_phone, Toast.LENGTH_SHORT).show();
+			return false;
+		}
+
 		return true;
 	}
-
 }

@@ -3,6 +3,8 @@ package net.ipetty.ibang.android.core;
 import java.util.LinkedList;
 import java.util.List;
 
+import net.ipetty.ibang.android.login.LoginActivity;
+import net.ipetty.ibang.android.login.RegisterActivity;
 import android.app.Activity;
 
 public class ActivityManager {
@@ -52,6 +54,17 @@ public class ActivityManager {
 	// 将当前Activity推入栈中
 	public void addActivity(Activity activity) {
 		activityList.add(activity);
+	}
+
+	public void finishLoginAndRegister() {
+		for (Activity activity : activityList) {
+			if (activity instanceof LoginActivity) {
+				activity.finish();
+			}
+			if (activity instanceof RegisterActivity) {
+				activity.finish();
+			}
+		}
 	}
 
 	public void exit() {
