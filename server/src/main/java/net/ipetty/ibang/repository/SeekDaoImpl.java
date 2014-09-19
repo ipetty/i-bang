@@ -10,6 +10,7 @@ import java.util.List;
 
 import net.ipetty.ibang.cache.CacheConstants;
 import net.ipetty.ibang.cache.annotation.LoadFromCache;
+import net.ipetty.ibang.cache.annotation.UpdateToCache;
 import net.ipetty.ibang.exception.BusinessException;
 import net.ipetty.ibang.model.Seek;
 import net.ipetty.ibang.vo.Constants;
@@ -137,6 +138,7 @@ public class SeekDaoImpl extends BaseJdbcDaoSupport implements SeekDao {
 	 * 更新求助单状态
 	 */
 	@Override
+	@UpdateToCache(mapName = CacheConstants.CACHE_SEEK_ID_TO_SEEK, key = "${seekId}")
 	public void updateStatus(Long seekId, String newStatus) {
 		super.getJdbcTemplate().update(UPDATE_STATUS_SQL,
 				Constants.SEEK_STATUS_CLOSED.equals(newStatus) ? new Date() : null, newStatus, seekId);
