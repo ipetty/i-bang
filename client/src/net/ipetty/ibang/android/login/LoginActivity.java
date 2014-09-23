@@ -3,7 +3,6 @@ package net.ipetty.ibang.android.login;
 import net.ipetty.ibang.R;
 import net.ipetty.ibang.android.core.ActivityManager;
 import net.ipetty.ibang.android.core.util.AppUtils;
-import net.ipetty.ibang.android.main.MainActivity;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -73,8 +72,11 @@ public class LoginActivity extends Activity {
 				return;
 			}
 
-			Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-			startActivity(intent);
+			// Intent intent = new Intent(LoginActivity.this,
+			// MainActivity.class);
+			// startActivity(intent);
+
+			finish();
 
 			// new UserLogin(LoginActivity.this).setListener(new
 			// LoginTaskListener(LoginActivity.this)).execute(account,
