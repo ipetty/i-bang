@@ -29,9 +29,14 @@ public interface CacheConstants {
 	public static final String CACHE_OFFER_ID_TO_OFFER = "cacheOfferId2Offer";
 	/* delegation */
 	public static final String CACHE_DELEGATION_ID_TO_DELEGATION = "cacheDelegationId2Delegation";
+	/* evaluation */
+	public static final String CACHE_EVALUATION_ID_TO_EVALUATION = "cacheEvaluationId2Evaluation";
 
 	/* image */
 	public static final String CACHE_IMAGE_ID_TO_IMAGE = "cacheImageId2Image";
 	public static final String CACHE_SEEK_ID_TO_IMAGE_IDS = "cacheSeekId2ImageIds";
+
+	/* system message */
+	public static final String CACHE_SYS_MSG_ID_TO_SYS_MSG = "cacheSysMsgId2SysMsg";
 
 }
