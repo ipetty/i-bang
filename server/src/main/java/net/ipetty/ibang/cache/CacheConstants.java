@@ -25,6 +25,10 @@ public interface CacheConstants {
 
 	/* seek */
 	public static final String CACHE_SEEK_ID_TO_SEEK = "cacheSeekId2Seek";
+	/* offer */
+	public static final String CACHE_OFFER_ID_TO_OFFER = "cacheOfferId2Offer";
+	/* delegation */
+	public static final String CACHE_DELEGATION_ID_TO_DELEGATION = "cacheDelegationId2Delegation";
 
 	/* image */
 	public static final String CACHE_IMAGE_ID_TO_IMAGE = "cacheImageId2Image";

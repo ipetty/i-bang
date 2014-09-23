@@ -24,7 +24,7 @@ public interface SeekDao {
 	public Seek getById(Long id);
 
 	/**
-	 * 获取最新的未关闭求助列表
+	 * 获取最新的未关闭求助单ID列表
 	 * 
 	 * @param pageNumber
 	 *            分页页码，从0开始
@@ -32,7 +32,7 @@ public interface SeekDao {
 	public List<Long> listLatest(Date timeline, int pageNumber, int pageSize);
 
 	/**
-	 * 获取指定用户的求助列表
+	 * 获取指定用户的求助单ID列表
 	 * 
 	 * @param pageNumber
 	 *            分页页码，从0开始

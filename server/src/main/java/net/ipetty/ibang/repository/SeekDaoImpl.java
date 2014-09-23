@@ -107,7 +107,7 @@ public class SeekDaoImpl extends BaseJdbcDaoSupport implements SeekDao {
 	private static final String LIST_LATEST_SQL = "select id from seek where created_on<=? and (status=? or status=?) order by created_on desc limit ?,?";
 
 	/**
-	 * 获取最新的未关闭求助列表
+	 * 获取最新的未关闭求助单ID列表
 	 * 
 	 * @param pageNumber
 	 *            分页页码，从0开始
@@ -121,7 +121,7 @@ public class SeekDaoImpl extends BaseJdbcDaoSupport implements SeekDao {
 	private static final String LIST_BY_USER_ID_SQL = "select id from seek where seeker_id=? order by created_on desc limit ?,?";
 
 	/**
-	 * 获取指定用户的求助列表
+	 * 获取指定用户的求助单ID列表
 	 * 
 	 * @param pageNumber
 	 *            分页页码，从0开始

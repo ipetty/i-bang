@@ -29,4 +29,8 @@ public interface Constants {
 	public static final String DELEGATE_STATUS_BI_EVALUATED = "bi_evaluated"; // 双方已评价
 	public static final String DELEGATE_STATUS_CLOSED = "closed"; // 已关闭（已中止委托）
 
+	/* evaluation type */
+	public static final String EVALUATION_TYPE_SEEKER_TO_OFFERER = "seeker_to_offerer"; // 求助者对帮助者的评价
+	public static final String EVALUATION_TYPE_OFFERER_TO_SEEKER = "offerer_to_seeker"; // 帮助者对求助者的评价
+
 }
