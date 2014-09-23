@@ -144,7 +144,7 @@ create table evaluation (
 	delegation_id bigint not null,
 	type varchar(50),
 	evaluator_id int not null,
-	evaluation_object_id int not null,
+	evaluate_target_id int not null,
 	point int,
 	content text,
 	created_on timestamp default current_timestamp,

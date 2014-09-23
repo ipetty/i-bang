@@ -21,7 +21,7 @@ public class Evaluation extends AbstractEntity {
 	private Long delegationId; // 委托单ID
 	private String type; // 评价类型，针对求助者的评价/针对应征者的评价
 	private Integer evaluatorId; // 评价发起人
-	private Integer evaluationObjectId; // 评价对象人
+	private Integer evaluateTargetId; // 评价对象人
 	private int point; // 评分
 	private String content; // 评价内容
 	private Date createdOn; // 评价日期
@@ -74,12 +74,12 @@ public class Evaluation extends AbstractEntity {
 		this.evaluatorId = evaluatorId;
 	}
 
-	public Integer getEvaluationObjectId() {
-		return evaluationObjectId;
+	public Integer getEvaluateTargetId() {
+		return evaluateTargetId;
 	}
 
-	public void setEvaluationObjectId(Integer evaluationObjectId) {
-		this.evaluationObjectId = evaluationObjectId;
+	public void setEvaluateTargetId(Integer evaluateTargetId) {
+		this.evaluateTargetId = evaluateTargetId;
 	}
 
 	public int getPoint() {
