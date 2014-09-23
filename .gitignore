@@ -6,6 +6,7 @@
 /api/.settings
 /api/target
 /api/.classpath
+/api/libs
 /server/.classpath
 /server/.project
 /server/.settings
