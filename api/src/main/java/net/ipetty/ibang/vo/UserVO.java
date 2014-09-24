@@ -21,6 +21,8 @@ public class UserVO extends BaseVO {
 	private String nickname; // 昵称
 	private String gender; // 性别
 	private String job; // 职位
+	private String phone; // 手机号码
+	private String telephone; // 联系电话
 	private String avatar; // 头像
 	private String signature; // 个性签名
 	private String address; // 所在地
@@ -85,6 +87,22 @@ public class UserVO extends BaseVO {
 
 	public void setJob(String job) {
 		this.job = job;
+	}
+
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+
+	public String getTelephone() {
+		return telephone;
+	}
+
+	public void setTelephone(String telephone) {
+		this.telephone = telephone;
 	}
 
 	public String getAvatar() {
