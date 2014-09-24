@@ -6,7 +6,10 @@ import java.util.List;
 import javax.annotation.Resource;
 
 import net.ipetty.ibang.model.Offer;
+import net.ipetty.ibang.model.OffererInfo;
 import net.ipetty.ibang.repository.OfferDao;
+import net.ipetty.ibang.util.UUIDUtils;
+import net.ipetty.ibang.vo.Constants;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,19 +28,28 @@ public class OfferService extends BaseService {
 	@Resource
 	private OfferDao offerDao;
 
+	@Resource
+	private OffererInfoService offererInfoService;
+
 	/**
 	 * 应征
 	 */
-	public void save(Offer offer) {
+	public void offer(Offer offer) {
 		Assert.notNull(offer, "应征单不能为空");
+		Assert.notNull(offer.getOffererId(), "应征者不能为空");
 
-		// 生成序列号
+		// 生成序列号 TODO 生成日期数字的序列号
+		offer.setSn(UUIDUtils.generateShortUUID());
 
 		// 状态
+		offer.setStatus(Constants.OFFER_STATUS_OFFERED);
 
 		offerDao.save(offer);
 
 		// 更新应征者应征次数
+		OffererInfo offererInfo = offererInfoService.getByUserId(offer.getOffererId());
+		offererInfo.setOfferCount(offererInfo.getOfferCount() + 1);
+		offererInfoService.saveOrUpdate(offererInfo);
 	}
 
 	/**

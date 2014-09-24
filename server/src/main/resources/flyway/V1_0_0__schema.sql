@@ -8,6 +8,8 @@ create table users (
 	nickname varchar(50),
 	gender varchar(10),
 	job varchar(50),
+	phone varchar(20),
+	telephone varchar(20),
 	avatar varchar(100),
 	signature varchar(255),
 	address varchar(255),
@@ -17,6 +19,7 @@ create table users (
 create index idx_username on users(username);
 create index idx_email on users(email);
 create index idx_address on users(address);
+create index idx_created_on on users(created_on);
 
 -- user_refresh_token
 create table user_refresh_token (
@@ -150,9 +153,10 @@ create table evaluation (
 	created_on timestamp default current_timestamp,
 	foreign key(delegation_id) references delegation(id),
 	foreign key(evaluator_id) references users(id),
-	foreign key(evaluation_object_id) references users(id)
+	foreign key(evaluate_target_id) references users(id)
 ) engine=innodb default charset=utf8;
 create index idx_type on evaluation(type);
+create index idx_created_on on evaluation(created_on);
 
 -- system_message
 create table system_message (
@@ -166,3 +170,4 @@ create table system_message (
 	foreign key(receiver_id) references users(id)
 ) engine=innodb default charset=utf8;
 create index idx_type on system_message(type);
+create index idx_created_on on system_message(created_on);

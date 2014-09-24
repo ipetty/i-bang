@@ -13,6 +13,7 @@ import net.ipetty.ibang.cache.annotation.UpdateToCache;
 import net.ipetty.ibang.exception.BusinessException;
 import net.ipetty.ibang.model.Image;
 
+import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
@@ -38,22 +39,19 @@ public class ImageDaoImpl extends BaseJdbcDaoSupport implements ImageDao {
 		}
 	};
 
-	private static final String SAVE_SQL = "insert into image(sn, seek_id, idx, small_url, original_url) values(?, ?, ?, ?, ?)";
+	private static final String SAVE_SQL = "insert into image(sn, small_url, original_url) values(?, ?, ?)";
 
 	/**
 	 * 保存
 	 */
 	@Override
-	@UpdateToCache(mapName = CacheConstants.CACHE_SEEK_ID_TO_IMAGE_IDS, key = "${seekId}")
-	public void save(Image image, Long seekId, int index) {
+	public void save(Image image) {
 		try {
 			Connection connection = super.getConnection();
 			PreparedStatement statement = connection.prepareStatement(SAVE_SQL, Statement.RETURN_GENERATED_KEYS);
 			statement.setString(1, image.getSn());
-			statement.setLong(2, seekId);
-			statement.setInt(3, index);
-			statement.setString(4, image.getSmallUrl());
-			statement.setString(5, image.getOriginalUrl());
+			statement.setString(2, image.getSmallUrl());
+			statement.setString(3, image.getOriginalUrl());
 
 			statement.execute();
 			ResultSet rs = statement.getGeneratedKeys();
@@ -68,6 +66,29 @@ public class ImageDaoImpl extends BaseJdbcDaoSupport implements ImageDao {
 		}
 	}
 
+	private static final String UPDATE_SQL = "update image set seek_id=?, idx=? where id=?";
+
+	/**
+	 * 将图片与求助单相关联
+	 */
+	@Override
+	@UpdateToCache(mapName = CacheConstants.CACHE_SEEK_ID_TO_IMAGE_IDS, key = "${seekId}")
+	public void saveImageToSeek(final Long seekId, final List<Long> imageIds) {
+		super.getJdbcTemplate().batchUpdate(UPDATE_SQL, new BatchPreparedStatementSetter() {
+			@Override
+			public void setValues(PreparedStatement ps, int i) throws SQLException {
+				ps.setLong(1, seekId);
+				ps.setInt(2, i);
+				ps.setLong(3, imageIds.get(i));
+			}
+
+			@Override
+			public int getBatchSize() {
+				return imageIds.size();
+			}
+		});
+	}
+
 	private static final String GET_BY_ID_SQL = "select * from image where id=?";
 
 	/**
@@ -79,14 +100,14 @@ public class ImageDaoImpl extends BaseJdbcDaoSupport implements ImageDao {
 		return super.queryUniqueEntity(GET_BY_ID_SQL, ROW_MAPPER, id);
 	}
 
-	private static final String LIST_BY_SEEK_ID_SQL = "select * from image where seek_id=? order by idx";
+	private static final String LIST_BY_SEEK_ID_SQL = "select id from image where seek_id=? order by idx";
 
 	/**
-	 * 获取指定求助单的图片列表
+	 * 获取指定求助单的图片ID列表
 	 */
 	@LoadFromCache(mapName = CacheConstants.CACHE_SEEK_ID_TO_IMAGE_IDS, key = "${seekId}")
-	public List<Image> listBySeekId(Long seekId) {
-		return super.getJdbcTemplate().query(LIST_BY_SEEK_ID_SQL, ROW_MAPPER, seekId);
+	public List<Long> listBySeekId(Long seekId) {
+		return super.getJdbcTemplate().query(LIST_BY_SEEK_ID_SQL, LONG_ROW_MAPPER, seekId);
 	}
 
 }
