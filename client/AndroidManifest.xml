@@ -58,6 +58,18 @@
             android:name="net.ipetty.ibang.android.user.UserProfileActivity"
             android:label="@string/title_activity_user_profile" >
         </activity>
+        <activity
+            android:name="net.ipetty.ibang.android.publish.PublishSubTypeActivity"
+            android:label="@string/title_activity_publish_sub_type" >
+        </activity>
+        <activity
+            android:name="net.ipetty.ibang.android.publish.PublishActivity"
+            android:label="@string/title_activity_publish" >
+        </activity>
+        <activity
+            android:name="net.ipetty.ibang.android.publish.UploadLarginImageActivity"
+            android:label="@string/title_activity_upload_largin_image" >
+        </activity>
     </application>
 
 </manifest>

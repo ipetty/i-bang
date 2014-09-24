@@ -3,6 +3,7 @@ package net.ipetty.ibang.android.main;
 import net.ipetty.ibang.R;
 import net.ipetty.ibang.android.core.Constant;
 import net.ipetty.ibang.android.core.ui.UnLoginView;
+import net.ipetty.ibang.android.publish.PublishSubTypeActivity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -11,11 +12,21 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 
 public class MainPublishFragment extends Fragment {
 	private boolean isLogin = true;
 	private UnLoginView unLoginView;
+
+	private View layout_jzfu;
+	private View layout_edu;
+	private View layout_it;
+	private View layout_car;
+	private View layout_express;
+	private View layout_travel;
+	private View layout_healthy;
+	private View layout_repair;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -40,6 +51,40 @@ public class MainPublishFragment extends Fragment {
 			init();
 		}
 
+		layout_jzfu = getActivity().findViewById(R.id.layout_jzfw);
+		layout_edu = getActivity().findViewById(R.id.layout_edu);
+		layout_it = getActivity().findViewById(R.id.layout_it);
+		layout_car = getActivity().findViewById(R.id.layout_car);
+		layout_express = getActivity().findViewById(R.id.layout_express);
+		layout_travel = getActivity().findViewById(R.id.layout_travel);
+		layout_healthy = getActivity().findViewById(R.id.layout_healthy);
+		layout_repair = getActivity().findViewById(R.id.layout_repair);
+
+		layout_jzfu.setOnClickListener(new MyOnClickListener("家政服务"));
+		layout_it.setOnClickListener(new MyOnClickListener("IT服务"));
+		layout_edu.setOnClickListener(new MyOnClickListener("教育培训"));
+		layout_healthy.setOnClickListener(new MyOnClickListener("健康安全"));
+		layout_repair.setOnClickListener(new MyOnClickListener("家电维修"));
+		layout_car.setOnClickListener(new MyOnClickListener("汽车服务"));
+		layout_travel.setOnClickListener(new MyOnClickListener("旅游休闲"));
+		layout_express.setOnClickListener(new MyOnClickListener("物流运输"));
+
+	}
+
+	public class MyOnClickListener implements OnClickListener {
+		String type;
+
+		public MyOnClickListener(String type) {
+			this.type = type;
+		}
+
+		@Override
+		public void onClick(View v) {
+			// TODO Auto-generated method stub
+			Intent intent = new Intent(getActivity(), PublishSubTypeActivity.class);
+			intent.putExtra(Constant.INTENT_CATEGORY, this.type);
+			startActivity(intent);
+		}
 	}
 
 	private void init() {

@@ -1,0 +1,253 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/yellow_bg_color"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context=".PublishActivity" >
+
+ 	 	<include
+        android:id="@+id/include"
+        layout="@layout/action_bar_simple_back" />
+
+ 	 	<ScrollView
+ 	 	    android:id="@+id/scrollView1"
+ 	 	    android:layout_width="match_parent"
+ 	 	    android:layout_height="wrap_content" >
+
+ 	 	    <LinearLayout
+ 	 	        android:layout_width="match_parent"
+ 	 	        android:layout_height="match_parent"
+ 	 	        android:orientation="vertical" >
+
+ 	 	        <LinearLayout
+ 	 	            android:layout_width="match_parent"
+ 	 	            android:layout_height="120dp"
+ 	 	            android:background="@color/white_color"
+ 	 	            android:padding="8dp" >
+
+ 	 	            <EditText
+ 	 	                android:id="@+id/content"
+ 	 	                android:layout_width="0dp"
+ 	 	                android:layout_height="match_parent"
+ 	 	                android:layout_weight="1"
+ 	 	                android:background="@null"
+ 	 	                android:ems="10"
+ 	 	                android:gravity="center_vertical|top"
+ 	 	                android:hint="请输入需要帮助的内容"
+ 	 	                android:inputType="textMultiLine"
+ 	 	                android:scrollbarStyle="insideInset"
+ 	 	                android:scrollbars="vertical"
+ 	 	                android:textColor="@color/gray_color"
+ 	 	                android:textSize="16sp" >
+
+ 	 	                <requestFocus />
+ 	 	            </EditText>
+ 	 	        </LinearLayout>
+
+ 	 	        <include layout="@layout/line_horizontal_divider" />
+
+ 	 	        <LinearLayout
+ 	 	            android:layout_width="fill_parent"
+ 	 	            android:layout_height="46dp"
+ 	 	            android:background="@drawable/list_color_item_bg_white"
+ 	 	            android:gravity="center_vertical" >
+
+ 	 	            <TextView
+ 	 	                android:layout_width="wrap_content"
+ 	 	                android:layout_height="wrap_content"
+ 	 	                android:layout_marginLeft="16dp"
+ 	 	                android:text="截止日期"
+ 	 	                android:textColor="@color/black_color"
+ 	 	                android:textSize="16sp" />
+
+ 	 	            <EditText
+ 	 	                android:id="@+id/exipireDate"
+ 	 	                android:layout_width="0.0dip"
+ 	 	                android:layout_height="wrap_content"
+ 	 	                android:layout_marginLeft="16dp"
+ 	 	                android:layout_marginRight="16dp"
+ 	 	                android:layout_weight="1.0"
+ 	 	                android:background="@null"
+ 	 	                android:focusable="false"
+ 	 	                android:gravity="right|center_vertical"
+ 	 	                android:singleLine="true"
+ 	 	                android:text="2014-11-11"
+ 	 	                android:textColor="@color/gray_color"
+ 	 	                android:textColorHint="@color/gray_color"
+ 	 	                android:textSize="16sp"
+ 	 	                android:windowSoftInputMode="stateHidden" />
+ 	 	        </LinearLayout>
+
+ 	 	        <include layout="@layout/line_horizontal_divider" />
+
+ 	 	        <include layout="@layout/line_space" />
+
+ 	 	        <include layout="@layout/line_horizontal_divider" />
+
+ 	 	        <LinearLayout
+ 	 	            android:layout_width="match_parent"
+ 	 	            android:layout_height="wrap_content"
+ 	 	            android:background="@color/white_color"
+ 	 	            android:orientation="vertical"
+ 	 	            android:padding="16dp" >
+
+ 	 	            <LinearLayout
+ 	 	                android:layout_width="match_parent"
+ 	 	                android:layout_height="wrap_content" >
+
+ 	 	                <RelativeLayout
+ 	 	                    android:layout_width="wrap_content"
+ 	 	                    android:layout_height="match_parent"
+ 	 	                    android:layout_weight="1" >
+
+ 	 	                    <ImageView
+ 	 	                        android:id="@+id/upload1"
+ 	 	                        android:layout_width="62dp"
+ 	 	                        android:layout_height="62dp"
+ 	 	                        android:layout_alignParentTop="true"
+ 	 	                        android:layout_centerHorizontal="true"
+ 	 	                        android:scaleType="centerCrop"
+ 	 	                        android:src="@drawable/default_image_add" />
+ 	 	                </RelativeLayout>
+
+ 	 	                <RelativeLayout
+ 	 	                    android:layout_width="wrap_content"
+ 	 	                    android:layout_height="match_parent"
+ 	 	                    android:layout_weight="1" >
+
+ 	 	                    <ImageView
+ 	 	                        android:id="@+id/upload2"
+ 	 	                        android:layout_width="62dp"
+ 	 	                        android:layout_height="62dp"
+ 	 	                        android:layout_alignParentTop="true"
+ 	 	                        android:layout_centerHorizontal="true"
+ 	 	                        android:scaleType="centerCrop"
+ 	 	                        android:src="@drawable/default_image_add" />
+ 	 	                </RelativeLayout>
+
+ 	 	                <RelativeLayout
+ 	 	                    android:layout_width="wrap_content"
+ 	 	                    android:layout_height="match_parent"
+ 	 	                    android:layout_weight="1" >
+
+ 	 	                    <ImageView
+ 	 	                        android:id="@+id/upload3"
+ 	 	                        android:layout_width="62dp"
+ 	 	                        android:layout_height="62dp"
+ 	 	                        android:layout_alignParentTop="true"
+ 	 	                        android:layout_centerHorizontal="true"
+ 	 	                        android:scaleType="centerCrop"
+ 	 	                        android:src="@drawable/default_image_add" />
+ 	 	                </RelativeLayout>
+
+ 	 	                <RelativeLayout
+ 	 	                    android:layout_width="wrap_content"
+ 	 	                    android:layout_height="match_parent"
+ 	 	                    android:layout_weight="1" >
+
+ 	 	                    <ImageView
+ 	 	                        android:id="@+id/upload4"
+ 	 	                        android:layout_width="62dp"
+ 	 	                        android:layout_height="62dp"
+ 	 	                        android:layout_alignParentTop="true"
+ 	 	                        android:layout_centerHorizontal="true"
+ 	 	                        android:scaleType="centerCrop"
+ 	 	                        android:src="@drawable/default_image_add" />
+ 	 	                </RelativeLayout>
+ 	 	            </LinearLayout>
+ 	 	        </LinearLayout>
+
+ 	 	        <include layout="@layout/line_horizontal_divider" />
+
+ 	 	        <LinearLayout
+ 	 	            android:layout_width="match_parent"
+ 	 	            android:layout_height="36dp" >
+
+ 	 	            <TextView
+ 	 	                android:id="@+id/textView"
+ 	 	                android:layout_width="wrap_content"
+ 	 	                android:layout_height="wrap_content"
+ 	 	                android:layout_gravity="center"
+ 	 	                android:layout_marginLeft="16dp"
+ 	 	                android:text="联系方式(应征后可见)" />
+ 	 	        </LinearLayout>
+
+ 	 	        <include layout="@layout/line_horizontal_divider" />
+
+ 	 	        <LinearLayout
+ 	 	            android:layout_width="fill_parent"
+ 	 	            android:layout_height="46dp"
+ 	 	            android:background="@drawable/list_color_item_bg_white"
+ 	 	            android:gravity="center_vertical" >
+
+ 	 	            <TextView
+ 	 	                android:layout_width="wrap_content"
+ 	 	                android:layout_height="wrap_content"
+ 	 	                android:layout_marginLeft="16dp"
+ 	 	                android:text="姓名"
+ 	 	                android:textColor="@color/black_color"
+ 	 	                android:textSize="16sp" />
+
+ 	 	            <TextView
+ 	 	                android:id="@+id/nickname"
+ 	 	                android:layout_width="0.0dip"
+ 	 	                android:layout_height="wrap_content"
+ 	 	                android:layout_marginLeft="16dp"
+ 	 	                android:layout_marginRight="16dp"
+ 	 	                android:layout_weight="1.0"
+ 	 	                android:background="@null"
+ 	 	                android:focusable="false"
+ 	 	                android:gravity="right|center_vertical"
+ 	 	                android:singleLine="true"
+ 	 	                android:text="张三"
+ 	 	                android:textColor="@color/gray_color"
+ 	 	                android:textColorHint="@color/gray_color"
+ 	 	                android:textSize="16sp"
+ 	 	                android:windowSoftInputMode="stateHidden" />
+ 	 	        </LinearLayout>
+
+ 	 	        <include layout="@layout/line_horizontal_divider" />
+
+ 	 	        <LinearLayout
+ 	 	            android:layout_width="fill_parent"
+ 	 	            android:layout_height="46dp"
+ 	 	            android:background="@drawable/list_color_item_bg_white"
+ 	 	            android:gravity="center_vertical" >
+
+ 	 	            <TextView
+ 	 	                android:layout_width="wrap_content"
+ 	 	                android:layout_height="wrap_content"
+ 	 	                android:layout_marginLeft="16dp"
+ 	 	                android:text="电话"
+ 	 	                android:textColor="@color/black_color"
+ 	 	                android:textSize="16sp" />
+
+ 	 	            <TextView
+ 	 	                android:id="@+id/phone"
+ 	 	                android:layout_width="0.0dip"
+ 	 	                android:layout_height="wrap_content"
+ 	 	                android:layout_marginLeft="16dp"
+ 	 	                android:layout_marginRight="16dp"
+ 	 	                android:layout_weight="1.0"
+ 	 	                android:background="@null"
+ 	 	                android:focusable="false"
+ 	 	                android:gravity="right|center_vertical"
+ 	 	                android:singleLine="true"
+ 	 	                android:text="1391355xx77"
+ 	 	                android:textColor="@color/gray_color"
+ 	 	                android:textColorHint="@color/gray_color"
+ 	 	                android:textSize="16sp"
+ 	 	                android:windowSoftInputMode="stateHidden" />
+
+ 	 	        </LinearLayout>
+
+ 	 	        <include layout="@layout/line_horizontal_divider" />
+
+ 	 	    </LinearLayout>
+ 	 	</ScrollView>
+</LinearLayout>
