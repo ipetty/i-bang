@@ -204,7 +204,7 @@
  	 	                android:focusable="false"
  	 	                android:gravity="right|center_vertical"
  	 	                android:singleLine="true"
- 	 	                android:text="张三"
+ 	 	                android:hint="请输入姓名"
  	 	                android:textColor="@color/gray_color"
  	 	                android:textColorHint="@color/gray_color"
  	 	                android:textSize="16sp"
@@ -223,7 +223,7 @@
  	 	                android:layout_width="wrap_content"
  	 	                android:layout_height="wrap_content"
  	 	                android:layout_marginLeft="16dp"
- 	 	                android:text="电话"
+ 	 	                android:text="手机"
  	 	                android:textColor="@color/black_color"
  	 	                android:textSize="16sp" />
 
@@ -238,7 +238,8 @@
  	 	                android:focusable="false"
  	 	                android:gravity="right|center_vertical"
  	 	                android:singleLine="true"
- 	 	                android:text="1391355xx77"
+ 	 	                android:text=""
+ 	 	                android:hint="请输入手机"
  	 	                android:textColor="@color/gray_color"
  	 	                android:textColorHint="@color/gray_color"
  	 	                android:textSize="16sp"

@@ -47,10 +47,6 @@ public class MainPublishFragment extends Fragment {
 		super.onActivityCreated(savedInstanceState);
 		unLoginView = new UnLoginView(getActivity(), getView(), R.string.un_login_publish);
 
-		if (isLogin) {
-			init();
-		}
-
 		layout_jzfu = getActivity().findViewById(R.id.layout_jzfw);
 		layout_edu = getActivity().findViewById(R.id.layout_edu);
 		layout_it = getActivity().findViewById(R.id.layout_it);
@@ -68,6 +64,10 @@ public class MainPublishFragment extends Fragment {
 		layout_car.setOnClickListener(new MyOnClickListener("汽车服务"));
 		layout_travel.setOnClickListener(new MyOnClickListener("旅游休闲"));
 		layout_express.setOnClickListener(new MyOnClickListener("物流运输"));
+
+		if (isLogin) {
+			init();
+		}
 
 	}
 

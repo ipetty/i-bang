@@ -12,4 +12,10 @@ public class Constant {
 	public final static float COMPRESS_IMAGE_MIN_HEIGHT = 64f;
 	public final static int COMPRESS_IMAGE_KB = 100;
 
+	public static final String INTENT_USER_EDIT_TYPE = "INTENT_USER_EDIT_TYPE";
+	public static final String INTENT_USER_EDIT_TYPE_NICKNAME = "nickname";
+	public static final String INTENT_USER_EDIT_TYPE_PHONE = "phone";
+
+	public static final int REQUEST_CODE_USER_EDIT = 10;
+
 }

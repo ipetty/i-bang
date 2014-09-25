@@ -70,6 +70,10 @@
             android:name="net.ipetty.ibang.android.publish.UploadLarginImageActivity"
             android:label="@string/title_activity_upload_largin_image" >
         </activity>
+        <activity
+            android:name="net.ipetty.ibang.android.user.UserEditActivity"
+            android:label="@string/title_activity_user_edit" >
+        </activity>
     </application>
 
 </manifest>

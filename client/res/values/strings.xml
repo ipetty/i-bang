@@ -55,5 +55,6 @@
     <string name="title_activity_publish_sub_type">PublishSubTypeActivity</string>
     <string name="title_activity_publish">PublishActivity</string>
     <string name="title_activity_upload_largin_image">UploadLarginImageActivity</string>
+    <string name="title_activity_user_edit">用户资料修改</string>
 
 </resources>

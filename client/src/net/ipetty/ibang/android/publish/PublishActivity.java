@@ -10,6 +10,8 @@ import net.ipetty.ibang.android.core.Constant;
 import net.ipetty.ibang.android.core.ui.BackClickListener;
 import net.ipetty.ibang.android.core.ui.UploadView;
 import net.ipetty.ibang.android.core.util.DialogUtils;
+import net.ipetty.ibang.android.user.UserEditActivity;
+import net.ipetty.ibang.vo.UserVO;
 import android.app.Activity;
 import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.Dialog;
@@ -28,6 +30,9 @@ public class PublishActivity extends Activity {
 	private String categoryL2;
 	private EditText contentView;
 	private EditText exipireDateView;
+	private TextView nicknameView;
+	private TextView phoneView;
+	private UserVO user;
 
 	public static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -39,8 +44,10 @@ public class PublishActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_publish);
-
 		ActivityManager.getInstance().addActivity(this);
+
+		user = new UserVO();
+
 		categoryL1 = this.getIntent().getExtras().getString(Constant.INTENT_CATEGORY);
 		categoryL2 = this.getIntent().getExtras().getString(Constant.INTENT_SUB_CATEGORY);
 		title = categoryL1 + "-" + categoryL2;
@@ -66,13 +73,47 @@ public class PublishActivity extends Activity {
 			}
 		});
 
+		nicknameView = (TextView) this.findViewById(R.id.nickname);
+		phoneView = (TextView) this.findViewById(R.id.phone);
+		nicknameView.setOnClickListener(new EditOnClickListener(Constant.INTENT_USER_EDIT_TYPE_NICKNAME));
+		phoneView.setOnClickListener(new EditOnClickListener(Constant.INTENT_USER_EDIT_TYPE_PHONE));
+
 		initFileUpload();
+
+		initUserInfo(user);
 	}
+
+	private void initUserInfo(UserVO user) {
+		// TODO Auto-generated method stub
+		nicknameView.setText(user.getNickname());
+		phoneView.setText(user.getPhone());
+	}
+
+	private class EditOnClickListener implements OnClickListener {
+		private String type = null;
+
+		public EditOnClickListener(String type) {
+			this.type = type;
+		}
+
+		@Override
+		public void onClick(View v) {
+			// TODO Auto-generated method stub
+			Intent intent = new Intent(PublishActivity.this, UserEditActivity.class);
+			intent.putExtra(Constant.INTENT_USER_EDIT_TYPE, this.type);
+			PublishActivity.this.startActivityForResult(intent, Constant.REQUEST_CODE_USER_EDIT);
+		}
+	};
 
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		uploadView.onActivityResult(requestCode, resultCode, data);
+
+		if (requestCode == Constant.REQUEST_CODE_USER_EDIT) {
+			// 从上下文重新获取用户信息
+			initUserInfo(user);
+		}
 
 	}
 
