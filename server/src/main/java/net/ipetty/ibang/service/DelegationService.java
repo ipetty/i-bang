@@ -8,6 +8,8 @@ import javax.annotation.Resource;
 import net.ipetty.ibang.model.Delegation;
 import net.ipetty.ibang.model.Offer;
 import net.ipetty.ibang.model.Seek;
+import net.ipetty.ibang.model.SystemMessage;
+import net.ipetty.ibang.model.User;
 import net.ipetty.ibang.repository.DelegationDao;
 import net.ipetty.ibang.util.UUIDUtils;
 import net.ipetty.ibang.vo.Constants;
@@ -34,6 +36,12 @@ public class DelegationService extends BaseService {
 
 	@Resource
 	private OfferService offerService;
+
+	@Resource
+	private UserService userService;
+
+	@Resource
+	private SystemMessageService systemMessageService;
 
 	/**
 	 * 生成委托
@@ -65,6 +73,16 @@ public class DelegationService extends BaseService {
 			seekService.delegated(seek.getId());
 		}
 		offerService.delegated(offer.getId());
+
+		// 保存系统消息
+		User seeker = userService.getById(seek.getSeekerId());
+		// TODO 这里系统消息的内容应该是什么？
+		SystemMessage systemMessage = new SystemMessage(seeker.getId(), offer.getOffererId(),
+				Constants.SYS_MSG_TYPE_NEW_DELEGATION, "您的应征已被" + seeker.getNickname() + "接受。", offer.getContent());
+		systemMessage.setSeekId(seek.getId());
+		systemMessage.setOfferId(offer.getId());
+		systemMessage.setDelegationId(delegation.getId());
+		systemMessageService.save(systemMessage);
 	}
 
 	/**
@@ -121,6 +139,21 @@ public class DelegationService extends BaseService {
 	 */
 	public void finish(Long delegationId) {
 		delegationDao.updateStatus(delegationId, Constants.DELEGATE_STATUS_FINISHED);
+
+		// 同时将应征单状态更改为已完成
+		Delegation delegation = delegationDao.getById(delegationId);
+		offerService.finish(delegation.getOfferId());
+
+		// 保存系统消息
+		Offer offer = offerService.getById(delegation.getOfferId());
+		User offerer = userService.getById(delegation.getOffererId());
+		SystemMessage systemMessage = new SystemMessage(offerer.getId(), delegation.getSeekerId(),
+				Constants.SYS_MSG_TYPE_DELEGATION_FINISHED, "帮助者" + offerer.getNickname() + "已经完成您的委托。",
+				offer.getContent());
+		systemMessage.setSeekId(delegation.getSeekId());
+		systemMessage.setOfferId(delegation.getOfferId());
+		systemMessage.setDelegationId(delegation.getId());
+		systemMessageService.save(systemMessage);
 	}
 
 	/**
@@ -128,6 +161,21 @@ public class DelegationService extends BaseService {
 	 */
 	public void close(Long delegationId) {
 		delegationDao.updateStatus(delegationId, Constants.DELEGATE_STATUS_CLOSED);
+
+		// 同时将应征单状态更改为已关闭
+		Delegation delegation = delegationDao.getById(delegationId);
+		offerService.close(delegation.getOfferId());
+
+		// 保存系统消息
+		Offer offer = offerService.getById(delegation.getOfferId());
+		User offerer = userService.getById(delegation.getOffererId());
+		SystemMessage systemMessage = new SystemMessage(offerer.getId(), delegation.getSeekerId(),
+				Constants.SYS_MSG_TYPE_DELEGATION_CLOSED, "帮助者" + offerer.getNickname() + "未能完成您的委托，该委托成功关闭。",
+				offer.getContent());
+		systemMessage.setSeekId(delegation.getSeekId());
+		systemMessage.setOfferId(delegation.getOfferId());
+		systemMessage.setDelegationId(delegation.getId());
+		systemMessageService.save(systemMessage);
 	}
 
 	/**

@@ -8,6 +8,9 @@ import javax.annotation.Resource;
 import net.ipetty.ibang.exception.BusinessException;
 import net.ipetty.ibang.model.Delegation;
 import net.ipetty.ibang.model.Evaluation;
+import net.ipetty.ibang.model.Seek;
+import net.ipetty.ibang.model.SystemMessage;
+import net.ipetty.ibang.model.User;
 import net.ipetty.ibang.repository.EvaluationDao;
 import net.ipetty.ibang.vo.Constants;
 
@@ -32,7 +35,16 @@ public class EvaluationService extends BaseService {
 	private SeekService seekService;
 
 	@Resource
+	private OfferService offerService;
+
+	@Resource
 	private DelegationService delegationService;
+
+	@Resource
+	private UserService userService;
+
+	@Resource
+	private SystemMessageService systemMessageService;
 
 	/**
 	 * 评价
@@ -94,7 +106,25 @@ public class EvaluationService extends BaseService {
 		}
 		if (seekFinished) {
 			seekService.finish(delegation.getSeekId());
+
+			// 保存系统消息
+			Seek seek = seekService.getById(delegation.getSeekId());
+			SystemMessage systemMessage = new SystemMessage(null, delegation.getSeekerId(),
+					Constants.SYS_MSG_TYPE_SEEK_FINISHED, "您的一个求助单已成功完成。", seek.getContent());
+			systemMessage.setSeekId(delegation.getSeekId());
+			systemMessageService.save(systemMessage);
 		}
+
+		// 保存系统消息
+		User evaluator = userService.getById(evaluation.getEvaluatorId());
+		SystemMessage systemMessage = new SystemMessage(evaluation.getEvaluatorId(), evaluation.getEvaluateTargetId(),
+				Constants.SYS_MSG_TYPE_NEW_EVALUATION, "您收到了来自" + evaluator.getNickname() + "的评价。",
+				evaluation.getContent());
+		systemMessage.setSeekId(delegation.getSeekId());
+		systemMessage.setOfferId(delegation.getOfferId());
+		systemMessage.setDelegationId(delegation.getId());
+		systemMessage.setEvaluationId(evaluation.getId());
+		systemMessageService.save(systemMessage);
 	}
 
 	/**

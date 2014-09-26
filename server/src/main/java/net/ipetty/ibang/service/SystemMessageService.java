@@ -39,10 +39,29 @@ public class SystemMessageService extends BaseService {
 	}
 
 	/**
+	 * 更新为已读状态
+	 */
+	public void read(Long id) {
+		systemMessageDao.updateRead(id);
+	}
+
+	/**
 	 * 获取指定用户的系统消息列表
 	 */
 	public List<SystemMessage> listByUserId(Integer userId, int pageNumber, int pageSize) {
 		List<Long> systemMessageIds = systemMessageDao.listByUserId(userId, pageNumber, pageSize);
+		List<SystemMessage> systemMessages = new ArrayList<SystemMessage>();
+		for (Long systemMessageId : systemMessageIds) {
+			systemMessages.add(systemMessageDao.getById(systemMessageId));
+		}
+		return systemMessages;
+	}
+
+	/**
+	 * 获取指定用户的未读系统消息列表
+	 */
+	public List<SystemMessage> listUnreadByUserId(Integer userId, int pageNumber, int pageSize) {
+		List<Long> systemMessageIds = systemMessageDao.listUnreadByUserId(userId, pageNumber, pageSize);
 		List<SystemMessage> systemMessages = new ArrayList<SystemMessage>();
 		for (Long systemMessageId : systemMessageIds) {
 			systemMessages.add(systemMessageDao.getById(systemMessageId));

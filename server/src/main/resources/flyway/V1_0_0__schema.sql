@@ -168,7 +168,9 @@ create table system_message (
 	offer_id bigint,
 	delegation_id bigint,
 	evaluation_id bigint,
+	title varchar(255),
 	content text,
+	is_read boolean default false,
 	created_on timestamp default current_timestamp,
 	foreign key(from_user_id) references users(id),
 	foreign key(receiver_id) references users(id),
@@ -178,4 +180,5 @@ create table system_message (
 	foreign key(evaluation_id) references evaluation(id)
 ) engine=innodb default charset=utf8;
 create index idx_type on system_message(type);
+create index idx_read on system_message(is_read);
 create index idx_created_on on system_message(created_on);

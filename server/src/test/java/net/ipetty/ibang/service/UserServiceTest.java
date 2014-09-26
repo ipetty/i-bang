@@ -44,7 +44,7 @@ public class UserServiceTest extends BaseServiceTest {
 	}
 
 	@Test
-	public void testRegister() {
+	public void testRegisterByUsername() {
 		User user = new User();
 		String username = "testusername";
 		user.setUsername(username);
@@ -54,6 +54,21 @@ public class UserServiceTest extends BaseServiceTest {
 		Assert.assertNotNull(user.getCreatedOn());
 
 		User result = userService.getByLoginName(username);
+		Assert.assertNotNull(result);
+		Assert.assertEquals(user.getPassword(), result.getPassword());
+	}
+
+	@Test
+	public void testRegisterByEmail() {
+		User user = new User();
+		String email = "testusername@ipetty.net";
+		user.setEmail(email);
+		user.setPassword(TEST_PASSWORD);
+		userService.register(user);
+		Assert.assertNotNull(user.getId());
+		Assert.assertNotNull(user.getCreatedOn());
+
+		User result = userService.getByLoginName(email);
 		Assert.assertNotNull(result);
 		Assert.assertEquals(user.getPassword(), result.getPassword());
 	}

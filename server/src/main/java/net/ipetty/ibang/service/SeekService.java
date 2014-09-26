@@ -7,8 +7,10 @@ import java.util.List;
 import javax.annotation.Resource;
 
 import net.ipetty.ibang.model.Image;
+import net.ipetty.ibang.model.Offer;
 import net.ipetty.ibang.model.Seek;
 import net.ipetty.ibang.model.SeekerInfo;
+import net.ipetty.ibang.model.SystemMessage;
 import net.ipetty.ibang.repository.SeekDao;
 import net.ipetty.ibang.util.UUIDUtils;
 import net.ipetty.ibang.vo.Constants;
@@ -35,6 +37,15 @@ public class SeekService extends BaseService {
 
 	@Resource
 	private SeekerInfoService seekerInfoService;
+
+	@Resource
+	private OfferService offerService;
+
+	@Resource
+	private UserService userService;
+
+	@Resource
+	private SystemMessageService systemMessageService;
 
 	/**
 	 * 发布求助
@@ -123,6 +134,18 @@ public class SeekService extends BaseService {
 	 */
 	public void close(Long seekId) {
 		seekDao.updateStatus(seekId, Constants.SEEK_STATUS_CLOSED);
+
+		// 向所有应征者发送系统消息
+		Seek seek = getById(seekId);
+		List<Offer> offers = offerService.listBySeekId(seekId, 0, 1000);
+		for (Offer offer : offers) {
+			// 保存系统消息
+			SystemMessage systemMessage = new SystemMessage(null, offer.getOffererId(),
+					Constants.SYS_MSG_TYPE_SEEK_CLOSED, "您曾应征的一个求助单已被求助者关闭。", seek.getContent());
+			systemMessage.setSeekId(seekId);
+			systemMessage.setOfferId(offer.getId());
+			systemMessageService.save(systemMessage);
+		}
 	}
 
 	/**

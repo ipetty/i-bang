@@ -25,18 +25,21 @@ public class SystemMessage extends AbstractEntity {
 	private Long offerId; // 对应的应征单ID
 	private Long delegationId; // 对应的委托单ID
 	private Long evaluationId; // 对应的评价ID
+	private String title; // 消息标题
 	private String content; // 消息内容
+	private boolean read; // 是否已读
 	private Date createdOn; // 消息创建时间
 
 	public SystemMessage() {
 		super();
 	}
 
-	public SystemMessage(Integer fromUserId, Integer receiverId, String type, String content) {
+	public SystemMessage(Integer fromUserId, Integer receiverId, String type, String title, String content) {
 		super();
 		this.fromUserId = fromUserId;
 		this.receiverId = receiverId;
 		this.type = type;
+		this.title = title;
 		this.content = content;
 	}
 
@@ -116,12 +119,28 @@ public class SystemMessage extends AbstractEntity {
 		this.evaluationId = evaluationId;
 	}
 
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
 	public String getContent() {
 		return content;
 	}
 
 	public void setContent(String content) {
 		this.content = content;
+	}
+
+	public boolean isRead() {
+		return read;
+	}
+
+	public void setRead(boolean read) {
+		this.read = read;
 	}
 
 	public Date getCreatedOn() {
