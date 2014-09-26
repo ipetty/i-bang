@@ -12,6 +12,7 @@ import net.ipetty.ibang.cache.CacheConstants;
 import net.ipetty.ibang.cache.annotation.LoadFromCache;
 import net.ipetty.ibang.exception.BusinessException;
 import net.ipetty.ibang.model.SystemMessage;
+import net.ipetty.ibang.util.JdbcDaoUtils;
 
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -28,19 +29,24 @@ public class SystemMessageDaoImpl extends BaseJdbcDaoSupport implements SystemMe
 	static final RowMapper<SystemMessage> ROW_MAPPER = new RowMapper<SystemMessage>() {
 		@Override
 		public SystemMessage mapRow(ResultSet rs, int rowNum) throws SQLException {
-			// id, from_user_id, receiver_id, type, content, created_on
+			// id, from_user_id, receiver_id, type, seek_id, offer_id,
+			// delegation_id, evaluation_id, content, created_on
 			SystemMessage systemMessage = new SystemMessage();
 			systemMessage.setId(rs.getLong("id"));
 			systemMessage.setFromUserId(rs.getInt("from_user_id"));
 			systemMessage.setReceiverId(rs.getInt("receiver_id"));
 			systemMessage.setType(rs.getString("type"));
+			systemMessage.setSeekId(JdbcDaoUtils.getLong(rs, "seek_id"));
+			systemMessage.setOfferId(JdbcDaoUtils.getLong(rs, "offer_id"));
+			systemMessage.setDelegationId(JdbcDaoUtils.getLong(rs, "delegation_id"));
+			systemMessage.setEvaluationId(JdbcDaoUtils.getLong(rs, "evaluation_id"));
 			systemMessage.setContent(rs.getString("content"));
 			systemMessage.setCreatedOn(rs.getTimestamp("created_on"));
 			return systemMessage;
 		}
 	};
 
-	private static final String SAVE_SQL = "insert into system_message(from_user_id, receiver_id, type, content) values(?, ?, ?, ?)";
+	private static final String SAVE_SQL = "insert into system_message(from_user_id, receiver_id, type, seek_id, offer_id, delegation_id, evaluation_id, content) values(?, ?, ?, ?, ?, ?, ?, ?)";
 
 	/**
 	 * 保存
@@ -51,10 +57,14 @@ public class SystemMessageDaoImpl extends BaseJdbcDaoSupport implements SystemMe
 		try {
 			Connection connection = super.getConnection();
 			PreparedStatement statement = connection.prepareStatement(SAVE_SQL, Statement.RETURN_GENERATED_KEYS);
-			statement.setInt(1, systemMessage.getFromUserId());
+			JdbcDaoUtils.setInteger(statement, 1, systemMessage.getFromUserId());
 			statement.setInt(2, systemMessage.getReceiverId());
 			statement.setString(3, systemMessage.getType());
-			statement.setString(4, systemMessage.getContent());
+			JdbcDaoUtils.setLong(statement, 4, systemMessage.getSeekId());
+			JdbcDaoUtils.setLong(statement, 5, systemMessage.getOfferId());
+			JdbcDaoUtils.setLong(statement, 6, systemMessage.getDelegationId());
+			JdbcDaoUtils.setLong(statement, 7, systemMessage.getEvaluationId());
+			statement.setString(8, systemMessage.getContent());
 
 			statement.execute();
 			ResultSet rs = statement.getGeneratedKeys();

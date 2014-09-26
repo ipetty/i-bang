@@ -62,6 +62,9 @@ public class OfferServiceTest extends BaseServiceTest {
 		offer.setDeadline(DateUtils.addDays(new Date(), 15));
 		offerService.offer(offer);
 		Assert.assertNotNull(offer.getId());
+		Assert.assertEquals(Constants.OFFER_STATUS_OFFERED, offer.getStatus());
+		seek = seekService.getById(seek.getId());
+		Assert.assertEquals(Constants.SEEK_STATUS_OFFERED, seek.getStatus());
 
 		offer = offerService.getById(offer.getId());
 		Assert.assertEquals(seek.getId(), offer.getSeekId());
@@ -72,7 +75,7 @@ public class OfferServiceTest extends BaseServiceTest {
 		offers = offerService.listByUserId(user.getId(), 0, 20);
 		Assert.assertEquals(1, offers.size());
 
-		offerService.updateStatus(offer.getId(), Constants.OFFER_STATUS_CLOSED);
+		offerService.close(offer.getId());
 		offer = offerService.getById(offer.getId());
 		Assert.assertNotNull(offer.getClosedOn());
 	}

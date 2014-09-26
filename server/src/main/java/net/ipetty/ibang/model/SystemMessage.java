@@ -21,6 +21,10 @@ public class SystemMessage extends AbstractEntity {
 	private Integer fromUserId; // 消息来源用户ID
 	private Integer receiverId; // 消息接收者用户ID
 	private String type; // 消息类型
+	private Long seekId; // 对应的求助单ID
+	private Long offerId; // 对应的应征单ID
+	private Long delegationId; // 对应的委托单ID
+	private Long evaluationId; // 对应的评价ID
 	private String content; // 消息内容
 	private Date createdOn; // 消息创建时间
 
@@ -28,14 +32,12 @@ public class SystemMessage extends AbstractEntity {
 		super();
 	}
 
-	public SystemMessage(Long id, Integer fromUserId, Integer receiverId, String type, String content, Date createdOn) {
+	public SystemMessage(Integer fromUserId, Integer receiverId, String type, String content) {
 		super();
-		this.id = id;
 		this.fromUserId = fromUserId;
 		this.receiverId = receiverId;
 		this.type = type;
 		this.content = content;
-		this.createdOn = createdOn;
 	}
 
 	public SystemMessageVO toVO() {
@@ -80,6 +82,38 @@ public class SystemMessage extends AbstractEntity {
 
 	public void setType(String type) {
 		this.type = type;
+	}
+
+	public Long getSeekId() {
+		return seekId;
+	}
+
+	public void setSeekId(Long seekId) {
+		this.seekId = seekId;
+	}
+
+	public Long getOfferId() {
+		return offerId;
+	}
+
+	public void setOfferId(Long offerId) {
+		this.offerId = offerId;
+	}
+
+	public Long getDelegationId() {
+		return delegationId;
+	}
+
+	public void setDelegationId(Long delegationId) {
+		this.delegationId = delegationId;
+	}
+
+	public Long getEvaluationId() {
+		return evaluationId;
+	}
+
+	public void setEvaluationId(Long evaluationId) {
+		this.evaluationId = evaluationId;
 	}
 
 	public String getContent() {

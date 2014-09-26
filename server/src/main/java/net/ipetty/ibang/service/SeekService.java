@@ -112,10 +112,31 @@ public class SeekService extends BaseService {
 	}
 
 	/**
-	 * 更新求助单状态
+	 * 求助已结束（在所有委托都已关闭或成为双方已评价的状态则由业务自动调用此方法）
 	 */
-	public void updateStatus(Long seekId, String newStatus) {
-		seekDao.updateStatus(seekId, newStatus);
+	public void finish(Long seekId) {
+		seekDao.updateStatus(seekId, Constants.SEEK_STATUS_FINISHED);
+	}
+
+	/**
+	 * 关闭求助
+	 */
+	public void close(Long seekId) {
+		seekDao.updateStatus(seekId, Constants.SEEK_STATUS_CLOSED);
+	}
+
+	/**
+	 * 更新求助单状态至应征中状态
+	 */
+	public void offered(Long seekId) {
+		seekDao.updateStatus(seekId, Constants.SEEK_STATUS_OFFERED);
+	}
+
+	/**
+	 * 更新求助单状态至已委托状态
+	 */
+	public void delegated(Long seekId) {
+		seekDao.updateStatus(seekId, Constants.SEEK_STATUS_DELEGATED);
 	}
 
 }

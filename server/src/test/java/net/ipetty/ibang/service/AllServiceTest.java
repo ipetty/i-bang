@@ -15,7 +15,8 @@ import org.junit.runners.Suite;
  */
 @RunWith(Suite.class)
 @Suite.SuiteClasses({ UserServiceTest.class, SeekerInfoServiceTest.class, OffererInfoServiceTest.class,
-		SeekServiceTest.class, OfferServiceTest.class })
+		SeekServiceTest.class, OfferServiceTest.class, DelegationServiceTest.class, EvaluationServiceTest.class,
+		SystemMessageServiceTest.class })
 public class AllServiceTest extends BaseServiceTest {
 
 	@BeforeClass

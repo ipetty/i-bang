@@ -33,4 +33,13 @@ public interface Constants {
 	public static final String EVALUATION_TYPE_SEEKER_TO_OFFERER = "seeker_to_offerer"; // 求助者对帮助者的评价
 	public static final String EVALUATION_TYPE_OFFERER_TO_SEEKER = "offerer_to_seeker"; // 帮助者对求助者的评价
 
+	/* system message type */
+	public static final String SYS_MSG_TYPE_NEW_OFFER = "new_offer"; // 您的求助单有了新的应征
+	public static final String SYS_MSG_TYPE_NEW_DELEGATION = "new_delegation"; // 您的应征已被求助者接受
+	public static final String SYS_MSG_TYPE_DELEGATION_FINISHED = "delegation_finished"; // 您（求助者）的一个委托已被帮助者完成
+	public static final String SYS_MSG_TYPE_DELEGATION_CLOSED = "delegation_closed"; // 您（求助者）的一个委托已被帮助者关闭
+	public static final String SYS_MSG_TYPE_NEW_EVALUATION = "new_evaluation"; // 您收到了新的评价
+	public static final String SYS_MSG_TYPE_SEEK_FINISHED = "seek_finished"; // 您（求助者）的一个求助单已完成
+	public static final String SYS_MSG_TYPE_SEEK_CLOSED = "seek_closed"; // 您（帮助者）应征的一个求助单已被求助者关闭
+
 }

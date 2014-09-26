@@ -164,10 +164,18 @@ create table system_message (
 	from_user_id int,
 	receiver_id int not null,
 	type varchar(50),
+	seek_id bigint,
+	offer_id bigint,
+	delegation_id bigint,
+	evaluation_id bigint,
 	content text,
 	created_on timestamp default current_timestamp,
 	foreign key(from_user_id) references users(id),
-	foreign key(receiver_id) references users(id)
+	foreign key(receiver_id) references users(id),
+	foreign key(seek_id) references seek(id),
+	foreign key(offer_id) references offer(id),
+	foreign key(delegation_id) references delegation(id),
+	foreign key(evaluation_id) references evaluation(id)
 ) engine=innodb default charset=utf8;
 create index idx_type on system_message(type);
 create index idx_created_on on system_message(created_on);

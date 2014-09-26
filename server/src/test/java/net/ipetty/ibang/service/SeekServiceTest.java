@@ -47,6 +47,7 @@ public class SeekServiceTest extends BaseServiceTest {
 
 		seekService.publish(seek);
 		Assert.assertNotNull(seek.getId());
+		Assert.assertEquals(Constants.SEEK_STATUS_CREATED, seek.getStatus());
 
 		seek = seekService.getById(seek.getId());
 		Assert.assertEquals(2, seek.getImages().size());
@@ -57,7 +58,7 @@ public class SeekServiceTest extends BaseServiceTest {
 		seeks = seekService.listByUserId(user.getId(), 0, 20);
 		Assert.assertEquals(1, seeks.size());
 
-		seekService.updateStatus(seek.getId(), Constants.SEEK_STATUS_CLOSED);
+		seekService.close(seek.getId());
 		seeks = seekService.listLatest(new Date(), 0, 20);
 		Assert.assertEquals(0, seeks.size());
 	}

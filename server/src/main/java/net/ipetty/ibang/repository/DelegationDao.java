@@ -39,6 +39,11 @@ public interface DelegationDao {
 	public List<Long> listByUserIdAndStatus(Integer userId, String status, int pageNumber, int pageSize);
 
 	/**
+	 * 获取指定求助单的所有委托ID列表
+	 */
+	public List<Long> listBySeekId(Long seekId);
+
+	/**
 	 * 更新委托状态
 	 */
 	public void updateStatus(Long delegationId, String newStatus);

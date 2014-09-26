@@ -10,7 +10,6 @@
 		<compiler.encoding>UTF-8</compiler.encoding>
 
 		<commons-lang3.version>3.3.2</commons-lang3.version>
-		<commons-codec.version>1.9</commons-codec.version>
 	</properties>
 
 	<build>
@@ -74,12 +73,6 @@
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
 			<version>${commons-lang3.version}</version>
-		</dependency>
-		<!-- commons-codec -->
-		<dependency>
-			<groupId>commons-codec</groupId>
-			<artifactId>commons-codec</artifactId>
-			<version>${commons-codec.version}</version>
 		</dependency>
 	</dependencies>
 

@@ -118,6 +118,16 @@ public class DelegationDaoImpl extends BaseJdbcDaoSupport implements DelegationD
 				pageNumber * pageSize, pageSize);
 	}
 
+	private static final String LIST_BY_SEEK_ID_SQL = "select id from delegation where seek_id=?";
+
+	/**
+	 * 获取指定求助单的所有委托ID列表
+	 */
+	@Override
+	public List<Long> listBySeekId(Long seekId) {
+		return super.getJdbcTemplate().query(LIST_BY_SEEK_ID_SQL, LONG_ROW_MAPPER, seekId);
+	}
+
 	private static final String UPDATE_STATUS_SQL = "update delegation set closed_on=?, status=? where id=?";
 
 	/**
