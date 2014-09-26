@@ -7,6 +7,7 @@ import java.util.Date;
 import net.ipetty.ibang.R;
 import net.ipetty.ibang.android.core.ActivityManager;
 import net.ipetty.ibang.android.core.Constant;
+import net.ipetty.ibang.android.core.MyApplication;
 import net.ipetty.ibang.android.core.ui.BackClickListener;
 import net.ipetty.ibang.android.core.ui.UploadView;
 import net.ipetty.ibang.android.core.util.DialogUtils;
@@ -46,7 +47,7 @@ public class PublishActivity extends Activity {
 		setContentView(R.layout.activity_publish);
 		ActivityManager.getInstance().addActivity(this);
 
-		user = new UserVO();
+		user = ((MyApplication) getApplicationContext()).getUser();
 
 		categoryL1 = this.getIntent().getExtras().getString(Constant.INTENT_CATEGORY);
 		categoryL2 = this.getIntent().getExtras().getString(Constant.INTENT_SUB_CATEGORY);
@@ -79,7 +80,6 @@ public class PublishActivity extends Activity {
 		phoneView.setOnClickListener(new EditOnClickListener(Constant.INTENT_USER_EDIT_TYPE_PHONE));
 
 		initFileUpload();
-
 		initUserInfo(user);
 	}
 
@@ -112,7 +112,7 @@ public class PublishActivity extends Activity {
 
 		if (requestCode == Constant.REQUEST_CODE_USER_EDIT) {
 			// 从上下文重新获取用户信息
-			initUserInfo(user);
+			initUserInfo(((MyApplication) getApplicationContext()).getUser());
 		}
 
 	}

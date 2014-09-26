@@ -38,7 +38,7 @@
     </style>
 
      <style name="PopDialog" parent="android:style/Theme.Holo.Light.Dialog" >
-        <item name="android:windowBackground">@drawable/button_white_shape</item>
+
         <item name="android:windowFrame">@null</item>
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowIsFloating">true</item>
