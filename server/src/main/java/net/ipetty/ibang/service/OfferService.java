@@ -8,6 +8,8 @@ import javax.annotation.Resource;
 import net.ipetty.ibang.model.Offer;
 import net.ipetty.ibang.model.OffererInfo;
 import net.ipetty.ibang.model.Seek;
+import net.ipetty.ibang.model.SystemMessage;
+import net.ipetty.ibang.model.User;
 import net.ipetty.ibang.repository.OfferDao;
 import net.ipetty.ibang.util.UUIDUtils;
 import net.ipetty.ibang.vo.Constants;
@@ -34,6 +36,12 @@ public class OfferService extends BaseService {
 
 	@Resource
 	private OffererInfoService offererInfoService;
+
+	@Resource
+	private UserService userService;
+
+	@Resource
+	private SystemMessageService systemMessageService;
 
 	/**
 	 * 应征
@@ -64,6 +72,14 @@ public class OfferService extends BaseService {
 		if (Constants.SEEK_STATUS_CREATED.equals(seek.getStatus())) {
 			seekService.offered(seek.getId());
 		}
+
+		// 保存系统消息
+		User offerer = userService.getById(offer.getOffererId());
+		SystemMessage systemMessage = new SystemMessage(offerer.getId(), seek.getSeekerId(),
+				Constants.SYS_MSG_TYPE_NEW_OFFER, "您有一份来自" + offerer.getNickname() + "的应征请求。", offer.getContent());
+		systemMessage.setSeekId(seek.getId());
+		systemMessage.setOfferId(offer.getId());
+		systemMessageService.save(systemMessage);
 	}
 
 	/**
@@ -106,22 +122,22 @@ public class OfferService extends BaseService {
 	/**
 	 * 应征已完成
 	 */
-	public void finish(Long seekId) {
-		offerDao.updateStatus(seekId, Constants.OFFER_STATUS_FINISHED);
+	public void finish(Long offerId) {
+		offerDao.updateStatus(offerId, Constants.OFFER_STATUS_FINISHED);
 	}
 
 	/**
 	 * 应征已关闭
 	 */
-	public void close(Long seekId) {
-		offerDao.updateStatus(seekId, Constants.OFFER_STATUS_CLOSED);
+	public void close(Long offerId) {
+		offerDao.updateStatus(offerId, Constants.OFFER_STATUS_CLOSED);
 	}
 
 	/**
 	 * 更新应征单状态至已委托状态
 	 */
-	public void delegated(Long seekId) {
-		offerDao.updateStatus(seekId, Constants.OFFER_STATUS_DELEGATED);
+	public void delegated(Long offerId) {
+		offerDao.updateStatus(offerId, Constants.OFFER_STATUS_DELEGATED);
 	}
 
 }

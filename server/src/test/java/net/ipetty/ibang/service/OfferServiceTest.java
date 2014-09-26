@@ -78,6 +78,9 @@ public class OfferServiceTest extends BaseServiceTest {
 		offerService.close(offer.getId());
 		offer = offerService.getById(offer.getId());
 		Assert.assertNotNull(offer.getClosedOn());
+
+		// close seek
+		seekService.close(seek.getId());
 	}
 
 }

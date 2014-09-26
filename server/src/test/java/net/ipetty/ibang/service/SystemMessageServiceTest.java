@@ -39,7 +39,14 @@ public class SystemMessageServiceTest extends BaseServiceTest {
 		systemMessage = systemMessageService.getById(systemMessage.getId());
 		Assert.assertEquals(Constants.SYS_MSG_TYPE_NEW_OFFER, systemMessage.getType());
 
-		List<SystemMessage> systemMessages = systemMessageService.listByUserId(user.getId(), 0, 20);
+		List<SystemMessage> systemMessages = systemMessageService.listUnreadByUserId(user.getId(), 0, 20);
+		Assert.assertTrue(systemMessages.size() > 0);
+
+		systemMessageService.read(systemMessage.getId());
+		systemMessage = systemMessageService.getById(systemMessage.getId());
+		Assert.assertTrue(systemMessage.isRead());
+
+		systemMessages = systemMessageService.listByUserId(user.getId(), 0, 20);
 		Assert.assertTrue(systemMessages.size() > 0);
 	}
 

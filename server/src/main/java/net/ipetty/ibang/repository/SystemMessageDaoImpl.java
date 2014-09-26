@@ -10,6 +10,7 @@ import java.util.List;
 
 import net.ipetty.ibang.cache.CacheConstants;
 import net.ipetty.ibang.cache.annotation.LoadFromCache;
+import net.ipetty.ibang.cache.annotation.UpdateToCache;
 import net.ipetty.ibang.exception.BusinessException;
 import net.ipetty.ibang.model.SystemMessage;
 import net.ipetty.ibang.util.JdbcDaoUtils;
@@ -30,7 +31,7 @@ public class SystemMessageDaoImpl extends BaseJdbcDaoSupport implements SystemMe
 		@Override
 		public SystemMessage mapRow(ResultSet rs, int rowNum) throws SQLException {
 			// id, from_user_id, receiver_id, type, seek_id, offer_id,
-			// delegation_id, evaluation_id, content, created_on
+			// delegation_id, evaluation_id, title, content, is_read, created_on
 			SystemMessage systemMessage = new SystemMessage();
 			systemMessage.setId(rs.getLong("id"));
 			systemMessage.setFromUserId(rs.getInt("from_user_id"));
@@ -40,13 +41,15 @@ public class SystemMessageDaoImpl extends BaseJdbcDaoSupport implements SystemMe
 			systemMessage.setOfferId(JdbcDaoUtils.getLong(rs, "offer_id"));
 			systemMessage.setDelegationId(JdbcDaoUtils.getLong(rs, "delegation_id"));
 			systemMessage.setEvaluationId(JdbcDaoUtils.getLong(rs, "evaluation_id"));
+			systemMessage.setTitle(rs.getString("title"));
 			systemMessage.setContent(rs.getString("content"));
+			systemMessage.setRead(rs.getBoolean("is_read"));
 			systemMessage.setCreatedOn(rs.getTimestamp("created_on"));
 			return systemMessage;
 		}
 	};
 
-	private static final String SAVE_SQL = "insert into system_message(from_user_id, receiver_id, type, seek_id, offer_id, delegation_id, evaluation_id, content) values(?, ?, ?, ?, ?, ?, ?, ?)";
+	private static final String SAVE_SQL = "insert into system_message(from_user_id, receiver_id, type, seek_id, offer_id, delegation_id, evaluation_id, title, content) values(?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
 	/**
 	 * 保存
@@ -64,7 +67,8 @@ public class SystemMessageDaoImpl extends BaseJdbcDaoSupport implements SystemMe
 			JdbcDaoUtils.setLong(statement, 5, systemMessage.getOfferId());
 			JdbcDaoUtils.setLong(statement, 6, systemMessage.getDelegationId());
 			JdbcDaoUtils.setLong(statement, 7, systemMessage.getEvaluationId());
-			statement.setString(8, systemMessage.getContent());
+			statement.setString(8, systemMessage.getTitle());
+			statement.setString(9, systemMessage.getContent());
 
 			statement.execute();
 			ResultSet rs = statement.getGeneratedKeys();
@@ -90,6 +94,17 @@ public class SystemMessageDaoImpl extends BaseJdbcDaoSupport implements SystemMe
 		return super.queryUniqueEntity(GET_BY_ID_SQL, ROW_MAPPER, id);
 	}
 
+	private static final String UPDATE_READ_SQL = "update system_message set is_read=true where id=?";
+
+	/**
+	 * 更新为已读状态
+	 */
+	@Override
+	@UpdateToCache(mapName = CacheConstants.CACHE_SYS_MSG_ID_TO_SYS_MSG, key = "${id}")
+	public void updateRead(Long id) {
+		super.getJdbcTemplate().update(UPDATE_READ_SQL, id);
+	}
+
 	private static final String LIST_BY_USER_ID_SQL = "select id from system_message where receiver_id=? order by created_on desc limit ?,?";
 
 	/**
@@ -99,6 +114,17 @@ public class SystemMessageDaoImpl extends BaseJdbcDaoSupport implements SystemMe
 	public List<Long> listByUserId(Integer userId, int pageNumber, int pageSize) {
 		return super.getJdbcTemplate().query(LIST_BY_USER_ID_SQL, LONG_ROW_MAPPER, userId, pageNumber * pageSize,
 				pageSize);
+	}
+
+	private static final String LIST_UNREAD_BY_USER_ID_SQL = "select id from system_message where receiver_id=? and !is_read order by created_on desc limit ?,?";
+
+	/**
+	 * 获取指定用户的未读系统消息ID列表
+	 */
+	@Override
+	public List<Long> listUnreadByUserId(Integer userId, int pageNumber, int pageSize) {
+		return super.getJdbcTemplate().query(LIST_UNREAD_BY_USER_ID_SQL, LONG_ROW_MAPPER, userId,
+				pageNumber * pageSize, pageSize);
 	}
 
 }

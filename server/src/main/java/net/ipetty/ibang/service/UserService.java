@@ -73,6 +73,16 @@ public class UserService extends BaseService {
 		this.checkUniqueForRegister(user.getUsername(), "帐号");
 		this.checkUniqueForRegister(user.getEmail(), "邮箱");
 
+		// nickname
+		if (StringUtils.isBlank(user.getNickname())) {
+			if (StringUtils.isNotBlank(user.getUsername())) {
+				user.setNickname(user.getUsername());
+			} else {
+				user.setNickname(user.getEmail().contains("@") ? user.getEmail().substring(0,
+						user.getEmail().indexOf("@")) : user.getEmail());
+			}
+		}
+
 		// generate salt
 		String salt = SaltEncoder.generateSalt();
 		user.setSalt(salt);
