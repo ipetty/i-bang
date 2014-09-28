@@ -25,6 +25,7 @@ public class MyApplication extends Application {
 		// 模拟一个用户
 		user = new UserVO();
 		user.setId(1);
+		user.setUsername("kcrens@gmail.com");
 		user.setNickname("孔纯");
 		user.setGender("男");
 		user.setPhone("13913550000");

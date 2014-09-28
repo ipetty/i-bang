@@ -22,6 +22,8 @@ public class Constant {
 	public static final String INTENT_USER_EDIT_TYPE = "INTENT_USER_EDIT_TYPE";
 	public static final String INTENT_USER_EDIT_TYPE_NICKNAME = "nickname";
 	public static final String INTENT_USER_EDIT_TYPE_PHONE = "phone";
+	public static final String INTENT_USER_EDIT_TYPE_JOB = "job";
+	public static final String INTENT_USER_EDIT_TYPE_SIGNATURE = "signature";
 
 	public static final int REQUEST_CODE_USER_EDIT = 10;
 

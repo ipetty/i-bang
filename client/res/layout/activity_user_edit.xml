@@ -14,7 +14,7 @@
         layout="@layout/action_bar_simple_back" />
  	 	
     <LinearLayout
-         android:layout_marginTop="36dp"
+         android:layout_marginTop="16dp"
         android:id="@+id/nickname_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -22,26 +22,25 @@
         android:layout_marginRight="24dp"
         android:visibility="gone"
         android:orientation="vertical" >
-
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="32dp"
+                android:text="@string/nickname"
+                android:textColor="@color/black_color"
+                android:textSize="16sp" />
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="50dp"
             android:background="@drawable/setting_list_single_bg_white"
             android:gravity="center_vertical" >
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
-                android:text="@string/nickname"
-                android:textColor="@color/black_color"
-                android:textSize="16sp" />
+
 
             <EditText
                 android:id="@+id/nickname"
                 android:layout_width="0.0dip"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="21dp"
+                android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
                 android:layout_weight="1.0"
                 android:background="@null"
@@ -58,7 +57,7 @@
  </LinearLayout>
 
      <LinearLayout
-         android:layout_marginTop="36dp"
+         android:layout_marginTop="16dp"
         android:id="@+id/phone_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -66,26 +65,25 @@
         android:layout_marginRight="24dp"
            android:visibility="gone"
         android:orientation="vertical" >
-
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="32dp"
+                android:text="手机"
+                android:textColor="@color/black_color"
+                android:textSize="16sp" />
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="50dp"
             android:background="@drawable/setting_list_single_bg_white"
             android:gravity="center_vertical" >
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
-                android:text="手机"
-                android:textColor="@color/black_color"
-                android:textSize="16sp" />
+
 
             <EditText
                 android:id="@+id/phone"
                 android:layout_width="0.0dip"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="21dp"
+                android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
                 android:layout_weight="1.0"
                 android:background="@null"
@@ -100,6 +98,52 @@
         </LinearLayout>
 
  </LinearLayout>
+ 
+     <LinearLayout
+         android:layout_marginTop="16dp"
+        android:id="@+id/signature_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
+           android:visibility="gone"
+        android:orientation="vertical" >
+
+         <TextView
+             android:layout_width="wrap_content"
+             android:layout_height="32dp"
+             android:text="个人签名"
+             android:textColor="@color/black_color"
+             android:textSize="16sp" />
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/setting_list_single_bg_white"
+            android:gravity="center_vertical" >
+
+            <EditText
+                android:id="@+id/signature"
+                android:layout_width="0.0dip"
+                android:layout_height="100dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_weight="1.0"
+                android:background="@null"
+                android:gravity="top"
+                android:hint="请输入签名"
+                android:inputType="textMultiLine"
+                android:singleLine="true"
+                android:textColor="@color/black_color"
+                android:textColorHint="@color/hint_text_color"
+                android:textSize="16sp"
+                android:windowSoftInputMode="stateHidden" />
+        </LinearLayout>
+
+ </LinearLayout>
+
  <TextView
         android:id="@+id/button"
         android:layout_width="match_parent"

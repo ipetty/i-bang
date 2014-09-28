@@ -39,6 +39,7 @@ public class UserProfileActivity extends Activity {
 	private ArrayList<ModDialogItem> cameraItems;
 	private TextView nicknameView;
 	private TextView phoneView;
+	private TextView signatureView;
 
 	private ArrayList<ModDialogItem> genderItems;
 	private Dialog genderDialog;
@@ -71,16 +72,25 @@ public class UserProfileActivity extends Activity {
 		genderItems.add(new ModDialogItem(null, "男", "男", genderClick));
 		genderItems.add(new ModDialogItem(null, "女", "女", genderClick));
 
+		avatar = (ImageView) this.findViewById(R.id.avatar);
+		View nickname_layout = this.findViewById(R.id.nickname_layout);
+		View phone_layout = this.findViewById(R.id.phone_layout);
+		View gender_layout = this.findViewById(R.id.gender_layout);
+		View signature_layout = this.findViewById(R.id.signature_layout);
+
 		// 头像
 		avatar = (ImageView) this.findViewById(R.id.avatar);
 		nicknameView = (TextView) this.findViewById(R.id.nickname);
 		phoneView = (TextView) this.findViewById(R.id.phone);
 		gender = (TextView) this.findViewById(R.id.gender);
+		signatureView = (TextView) this.findViewById(R.id.signature);
 
 		avatar.setOnClickListener(changeAvatarClick);
-		nicknameView.setOnClickListener(new EditOnClickListener(Constant.INTENT_USER_EDIT_TYPE_NICKNAME));
-		phoneView.setOnClickListener(new EditOnClickListener(Constant.INTENT_USER_EDIT_TYPE_PHONE));
-		gender.setOnClickListener(new OnClickListener() {
+		nickname_layout.setOnClickListener(new EditOnClickListener(Constant.INTENT_USER_EDIT_TYPE_NICKNAME));
+		phone_layout.setOnClickListener(new EditOnClickListener(Constant.INTENT_USER_EDIT_TYPE_PHONE));
+		signature_layout.setOnClickListener(new EditOnClickListener(Constant.INTENT_USER_EDIT_TYPE_SIGNATURE));
+
+		gender_layout.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
@@ -210,6 +220,7 @@ public class UserProfileActivity extends Activity {
 	private void initTextUser(UserVO user) {
 		nicknameView.setText(user.getNickname());
 		phoneView.setText(user.getPhone());
+		signatureView.setText(user.getSignature());
 	}
 
 	public void updateAvatar(final String filePath) {

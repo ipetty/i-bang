@@ -69,9 +69,9 @@ public class MainActivity extends FragmentActivity {
 		me_image = (ImageView) this.findViewById(R.id.me_image);
 
 		if (!isLogin) {
-			viewPager.setCurrentItem(2);
+			// viewPager.setCurrentItem(2);
 		} else {
-			viewPager.setCurrentItem(0);
+			// viewPager.setCurrentItem(0);
 		}
 	}
 

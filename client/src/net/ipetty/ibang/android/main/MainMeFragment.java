@@ -2,8 +2,11 @@ package net.ipetty.ibang.android.main;
 
 import net.ipetty.ibang.R;
 import net.ipetty.ibang.android.core.Constant;
+import net.ipetty.ibang.android.core.MyApplication;
 import net.ipetty.ibang.android.core.ui.UnLoginView;
+import net.ipetty.ibang.android.setting.SettingActivity;
 import net.ipetty.ibang.android.user.UserProfileActivity;
+import net.ipetty.ibang.vo.UserVO;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -14,11 +17,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 public class MainMeFragment extends Fragment {
 	private boolean isLogin = true;
 	public UnLoginView unLoginView;
 	public View user_layout;
+	private UserVO user;
+
+	private ImageView avator;
+	private TextView nickname;
+	private TextView signature;
+	private View setting;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -47,7 +58,19 @@ public class MainMeFragment extends Fragment {
 				startActivity(intent);
 			}
 		});
+		setting = getActivity().findViewById(R.id.action_bar_right_image);
+		setting.setOnClickListener(new OnClickListener() {
 
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent intent = new Intent(getActivity(), SettingActivity.class);
+				startActivity(intent);
+			}
+		});
+
+		nickname = (TextView) getActivity().findViewById(R.id.nickname);
+		signature = (TextView) getActivity().findViewById(R.id.signature);
 		if (isLogin) {
 			init();
 		}
@@ -56,7 +79,7 @@ public class MainMeFragment extends Fragment {
 	private void init() {
 		// TODO Auto-generated method stub
 		unLoginView.hide();
-
+		initUser();
 	}
 
 	private BroadcastReceiver broadcastreciver = new BroadcastReceiver() {
@@ -75,11 +98,11 @@ public class MainMeFragment extends Fragment {
 			}
 
 		}
-
-		private void initUser() {
-			// TODO Auto-generated method stub
-
-		}
-
 	};
+
+	private void initUser() {
+		user = ((MyApplication) getActivity().getApplicationContext()).getUser();
+		nickname.setText(user.getNickname());
+		signature.setText(user.getSignature());
+	}
 }

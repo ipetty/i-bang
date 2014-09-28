@@ -62,6 +62,7 @@
     </LinearLayout>
     <include layout="@layout/line_horizontal_divider" />
      	<LinearLayout
+     	     android:id="@+id/nickname_layout"
         android:layout_width="fill_parent"
         android:layout_height="46dp"
          android:paddingLeft="16dp"
@@ -93,6 +94,7 @@
     </LinearLayout>
     <include layout="@layout/line_horizontal_divider" />
 	<LinearLayout
+	     android:id="@+id/gender_layout"
         android:layout_width="fill_parent"
         android:layout_height="46dp"
          android:paddingLeft="16dp"
@@ -129,6 +131,7 @@
      
         <include layout="@layout/line_horizontal_divider" />
      	<LinearLayout
+     	     android:id="@+id/phone_layout"
         android:layout_width="fill_parent"
         android:layout_height="46dp"
          android:paddingLeft="16dp"
@@ -163,6 +166,7 @@
      <include layout="@layout/line_horizontal_divider" />
     
      	<LinearLayout
+     	      android:id="@+id/city_layout"
         android:layout_width="fill_parent"
         android:layout_height="46dp"
          android:paddingLeft="16dp"
@@ -194,6 +198,7 @@
     </LinearLayout>
      <include layout="@layout/line_horizontal_divider" />
  	<LinearLayout
+ 	     android:id="@+id/signature_layout"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:minHeight="46dp"
@@ -205,7 +210,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="职业"
+            android:text="签名"
             android:textColor="@color/black_color"
             android:textSize="16sp" />
 
@@ -218,7 +223,7 @@
             android:orientation="vertical" >
 
             <TextView
-                android:id="@+id/job"
+                android:id="@+id/signature"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
@@ -227,56 +232,13 @@
                 android:gravity="left"
                 android:paddingBottom="5dp"
                 android:paddingTop="5dp"
-                android:text="苏州苏州州苏州苏州苏"
                 android:textColor="@color/gray_color"
                 android:textSize="14sp" />
 
         </LinearLayout>
      </LinearLayout>
       <include layout="@layout/line_horizontal_divider" />
-      <include layout="@layout/line_space"/>
-      <include layout="@layout/line_horizontal_divider" />
-      <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:minHeight="46dp"
-         android:paddingLeft="16dp"
-         android:paddingRight="16dp"
-       android:background="@drawable/list_color_item_bg_white"
-        android:gravity="center_vertical" >
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="帮忙范围"
-            android:textColor="@color/black_color"
-            android:textSize="16sp" />
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="16dp"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="vertical" >
-
-            <TextView
-                android:id="@+id/fanwei"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="right"
-                android:background="@null"
-                android:ellipsize="marquee"
-                android:gravity="left"
-                android:paddingBottom="5dp"
-                android:paddingTop="5dp"
-                android:text="家居服务"
-                android:textColor="@color/gray_color"
-                android:textSize="14sp" />
-
-        </LinearLayout>
-     </LinearLayout>
-       <include layout="@layout/line_horizontal_divider" />
+  
               </LinearLayout>
     </ScrollView>
 </LinearLayout>

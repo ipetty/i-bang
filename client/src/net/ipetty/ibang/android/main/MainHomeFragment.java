@@ -25,7 +25,8 @@ public class MainHomeFragment extends Fragment {
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		unLoginView = new UnLoginView(getActivity(), getView(), R.string.un_login_home);
+		// unLoginView = new UnLoginView(getActivity(), getView(),
+		// R.string.un_login_home);
 	}
 
 }

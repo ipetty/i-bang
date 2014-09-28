@@ -18,8 +18,10 @@ public class UserEditActivity extends Activity {
 	private String type;
 	private View nickname_Layout;
 	private View phone_Layout;
+	private View signature_Layout;
 	private EditText nickname;
 	private EditText phone;
+	private EditText signature;
 	private View button;
 	private UserVO user;
 
@@ -36,8 +38,12 @@ public class UserEditActivity extends Activity {
 
 		nickname_Layout = this.findViewById(R.id.nickname_layout);
 		phone_Layout = this.findViewById(R.id.phone_layout);
+		signature_Layout = this.findViewById(R.id.signature_layout);
+
 		nickname = (EditText) this.findViewById(R.id.nickname);
 		phone = (EditText) this.findViewById(R.id.phone);
+		signature = (EditText) this.findViewById(R.id.signature);
+
 		button = this.findViewById(R.id.button);
 		button.setOnClickListener(new OnClickListener() {
 
@@ -46,6 +52,7 @@ public class UserEditActivity extends Activity {
 
 				user.setNickname(nickname.getText().toString());
 				user.setPhone(phone.getText().toString());
+				user.setSignature(signature.getText().toString());
 				// TODO update user;
 
 				Intent intent = new Intent();
@@ -62,6 +69,7 @@ public class UserEditActivity extends Activity {
 
 		nickname.setText(user.getNickname());
 		phone.setText(user.getPhone());
+		signature.setText(user.getSignature());
 
 	}
 
@@ -77,6 +85,12 @@ public class UserEditActivity extends Activity {
 			phone_Layout.setVisibility(View.VISIBLE);
 		} else {
 			phone_Layout.setVisibility(View.GONE);
+		}
+
+		if (Constant.INTENT_USER_EDIT_TYPE_SIGNATURE.equals(type)) {
+			signature_Layout.setVisibility(View.VISIBLE);
+		} else {
+			signature_Layout.setVisibility(View.GONE);
 		}
 	}
 
