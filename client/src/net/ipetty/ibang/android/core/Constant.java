@@ -1,7 +1,7 @@
 package net.ipetty.ibang.android.core;
 
 public class Constant {
-	public static final String FILE_SERVER_BASE = "";
+	public static final String FILE_SERVER_BASE = "http://weibo.kedacom.com/";
 
 	public static final String BROADCAST_INTENT_IS_LOGIN = "BROADCAST_INTENT_IS_LOGIN";
 	public static final String BROADCAST_INTENT_UPDATA_USER = "BROADCAST_INTENT_UPDATA_USER";

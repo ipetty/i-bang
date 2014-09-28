@@ -19,9 +19,11 @@ public class UserEditActivity extends Activity {
 	private View nickname_Layout;
 	private View phone_Layout;
 	private View signature_Layout;
+	private View job_Layout;
 	private EditText nickname;
 	private EditText phone;
 	private EditText signature;
+	private EditText job;
 	private View button;
 	private UserVO user;
 
@@ -39,10 +41,12 @@ public class UserEditActivity extends Activity {
 		nickname_Layout = this.findViewById(R.id.nickname_layout);
 		phone_Layout = this.findViewById(R.id.phone_layout);
 		signature_Layout = this.findViewById(R.id.signature_layout);
+		job_Layout = this.findViewById(R.id.job_layout);
 
 		nickname = (EditText) this.findViewById(R.id.nickname);
 		phone = (EditText) this.findViewById(R.id.phone);
 		signature = (EditText) this.findViewById(R.id.signature);
+		job = (EditText) this.findViewById(R.id.job);
 
 		button = this.findViewById(R.id.button);
 		button.setOnClickListener(new OnClickListener() {
@@ -53,6 +57,7 @@ public class UserEditActivity extends Activity {
 				user.setNickname(nickname.getText().toString());
 				user.setPhone(phone.getText().toString());
 				user.setSignature(signature.getText().toString());
+				user.setJob(job.getText().toString());
 				// TODO update user;
 
 				Intent intent = new Intent();
@@ -70,6 +75,7 @@ public class UserEditActivity extends Activity {
 		nickname.setText(user.getNickname());
 		phone.setText(user.getPhone());
 		signature.setText(user.getSignature());
+		job.setText(user.getJob());
 
 	}
 
@@ -91,6 +97,12 @@ public class UserEditActivity extends Activity {
 			signature_Layout.setVisibility(View.VISIBLE);
 		} else {
 			signature_Layout.setVisibility(View.GONE);
+		}
+
+		if (Constant.INTENT_USER_EDIT_TYPE_JOB.equals(type)) {
+			job_Layout.setVisibility(View.VISIBLE);
+		} else {
+			job_Layout.setVisibility(View.GONE);
 		}
 	}
 

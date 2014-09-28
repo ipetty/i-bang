@@ -4,9 +4,13 @@ import net.ipetty.ibang.R;
 import net.ipetty.ibang.android.core.Constant;
 import net.ipetty.ibang.android.core.MyApplication;
 import net.ipetty.ibang.android.core.ui.UnLoginView;
+import net.ipetty.ibang.android.core.util.AppUtils;
 import net.ipetty.ibang.android.setting.SettingActivity;
 import net.ipetty.ibang.android.user.UserProfileActivity;
 import net.ipetty.ibang.vo.UserVO;
+
+import org.apache.commons.lang3.StringUtils;
+
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -20,16 +24,22 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+
 public class MainMeFragment extends Fragment {
 	private boolean isLogin = true;
 	public UnLoginView unLoginView;
 	public View user_layout;
 	private UserVO user;
 
-	private ImageView avator;
+	private ImageView avatar;
 	private TextView nickname;
 	private TextView signature;
 	private View setting;
+
+	private DisplayImageOptions options = AppUtils.getCacheImageBublder()
+			.showImageForEmptyUri(R.drawable.default_avatar).build();
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -69,8 +79,10 @@ public class MainMeFragment extends Fragment {
 			}
 		});
 
+		avatar = (ImageView) getActivity().findViewById(R.id.avatar);
 		nickname = (TextView) getActivity().findViewById(R.id.nickname);
 		signature = (TextView) getActivity().findViewById(R.id.signature);
+
 		if (isLogin) {
 			init();
 		}
@@ -104,5 +116,12 @@ public class MainMeFragment extends Fragment {
 		user = ((MyApplication) getActivity().getApplicationContext()).getUser();
 		nickname.setText(user.getNickname());
 		signature.setText(user.getSignature());
+
+		if (StringUtils.isNotBlank(user.getAvatar())) {
+			String str = Constant.FILE_SERVER_BASE + user.getAvatar();
+			ImageLoader.getInstance().displayImage(str, avatar, options);
+		} else {
+			avatar.setImageResource(R.drawable.default_avatar);
+		}
 	}
 }

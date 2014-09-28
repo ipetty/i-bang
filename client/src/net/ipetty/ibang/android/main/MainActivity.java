@@ -19,8 +19,7 @@ public class MainActivity extends FragmentActivity {
 	private boolean isLogin = false;
 
 	private ViewPager viewPager;
-	private final Fragment[] fragments = { new MainHomeFragment(), new MainPublishFragment(),
-			new MainDiscoverFragment(), new MainMeFragment() };
+	private final Fragment[] fragments = { new MainHomeFragment(), new MainPublishFragment(), new MainMeFragment() };
 
 	private View home_layout;
 	private View publish_layout;
@@ -55,8 +54,8 @@ public class MainActivity extends FragmentActivity {
 		me_layout = this.findViewById(R.id.me_layout);
 		home_layout.setOnClickListener(new TabClickListener(0));
 		publish_layout.setOnClickListener(new TabClickListener(1));
-		discover_layout.setOnClickListener(new TabClickListener(2));
-		me_layout.setOnClickListener(new TabClickListener(3));
+		// discover_layout.setOnClickListener(new TabClickListener(2));
+		me_layout.setOnClickListener(new TabClickListener(2));
 
 		home_text = (TextView) this.findViewById(R.id.home_text);
 		publish_text = (TextView) this.findViewById(R.id.publish_text);
@@ -162,12 +161,14 @@ public class MainActivity extends FragmentActivity {
 				publish_image.setImageResource(R.drawable.tab_publish_active);
 				break;
 			}
+			/*
+			 * case 2: {
+			 * discover_text.setTextColor(getResources().getColor(R.color
+			 * .base_color));
+			 * discover_image.setImageResource(R.drawable.tab_search_active);
+			 * break; }
+			 */
 			case 2: {
-				discover_text.setTextColor(getResources().getColor(R.color.base_color));
-				discover_image.setImageResource(R.drawable.tab_search_active);
-				break;
-			}
-			case 3: {
 				me_text.setTextColor(getResources().getColor(R.color.base_color));
 				me_image.setImageResource(R.drawable.tab_me_active);
 				break;

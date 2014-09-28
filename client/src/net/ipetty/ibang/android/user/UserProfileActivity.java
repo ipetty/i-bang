@@ -40,6 +40,7 @@ public class UserProfileActivity extends Activity {
 	private TextView nicknameView;
 	private TextView phoneView;
 	private TextView signatureView;
+	private TextView jobView;
 
 	private ArrayList<ModDialogItem> genderItems;
 	private Dialog genderDialog;
@@ -77,18 +78,21 @@ public class UserProfileActivity extends Activity {
 		View phone_layout = this.findViewById(R.id.phone_layout);
 		View gender_layout = this.findViewById(R.id.gender_layout);
 		View signature_layout = this.findViewById(R.id.signature_layout);
+		View job_layout = this.findViewById(R.id.job_layout);
 
 		// 头像
 		avatar = (ImageView) this.findViewById(R.id.avatar);
 		nicknameView = (TextView) this.findViewById(R.id.nickname);
 		phoneView = (TextView) this.findViewById(R.id.phone);
 		gender = (TextView) this.findViewById(R.id.gender);
+		jobView = (TextView) this.findViewById(R.id.job);
 		signatureView = (TextView) this.findViewById(R.id.signature);
 
 		avatar.setOnClickListener(changeAvatarClick);
 		nickname_layout.setOnClickListener(new EditOnClickListener(Constant.INTENT_USER_EDIT_TYPE_NICKNAME));
 		phone_layout.setOnClickListener(new EditOnClickListener(Constant.INTENT_USER_EDIT_TYPE_PHONE));
 		signature_layout.setOnClickListener(new EditOnClickListener(Constant.INTENT_USER_EDIT_TYPE_SIGNATURE));
+		job_layout.setOnClickListener(new EditOnClickListener(Constant.INTENT_USER_EDIT_TYPE_JOB));
 
 		gender_layout.setOnClickListener(new OnClickListener() {
 			@Override
@@ -221,6 +225,7 @@ public class UserProfileActivity extends Activity {
 		nicknameView.setText(user.getNickname());
 		phoneView.setText(user.getPhone());
 		signatureView.setText(user.getSignature());
+		jobView.setText(user.getJob());
 	}
 
 	public void updateAvatar(final String filePath) {

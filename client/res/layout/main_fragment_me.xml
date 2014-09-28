@@ -95,7 +95,7 @@
     android:paddingTop="10dp" >
 
 		     <ImageView
-			         android:id="@+id/avator"
+			         android:id="@+id/avatar"
 			         android:layout_width="52dp"
 			         android:layout_height="52dp"
 			          android:layout_marginLeft="10dp"
@@ -116,24 +116,12 @@
 			     <RelativeLayout
 			         android:layout_width="wrap_content"
 			         android:layout_height="52dp"
-			          android:layout_marginLeft="10dp"
-			         android:layout_alignBottom="@+id/avator"
-			         android:layout_alignTop="@+id/into"
+			         android:layout_marginLeft="8dp"
+			         android:layout_alignTop="@+id/avatar"
 			         android:layout_toLeftOf="@+id/into"
-			         android:layout_toRightOf="@+id/avator" >
+			         android:layout_toRightOf="@+id/avatar" >
 
-			         <TextView
-			             android:id="@+id/signature"
-			             android:layout_width="wrap_content"
-			             android:layout_height="24dp"
-			             android:layout_alignParentBottom="true"
-			             android:layout_alignParentLeft="true"
-			             android:ellipsize="end"
-			             android:gravity="left|center"
-			             android:singleLine="true"
-			             android:text=""
-			             android:textColor="@color/gray_color"
-			             android:textSize="14dp" />
+
 
 			         <TextView
 			             android:id="@+id/nickname"
@@ -144,10 +132,20 @@
 			             android:ellipsize="end"
 			             android:gravity="left|center"
 			             android:singleLine="true"
-			             android:text=""
 			             android:textColor="@color/black_color"
 			             android:textSize="18dp" />
-
+			         
+			         			         <TextView
+			             android:id="@+id/signature"
+			             android:layout_width="wrap_content"
+			             android:layout_height="24dp"
+			             android:layout_alignParentBottom="true"
+			             android:layout_alignParentLeft="true"
+			             android:ellipsize="end"
+			             android:gravity="left|center"
+			             android:singleLine="true"
+			             android:textColor="@color/gray_color"
+			             android:textSize="14dp" />
 			     </RelativeLayout>
 
 	</RelativeLayout>

@@ -197,6 +197,47 @@
 
     </LinearLayout>
      <include layout="@layout/line_horizontal_divider" />
+          	<LinearLayout
+     	      android:id="@+id/job_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="46dp"
+         android:paddingLeft="16dp"
+         android:paddingRight="16dp"
+        android:background="@drawable/list_color_item_bg_white"
+        android:gravity="center_vertical" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="职位"
+            android:textColor="@color/black_color"
+            android:textSize="16sp" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="16dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/job"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:background="@null"
+                android:ellipsize="marquee"
+                android:gravity="left"
+                android:paddingBottom="5dp"
+                android:paddingTop="5dp"
+                android:textColor="@color/gray_color"
+                android:textSize="14sp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+     <include layout="@layout/line_horizontal_divider" />
  	<LinearLayout
  	     android:id="@+id/signature_layout"
         android:layout_width="fill_parent"

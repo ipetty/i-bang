@@ -24,12 +24,14 @@ public class MyApplication extends Application {
 
 		// 模拟一个用户
 		user = new UserVO();
+		user.setAvatar("weibo/files/h/b9c31599803e48f0a0595e2e913714e4/h64.jpg");
 		user.setId(1);
 		user.setUsername("kcrens@gmail.com");
 		user.setNickname("孔纯");
 		user.setGender("男");
 		user.setPhone("13913550000");
 		user.setUsername("kcrens@gmail.com");
+		user.setSignature("这个家伙很懒");
 	}
 
 	// imageLoader
