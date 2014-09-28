@@ -7,7 +7,7 @@
 	<packaging>war</packaging>
 
 	<properties>
-		<jdk.version>1.6</jdk.version>
+		<jdk.version>1.7</jdk.version>
 		<compiler.encoding>UTF-8</compiler.encoding>
 
 		<ibang.api.version>1.0</ibang.api.version>

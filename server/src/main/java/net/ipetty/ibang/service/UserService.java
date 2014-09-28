@@ -36,6 +36,12 @@ public class UserService extends BaseService {
 	@Resource
 	private UserRefreshTokenDao refreshTokenDao;
 
+	@Resource
+	private SeekerInfoService seekerInfoService;
+
+	@Resource
+	private OffererInfoService offererInfoService;
+
 	/**
 	 * 登录验证
 	 */
@@ -112,6 +118,8 @@ public class UserService extends BaseService {
 		if (user == null) {
 			throw new BusinessException("指定ID（" + id + "）的用户不存在");
 		}
+		user.setSeekerInfo(seekerInfoService.getByUserId(id));
+		user.setOffererInfo(offererInfoService.getByUserId(id));
 		return user;
 	}
 

@@ -35,7 +35,7 @@ public class UserPrincipal {
 		this.nickname = nickname;
 	}
 
-	public static UserPrincipal fromUser(User user, String userToken) {
+	public static UserPrincipal fromUser(User user) {
 		UserPrincipal principal = new UserPrincipal();
 		principal.setId(user.getId());
 		principal.setUsername(user.getUsername());
@@ -47,6 +47,11 @@ public class UserPrincipal {
 		} else if (StringUtils.isNotEmpty(user.getEmail())) {
 			principal.setNickname(user.getEmail());
 		}
+		return principal;
+	}
+
+	public static UserPrincipal fromUser(User user, String userToken) {
+		UserPrincipal principal = UserPrincipal.fromUser(user);
 		principal.setToken(userToken);
 		return principal;
 	}
