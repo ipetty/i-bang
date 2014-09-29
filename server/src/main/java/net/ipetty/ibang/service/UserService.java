@@ -36,6 +36,12 @@ public class UserService extends BaseService {
 	@Resource
 	private UserRefreshTokenDao refreshTokenDao;
 
+	@Resource
+	private SeekerInfoService seekerInfoService;
+
+	@Resource
+	private OffererInfoService offererInfoService;
+
 	/**
 	 * 登录验证
 	 */
@@ -112,6 +118,8 @@ public class UserService extends BaseService {
 		if (user == null) {
 			throw new BusinessException("指定ID（" + id + "）的用户不存在");
 		}
+		user.setSeekerInfo(seekerInfoService.getByUserId(id));
+		user.setOffererInfo(offererInfoService.getByUserId(id));
 		return user;
 	}
 
@@ -200,7 +208,7 @@ public class UserService extends BaseService {
 			User user = userDao.getById(userId);
 			user.setAvatar(image.getOriginalUrl());
 			userDao.update(user);
-			return user;
+			return this.getById(user.getId());
 		} catch (IOException e) {
 			throw new BusinessException("保存图片时出错", e);
 		}
@@ -215,7 +223,7 @@ public class UserService extends BaseService {
 		User original = userDao.getById(user.getId());
 		user.setAvatar(original.getAvatar());
 		userDao.update(user);
-		return userDao.getById(user.getId());
+		return this.getById(user.getId());
 	}
 
 	/**

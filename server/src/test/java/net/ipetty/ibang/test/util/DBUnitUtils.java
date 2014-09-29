@@ -1,4 +1,4 @@
-package net.ipetty.ibang.test;
+package net.ipetty.ibang.test.util;
 
 import java.io.File;
 import java.io.FileInputStream;

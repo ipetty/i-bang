@@ -1,10 +1,9 @@
 package net.ipetty.ibang.web.rest.interceptor;
 
-import java.nio.charset.Charset;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import net.ipetty.ibang.api.Constants;
 import net.ipetty.ibang.cache.CacheConstants;
 import net.ipetty.ibang.cache.Caches;
 import net.ipetty.ibang.context.UserContext;
@@ -30,13 +29,6 @@ import org.springframework.web.servlet.ModelAndView;
  */
 public class UserContextInterceptor implements HandlerInterceptor {
 
-	public static final String HEADER_NAME_USER_TOKEN = "user_token";
-	public static final String HEADER_NAME_REFRESH_TOKEN = "refresh_token";
-	public static final String HEADER_NAME_DEVICE_ID = "device_id";
-	public static final String HEADER_NAME_DEVICE_MAC = "device_mac";
-	public static final String HEADER_NAME_DEVICE_UUID = "device_uuid";
-	public static final Charset UTF8 = Charset.forName("UTF-8");
-
 	private Logger logger = LoggerFactory.getLogger(getClass());
 
 	private UserService userService;
@@ -44,11 +36,9 @@ public class UserContextInterceptor implements HandlerInterceptor {
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 		logger.debug("request uri: {}", request.getRequestURI());
-		String encodedUserToken = request.getHeader(HEADER_NAME_USER_TOKEN);
-		String encodedRefreshToken = request.getHeader(HEADER_NAME_REFRESH_TOKEN);
-		// String encodedDeviceId = request.getHeader(HEADER_NAME_DEVICE_ID);
-		// String encodedDeviceMac = request.getHeader(HEADER_NAME_DEVICE_MAC);
-		String encodedDeviceUuid = request.getHeader(HEADER_NAME_DEVICE_UUID);
+		String encodedUserToken = request.getHeader(Constants.HEADER_NAME_USER_TOKEN);
+		String encodedRefreshToken = request.getHeader(Constants.HEADER_NAME_REFRESH_TOKEN);
+		String encodedDeviceUuid = request.getHeader(Constants.HEADER_NAME_DEVICE_UUID);
 
 		if (this.setUserContextByUserToken(encodedUserToken)) {
 			return true;
@@ -70,9 +60,7 @@ public class UserContextInterceptor implements HandlerInterceptor {
 			return false;
 		}
 
-		String userToken = new String(Encodes.decodeBase64(encodedUserToken), UTF8);
-		// logger.debug("request header: {}={}", HEADER_NAME_USER_TOKEN,
-		// userToken);
+		String userToken = new String(Encodes.decodeBase64(encodedUserToken), Constants.UTF8);
 
 		// 通过user_token获取对应用户信息
 		Integer userId = Caches.get(CacheConstants.CACHE_USER_TOKEN_TO_USER_ID, userToken);
@@ -93,8 +81,8 @@ public class UserContextInterceptor implements HandlerInterceptor {
 			return false;
 		}
 
-		String refreshToken = new String(Encodes.decodeBase64(encodedRefreshToken), UTF8);
-		String deviceUuid = new String(Encodes.decodeBase64(encodedDeviceUuid), UTF8);
+		String refreshToken = new String(Encodes.decodeBase64(encodedRefreshToken), Constants.UTF8);
+		String deviceUuid = new String(Encodes.decodeBase64(encodedDeviceUuid), Constants.UTF8);
 		// logger.debug("request header: {}={}", HEADER_NAME_REFRESH_TOKEN,
 		// refreshToken);
 		// logger.debug("request header: {}={}", HEADER_NAME_DEVICE_UUID,
@@ -119,26 +107,26 @@ public class UserContextInterceptor implements HandlerInterceptor {
 			ModelAndView modelAndView) throws Exception {
 		logger.debug("request uri: {}", request.getRequestURI());
 		// String encodedUserToken = request.getHeader(HEADER_NAME_USER_TOKEN);
-		String encodedRefreshToken = request.getHeader(HEADER_NAME_REFRESH_TOKEN);
-		String encodedDeviceId = request.getHeader(HEADER_NAME_DEVICE_ID);
-		String encodedDeviceMac = request.getHeader(HEADER_NAME_DEVICE_MAC);
-		String encodedDeviceUuid = request.getHeader(HEADER_NAME_DEVICE_UUID);
+		String encodedRefreshToken = request.getHeader(Constants.HEADER_NAME_REFRESH_TOKEN);
+		String encodedDeviceId = request.getHeader(Constants.HEADER_NAME_DEVICE_ID);
+		String encodedDeviceMac = request.getHeader(Constants.HEADER_NAME_DEVICE_MAC);
+		String encodedDeviceUuid = request.getHeader(Constants.HEADER_NAME_DEVICE_UUID);
 
 		UserPrincipal principal = UserContext.getContext();
 		// logger.debug("principal: {}", principal);
 		if (principal != null && StringUtils.isNotBlank(principal.getToken())) {
 			// response中设置user_token
-			response.setHeader(HEADER_NAME_USER_TOKEN, Encodes.encodeBase64(principal.getToken().getBytes()));
-			logger.debug("set response header: {}={}", HEADER_NAME_USER_TOKEN, principal.getToken());
+			response.setHeader(Constants.HEADER_NAME_USER_TOKEN, Encodes.encodeBase64(principal.getToken().getBytes()));
+			logger.debug("set response header: {}={}", Constants.HEADER_NAME_USER_TOKEN, principal.getToken());
 
 			// 在登录时生成refresh_token（如果请求中已带refresh_token则不返回）
 			if (StringUtils.isBlank(encodedRefreshToken) && StringUtils.isNotBlank(encodedDeviceUuid)) {
 				Integer userId = principal.getId();
-				String deviceUuid = new String(Encodes.decodeBase64(encodedDeviceUuid), UTF8);
+				String deviceUuid = new String(Encodes.decodeBase64(encodedDeviceUuid), Constants.UTF8);
 				String deviceId = StringUtils.isNotBlank(encodedDeviceId) ? new String(
-						Encodes.decodeBase64(encodedDeviceId), UTF8) : null;
+						Encodes.decodeBase64(encodedDeviceId), Constants.UTF8) : null;
 				String deviceMac = StringUtils.isNotBlank(encodedDeviceMac) ? new String(
-						Encodes.decodeBase64(encodedDeviceMac), UTF8) : null;
+						Encodes.decodeBase64(encodedDeviceMac), Constants.UTF8) : null;
 
 				UserRefreshToken userRefreshToken = userService.getRefreshToken(userId, deviceUuid);
 				if (userRefreshToken == null) { // 用户在此设备上未登录过
@@ -148,9 +136,9 @@ public class UserContextInterceptor implements HandlerInterceptor {
 				}
 
 				// response中设置refresh_token
-				response.setHeader(HEADER_NAME_REFRESH_TOKEN,
+				response.setHeader(Constants.HEADER_NAME_REFRESH_TOKEN,
 						Encodes.encodeBase64(userRefreshToken.getRefreshToken().getBytes()));
-				logger.debug("set response header: {}={}", HEADER_NAME_REFRESH_TOKEN,
+				logger.debug("set response header: {}={}", Constants.HEADER_NAME_REFRESH_TOKEN,
 						userRefreshToken.getRefreshToken());
 			}
 		}
@@ -158,7 +146,7 @@ public class UserContextInterceptor implements HandlerInterceptor {
 		// 在登出时删除refresh_token
 		if (StringUtils.isNotBlank(encodedRefreshToken)
 				&& (principal == null || StringUtils.isBlank(principal.getToken()))) {
-			userService.deleteRefreshToken(new String(Encodes.decodeBase64(encodedRefreshToken), UTF8));
+			userService.deleteRefreshToken(new String(Encodes.decodeBase64(encodedRefreshToken), Constants.UTF8));
 		}
 
 		// 每次请求处理完后，清理线程安全的用户上下文。

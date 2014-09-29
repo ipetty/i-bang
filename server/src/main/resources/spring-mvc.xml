@@ -15,7 +15,7 @@
 	<mvc:interceptors>
 		<mvc:interceptor>
 			<mvc:mapping path="/**" /><!-- 如果不配置或/**,将拦截所有的Controller -->
-			<bean class="net.ipetty.core.web.rest.interceptor.UserContextInterceptor">
+			<bean class="net.ipetty.ibang.web.rest.interceptor.UserContextInterceptor">
 				<property name="userService" ref="userService" />
 			</bean>
 		</mvc:interceptor>
@@ -36,7 +36,7 @@
 			</bean>
 			<bean class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter">
 				<property name="objectMapper">
-					<bean class="net.ipetty.core.web.converter.DateObjectMapper" />
+					<bean class="net.ipetty.ibang.web.converter.DateObjectMapper" />
 				</property>
 			</bean>
 		</mvc:message-converters>

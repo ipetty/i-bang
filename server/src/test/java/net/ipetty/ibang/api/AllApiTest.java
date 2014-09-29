@@ -1,6 +1,7 @@
-package net.ipetty.ibang.service;
+package net.ipetty.ibang.api;
 
 import net.ipetty.ibang.test.util.DBUnitUtils;
+import net.ipetty.ibang.test.util.JettyServer;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -8,24 +9,24 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
 /**
- * AllServiceTest
+ * AllApiTest
  * 
  * @author luocanfeng
- * @date 2014年9月24日
+ * @date 2014年9月28日
  */
 @RunWith(Suite.class)
-@Suite.SuiteClasses({ UserServiceTest.class, SeekerInfoServiceTest.class, OffererInfoServiceTest.class,
-		SeekServiceTest.class, OfferServiceTest.class, DelegationServiceTest.class, EvaluationServiceTest.class,
-		SystemMessageServiceTest.class })
-public class AllServiceTest extends BaseServiceTest {
+@Suite.SuiteClasses({ UserApiTest.class })
+public class AllApiTest extends BaseApiTest {
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
 		DBUnitUtils.cleanInsert();
+		JettyServer.start();
 	}
 
 	@AfterClass
 	public static void tearDownAfterClass() throws Exception {
+		JettyServer.stop();
 	}
 
 }

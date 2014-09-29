@@ -2,6 +2,8 @@ package net.ipetty.ibang.model;
 
 import java.util.Date;
 
+import net.ipetty.ibang.vo.RegisterVO;
+import net.ipetty.ibang.vo.UserFormVO;
 import net.ipetty.ibang.vo.UserVO;
 
 import org.springframework.beans.BeanUtils;
@@ -70,6 +72,18 @@ public class User extends AbstractEntity {
 		offererInfo.setTitle(vo.getOffererTitle());
 		offererInfo.setOfferRange(vo.getOfferRange());
 		entity.setOffererInfo(offererInfo);
+		return entity;
+	}
+
+	public static User fromRegisterVO(RegisterVO register) {
+		User entity = new User();
+		BeanUtils.copyProperties(register, entity);
+		return entity;
+	}
+
+	public static User fromUserFormVO(UserFormVO userFormVO) {
+		User entity = new User();
+		BeanUtils.copyProperties(userFormVO, entity);
 		return entity;
 	}
 
