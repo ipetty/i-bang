@@ -208,7 +208,7 @@ public class UserService extends BaseService {
 			User user = userDao.getById(userId);
 			user.setAvatar(image.getOriginalUrl());
 			userDao.update(user);
-			return user;
+			return this.getById(user.getId());
 		} catch (IOException e) {
 			throw new BusinessException("保存图片时出错", e);
 		}
@@ -223,7 +223,7 @@ public class UserService extends BaseService {
 		User original = userDao.getById(user.getId());
 		user.setAvatar(original.getAvatar());
 		userDao.update(user);
-		return userDao.getById(user.getId());
+		return this.getById(user.getId());
 	}
 
 	/**

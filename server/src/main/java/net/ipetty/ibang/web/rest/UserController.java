@@ -8,12 +8,14 @@ import net.ipetty.ibang.cache.CacheConstants;
 import net.ipetty.ibang.cache.Caches;
 import net.ipetty.ibang.context.UserContext;
 import net.ipetty.ibang.context.UserPrincipal;
+import net.ipetty.ibang.exception.BusinessException;
 import net.ipetty.ibang.model.User;
 import net.ipetty.ibang.model.UserRefreshToken;
 import net.ipetty.ibang.service.UserService;
 import net.ipetty.ibang.util.UUIDUtils;
 import net.ipetty.ibang.vo.LoginResultVO;
 import net.ipetty.ibang.vo.RegisterVO;
+import net.ipetty.ibang.vo.UserFormVO;
 import net.ipetty.ibang.vo.UserVO;
 import net.ipetty.ibang.web.rest.exception.RestException;
 
@@ -25,6 +27,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * UserController
@@ -193,6 +196,70 @@ public class UserController extends BaseController {
 		}
 		logger.debug("get by id {}, result is {}", id, user);
 		return user.toVO();
+	}
+
+	/**
+	 * 根据用户帐号获取用户信息
+	 */
+	@RequestMapping(value = "/user/{username}", method = RequestMethod.GET)
+	@ResponseBody
+	public UserVO getByUsername(@PathVariable("username") String username) {
+		Assert.hasText(username, "用户帐号不能为空");
+		try {
+			User user = userService.getByUsername(username);
+			logger.debug("get by username {}, result is {}", username, user);
+			return user.toVO();
+		} catch (BusinessException e) {
+			throw new RestException("用户（" + username + "）不存在");
+		}
+	}
+
+	/**
+	 * 修改密码
+	 */
+	@RequestMapping(value = "/changePassword", method = RequestMethod.POST)
+	@ResponseBody
+	public boolean changePassword(String oldPassword, String newPassword) {
+		UserPrincipal currentUser = UserContext.getContext();
+		if (currentUser == null || currentUser.getId() == null) {
+			throw new RestException("注册用户才能修改密码");
+		}
+		// Assert.hasText(oldPassword, "旧密码不能为空");
+		Assert.hasText(newPassword, "新密码不能为空");
+		userService.changePassword(currentUser.getId(), oldPassword, newPassword);
+		return true;
+	}
+
+	/**
+	 * 更新用户头像
+	 */
+	@RequestMapping(value = "/user/updateAvatar", method = RequestMethod.POST)
+	@ResponseBody
+	public UserVO updateAvatar(MultipartFile imageFile) {
+		UserPrincipal currentUser = UserContext.getContext();
+		if (currentUser == null || currentUser.getId() == null) {
+			throw new RestException("注册用户才能更新头像");
+		}
+		return userService.updateAvatar(imageFile, currentUser.getId()).toVO();
+	}
+
+	/**
+	 * 修改用户个人信息
+	 */
+	@RequestMapping(value = "/user/update", method = RequestMethod.POST)
+	@ResponseBody
+	public UserVO update(@RequestBody UserFormVO userFormVo) {
+		Assert.notNull(userFormVo, "用户个人信息表单不能为空");
+		Assert.notNull(userFormVo.getId(), "用户ID不能为空");
+
+		UserPrincipal currentUser = UserContext.getContext();
+		if (currentUser == null || currentUser.getId() == null) {
+			throw new RestException("注册用户才能修改个人信息");
+		}
+
+		Assert.isTrue(userFormVo.getId().equals(currentUser.getId()), "只能修改自己的个人信息");
+
+		return userService.updateProfile(User.fromUserFormVO(userFormVo)).toVO();
 	}
 
 }

@@ -2,14 +2,18 @@ package net.ipetty.ibang.api;
 
 import net.ipetty.ibang.vo.LoginResultVO;
 import net.ipetty.ibang.vo.RegisterVO;
+import net.ipetty.ibang.vo.UserFormVO;
 import net.ipetty.ibang.vo.UserVO;
 import retrofit.http.Body;
 import retrofit.http.Field;
 import retrofit.http.FormUrlEncoded;
 import retrofit.http.GET;
+import retrofit.http.Multipart;
 import retrofit.http.POST;
+import retrofit.http.Part;
 import retrofit.http.Path;
 import retrofit.http.Query;
+import retrofit.mime.TypedFile;
 
 /**
  * UserApi
@@ -56,5 +60,31 @@ public interface UserApi {
 	 */
 	@GET("/user/id/{id}")
 	public UserVO getById(@Path("id") Integer id);
+
+	/**
+	 * 根据用户帐号获取用户信息
+	 */
+	@GET("/user/{username}")
+	public UserVO getByUsername(@Path("username") String username);
+
+	/**
+	 * 修改密码
+	 */
+	@FormUrlEncoded
+	@POST("/changePassword")
+	public boolean changePassword(@Field("oldPassword") String oldPassword, @Field("newPassword") String newPassword);
+
+	/**
+	 * 更新用户头像
+	 */
+	@Multipart
+	@POST("/user/updateAvatar")
+	public UserVO updateAvatar(@Part("imageFile") TypedFile imageFile);
+
+	/**
+	 * 修改用户个人信息
+	 */
+	@POST("/user/update")
+	public UserVO update(@Body UserFormVO userFormVo);
 
 }

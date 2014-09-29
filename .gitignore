@@ -11,3 +11,5 @@
 /server/.project
 /server/.settings
 /server/target
+/server/webapp/files
+/server/webapp/temp
