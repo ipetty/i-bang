@@ -47,14 +47,14 @@ public class MainPublishFragment extends Fragment {
 		super.onActivityCreated(savedInstanceState);
 		unLoginView = new UnLoginView(getActivity(), getView(), R.string.un_login_publish);
 
-		layout_jzfu = getActivity().findViewById(R.id.layout_jzfw);
-		layout_edu = getActivity().findViewById(R.id.layout_edu);
-		layout_it = getActivity().findViewById(R.id.layout_it);
-		layout_car = getActivity().findViewById(R.id.layout_car);
-		layout_express = getActivity().findViewById(R.id.layout_express);
-		layout_travel = getActivity().findViewById(R.id.layout_travel);
-		layout_healthy = getActivity().findViewById(R.id.layout_healthy);
-		layout_repair = getActivity().findViewById(R.id.layout_repair);
+		layout_jzfu = getView().findViewById(R.id.layout_jzfw);
+		layout_edu = getView().findViewById(R.id.layout_edu);
+		layout_it = getView().findViewById(R.id.layout_it);
+		layout_car = getView().findViewById(R.id.layout_car);
+		layout_express = getView().findViewById(R.id.layout_express);
+		layout_travel = getView().findViewById(R.id.layout_travel);
+		layout_healthy = getView().findViewById(R.id.layout_healthy);
+		layout_repair = getView().findViewById(R.id.layout_repair);
 
 		layout_jzfu.setOnClickListener(new MyOnClickListener("家政服务"));
 		layout_it.setOnClickListener(new MyOnClickListener("IT服务"));
