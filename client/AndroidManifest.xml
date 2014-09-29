@@ -83,6 +83,10 @@
             android:name="net.ipetty.ibang.android.setting.ChangePwdActivity"
             android:label="@string/title_activity_change_pwd" >
         </activity>
+        <activity
+            android:name="net.ipetty.ibang.android.user.CityActivity"
+            android:label="@string/title_activity_city" >
+        </activity>
     </application>
 
 </manifest>
