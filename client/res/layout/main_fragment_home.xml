@@ -41,12 +41,18 @@
 			    android:background="@drawable/button_white_shape"
 			    android:gravity="center|left"
 			    android:layout_marginLeft="8dp"
-			    android:layout_marginRight="8dp"
 			    android:textColor="@color/gray_color"
 			    android:paddingLeft="8dp"
 			     android:paddingRight="8dp"
 			     android:textSize="14sp"
 			    android:text="查找需要帮助的信息" />
+
+			<ImageView
+			    android:id="@+id/msg"
+			    android:layout_width="48dp"
+			    android:layout_height="48dp"
+			    android:src="@drawable/action_bar_msg" 
+			    style="@style/ActionBarButton"/>
           
             </LinearLayout>
 
@@ -65,230 +71,13 @@
         <FrameLayout
             android:id="@+id/fragment_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_height="match_parent"
+            android:background="@color/yellow_bg_color" >
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical" >
-			
-                <LinearLayout
-                     android:layout_width="match_parent"
-                     android:layout_height="86dp" >
-
-                     <LinearLayout
-                         android:id="@+id/layout_jzfw"
-                         android:layout_width="match_parent"
-						 android:layout_weight="1"
-                         android:layout_height="match_parent"
-                         android:background="@drawable/list_color_item_bg_white"
-                         android:orientation="vertical" >
-
-                         <ImageView
-                             android:id="@+id/imageView"
-                             android:layout_width="wrap_content"
-                             android:layout_height="wrap_content"
-                             android:layout_weight="1"
-                             android:layout_gravity="center"
-                             android:src="@drawable/type_jzfw" />
-
-                         <TextView
-                             android:id="@+id/textView"
-                              android:layout_weight="0.6"
-                             android:layout_width="wrap_content"
-                             android:layout_height="wrap_content"
-                             android:layout_gravity="center"
-                             android:text="家政服务" />
-                     </LinearLayout>
-                     <include layout="@layout/line_vertical_divider" />
-
-           <LinearLayout
-               			android:id="@+id/layout_it"
-                         android:layout_width="match_parent"
-						 android:layout_weight="1"
-                         android:layout_height="match_parent"
-                         android:background="@drawable/list_color_item_bg_white"
-                         android:orientation="vertical" >
-
-                         <ImageView
-                             android:id="@+id/imageView"
-                             android:layout_width="wrap_content"
-                             android:layout_height="wrap_content"
-                              android:layout_weight="1"
-                             android:layout_gravity="center"
-                             android:src="@drawable/type_it" />
-
-                         <TextView
-                             android:id="@+id/textView"
-                              android:layout_weight="0.6"
-                             android:layout_width="wrap_content"
-                             android:layout_height="wrap_content"
-                             android:layout_gravity="center"
-                             android:text="IT服务" />
-                     </LinearLayout>
-
-                     <include layout="@layout/line_vertical_divider" />
-                        <LinearLayout
-                            android:id="@+id/layout_edu"
-                            android:background="@drawable/list_color_item_bg_white"
-                         android:layout_width="match_parent"
-						 android:layout_weight="1"
-                         android:layout_height="match_parent"
-                         android:orientation="vertical" >
-
-                         <ImageView
-                             android:id="@+id/imageView"
-                             android:layout_width="wrap_content"
-                             android:layout_height="wrap_content"
-                              android:layout_weight="1"
-                             android:layout_gravity="center"
-                             android:src="@drawable/type_edu" />
-
-                         <TextView
-                             android:id="@+id/textView"
-                              android:layout_weight="0.6"
-                             android:layout_width="wrap_content"
-                             android:layout_height="wrap_content"
-                             android:layout_gravity="center"
-                             android:text="教育培训" />
-                     </LinearLayout>
-                                          <include layout="@layout/line_vertical_divider" />
-                <LinearLayout
-                    android:id="@+id/layout_healthy"
-                    android:background="@drawable/list_color_item_bg_white"
-                         android:layout_width="match_parent"
-						 android:layout_weight="1"
-                         android:layout_height="match_parent"
-                         android:orientation="vertical" >
-
-                         <ImageView
-                             android:id="@+id/imageView"
-                             android:layout_width="wrap_content"
-                             android:layout_height="wrap_content"
-                              android:layout_weight="1"
-                             android:layout_gravity="center"
-                             android:src="@drawable/type_healthy" />
-
-                         <TextView
-                             android:id="@+id/textView"
-                              android:layout_weight="0.6"
-                             android:layout_width="wrap_content"
-                             android:layout_height="wrap_content"
-                             android:layout_gravity="center"
-                             android:text="健康安全" />
-                     </LinearLayout>
-                     
-                 </LinearLayout>
-<include layout="@layout/line_horizontal_divider" />
-<LinearLayout
-                     android:layout_width="match_parent"
-                     android:layout_height="86dp" >
-
-                     <LinearLayout
-                         android:id="@+id/layout_repair"
-                         android:background="@drawable/list_color_item_bg_white"
-                         android:layout_width="match_parent"
-						 android:layout_weight="1"
-                         android:layout_height="match_parent"
-                         android:orientation="vertical" >
-
-                         <ImageView
-                             android:id="@+id/imageView"
-                             android:layout_width="wrap_content"
-                             android:layout_height="wrap_content"
-                             android:layout_weight="1"
-                             android:layout_gravity="center"
-                             android:src="@drawable/type_repair" />
-
-                         <TextView
-                             
-                             android:id="@+id/textView"
-                              android:layout_weight="0.6"
-                             android:layout_width="wrap_content"
-                             android:layout_height="wrap_content"
-                             android:layout_gravity="center"
-                             android:text="家电维修" />
-                     </LinearLayout>
-                     <include layout="@layout/line_vertical_divider" />
-
-           <LinearLayout
-               			android:id="@+id/layout_car"
-               			android:background="@drawable/list_color_item_bg_white"
-                         android:layout_width="match_parent"
-						 android:layout_weight="1"
-                         android:layout_height="match_parent"
-                         android:orientation="vertical" >
-
-                         <ImageView
-                             android:id="@+id/imageView"
-                             android:layout_width="wrap_content"
-                             android:layout_height="wrap_content"
-                              android:layout_weight="1"
-                             android:layout_gravity="center"
-                             android:src="@drawable/type_car" />
-
-                         <TextView
-                             android:id="@+id/textView"
-                              android:layout_weight="0.6"
-                             android:layout_width="wrap_content"
-                             android:layout_height="wrap_content"
-                             android:layout_gravity="center"
-                             android:text="汽车服务" />
-                     </LinearLayout>
-
-                     <include layout="@layout/line_vertical_divider" />
-                        <LinearLayout
-                            android:id="@+id/layout_travel"
-                            android:background="@drawable/list_color_item_bg_white"
-                         android:layout_width="match_parent"
-						 android:layout_weight="1"
-                         android:layout_height="match_parent"
-                         android:orientation="vertical" >
-
-                         <ImageView
-                             android:id="@+id/imageView"
-                             android:layout_width="wrap_content"
-                             android:layout_height="wrap_content"
-                              android:layout_weight="1"
-                             android:layout_gravity="center"
-                             android:src="@drawable/type_travel" />
-
-                         <TextView
-                             android:id="@+id/textView"
-                              android:layout_weight="0.6"
-                             android:layout_width="wrap_content"
-                             android:layout_height="wrap_content"
-                             android:layout_gravity="center"
-                             android:text="休闲旅游" />
-                     </LinearLayout>
-                                          <include layout="@layout/line_vertical_divider" />
-                <LinearLayout
-                    	android:id="@+id/layout_express"
-                    	android:background="@drawable/list_color_item_bg_white"
-                         android:layout_width="match_parent"
-						 android:layout_weight="1"
-                         android:layout_height="match_parent"
-                         android:orientation="vertical" >
-
-                         <ImageView
-                             android:id="@+id/imageView"
-                             android:layout_width="wrap_content"
-                             android:layout_height="wrap_content"
-                              android:layout_weight="1"
-                             android:layout_gravity="center"
-                             android:src="@drawable/type_express" />
-
-                         <TextView
-                             android:id="@+id/textView"
-                              android:layout_weight="0.6"
-                             android:layout_width="wrap_content"
-                             android:layout_height="wrap_content"
-                             android:layout_gravity="center"
-                             android:text="物流运输" />
-                     </LinearLayout>
-                    
-                 </LinearLayout>
-                  <include layout="@layout/line_horizontal_divider" />
             </LinearLayout>
 
         </FrameLayout>

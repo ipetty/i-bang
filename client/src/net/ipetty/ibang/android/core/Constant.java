@@ -5,6 +5,7 @@ public class Constant {
 
 	public static final String BROADCAST_INTENT_IS_LOGIN = "BROADCAST_INTENT_IS_LOGIN";
 	public static final String BROADCAST_INTENT_UPDATA_USER = "BROADCAST_INTENT_UPDATA_USER";
+	public static final String BROADCAST_INTENT_NEW_MESSAGE = "BROADCAST_INTENT_NEW_MESSAGE";
 
 	public static final String INTENT_CATEGORY = "INTENT_CATEGORY";
 	public static final String INTENT_SUB_CATEGORY = "INTENT_SUB_CATEGORY";
@@ -26,6 +27,8 @@ public class Constant {
 	public static final String INTENT_USER_EDIT_TYPE_SIGNATURE = "signature";
 
 	public static final int REQUEST_CODE_USER_EDIT = 10;
+
+	public static final int REQUEST_CODE_CITY = 100;
 
 	public static final String PIC_USER_HEAD_IMAGE_NAME = "cacheHead.jpg";
 

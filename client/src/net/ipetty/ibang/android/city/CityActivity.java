@@ -1,4 +1,4 @@
-package net.ipetty.ibang.android.user;
+package net.ipetty.ibang.android.city;
 
 import net.ipetty.ibang.R;
 import android.app.Activity;

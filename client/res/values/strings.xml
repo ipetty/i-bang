@@ -59,5 +59,6 @@
     <string name="title_activity_setting">系统设置</string>
     <string name="title_activity_change_pwd">修改密码</string>
     <string name="title_activity_city">CityActivity</string>
+    <string name="title_activity_message">MessageActivity</string>
 
 </resources>

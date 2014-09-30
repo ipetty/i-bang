@@ -84,8 +84,12 @@
             android:label="@string/title_activity_change_pwd" >
         </activity>
         <activity
-            android:name="net.ipetty.ibang.android.user.CityActivity"
+            android:name="net.ipetty.ibang.android.city.CityActivity"
             android:label="@string/title_activity_city" >
+        </activity>
+        <activity
+            android:name="net.ipetty.ibang.MessageActivity"
+            android:label="@string/title_activity_message" >
         </activity>
     </application>
 
