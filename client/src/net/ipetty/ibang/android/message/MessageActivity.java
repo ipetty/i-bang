@@ -1,5 +1,8 @@
-package net.ipetty.ibang;
+package net.ipetty.ibang.android.message;
 
+import net.ipetty.ibang.R;
+import net.ipetty.ibang.R.layout;
+import net.ipetty.ibang.R.menu;
 import android.os.Bundle;
 import android.app.Activity;
 import android.view.Menu;

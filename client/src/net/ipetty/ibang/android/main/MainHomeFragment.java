@@ -1,10 +1,11 @@
 package net.ipetty.ibang.android.main;
 
-import net.ipetty.ibang.MessageActivity;
 import net.ipetty.ibang.R;
 import net.ipetty.ibang.android.city.CityActivity;
 import net.ipetty.ibang.android.core.Constants;
 import net.ipetty.ibang.android.core.ui.UnLoginView;
+import net.ipetty.ibang.android.message.MessageActivity;
+import net.ipetty.ibang.android.type.TypeActivity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -15,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -24,6 +26,8 @@ public class MainHomeFragment extends Fragment {
 	private TextView city;
 	private TextView search;
 	private ImageView msg;
+
+	private Button type, order;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -71,6 +75,19 @@ public class MainHomeFragment extends Fragment {
 				msg.setImageResource(R.drawable.action_bar_msg);
 				Intent intent = new Intent(getActivity(), MessageActivity.class);
 				startActivity(intent);
+			}
+		});
+
+		type = (Button) getView().findViewById(R.id.type);
+		type.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent intent = new Intent();
+				intent.setClass(getActivity(), TypeActivity.class);
+				startActivity(intent);
+
 			}
 		});
 	}
