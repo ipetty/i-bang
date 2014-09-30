@@ -24,7 +24,7 @@ import android.util.Log;
  */
 public abstract class Task<Params, Result> extends AsyncTask<Params, Integer, Result> {
 
-	protected String TAG = getClass().getSimpleName();
+	private String TAG = getClass().getSimpleName();
 
 	protected TaskListener<Result> listener;
 	protected final Activity activity;

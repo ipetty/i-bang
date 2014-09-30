@@ -20,7 +20,7 @@ import cn.sharesdk.framework.ShareSDK;
  */
 public class BaseFragment extends Fragment {
 
-	protected String TAG = getClass().getSimpleName();
+	private String TAG = getClass().getSimpleName();
 
 	private boolean isViewReady = false;
 
