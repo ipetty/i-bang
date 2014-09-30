@@ -17,5 +17,6 @@
 	<evaluation />
 
 	<system_message />
+	<crash_log />
 
 </dataset>

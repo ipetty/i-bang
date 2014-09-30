@@ -182,3 +182,16 @@ create table system_message (
 create index idx_type on system_message(type);
 create index idx_read on system_message(is_read);
 create index idx_created_on on system_message(created_on);
+
+-- crash_log
+create table crash_log (
+	user_id int default null,
+	user_name varchar(50),
+	android_version varchar(20),
+	app_version_code int default null,
+	app_version_name varchar(50),
+	crash_type varchar(20),
+	log text,
+	created_on timestamp default current_timestamp
+) engine=innodb default charset=utf8;
+create index idx_created_on on crash_log(created_on);
