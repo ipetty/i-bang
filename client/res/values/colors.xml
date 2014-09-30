@@ -20,5 +20,7 @@
       <color name="tab_gray_color">#717171</color>
 
       <color name="yellow_bg_color">#FFFAF6</color>
+      <color name="category_bg_color">#F5F5F5</color>
+      
      
 </resources>

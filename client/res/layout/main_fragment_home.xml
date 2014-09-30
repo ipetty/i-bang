@@ -28,6 +28,8 @@
 			        android:layout_height="wrap_content"
 			        android:background="@null"
 			        android:drawableRight="@drawable/ic_arrow_down"
+			        android:paddingLeft="2dp"
+			        android:paddingRight="2dp"
 			        android:text="苏州"
 			         android:textSize="18sp"
 			        android:textColor="@color/base_color"/>
@@ -82,28 +84,45 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="36sp"
-                    android:background="@color/white_color" >
-                    	<Button 
-			        android:id="@+id/type"
-			       android:layout_width="wrap_content"
-			        android:layout_height="wrap_content"
-			        android:layout_weight="1"
-			        android:background="@null"
-			        android:drawableRight="@drawable/ic_arrow_down"
-			        android:text="全部"
-			         android:textSize="14sp"
-			        android:textColor="@color/base_color"/>
-                    	 <include layout="@layout/line_vertical_divider"/>
-                    		<Button 
-			        android:id="@+id/order"
-			       android:layout_width="wrap_content"
-			        android:layout_height="wrap_content"
-			        android:layout_weight="1"
-			        android:background="@null"
-			        android:drawableRight="@drawable/ic_arrow_down"
-			        android:text="最新发布"
-			         android:textSize="14sp"
-			        android:textColor="@color/base_color"/>
+                    android:background="@color/category_bg_color" >
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:layout_weight="1"
+                        android:orientation="vertical" >
+
+                        <Button
+                            android:id="@+id/type"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@null"
+                            android:drawableRight="@drawable/ic_arrow_down_gray"
+                            android:text="全部分类"
+                            android:textColor="@color/gray_color"
+                            android:textSize="16sp" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical" >
+
+                        <Button
+                            android:id="@+id/order"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@null"
+                            android:drawableRight="@drawable/ic_arrow_down_gray"
+                            android:text="最新发布"
+                            android:textColor="@color/gray_color"
+                            android:textSize="16sp" />
+
+                    </LinearLayout>
                 </LinearLayout>
                 <include layout="@layout/line_horizontal_divider"/>
 
