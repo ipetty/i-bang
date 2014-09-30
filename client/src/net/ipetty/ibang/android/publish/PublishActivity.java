@@ -6,7 +6,7 @@ import java.util.Date;
 
 import net.ipetty.ibang.R;
 import net.ipetty.ibang.android.core.ActivityManager;
-import net.ipetty.ibang.android.core.Constant;
+import net.ipetty.ibang.android.core.Constants;
 import net.ipetty.ibang.android.core.MyApplication;
 import net.ipetty.ibang.android.core.ui.BackClickListener;
 import net.ipetty.ibang.android.core.ui.UploadView;
@@ -49,8 +49,8 @@ public class PublishActivity extends Activity {
 
 		user = ((MyApplication) getApplicationContext()).getUser();
 
-		categoryL1 = this.getIntent().getExtras().getString(Constant.INTENT_CATEGORY);
-		categoryL2 = this.getIntent().getExtras().getString(Constant.INTENT_SUB_CATEGORY);
+		categoryL1 = this.getIntent().getExtras().getString(Constants.INTENT_CATEGORY);
+		categoryL2 = this.getIntent().getExtras().getString(Constants.INTENT_SUB_CATEGORY);
 		title = categoryL1 + "-" + categoryL2;
 
 		/* action bar */
@@ -76,8 +76,8 @@ public class PublishActivity extends Activity {
 
 		nicknameView = (TextView) this.findViewById(R.id.nickname);
 		phoneView = (TextView) this.findViewById(R.id.phone);
-		nicknameView.setOnClickListener(new EditOnClickListener(Constant.INTENT_USER_EDIT_TYPE_NICKNAME));
-		phoneView.setOnClickListener(new EditOnClickListener(Constant.INTENT_USER_EDIT_TYPE_PHONE));
+		nicknameView.setOnClickListener(new EditOnClickListener(Constants.INTENT_USER_EDIT_TYPE_NICKNAME));
+		phoneView.setOnClickListener(new EditOnClickListener(Constants.INTENT_USER_EDIT_TYPE_PHONE));
 
 		initFileUpload();
 		initUserInfo(user);
@@ -100,8 +100,8 @@ public class PublishActivity extends Activity {
 		public void onClick(View v) {
 			// TODO Auto-generated method stub
 			Intent intent = new Intent(PublishActivity.this, UserEditActivity.class);
-			intent.putExtra(Constant.INTENT_USER_EDIT_TYPE, this.type);
-			PublishActivity.this.startActivityForResult(intent, Constant.REQUEST_CODE_USER_EDIT);
+			intent.putExtra(Constants.INTENT_USER_EDIT_TYPE, this.type);
+			PublishActivity.this.startActivityForResult(intent, Constants.REQUEST_CODE_USER_EDIT);
 		}
 	};
 
@@ -110,7 +110,7 @@ public class PublishActivity extends Activity {
 		super.onActivityResult(requestCode, resultCode, data);
 		uploadView.onActivityResult(requestCode, resultCode, data);
 
-		if (requestCode == Constant.REQUEST_CODE_USER_EDIT) {
+		if (requestCode == Constants.REQUEST_CODE_USER_EDIT) {
 			// 从上下文重新获取用户信息
 			initUserInfo(((MyApplication) getApplicationContext()).getUser());
 		}

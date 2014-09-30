@@ -1,4 +1,4 @@
-package net.ipetty.ibang.api.util;
+package net.ipetty.ibang.api.interceptor;
 
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;

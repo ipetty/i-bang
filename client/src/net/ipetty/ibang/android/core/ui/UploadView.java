@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.ipetty.ibang.R;
-import net.ipetty.ibang.android.core.Constant;
+import net.ipetty.ibang.android.core.Constants;
 import net.ipetty.ibang.android.core.MyAppStateManager;
 import net.ipetty.ibang.android.core.util.DeviceUtils;
 import net.ipetty.ibang.android.core.util.DialogUtils;
@@ -100,7 +100,7 @@ public class UploadView {
 			} else {
 				curIndex = i - 1;
 				Intent intent = new Intent(activity, UploadLarginImageActivity.class);
-				intent.putExtra(Constant.INTENT_IMAGE_UPLOAD_PATH, pathList.get(curIndex).getAbsolutePath());
+				intent.putExtra(Constants.INTENT_IMAGE_UPLOAD_PATH, pathList.get(curIndex).getAbsolutePath());
 				activity.startActivityForResult(intent, REQUEST_CODE__DELETE);
 			}
 		}
@@ -158,7 +158,7 @@ public class UploadView {
 	private void compressImage(String path) {
 		if (!ImageUtils.isCorrectSize(path)) {
 			Toast.makeText(activity,
-					"您选择的图片过小，请大于" + Constant.COMPRESS_IMAGE_MIN_WIDTH + "x" + Constant.COMPRESS_IMAGE_MIN_HEIGHT,
+					"您选择的图片过小，请大于" + Constants.COMPRESS_IMAGE_MIN_WIDTH + "x" + Constants.COMPRESS_IMAGE_MIN_HEIGHT,
 					Toast.LENGTH_LONG).show();
 			return;
 		}

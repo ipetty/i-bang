@@ -1,7 +1,7 @@
 package net.ipetty.ibang.android.user;
 
 import net.ipetty.ibang.R;
-import net.ipetty.ibang.android.core.Constant;
+import net.ipetty.ibang.android.core.Constants;
 import net.ipetty.ibang.android.core.MyApplication;
 import net.ipetty.ibang.android.core.ui.BackClickListener;
 import net.ipetty.ibang.vo.UserVO;
@@ -69,7 +69,7 @@ public class UserEditActivity extends Activity {
 		user = ((MyApplication) getApplicationContext()).getUser();
 
 		Intent intent = getIntent();
-		type = intent.getStringExtra(Constant.INTENT_USER_EDIT_TYPE);
+		type = intent.getStringExtra(Constants.INTENT_USER_EDIT_TYPE);
 		initType();
 
 		nickname.setText(user.getNickname());
@@ -81,25 +81,25 @@ public class UserEditActivity extends Activity {
 
 	private void initType() {
 		// TODO Auto-generated method stub
-		if (Constant.INTENT_USER_EDIT_TYPE_NICKNAME.equals(type)) {
+		if (Constants.INTENT_USER_EDIT_TYPE_NICKNAME.equals(type)) {
 			nickname_Layout.setVisibility(View.VISIBLE);
 		} else {
 			nickname_Layout.setVisibility(View.GONE);
 		}
 
-		if (Constant.INTENT_USER_EDIT_TYPE_PHONE.equals(type)) {
+		if (Constants.INTENT_USER_EDIT_TYPE_PHONE.equals(type)) {
 			phone_Layout.setVisibility(View.VISIBLE);
 		} else {
 			phone_Layout.setVisibility(View.GONE);
 		}
 
-		if (Constant.INTENT_USER_EDIT_TYPE_SIGNATURE.equals(type)) {
+		if (Constants.INTENT_USER_EDIT_TYPE_SIGNATURE.equals(type)) {
 			signature_Layout.setVisibility(View.VISIBLE);
 		} else {
 			signature_Layout.setVisibility(View.GONE);
 		}
 
-		if (Constant.INTENT_USER_EDIT_TYPE_JOB.equals(type)) {
+		if (Constants.INTENT_USER_EDIT_TYPE_JOB.equals(type)) {
 			job_Layout.setVisibility(View.VISIBLE);
 		} else {
 			job_Layout.setVisibility(View.GONE);

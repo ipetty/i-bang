@@ -3,7 +3,7 @@ package net.ipetty.ibang.android.main;
 import net.ipetty.ibang.MessageActivity;
 import net.ipetty.ibang.R;
 import net.ipetty.ibang.android.city.CityActivity;
-import net.ipetty.ibang.android.core.Constant;
+import net.ipetty.ibang.android.core.Constants;
 import net.ipetty.ibang.android.core.ui.UnLoginView;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -29,8 +29,8 @@ public class MainHomeFragment extends Fragment {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		IntentFilter filter = new IntentFilter();
-		filter.addAction(Constant.BROADCAST_INTENT_IS_LOGIN);
-		filter.addAction(Constant.BROADCAST_INTENT_NEW_MESSAGE);
+		filter.addAction(Constants.BROADCAST_INTENT_IS_LOGIN);
+		filter.addAction(Constants.BROADCAST_INTENT_NEW_MESSAGE);
 		this.getActivity().registerReceiver(broadcastreciver, filter);
 	}
 
@@ -52,7 +52,7 @@ public class MainHomeFragment extends Fragment {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				Intent intent = new Intent(getActivity(), CityActivity.class);
-				startActivityForResult(intent, Constant.REQUEST_CODE_CITY);
+				startActivityForResult(intent, Constants.REQUEST_CODE_CITY);
 			}
 		});
 
@@ -82,11 +82,11 @@ public class MainHomeFragment extends Fragment {
 			// TODO Auto-generated method stub
 			String action = intent.getAction();
 
-			if (Constant.BROADCAST_INTENT_IS_LOGIN.equals(action)) {
+			if (Constants.BROADCAST_INTENT_IS_LOGIN.equals(action)) {
 
 			}
 
-			if (Constant.BROADCAST_INTENT_NEW_MESSAGE.equals(action)) {
+			if (Constants.BROADCAST_INTENT_NEW_MESSAGE.equals(action)) {
 				setNewMessage();
 			}
 

@@ -1,7 +1,7 @@
 package net.ipetty.ibang.android.main;
 
 import net.ipetty.ibang.R;
-import net.ipetty.ibang.android.core.Constant;
+import net.ipetty.ibang.android.core.Constants;
 import net.ipetty.ibang.android.core.ui.UnLoginView;
 import net.ipetty.ibang.android.publish.PublishSubTypeActivity;
 import android.content.BroadcastReceiver;
@@ -33,7 +33,7 @@ public class MainPublishFragment extends Fragment {
 		super.onCreate(savedInstanceState);
 
 		IntentFilter filter = new IntentFilter();
-		filter.addAction(Constant.BROADCAST_INTENT_IS_LOGIN);
+		filter.addAction(Constants.BROADCAST_INTENT_IS_LOGIN);
 		this.getActivity().registerReceiver(broadcastreciver, filter);
 	}
 
@@ -82,7 +82,7 @@ public class MainPublishFragment extends Fragment {
 		public void onClick(View v) {
 			// TODO Auto-generated method stub
 			Intent intent = new Intent(getActivity(), PublishSubTypeActivity.class);
-			intent.putExtra(Constant.INTENT_CATEGORY, this.type);
+			intent.putExtra(Constants.INTENT_CATEGORY, this.type);
 			startActivity(intent);
 		}
 	}
@@ -100,7 +100,7 @@ public class MainPublishFragment extends Fragment {
 			// TODO Auto-generated method stub
 			String action = intent.getAction();
 
-			if (Constant.BROADCAST_INTENT_IS_LOGIN.equals(action)) {
+			if (Constants.BROADCAST_INTENT_IS_LOGIN.equals(action)) {
 				init();
 			}
 

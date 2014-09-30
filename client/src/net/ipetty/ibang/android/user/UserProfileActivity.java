@@ -4,7 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 
 import net.ipetty.ibang.R;
-import net.ipetty.ibang.android.core.Constant;
+import net.ipetty.ibang.android.core.Constants;
 import net.ipetty.ibang.android.core.MyApplication;
 import net.ipetty.ibang.android.core.ui.BackClickListener;
 import net.ipetty.ibang.android.core.ui.ModDialogItem;
@@ -35,7 +35,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 public class UserProfileActivity extends Activity {
 	private ImageView avatar; // 头像
 	private Dialog changeAvatarDialog; // 更换头像对话框
-	private String mImageName = Constant.PIC_USER_HEAD_IMAGE_NAME; // 默认头像值
+	private String mImageName = Constants.PIC_USER_HEAD_IMAGE_NAME; // 默认头像值
 	private ArrayList<ModDialogItem> cameraItems;
 	private TextView nicknameView;
 	private TextView phoneView;
@@ -89,10 +89,10 @@ public class UserProfileActivity extends Activity {
 		signatureView = (TextView) this.findViewById(R.id.signature);
 
 		avatar.setOnClickListener(changeAvatarClick);
-		nickname_layout.setOnClickListener(new EditOnClickListener(Constant.INTENT_USER_EDIT_TYPE_NICKNAME));
-		phone_layout.setOnClickListener(new EditOnClickListener(Constant.INTENT_USER_EDIT_TYPE_PHONE));
-		signature_layout.setOnClickListener(new EditOnClickListener(Constant.INTENT_USER_EDIT_TYPE_SIGNATURE));
-		job_layout.setOnClickListener(new EditOnClickListener(Constant.INTENT_USER_EDIT_TYPE_JOB));
+		nickname_layout.setOnClickListener(new EditOnClickListener(Constants.INTENT_USER_EDIT_TYPE_NICKNAME));
+		phone_layout.setOnClickListener(new EditOnClickListener(Constants.INTENT_USER_EDIT_TYPE_PHONE));
+		signature_layout.setOnClickListener(new EditOnClickListener(Constants.INTENT_USER_EDIT_TYPE_SIGNATURE));
+		job_layout.setOnClickListener(new EditOnClickListener(Constants.INTENT_USER_EDIT_TYPE_JOB));
 
 		gender_layout.setOnClickListener(new OnClickListener() {
 			@Override
@@ -104,7 +104,7 @@ public class UserProfileActivity extends Activity {
 
 		initTextUser(user);
 		if (StringUtils.isNotEmpty(user.getAvatar())) {
-			ImageLoader.getInstance().displayImage(Constant.FILE_SERVER_BASE + user.getAvatar(), avatar, options);
+			ImageLoader.getInstance().displayImage(Constants.FILE_SERVER_BASE + user.getAvatar(), avatar, options);
 		} else {
 			avatar.setImageResource(R.drawable.default_avatar);
 		}
@@ -134,8 +134,8 @@ public class UserProfileActivity extends Activity {
 		public void onClick(View v) {
 			// TODO Auto-generated method stub
 			Intent intent = new Intent(UserProfileActivity.this, UserEditActivity.class);
-			intent.putExtra(Constant.INTENT_USER_EDIT_TYPE, this.type);
-			UserProfileActivity.this.startActivityForResult(intent, Constant.REQUEST_CODE_USER_EDIT);
+			intent.putExtra(Constants.INTENT_USER_EDIT_TYPE, this.type);
+			UserProfileActivity.this.startActivityForResult(intent, Constants.REQUEST_CODE_USER_EDIT);
 		}
 	};
 
@@ -180,8 +180,8 @@ public class UserProfileActivity extends Activity {
 		intent.putExtra("crop", "true");
 		intent.putExtra("aspectX", 1);
 		intent.putExtra("aspectY", 1);
-		intent.putExtra("outputX", Constant.ZOOM_IMAGE_MAX_WIDTH);
-		intent.putExtra("outputY", Constant.ZOOM_IMAGE_MAX_HEIGHT);
+		intent.putExtra("outputX", Constants.ZOOM_IMAGE_MAX_WIDTH);
+		intent.putExtra("outputY", Constants.ZOOM_IMAGE_MAX_HEIGHT);
 		intent.putExtra("noFaceDetection", true);
 		intent.putExtra("scale", true);
 		intent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
@@ -215,7 +215,7 @@ public class UserProfileActivity extends Activity {
 			updateAvatar(picture.getAbsolutePath());
 		}
 
-		if (requestCode == Constant.REQUEST_CODE_USER_EDIT) {
+		if (requestCode == Constants.REQUEST_CODE_USER_EDIT) {
 			// 从上下文重新获取用户信息
 			initTextUser(((MyApplication) getApplicationContext()).getUser());
 		}

@@ -4,7 +4,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLDecoder;
 
-import net.ipetty.ibang.api.util.ApiException;
+import net.ipetty.ibang.api.exception.ApiException;
 import net.ipetty.ibang.api.util.FileUtils;
 
 import org.junit.runner.RunWith;

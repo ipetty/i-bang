@@ -2,9 +2,9 @@ package net.ipetty.ibang.android.publish;
 
 import net.ipetty.ibang.R;
 import net.ipetty.ibang.android.core.ActivityManager;
-import net.ipetty.ibang.android.core.Constant;
+import net.ipetty.ibang.android.core.Constants;
 import net.ipetty.ibang.android.core.ui.BackClickListener;
-import net.ipetty.ibang.utils.SeekCategoryUtils;
+import net.ipetty.ibang.util.SeekCategoryUtils;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -31,7 +31,7 @@ public class PublishSubTypeActivity extends Activity {
 		setContentView(R.layout.activity_publish_sub_type);
 
 		ActivityManager.getInstance().addActivity(this);
-		title = this.getIntent().getExtras().getString(Constant.INTENT_CATEGORY);
+		title = this.getIntent().getExtras().getString(Constants.INTENT_CATEGORY);
 		if (title == null) {
 			finish();
 		}
@@ -51,8 +51,8 @@ public class PublishSubTypeActivity extends Activity {
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				// TODO Auto-generated method stub
 				Intent intent = new Intent(PublishSubTypeActivity.this, PublishActivity.class);
-				intent.putExtra(Constant.INTENT_CATEGORY, title);
-				intent.putExtra(Constant.INTENT_SUB_CATEGORY, subCategory[position]);
+				intent.putExtra(Constants.INTENT_CATEGORY, title);
+				intent.putExtra(Constants.INTENT_SUB_CATEGORY, subCategory[position]);
 				startActivity(intent);
 				finish();
 			}

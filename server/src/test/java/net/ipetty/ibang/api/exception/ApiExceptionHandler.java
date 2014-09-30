@@ -1,4 +1,4 @@
-package net.ipetty.ibang.api.util;
+package net.ipetty.ibang.api.exception;
 
 import java.io.IOException;
 

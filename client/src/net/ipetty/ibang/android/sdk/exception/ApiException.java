@@ -1,4 +1,4 @@
-package net.ipetty.ibang.api.util;
+package net.ipetty.ibang.android.sdk.exception;
 
 /**
  * Api层公用的Exception.

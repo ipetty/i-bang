@@ -1,7 +1,7 @@
 package net.ipetty.ibang.android.main;
 
 import net.ipetty.ibang.R;
-import net.ipetty.ibang.android.core.Constant;
+import net.ipetty.ibang.android.core.Constants;
 import net.ipetty.ibang.android.core.MyApplication;
 import net.ipetty.ibang.android.core.ui.UnLoginView;
 import net.ipetty.ibang.android.core.util.AppUtils;
@@ -45,8 +45,8 @@ public class MainMeFragment extends Fragment {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		IntentFilter filter = new IntentFilter();
-		filter.addAction(Constant.BROADCAST_INTENT_IS_LOGIN);
-		filter.addAction(Constant.BROADCAST_INTENT_UPDATA_USER);
+		filter.addAction(Constants.BROADCAST_INTENT_IS_LOGIN);
+		filter.addAction(Constants.BROADCAST_INTENT_UPDATA_USER);
 		this.getActivity().registerReceiver(broadcastreciver, filter);
 	}
 
@@ -101,11 +101,11 @@ public class MainMeFragment extends Fragment {
 			// TODO Auto-generated method stub
 			String action = intent.getAction();
 
-			if (Constant.BROADCAST_INTENT_IS_LOGIN.equals(action)) {
+			if (Constants.BROADCAST_INTENT_IS_LOGIN.equals(action)) {
 				init();
 			}
 
-			if (Constant.BROADCAST_INTENT_UPDATA_USER.equals(action)) {
+			if (Constants.BROADCAST_INTENT_UPDATA_USER.equals(action)) {
 				initUser();
 			}
 
@@ -118,7 +118,7 @@ public class MainMeFragment extends Fragment {
 		signature.setText(user.getSignature());
 
 		if (StringUtils.isNotBlank(user.getAvatar())) {
-			String str = Constant.FILE_SERVER_BASE + user.getAvatar();
+			String str = Constants.FILE_SERVER_BASE + user.getAvatar();
 			ImageLoader.getInstance().displayImage(str, avatar, options);
 		} else {
 			avatar.setImageResource(R.drawable.default_avatar);

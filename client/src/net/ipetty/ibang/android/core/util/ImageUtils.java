@@ -5,7 +5,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 
-import net.ipetty.ibang.android.core.Constant;
+import net.ipetty.ibang.android.core.Constants;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
@@ -52,8 +52,8 @@ public class ImageUtils {
 		int w = size[0];
 		int h = size[1];
 		// 最小宽高
-		float minW = Constant.COMPRESS_IMAGE_MIN_WIDTH;
-		float minH = Constant.COMPRESS_IMAGE_MIN_HEIGHT;
+		float minW = Constants.COMPRESS_IMAGE_MIN_WIDTH;
+		float minH = Constants.COMPRESS_IMAGE_MIN_HEIGHT;
 		if (w < minW && h < minH) {
 			return false;
 		}
@@ -75,8 +75,8 @@ public class ImageUtils {
 		int[] size = getSize(srcPath);
 		int w = size[0];
 		int h = size[1];
-		float ww = Constant.COMPRESS_IMAGE_MAX_WIDTH;
-		float hh = Constant.COMPRESS_IMAGE_MAX_HEIGHT;
+		float ww = Constants.COMPRESS_IMAGE_MAX_WIDTH;
+		float hh = Constants.COMPRESS_IMAGE_MAX_HEIGHT;
 		// 缩放比
 		int be = 1;// be=1表示不缩放
 		be = (int) ((w / ww + h / hh) / 2);
@@ -95,7 +95,7 @@ public class ImageUtils {
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		int options = 80;
 		image.compress(Bitmap.CompressFormat.JPEG, options, baos);
-		while (baos.toByteArray().length / 1024 > Constant.COMPRESS_IMAGE_KB && options > 20) { // 压缩后图片过大，继续压缩
+		while (baos.toByteArray().length / 1024 > Constants.COMPRESS_IMAGE_KB && options > 20) { // 压缩后图片过大，继续压缩
 			baos.reset();// 即清空baos
 			image.compress(Bitmap.CompressFormat.JPEG, options, baos);
 			options -= 10;// 每次都减少10
@@ -116,8 +116,8 @@ public class ImageUtils {
 	public static Bitmap compressImageScaled(Bitmap bm) {
 		int w = bm.getWidth();
 		int h = bm.getHeight();
-		float ww = Constant.COMPRESS_IMAGE_MAX_WIDTH;
-		float hh = Constant.COMPRESS_IMAGE_MAX_HEIGHT;
+		float ww = Constants.COMPRESS_IMAGE_MAX_WIDTH;
+		float hh = Constants.COMPRESS_IMAGE_MAX_HEIGHT;
 		if (h > w && w < ww) {
 			return bm;
 		}

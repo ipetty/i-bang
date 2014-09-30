@@ -1,7 +1,7 @@
 package net.ipetty.ibang.android.setting;
 
 import net.ipetty.ibang.R;
-import net.ipetty.ibang.android.core.Constant;
+import net.ipetty.ibang.android.core.Constants;
 import net.ipetty.ibang.android.core.MyApplication;
 import net.ipetty.ibang.android.core.ui.BackClickListener;
 import net.ipetty.ibang.android.core.util.AppUtils;
@@ -52,7 +52,7 @@ public class SettingActivity extends Activity {
 			}
 		});
 		if (StringUtils.isNotEmpty(user.getAvatar())) {
-			ImageLoader.getInstance().displayImage(Constant.FILE_SERVER_BASE + user.getAvatar(), avatar, options);
+			ImageLoader.getInstance().displayImage(Constants.FILE_SERVER_BASE + user.getAvatar(), avatar, options);
 		} else {
 			avatar.setImageResource(R.drawable.default_avatar);
 		}

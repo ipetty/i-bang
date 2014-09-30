@@ -3,7 +3,7 @@ package net.ipetty.ibang.android.publish;
 import java.io.File;
 
 import net.ipetty.ibang.R;
-import net.ipetty.ibang.android.core.Constant;
+import net.ipetty.ibang.android.core.Constants;
 import net.ipetty.ibang.android.core.ui.BackClickListener;
 import uk.co.senab.photoview.PhotoViewAttacher;
 import android.app.Activity;
@@ -40,7 +40,7 @@ public class UploadLarginImageActivity extends Activity {
 		});
 
 		Intent intent = getIntent();
-		path = intent.getStringExtra(Constant.INTENT_IMAGE_UPLOAD_PATH);
+		path = intent.getStringExtra(Constants.INTENT_IMAGE_UPLOAD_PATH);
 
 		image = (ImageView) this.findViewById(R.id.image);
 		// 设置初始图片

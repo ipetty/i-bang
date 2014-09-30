@@ -1,4 +1,4 @@
-package net.ipetty.ibang.utils;
+package net.ipetty.ibang.util;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
