@@ -72,15 +72,8 @@ public class LoginActivity extends Activity {
 				return;
 			}
 
-			// Intent intent = new Intent(LoginActivity.this,
-			// MainActivity.class);
-			// startActivity(intent);
-
-			finish();
-
-			// new UserLogin(LoginActivity.this).setListener(new
-			// LoginTaskListener(LoginActivity.this)).execute(account,
-			// password);
+			new LoginTask(LoginActivity.this).setListener(new LoginTaskListener(LoginActivity.this)).execute(account,
+					password);
 		}
 	};
 

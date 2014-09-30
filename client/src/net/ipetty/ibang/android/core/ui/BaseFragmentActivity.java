@@ -12,7 +12,7 @@ import cn.sharesdk.framework.ShareSDK;
 
 public class BaseFragmentActivity extends FragmentActivity {
 
-	protected String TAG = getClass().getSimpleName();
+	private String TAG = getClass().getSimpleName();
 
 	private boolean isViewReady = false;
 
