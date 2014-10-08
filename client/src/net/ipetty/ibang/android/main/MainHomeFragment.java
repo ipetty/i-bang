@@ -5,19 +5,27 @@ import net.ipetty.ibang.android.city.CityActivity;
 import net.ipetty.ibang.android.core.Constants;
 import net.ipetty.ibang.android.core.ui.UnLoginView;
 import net.ipetty.ibang.android.message.MessageActivity;
+import net.ipetty.ibang.android.seek.SeekActivity;
 import net.ipetty.ibang.android.type.TypeActivity;
+
+import org.apache.commons.lang3.StringUtils;
+
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 public class MainHomeFragment extends Fragment {
@@ -26,6 +34,10 @@ public class MainHomeFragment extends Fragment {
 	private TextView city;
 	private TextView search;
 	private ImageView msg;
+	private String category ="";
+	private String subCategory ="";
+	private ListView list;
+	private MainHomeAdapter adapter;
 
 	private Button type, order;
 
@@ -64,7 +76,7 @@ public class MainHomeFragment extends Fragment {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-
+				
 			}
 		});
 
@@ -86,10 +98,28 @@ public class MainHomeFragment extends Fragment {
 				// TODO Auto-generated method stub
 				Intent intent = new Intent();
 				intent.setClass(getActivity(), TypeActivity.class);
-				startActivity(intent);
+				intent.putExtra(Constants.INTENT_CATEGORY, category);
+				intent.putExtra(Constants.INTENT_SUB_CATEGORY, subCategory);
+				startActivityForResult(intent, Constants.REQUEST_CODE_CATEGORY);
 
 			}
 		});
+		
+		list = (ListView) getView().findViewById(R.id.listView);
+		adapter = new MainHomeAdapter(getActivity());
+		list.setAdapter(adapter);
+		list.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, int position,
+					long id) {
+				// TODO Auto-generated method stub
+				Intent intent = new Intent(getActivity(),SeekActivity.class);
+				intent.putExtra(Constants.INTENT_SEEK_ID, id);
+				startActivity(intent);
+			}
+		});
+		
 	}
 
 	private BroadcastReceiver broadcastreciver = new BroadcastReceiver() {
@@ -115,4 +145,31 @@ public class MainHomeFragment extends Fragment {
 		}
 
 	};
+
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		// TODO Auto-generated method stub
+		super.onActivityResult(requestCode, resultCode, data);
+		
+		if (requestCode ==  Constants.REQUEST_CODE_CATEGORY) {
+			if (resultCode == FragmentActivity.RESULT_OK) {
+				Intent intent = data;
+				category = intent.getStringExtra(Constants.INTENT_CATEGORY);
+				subCategory = intent.getStringExtra(Constants.INTENT_SUB_CATEGORY);
+				setCategoryText(category,subCategory);
+				
+			}
+		}
+	}
+
+	private void setCategoryText(String category, String subCategory) {
+		String str = subCategory;
+		if(StringUtils.isEmpty(str)){
+			str = category;
+		}
+		if(StringUtils.isEmpty(str)){
+			str = "全部分类";
+		}
+		type.setText(str);
+	}
 }

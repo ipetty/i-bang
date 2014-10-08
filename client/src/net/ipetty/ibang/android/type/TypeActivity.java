@@ -3,10 +3,15 @@ package net.ipetty.ibang.android.type;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import org.apache.commons.lang3.StringUtils;
+
 import net.ipetty.ibang.R;
+import net.ipetty.ibang.android.core.Constants;
 import net.ipetty.ibang.util.SeekCategoryUtils;
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,7 +28,7 @@ public class TypeActivity extends Activity {
 	private ArrayList<String> categoryL1 = new ArrayList<String>();
 
 	private String category = CATEGORY_ALL_STRING;
-	private String subCategroy = CATEGORY_ALL_STRING;
+	private String subCategory = CATEGORY_ALL_STRING;
 
 	private ListView list1;
 	private ListView list2;
@@ -34,6 +39,17 @@ public class TypeActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_type);
+		
+		Intent intent = getIntent();
+		category = intent.getStringExtra(Constants.INTENT_CATEGORY);
+		subCategory = intent.getStringExtra(Constants.INTENT_SUB_CATEGORY);
+		if(StringUtils.isEmpty(category)){
+			category = CATEGORY_ALL_STRING;
+		}
+		if(StringUtils.isEmpty(subCategory)){
+			subCategory = CATEGORY_ALL_STRING;
+		}
+		
 
 		list1 = (ListView) this.findViewById(R.id.list1);
 		list2 = (ListView) this.findViewById(R.id.list2);
@@ -60,17 +76,32 @@ public class TypeActivity extends Activity {
 
 		adapter2 = new SubCategoryAdapter();
 		list2.setAdapter(adapter2);
-		adapter2.load(getList2(CATEGORY_ALL_STRING));
-		adapter2.setSelected(subCategroy);
+		adapter2.load(getList2(category));
+		adapter2.setSelected(subCategory);
 
 		list2.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				// TODO Auto-generated method stub
-				subCategroy = (String) adapter2.getItem(position);
+				subCategory = (String) adapter2.getItem(position);
 				adapter2.setSelectedPosition(position);
 				adapter2.notifyDataSetInvalidated();
-
+				
+				String category1 = category;
+				String subCategory1 = subCategory;
+				
+				if(category == CATEGORY_ALL_STRING){
+					category1 ="";
+				}
+				
+				if(subCategory == CATEGORY_ALL_STRING){
+					subCategory1 ="";
+				}
+				
+				Intent intent = new Intent();
+				intent.putExtra(Constants.INTENT_CATEGORY, category1);
+				intent.putExtra(Constants.INTENT_SUB_CATEGORY, subCategory1);
+				setResult(RESULT_OK, intent);
 				finish();
 			}
 		});

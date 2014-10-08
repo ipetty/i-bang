@@ -1,0 +1,200 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="@color/yellow_bg_color"
+    tools:context=".SeekActivity" >
+
+ 	 	<include
+        android:id="@+id/include"
+        layout="@layout/action_bar_simple_back" />
+
+ 	 	<ScrollView
+ 	 	    android:id="@+id/scrollView1"
+ 	 	    android:layout_width="match_parent"
+ 	 	    android:layout_height="wrap_content" >
+
+ 	 	    <LinearLayout
+ 	 	        android:layout_width="match_parent"
+ 	 	        android:layout_height="match_parent"
+ 	 	        android:orientation="vertical" >
+
+ 	 	        <ImageSwitcher
+ 	 	            android:id="@+id/imageSwitcher"
+ 	 	            android:layout_width="fill_parent"
+ 	 	            android:layout_height="200dp"
+ 	 	            android:background="@color/white_color" 
+ 	 	           	android:visibility="gone">
+ 	 	        </ImageSwitcher>
+
+ 	 	        <RelativeLayout
+ 	 	            android:layout_width="match_parent"
+ 	 	            android:layout_height="wrap_content"
+ 	 	            android:background="@color/white_color"
+ 	 	            android:padding="8dp" >
+
+ 	 	            <TextView
+ 	 	                android:id="@+id/content"
+ 	 	                android:layout_width="wrap_content"
+ 	 	                android:layout_height="wrap_content"
+ 	 	                android:layout_alignParentLeft="true"
+ 	 	                android:layout_alignParentTop="true"
+ 	 	                android:text="我测试是事实是否实施 上Wii成为i测试时说车事实上是是是覅是hcishdichscis我测试后是否尝试尝试和城市化w我测试是事实是否实施我ishishishsihsishish2测试时城市和城市化城市"
+ 	 	                android:color="@color/black_color" 
+ 	 	                android:textSize="16dp" />
+
+ 	 	            <TextView
+ 	 	                android:id="@+id/textView"
+ 	 	                android:layout_width="wrap_content"
+ 	 	                android:layout_height="wrap_content"
+ 	 	                android:layout_alignLeft="@+id/content"
+ 	 	                android:layout_marginTop="4dp"
+ 	 	                 android:layout_below="@+id/content"
+ 	 	                android:text="截止日期"
+ 	 	                android:textSize="14dp"
+ 	 	                android:textColor="@color/gray_color" />
+
+ 	 	            <TextView
+ 	 	                android:id="@+id/TextView01"
+ 	 	                android:layout_width="wrap_content"
+ 	 	                android:layout_height="wrap_content"
+ 	 	                android:layout_alignBaseline="@+id/closedOn"
+ 	 	                android:layout_alignBottom="@+id/closedOn"
+ 	 	                android:layout_toLeftOf="@+id/delegateNumber"
+ 	 	                android:text="应征人数"
+ 	 	                android:textSize="14dp"
+ 	 	                android:textColor="@color/gray_color" />
+
+ 	 	            <TextView
+ 	 	                android:id="@+id/closedOn"
+ 	 	                android:layout_width="wrap_content"
+ 	 	                android:layout_height="wrap_content"
+ 	 	                android:layout_alignBaseline="@+id/textView"
+ 	 	                android:layout_alignBottom="@+id/textView"
+ 	 	                android:layout_toRightOf="@+id/textView"
+ 	 	                android:text="2014-12-12"
+ 	 	                android:textSize="14dp"
+ 	 	                android:textColor="@color/gray_color" />
+
+ 	 	            <TextView
+ 	 	                android:id="@+id/delegateNumber"
+ 	 	                android:layout_width="wrap_content"
+ 	 	                android:layout_height="wrap_content"
+ 	 	                android:layout_alignBaseline="@+id/TextView01"
+ 	 	                android:layout_alignBottom="@+id/TextView01"
+ 	 	                android:layout_alignRight="@+id/content"
+ 	 	                android:text="100"
+ 	 	                android:textSize="14dp"
+ 	 	                android:textColor="@color/gray_color" />
+
+ 	 	        </RelativeLayout>
+ 	 	        <include layout="@layout/line_horizontal_divider" />
+ 	 	         <include layout="@layout/line_space" />
+
+ 	 	         <LinearLayout
+ 	 	             android:layout_width="match_parent"
+ 	 	             android:layout_height="wrap_content"
+ 	 	             android:orientation="vertical"
+ 	 	             android:id="@+id/contact"
+ 	 	             android:visibility="gone" >
+
+ 	 	             <include layout="@layout/line_horizontal_divider" />
+
+ 	 	             <LinearLayout
+ 	 	                 android:layout_width="fill_parent"
+ 	 	                 android:layout_height="46dp"
+ 	 	                 android:background="@drawable/list_color_item_bg_white"
+ 	 	                 android:gravity="center_vertical" >
+
+ 	 	                 <TextView
+ 	 	                     android:layout_width="wrap_content"
+ 	 	                     android:layout_height="wrap_content"
+ 	 	                     android:layout_marginLeft="16dp"
+ 	 	                     android:text="姓名"
+ 	 	                     android:textColor="@color/black_color"
+ 	 	                     android:textSize="16sp" />
+
+ 	 	                 <TextView
+ 	 	                     android:id="@+id/nickname"
+ 	 	                     android:layout_width="0.0dip"
+ 	 	                     android:layout_height="wrap_content"
+ 	 	                     android:layout_marginLeft="16dp"
+ 	 	                     android:layout_marginRight="16dp"
+ 	 	                     android:layout_weight="1.0"
+ 	 	                     android:background="@null"
+ 	 	                     android:focusable="false"
+ 	 	                     android:gravity="right|center_vertical"
+ 	 	                     android:hint="请输入姓名"
+ 	 	                     android:singleLine="true"
+ 	 	                     android:textColor="@color/gray_color"
+ 	 	                     android:textColorHint="@color/gray_color"
+ 	 	                     android:textSize="16sp"
+ 	 	                     android:windowSoftInputMode="stateHidden" />
+ 	 	             </LinearLayout>
+
+ 	 	             <include layout="@layout/line_horizontal_divider" />
+
+ 	 	             <LinearLayout
+ 	 	                 android:layout_width="fill_parent"
+ 	 	                 android:layout_height="46dp"
+ 	 	                 android:background="@drawable/list_color_item_bg_white"
+ 	 	                 android:gravity="center_vertical" >
+
+ 	 	                 <TextView
+ 	 	                     android:layout_width="wrap_content"
+ 	 	                     android:layout_height="wrap_content"
+ 	 	                     android:layout_marginLeft="16dp"
+ 	 	                     android:text="手机"
+ 	 	                     android:textColor="@color/black_color"
+ 	 	                     android:textSize="16sp" />
+
+ 	 	                 <TextView
+ 	 	                     android:id="@+id/phone"
+ 	 	                     android:layout_width="0.0dip"
+ 	 	                     android:layout_height="wrap_content"
+ 	 	                     android:layout_marginLeft="16dp"
+ 	 	                     android:layout_marginRight="16dp"
+ 	 	                     android:layout_weight="1.0"
+ 	 	                     android:background="@null"
+ 	 	                     android:focusable="false"
+ 	 	                     android:gravity="right|center_vertical"
+ 	 	                     android:hint="请输入手机"
+ 	 	                     android:singleLine="true"
+ 	 	                     android:textColor="@color/gray_color"
+ 	 	                     android:textColorHint="@color/gray_color"
+ 	 	                     android:textSize="16sp"
+ 	 	                     android:windowSoftInputMode="stateHidden" />
+ 	 	             </LinearLayout>
+
+ 	 	             <include layout="@layout/line_horizontal_divider" />
+					<include layout="@layout/line_space" />
+ 	 	         </LinearLayout>
+
+ 	 	         <LinearLayout
+ 	 	             android:id="@+id/offer_layout"
+ 	 	             android:layout_width="match_parent"
+ 	 	             android:layout_height="match_parent"
+ 	 	             android:orientation="vertical" >
+									<TextView
+				        android:id="@+id/offer"
+				        android:layout_width="match_parent"
+				        android:layout_height="46dp"
+				        android:layout_marginLeft="24dp"
+				        android:layout_marginRight="24dp"
+				        android:gravity="center"
+				        android:layout_below="@+id/login_linearLayout"
+				        android:background="@drawable/button_orange_shape"
+				        android:textColor="@color/white_color"
+				        android:textSize="24sp"
+				        android:text="我要应征" />
+ 	 	         </LinearLayout>
+ 	 	        
+ 	 	    </LinearLayout>
+ 	 	</ScrollView>
+
+</LinearLayout>

@@ -15,7 +15,9 @@ public class Constants {
 	public static final String INTENT_CATEGORY = "INTENT_CATEGORY";
 	public static final String INTENT_SUB_CATEGORY = "INTENT_SUB_CATEGORY";
 	public static final String INTENT_IMAGE_UPLOAD_PATH = "INTENT_IMAGE_UPLOAD_PATH";
-
+	public static final String INTENT_SEEK_ID = "INTENT_SEEK_ID";
+	
+	
 	public final static float COMPRESS_IMAGE_MAX_WIDTH = 960f;
 	public final static float COMPRESS_IMAGE_MAX_HEIGHT = 1280f;
 	public final static float COMPRESS_IMAGE_MIN_WIDTH = 64f;
@@ -32,9 +34,10 @@ public class Constants {
 	public static final String INTENT_USER_EDIT_TYPE_SIGNATURE = "signature";
 
 	public static final int REQUEST_CODE_USER_EDIT = 10;
-
 	public static final int REQUEST_CODE_CITY = 100;
+	public static final int REQUEST_CODE_CATEGORY = 101;
 
 	public static final String PIC_USER_HEAD_IMAGE_NAME = "cacheHead.jpg";
+
 
 }

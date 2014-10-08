@@ -93,8 +93,16 @@
         </activity>
         <activity
             android:name="net.ipetty.ibang.android.type.TypeActivity"
-            android:label="@string/title_activity_type" 
-            android:theme="@style/TopDialog">
+            android:label="@string/title_activity_type"
+            android:theme="@style/TopDialog" >
+        </activity>
+        <activity
+            android:name="net.ipetty.ibang.android.seek.SeekActivity"
+            android:label="@string/title_activity_seek" >
+        </activity>
+        <activity
+            android:name="net.ipetty.ibang.android.seek.OfferActivity"
+            android:label="@string/title_activity_offer" >
         </activity>
     </application>
 
