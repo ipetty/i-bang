@@ -62,6 +62,6 @@
     <string name="title_activity_message">消息中心</string>
     <string name="title_activity_type">分类列表</string>
     <string name="title_activity_seek">求助详细</string>
-    <string name="title_activity_offer">OfferActivity</string>
+    <string name="title_activity_offer">应征</string>
 
 </resources>

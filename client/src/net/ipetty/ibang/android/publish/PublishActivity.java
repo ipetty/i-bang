@@ -112,7 +112,8 @@ public class PublishActivity extends Activity {
 
 		if (requestCode == Constants.REQUEST_CODE_USER_EDIT) {
 			// 从上下文重新获取用户信息
-			initUserInfo(((MyApplication) getApplicationContext()).getUser());
+			user = ((MyApplication) getApplicationContext()).getUser();
+			initUserInfo(user);
 		}
 
 	}
