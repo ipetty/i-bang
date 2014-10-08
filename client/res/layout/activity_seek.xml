@@ -2,12 +2,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/yellow_bg_color"
     android:orientation="vertical"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:background="@color/yellow_bg_color"
     tools:context=".SeekActivity" >
 
  	 	<include
@@ -28,10 +28,52 @@
  	 	            android:id="@+id/imageSwitcher"
  	 	            android:layout_width="fill_parent"
  	 	            android:layout_height="200dp"
- 	 	            android:background="@color/white_color" 
- 	 	           	android:visibility="gone">
+ 	 	            android:background="@color/white_color" >
  	 	        </ImageSwitcher>
+ 	 	        
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="left"
+    android:orientation="horizontal"
+	android:paddingTop="8dp" 
+	android:paddingLeft="8dp"
+	android:paddingRight="8dp"
+    android:background="@drawable/list_color_item_bg_white" >
 
+			    <ImageView
+			        android:id="@+id/avatar"
+			        android:layout_width="32dp"
+			        android:layout_height="32dp"
+			        android:layout_alignParentBottom="true"
+			        android:layout_alignParentLeft="true"
+			        android:scaleType="fitXY"
+			        android:src="@drawable/default_avatar" />
+
+			    <TextView
+			        android:id="@+id/name"
+			        android:layout_width="wrap_content"
+			        android:layout_height="32dp"
+			        android:layout_alignParentBottom="true"
+			        android:layout_marginLeft="16dp"
+			        android:layout_toRightOf="@+id/avatar"
+			        android:ellipsize="end"
+			        android:gravity="left|center"
+			        android:singleLine="true"
+			        android:text="张三"
+			        android:textColor="@color/base_color"
+			        android:textSize="20dp" />
+<TextView
+				        android:id="@+id/created_at"
+				        android:layout_width="wrap_content"
+				        android:layout_height="wrap_content"
+				        android:layout_alignParentRight="true"
+				        android:layout_centerVertical="true"
+				        android:gravity="center"
+				        android:textSize="12sp" 
+				        android:textColor="@color/gray_color"
+				        android:text="2分钟前"/>
+	</RelativeLayout>
  	 	        <RelativeLayout
  	 	            android:layout_width="match_parent"
  	 	            android:layout_height="wrap_content"
@@ -53,7 +95,7 @@
  	 	                android:layout_width="wrap_content"
  	 	                android:layout_height="wrap_content"
  	 	                android:layout_alignLeft="@+id/content"
- 	 	                android:layout_marginTop="4dp"
+ 	 	                android:layout_marginTop="8dp"
  	 	                 android:layout_below="@+id/content"
  	 	                android:text="截止日期"
  	 	                android:textSize="14dp"
@@ -179,8 +221,7 @@
  	 	             android:id="@+id/offer_layout"
  	 	             android:layout_width="match_parent"
  	 	             android:layout_height="match_parent"
- 	 	             android:orientation="vertical" 
- 	 	             android:visibility="gone">
+ 	 	             android:orientation="vertical" >
 									<TextView
 				        android:id="@+id/offer"
 				        android:layout_width="match_parent"
@@ -193,6 +234,22 @@
 				        android:textColor="@color/white_color"
 				        android:textSize="24sp"
 				        android:text="我要应征" />
+									<include layout="@layout/line_space" />
+ 	 	         </LinearLayout>
+
+ 	 	         <LinearLayout
+ 	 	             android:id="@+id/offerList_layout"
+ 	 	             android:layout_width="match_parent"
+ 	 	             android:layout_height="wrap_content"
+ 	 	             android:orientation="vertical" >
+					<include layout="@layout/line_horizontal_divider" />
+ 	 	             <LinearLayout
+ 	 	                 android:id="@+id/offerList"
+ 	 	                 android:layout_width="match_parent"
+ 	 	                 android:layout_height="wrap_content"
+ 	 	                 android:orientation="vertical" >
+ 	 	             </LinearLayout>
+
  	 	         </LinearLayout>
  	 	        
  	 	    </LinearLayout>

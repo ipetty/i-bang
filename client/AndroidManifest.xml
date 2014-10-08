@@ -104,6 +104,10 @@
             android:name="net.ipetty.ibang.android.seek.OfferActivity"
             android:label="@string/title_activity_offer" >
         </activity>
+        <activity
+            android:name="net.ipetty.ibang.android.seek.PublishOfferActivity"
+            android:label="@string/title_activity_publish_offer" >
+        </activity>
     </application>
 
 </manifest>

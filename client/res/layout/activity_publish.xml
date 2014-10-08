@@ -248,7 +248,19 @@
  	 	        </LinearLayout>
 
  	 	        <include layout="@layout/line_horizontal_divider" />
-
+<TextView
+        android:id="@+id/button"
+        android:layout_width="match_parent"
+        android:layout_height="46dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
+        android:layout_marginTop="24dp"
+        android:gravity="center"
+        android:layout_below="@+id/login_linearLayout"
+        android:background="@drawable/button_orange_shape"
+        android:textColor="@color/white_color"
+        android:textSize="24sp"
+        android:text="立即发布" />
  	 	    </LinearLayout>
  	 	</ScrollView>
 </LinearLayout>

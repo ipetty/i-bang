@@ -14,7 +14,12 @@ public class UnLoginView {
 
 	public UnLoginView(final Activity activity, View view, int resId) {
 		this.activity = activity;
-		unlogin = view.findViewById(R.id.fragment_unlogin);
+		if (view == null) {
+			unlogin = activity.findViewById(R.id.fragment_unlogin);
+		} else {
+			unlogin = view.findViewById(R.id.fragment_unlogin);
+		}
+
 		View reg = unlogin.findViewById(R.id.register);
 		TextView un_login_text = (TextView) unlogin.findViewById(R.id.un_login_text);
 		un_login_text.setText(this.activity.getResources().getString(resId));
