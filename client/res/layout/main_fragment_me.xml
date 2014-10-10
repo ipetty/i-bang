@@ -279,6 +279,7 @@
     android:paddingLeft="6dp"
     android:paddingRight="6dp"
     android:paddingTop="10dp"
+    android:id="@+id/delegation_layout"
     android:background="@drawable/list_color_item_bg_white" >
 
 
@@ -306,39 +307,6 @@
 	</RelativeLayout>
 			
 	<include layout="@layout/line_horizontal_divider" />
-			<RelativeLayout
-			    android:layout_width="match_parent"
-			    android:layout_height="wrap_content"
-			    android:gravity="center"
-			    android:orientation="horizontal"
-			    android:paddingBottom="10dp"
-			    android:paddingLeft="6dp"
-			    android:paddingRight="6dp"
-			    android:paddingTop="10dp"
-			    android:background="@drawable/list_color_item_bg_white" >
-
-			    <TextView
-			        android:layout_width="wrap_content"
-			        android:layout_height="32dp"
-			        android:layout_centerVertical="true"
-			        android:layout_marginLeft="10dp"
-			        android:ellipsize="end"
-			        android:gravity="left|center"
-			        android:singleLine="true"
-			        android:textColor="@color/gray_color"
-			        android:textSize="16dp" 
-			        android:text="待评价"/>
-			    
-			     <ImageView
-			        android:id="@+id/into"
-			        android:layout_centerVertical="true"
-			        android:layout_width="wrap_content"
-			        android:layout_height="32dp"
-			         android:layout_marginRight="8dp" 
-			        android:layout_alignParentRight="true"
-			        android:src="@drawable/ic_forward" />
-
-				</RelativeLayout>
  				<include layout="@layout/line_horizontal_divider" />
  			
                </LinearLayout>

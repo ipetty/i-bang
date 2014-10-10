@@ -63,8 +63,10 @@
     <string name="title_activity_type">分类列表</string>
     <string name="title_activity_seek">求助详细</string>
     <string name="title_activity_offer">应征</string>
-    <string name="title_activity_publish_offer">PublishOfferActivity</string>
+    <string name="title_activity_publish_offer">我要应征</string>
     <string name="un_login_message"> 登录后，您可以查看未读的通知消息</string>
     <string name="title_activity_my_seek">我的求助</string>
+    <string name="title_activity_delegation">应征委托</string>
+    <string name="title_activity_my_delegation">我的应征</string>
 
 </resources>

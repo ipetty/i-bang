@@ -1,11 +1,12 @@
 package net.ipetty.ibang.android.main;
 
-import net.ipetty.ibang.MySeekActivity;
 import net.ipetty.ibang.R;
 import net.ipetty.ibang.android.core.Constants;
 import net.ipetty.ibang.android.core.MyApplication;
 import net.ipetty.ibang.android.core.ui.UnLoginView;
 import net.ipetty.ibang.android.core.util.AppUtils;
+import net.ipetty.ibang.android.seek.MyDelegationActivity;
+import net.ipetty.ibang.android.seek.MySeekActivity;
 import net.ipetty.ibang.android.setting.SettingActivity;
 import net.ipetty.ibang.android.user.UserProfileActivity;
 import net.ipetty.ibang.vo.UserVO;
@@ -39,6 +40,7 @@ public class MainMeFragment extends Fragment {
 	private TextView signature;
 	private View setting;
 	private View seek_layout;
+	private View delegation_layout;
 
 	private DisplayImageOptions options = AppUtils.getCacheImageBublder()
 			.showImageForEmptyUri(R.drawable.default_avatar).build();
@@ -93,6 +95,18 @@ public class MainMeFragment extends Fragment {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				Intent intent = new Intent(getActivity(), MySeekActivity.class);
+				startActivity(intent);
+			}
+		});
+
+		delegation_layout = getView().findViewById(R.id.delegation_layout);
+
+		delegation_layout.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent intent = new Intent(getActivity(), MyDelegationActivity.class);
 				startActivity(intent);
 			}
 		});

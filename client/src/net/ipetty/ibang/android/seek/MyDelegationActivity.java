@@ -1,32 +1,22 @@
-package net.ipetty.ibang;
+package net.ipetty.ibang.android.seek;
 
-import net.ipetty.ibang.android.core.Constants;
-import net.ipetty.ibang.android.core.ui.BackClickListener;
+import net.ipetty.ibang.R;
 import net.ipetty.ibang.android.main.SeekAdapter;
-import net.ipetty.ibang.android.seek.SeekActivity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.TextView;
 
-public class MySeekActivity extends Activity {
+public class MyDelegationActivity extends Activity {
 	private ListView listView;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_my_seek);
-
-		/* action bar */
-		ImageView btnBack = (ImageView) this.findViewById(R.id.action_bar_left_image);
-		TextView text = (TextView) this.findViewById(R.id.action_bar_title);
-		text.setText(R.string.title_activity_my_seek);
-		btnBack.setOnClickListener(new BackClickListener(this));
+		setContentView(R.layout.activity_my_delegation);
 
 		listView = (ListView) this.findViewById(R.id.listView);
 		SeekAdapter adapter = new SeekAdapter(this);
@@ -36,8 +26,8 @@ public class MySeekActivity extends Activity {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				// TODO Auto-generated method stub
-				Intent intent = new Intent(MySeekActivity.this, SeekActivity.class);
-				intent.putExtra(Constants.INTENT_SEEK_ID, id);
+				Intent intent = new Intent(MyDelegationActivity.this, DelegationActivity.class);
+				// intent.putExtra(Constants.INTENT_SEEK_ID, id);
 				startActivity(intent);
 			}
 		});
