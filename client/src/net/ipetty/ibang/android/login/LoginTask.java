@@ -34,8 +34,8 @@ public class LoginTask extends Task<String, LoginResultVO> {
 		ApiContext.getInstance(activity).setUserToken(result.getUserToken());
 		ApiContext.getInstance(activity).setRefreshToken(result.getRefreshToken());
 		ApiContext.getInstance(activity).setAuthorized(true);
-		ApiContext.getInstance(activity).setCurrentUser(result.getUserVo());
 		ApiContext.getInstance(activity).setCurrentUserId(result.getUserVo().getId());
+		ApiContext.getInstance(activity).setCurrentUser(result.getUserVo());
 
 		return result;
 	}

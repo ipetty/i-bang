@@ -1,5 +1,6 @@
 package net.ipetty.ibang.android.sdk.context;
 
+import net.ipetty.ibang.android.core.util.DeviceUtils;
 import net.ipetty.ibang.android.core.util.JSONUtils;
 import net.ipetty.ibang.android.sdk.util.SharedPreferencesUtils;
 import net.ipetty.ibang.util.UUIDUtils;
@@ -8,6 +9,7 @@ import net.ipetty.ibang.vo.UserVO;
 import org.apache.commons.lang3.StringUtils;
 
 import android.content.Context;
+import android.util.Log;
 
 /**
  * 应用容器，单例，线程安全，存放API范围内公共变量
@@ -16,7 +18,9 @@ import android.content.Context;
  */
 public class ApiContext {
 
-	private static String DEVICE_UUID = UUIDUtils.generateShortUUID(); // 设备UUID，TODO
+	private static String TAG = ApiContext.class.getSimpleName();
+
+	private static String DEVICE_UUID; // 设备UUID
 	private static String USER_TOKEN;
 	private static String REFRESH_TOKEN;
 	private static Boolean AUTHORIZED; // 是否已登录
@@ -39,9 +43,15 @@ public class ApiContext {
 		context = ctx;
 
 		getDeviceUuid();
-		if (StringUtils.isNotBlank(DEVICE_UUID)) {
-			// TODO 如果没有找到device uuid信息，则从设备中获取device uuid等信息
+		if (StringUtils.isBlank(DEVICE_UUID)) {
+			// 如果没有找到device uuid信息，则从设备中获取device uuid等信息
+			DEVICE_UUID = DeviceUtils.getDeviceUUID(context).toString();
 		}
+		if (StringUtils.isBlank(DEVICE_UUID)) { // 此处不应该为空，此处代码为容错代码
+			DEVICE_UUID = UUIDUtils.generateShortUUID();
+		}
+		Log.d(TAG, "device uuid is " + DEVICE_UUID);
+
 		getUserToken();
 		getRefreshToken();
 		isAuthorized();
@@ -92,6 +102,7 @@ public class ApiContext {
 	public synchronized void setUserToken(String userToken) {
 		USER_TOKEN = userToken;
 		SharedPreferencesUtils.setString(context, SP_USER_TOKEN, userToken);
+		Log.d(TAG, "set user token " + userToken);
 	}
 
 	/**
@@ -110,6 +121,7 @@ public class ApiContext {
 	public synchronized void setRefreshToken(String refreshToken) {
 		REFRESH_TOKEN = refreshToken;
 		SharedPreferencesUtils.setString(context, SP_REFRESH_TOKEN, refreshToken);
+		Log.d(TAG, "set refresh token " + refreshToken);
 	}
 
 	/**
@@ -128,6 +140,7 @@ public class ApiContext {
 	public synchronized void setAuthorized(boolean authorized) {
 		AUTHORIZED = authorized;
 		SharedPreferencesUtils.setBoolean(context, SP_AUTHORIZED, authorized);
+		Log.d(TAG, "set authorized " + authorized);
 	}
 
 	/**
@@ -150,6 +163,7 @@ public class ApiContext {
 		CURRENT_USER_ID = currentUserId;
 		if (currentUserId != null) {
 			SharedPreferencesUtils.setInt(context, SP_CURRENT_USER_ID, currentUserId);
+			Log.d(TAG, "set current user id " + currentUserId);
 		}
 	}
 
@@ -172,6 +186,7 @@ public class ApiContext {
 	public synchronized void setCurrentUser(UserVO currentUser) {
 		CURRENT_USER = currentUser;
 		SharedPreferencesUtils.setString(context, SP_CURRENT_USER, JSONUtils.toJson(currentUser));
+		Log.d(TAG, "set current user " + currentUser);
 	}
 
 	/**
