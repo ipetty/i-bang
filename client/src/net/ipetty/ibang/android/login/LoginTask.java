@@ -1,11 +1,13 @@
 package net.ipetty.ibang.android.login;
 
+import net.ipetty.ibang.android.core.Constants;
 import net.ipetty.ibang.android.core.Task;
 import net.ipetty.ibang.android.sdk.context.ApiContext;
 import net.ipetty.ibang.android.sdk.factory.IbangApi;
 import net.ipetty.ibang.api.UserApi;
 import net.ipetty.ibang.vo.LoginResultVO;
 import android.app.Activity;
+import android.content.Intent;
 import android.util.Log;
 
 /**
@@ -36,6 +38,9 @@ public class LoginTask extends Task<String, LoginResultVO> {
 		ApiContext.getInstance(activity).setAuthorized(true);
 		ApiContext.getInstance(activity).setCurrentUserId(result.getUserVo().getId());
 		ApiContext.getInstance(activity).setCurrentUser(result.getUserVo());
+
+		Intent intent = new Intent(Constants.BROADCAST_INTENT_IS_LOGIN);
+		activity.sendBroadcast(intent);
 
 		return result;
 	}
