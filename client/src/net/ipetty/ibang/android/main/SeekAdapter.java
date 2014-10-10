@@ -13,11 +13,11 @@ import android.widget.AbsListView.OnScrollListener;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-public class MainHomeAdapter extends BaseAdapter implements OnScrollListener {
+public class SeekAdapter extends BaseAdapter implements OnScrollListener {
 	private List<SeekVO> list;
 	LayoutInflater inflater;
 	
-	public MainHomeAdapter(Activity activity){
+	public SeekAdapter(Activity activity){
 		inflater = LayoutInflater.from(activity);
 	}
 	@Override

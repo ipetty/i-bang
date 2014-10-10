@@ -1,5 +1,6 @@
 package net.ipetty.ibang.android.main;
 
+import net.ipetty.ibang.MySeekActivity;
 import net.ipetty.ibang.R;
 import net.ipetty.ibang.android.core.Constants;
 import net.ipetty.ibang.android.core.MyApplication;
@@ -37,6 +38,7 @@ public class MainMeFragment extends Fragment {
 	private TextView nickname;
 	private TextView signature;
 	private View setting;
+	private View seek_layout;
 
 	private DisplayImageOptions options = AppUtils.getCacheImageBublder()
 			.showImageForEmptyUri(R.drawable.default_avatar).build();
@@ -79,9 +81,21 @@ public class MainMeFragment extends Fragment {
 			}
 		});
 
-		avatar = (ImageView) getActivity().findViewById(R.id.avatar);
-		nickname = (TextView) getActivity().findViewById(R.id.nickname);
-		signature = (TextView) getActivity().findViewById(R.id.signature);
+		avatar = (ImageView) getView().findViewById(R.id.avatar);
+		nickname = (TextView) getView().findViewById(R.id.nickname);
+		signature = (TextView) getView().findViewById(R.id.signature);
+
+		seek_layout = getView().findViewById(R.id.seek_layout);
+
+		seek_layout.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent intent = new Intent(getActivity(), MySeekActivity.class);
+				startActivity(intent);
+			}
+		});
 
 		if (isLogin) {
 			init();

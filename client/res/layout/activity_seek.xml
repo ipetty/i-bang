@@ -28,7 +28,8 @@
  	 	            android:id="@+id/imageSwitcher"
  	 	            android:layout_width="fill_parent"
  	 	            android:layout_height="200dp"
- 	 	            android:background="@color/white_color" >
+ 	 	            android:background="@color/white_color"
+ 	 	            android:visibility="gone" >
  	 	        </ImageSwitcher>
  	 	        
 <RelativeLayout
@@ -130,7 +131,7 @@
  	 	                android:layout_alignBaseline="@+id/TextView01"
  	 	                android:layout_alignBottom="@+id/TextView01"
  	 	                android:layout_alignRight="@+id/content"
- 	 	                android:text="100"
+ 	 	                android:text="2/4"
  	 	                android:textSize="14dp"
  	 	                android:textColor="@color/gray_color" />
 
@@ -236,6 +237,38 @@
 				        android:text="我要应征" />
 									<include layout="@layout/line_space" />
  	 	         </LinearLayout>
+ 	 	         
+ 	 	         <TextView
+ 	 	             android:id="@+id/textView1"
+ 	 	             android:layout_width="wrap_content"
+ 	 	            android:layout_height="20dp" 
+ 	 	             android:textSize="12sp"
+ 	 	             android:layout_margin="8dp"
+ 	 	             android:text="已应征的人员" />
+ 	
+ 	 	         <LinearLayout
+ 	 	             android:id="@+id/delegationList_layout"
+ 	 	             android:layout_width="match_parent"
+ 	 	            android:layout_height="wrap_content" 
+ 	 	             android:orientation="vertical" >
+					<include layout="@layout/line_horizontal_divider" />
+ 	 	             <LinearLayout
+ 	 	                 android:id="@+id/delegationList"
+ 	 	                 android:layout_width="match_parent"
+ 	 	                 android:layout_height="wrap_content"
+ 	 	                 android:orientation="vertical" >
+ 	 	             </LinearLayout>
+
+ 	 	         </LinearLayout>
+
+ 	 	         <TextView
+ 	 	             android:id="@+id/textView1"
+ 	 	             android:layout_width="wrap_content"
+ 	 	              android:layout_height="20dp" 
+ 	 	              android:textSize="12sp"
+ 	 	               	             android:layout_margin="8dp"
+ 	 	             android:text="待应征的人员" />
+ 	 	         
 
  	 	         <LinearLayout
  	 	             android:id="@+id/offerList_layout"

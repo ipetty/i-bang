@@ -5,6 +5,7 @@ import java.util.List;
 
 import net.ipetty.ibang.R;
 import net.ipetty.ibang.android.core.ui.BackClickListener;
+import net.ipetty.ibang.vo.DelegationVO;
 import net.ipetty.ibang.vo.OfferVO;
 import android.app.Activity;
 import android.content.Intent;
@@ -20,6 +21,7 @@ public class SeekActivity extends Activity {
 
 	private TextView offerBtn;
 	private LinearLayout offerListView;
+	private LinearLayout delegationListView;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -43,12 +45,29 @@ public class SeekActivity extends Activity {
 			}
 		});
 
+		delegationListView = (LinearLayout) this.findViewById(R.id.delegationList);
+		List<DelegationVO> delegationList = new ArrayList<DelegationVO>();
+		DelegationVO tt = new DelegationVO();
+		delegationList.add(tt);
+		delegationList.add(tt);
+		initDelegationView(delegationList);
+
 		offerListView = (LinearLayout) this.findViewById(R.id.offerList);
 		List<OfferVO> offerList = new ArrayList<OfferVO>();
 		OfferVO t = new OfferVO();
 		offerList.add(t);
 		offerList.add(t);
 		initOfferView(offerList);
+	}
+
+	private void initDelegationView(List<DelegationVO> delegationList) {
+		// TODO Auto-generated method stub
+		delegationListView.removeAllViews();
+		LayoutInflater inflater = LayoutInflater.from(this);
+		for (DelegationVO delegationVO : delegationList) {
+			View view = inflater.inflate(R.layout.list_delegation_simple_item, null);
+			delegationListView.addView(view);
+		}
 	}
 
 	private void initOfferView(List<OfferVO> offerList) {

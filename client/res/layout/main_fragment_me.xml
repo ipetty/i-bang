@@ -235,6 +235,7 @@
  				<include layout="@layout/line_space" />
  				<include layout="@layout/line_horizontal_divider" />
 			<RelativeLayout
+	android:id="@+id/seek_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:gravity="center"

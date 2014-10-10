@@ -37,7 +37,7 @@ public class MainHomeFragment extends Fragment {
 	private String category ="";
 	private String subCategory ="";
 	private ListView list;
-	private MainHomeAdapter adapter;
+	private SeekAdapter adapter;
 
 	private Button type, order;
 
@@ -106,7 +106,7 @@ public class MainHomeFragment extends Fragment {
 		});
 		
 		list = (ListView) getView().findViewById(R.id.listView);
-		adapter = new MainHomeAdapter(getActivity());
+		adapter = new SeekAdapter(getActivity());
 		list.setAdapter(adapter);
 		list.setOnItemClickListener(new OnItemClickListener() {
 

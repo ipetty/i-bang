@@ -61,6 +61,39 @@
  	 	                android:layout_width="wrap_content"
  	 	                android:layout_height="wrap_content"
  	 	                android:layout_marginLeft="16dp"
+ 	 	                android:text="委托人数"
+ 	 	                android:textColor="@color/black_color"
+ 	 	                android:textSize="16sp" />
+
+ 	 	            <EditText
+ 	 	                android:id="@+id/num"
+ 	 	                android:layout_width="0.0dip"
+ 	 	                android:layout_height="wrap_content"
+ 	 	                android:layout_marginLeft="16dp"
+ 	 	                android:layout_marginRight="16dp"
+ 	 	                android:layout_weight="1.0"
+ 	 	                android:background="@null"
+ 	 	                android:focusable="false"
+ 	 	                android:gravity="right|center_vertical"
+ 	 	                android:singleLine="true"
+ 	 	                android:text="1"
+ 	 	                android:textColor="@color/gray_color"
+ 	 	                android:textColorHint="@color/gray_color"
+ 	 	                android:textSize="16sp"
+ 	 	                android:windowSoftInputMode="stateHidden" />
+ 	 	        </LinearLayout>
+
+ 	 	        <include layout="@layout/line_horizontal_divider" />
+<LinearLayout
+ 	 	            android:layout_width="fill_parent"
+ 	 	            android:layout_height="46dp"
+ 	 	            android:background="@drawable/list_color_item_bg_white"
+ 	 	            android:gravity="center_vertical" >
+
+ 	 	            <TextView
+ 	 	                android:layout_width="wrap_content"
+ 	 	                android:layout_height="wrap_content"
+ 	 	                android:layout_marginLeft="16dp"
  	 	                android:text="截止日期"
  	 	                android:textColor="@color/black_color"
  	 	                android:textSize="16sp" />
@@ -84,7 +117,6 @@
  	 	        </LinearLayout>
 
  	 	        <include layout="@layout/line_horizontal_divider" />
-
  	 	        <include layout="@layout/line_space" />
 
  	 	        <include layout="@layout/line_horizontal_divider" />
