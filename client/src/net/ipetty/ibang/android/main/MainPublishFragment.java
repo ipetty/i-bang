@@ -16,7 +16,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 
 public class MainPublishFragment extends Fragment {
-	private boolean isLogin = true;
+	private boolean isLogin = false;
 	private UnLoginView unLoginView;
 
 	private View layout_jzfu;
@@ -108,4 +108,10 @@ public class MainPublishFragment extends Fragment {
 
 	};
 
+	@Override
+	public void onDestroy() {
+		// TODO Auto-generated method stub
+		super.onDestroy();
+		this.getActivity().unregisterReceiver(broadcastreciver);
+	}
 }

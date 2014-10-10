@@ -5,9 +5,8 @@
  */
 package net.ipetty.ibang.android.login;
 
+import net.ipetty.ibang.android.core.ActivityManager;
 import net.ipetty.ibang.android.core.DefaultTaskListener;
-import net.ipetty.ibang.android.core.util.AppUtils;
-import net.ipetty.ibang.android.main.MainActivity;
 import net.ipetty.ibang.vo.LoginResultVO;
 import android.app.Activity;
 import android.util.Log;
@@ -29,7 +28,8 @@ public class LoginTaskListener extends DefaultTaskListener<LoginResultVO> {
 	@Override
 	public void onSuccess(LoginResultVO result) {
 		Log.d(TAG, "login success");
-		AppUtils.goTo(activity, MainActivity.class);
+		// AppUtils.goTo(activity, MainActivity.class);
+		ActivityManager.getInstance().finishLoginAndRegister();
 		activity.finish();
 	}
 

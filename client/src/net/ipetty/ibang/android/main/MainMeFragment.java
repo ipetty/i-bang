@@ -30,7 +30,7 @@ import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 public class MainMeFragment extends Fragment {
-	private boolean isLogin = true;
+	private boolean isLogin = false;
 	public UnLoginView unLoginView;
 	public View user_layout;
 	private UserVO user;
@@ -151,5 +151,12 @@ public class MainMeFragment extends Fragment {
 		} else {
 			avatar.setImageResource(R.drawable.default_avatar);
 		}
+	}
+
+	@Override
+	public void onDestroy() {
+		// TODO Auto-generated method stub
+		super.onDestroy();
+		this.getActivity().unregisterReceiver(broadcastreciver);
 	}
 }

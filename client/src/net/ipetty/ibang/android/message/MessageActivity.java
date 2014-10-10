@@ -59,4 +59,11 @@ public class MessageActivity extends Activity {
 
 		}
 	};
+
+	@Override
+	public void onDestroy() {
+		// TODO Auto-generated method stub
+		super.onDestroy();
+		this.unregisterReceiver(broadcastreciver);
+	}
 }
