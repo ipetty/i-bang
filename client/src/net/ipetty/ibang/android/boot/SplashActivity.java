@@ -23,7 +23,7 @@ public class SplashActivity extends Activity {
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
-				goMain();
+				goLogin();
 				SplashActivity.this.finish();
 			}
 		}.start();

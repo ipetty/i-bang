@@ -3,10 +3,12 @@ package net.ipetty.ibang.android.core;
 public class Constants {
 
 	// 文件服务器地址
-	public static final String FILE_SERVER_BASE = "http://api.ipetty.net";
+	// public static final String FILE_SERVER_BASE = "http://api.ipetty.net";
+	public static final String FILE_SERVER_BASE = "http://192.168.253.1:8080";
 
 	// API服务器地址
-	public static final String API_SERVER_BASE = "http://api.ipetty.net/api";
+	// public static final String API_SERVER_BASE = "http://api.ipetty.net/api";
+	public static final String API_SERVER_BASE = "http://192.168.253.1:8080/api";
 
 	public static final String BROADCAST_INTENT_IS_LOGIN = "BROADCAST_INTENT_IS_LOGIN";
 	public static final String BROADCAST_INTENT_UPDATA_USER = "BROADCAST_INTENT_UPDATA_USER";
@@ -16,8 +18,7 @@ public class Constants {
 	public static final String INTENT_SUB_CATEGORY = "INTENT_SUB_CATEGORY";
 	public static final String INTENT_IMAGE_UPLOAD_PATH = "INTENT_IMAGE_UPLOAD_PATH";
 	public static final String INTENT_SEEK_ID = "INTENT_SEEK_ID";
-	
-	
+
 	public final static float COMPRESS_IMAGE_MAX_WIDTH = 960f;
 	public final static float COMPRESS_IMAGE_MAX_HEIGHT = 1280f;
 	public final static float COMPRESS_IMAGE_MIN_WIDTH = 64f;
@@ -38,6 +39,5 @@ public class Constants {
 	public static final int REQUEST_CODE_CATEGORY = 101;
 
 	public static final String PIC_USER_HEAD_IMAGE_NAME = "cacheHead.jpg";
-
 
 }

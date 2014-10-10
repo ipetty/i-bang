@@ -2,12 +2,12 @@ package net.ipetty.ibang.android.sdk.interceptor;
 
 import net.ipetty.ibang.android.sdk.context.ApiContext;
 import net.ipetty.ibang.api.Constants;
-import net.ipetty.ibang.util.Encodes;
 
 import org.apache.commons.lang3.StringUtils;
 
 import retrofit.RequestInterceptor;
 import android.content.Context;
+import android.util.Base64;
 import android.util.Log;
 
 /**
@@ -32,22 +32,25 @@ public class ApiInterceptor implements RequestInterceptor {
 	@Override
 	public void intercept(RequestFacade request) {
 		// 设置user_token
-		if (StringUtils.isNotBlank(ApiContext.getInstance(context).getUserToken())) {
+		ApiContext apiContext = ApiContext.getInstance(context);
+		String userToken = apiContext.getUserToken();
+		if (StringUtils.isNotBlank(userToken)) {
 			request.addHeader(Constants.HEADER_NAME_USER_TOKEN,
-					Encodes.encodeBase64(ApiContext.getInstance(context).getUserToken().getBytes(Constants.UTF8)));
-			Log.d(TAG, "set user token: " + ApiContext.getInstance(context).getUserToken());
+					Base64.encodeToString(userToken.getBytes(Constants.UTF8), Base64.DEFAULT));
+			Log.d(TAG, "set user token: " + userToken);
 		}
-		if (StringUtils.isNotBlank(ApiContext.getInstance(context).getRefreshToken())) {
+		String refreshToken = apiContext.getRefreshToken();
+		if (StringUtils.isNotBlank(refreshToken)) {
 			request.addHeader(Constants.HEADER_NAME_REFRESH_TOKEN,
-					Encodes.encodeBase64(ApiContext.getInstance(context).getRefreshToken().getBytes(Constants.UTF8)));
-			Log.d(TAG, "set refresh token: " + ApiContext.getInstance(context).getRefreshToken());
+					Base64.encodeToString(refreshToken.getBytes(Constants.UTF8), Base64.DEFAULT));
+			Log.d(TAG, "set refresh token: " + refreshToken);
 		}
-		request.addHeader(Constants.HEADER_NAME_DEVICE_UUID,
-				Encodes.encodeBase64(ApiContext.getInstance(context).getDeviceUuid().getBytes(Constants.UTF8)));
-		// request.addHeader(Constants.HEADER_NAME_DEVICE_ID,
-		// Encodes.encodeBase64(ApiContext.getInstance(context).getDeviceId().getBytes(Constants.UTF8)));
-		// request.addHeader(Constants.HEADER_NAME_DEVICE_MAC,
-		// Encodes.encodeBase64(ApiContext.getInstance(context).getDeviceMac().getBytes(Constants.UTF8)));
+		String deviceUuid = apiContext.getDeviceUuid();
+		if (StringUtils.isNotBlank(deviceUuid)) {
+			request.addHeader(Constants.HEADER_NAME_DEVICE_UUID,
+					Base64.encodeToString(deviceUuid.getBytes(Constants.UTF8), Base64.DEFAULT));
+			Log.d(TAG, "set device uuid: " + deviceUuid);
+		}
 	}
 
 }
