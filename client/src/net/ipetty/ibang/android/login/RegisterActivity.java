@@ -3,6 +3,7 @@ package net.ipetty.ibang.android.login;
 import net.ipetty.ibang.R;
 import net.ipetty.ibang.android.core.ActivityManager;
 import net.ipetty.ibang.android.core.ui.BackClickListener;
+import net.ipetty.ibang.vo.RegisterVO;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -21,17 +22,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class RegisterActivity extends Activity {
+
 	private AutoCompleteTextView accountView;
-	private EditText passwordView;
-	private EditText nicknameView;
 	private String account = null;
+	private EditText passwordView;
 	private String password = null;
+	private EditText nicknameView;
 	private String nickname = null;
+	private EditText phoneView = null;
+	private String phone = null;
 	private TextView toggleView = null;
 	private boolean psdDisplayFlg = false;
 	private ProgressDialog progressDialog;
-	private EditText phoneView = null;
-	private String phone = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -58,30 +60,27 @@ public class RegisterActivity extends Activity {
 		phoneView = (EditText) this.findViewById(R.id.phone);
 
 		// 注册
-		View BtnView = (View) this.findViewById(R.id.button);
-		BtnView.setOnClickListener(regOnClick);
+		View btnView = (View) this.findViewById(R.id.button);
+		btnView.setOnClickListener(regOnClick);
 	}
 
-	// 登录
+	// 注册
 	private final OnClickListener regOnClick = new OnClickListener() {
 		@Override
-		public void onClick(View loginBtnView) {
+		public void onClick(View view) {
 			if (!validateRegister()) {
-				// return;
+				return;
 			}
 
-			// Intent intent = new Intent(RegisterActivity.this,
-			// UserProfileActivity.class);
-			// startActivity(intent);
-			finish();
-			ActivityManager.getInstance().finishLoginAndRegister();
+			new RegisterTask(RegisterActivity.this).setListener(new RegisterTaskListener(RegisterActivity.this))
+					.execute(new RegisterVO(account, password, nickname, phone));
 		}
 	};
 
 	// 密码可见
 	private OnClickListener togglePasswordClick = new OnClickListener() {
 		@Override
-		public void onClick(View arg0) {
+		public void onClick(View view) {
 			int index = passwordView.getSelectionStart();
 			if (!psdDisplayFlg) {
 				passwordView.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
@@ -101,6 +100,7 @@ public class RegisterActivity extends Activity {
 		this.account = accountView.getText().toString();
 		this.password = passwordView.getText().toString();
 		this.nickname = nicknameView.getText().toString();
+		this.phone = phoneView.getText().toString();
 
 		if (StringUtils.isBlank(this.account)) {
 			accountView.requestFocus();
@@ -112,7 +112,6 @@ public class RegisterActivity extends Activity {
 			Toast.makeText(RegisterActivity.this, R.string.login_empty_password, Toast.LENGTH_SHORT).show();
 			return false;
 		}
-
 		if (StringUtils.isBlank(this.nickname)) {
 			nicknameView.requestFocus();
 			Toast.makeText(RegisterActivity.this, R.string.empty_nickname, Toast.LENGTH_SHORT).show();
@@ -126,4 +125,5 @@ public class RegisterActivity extends Activity {
 
 		return true;
 	}
+
 }

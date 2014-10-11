@@ -10,32 +10,32 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".RegisterActivity" >
 
- 	<include
+    <include
         android:id="@+id/include"
         layout="@layout/action_bar_simple_back" />
- 	<LinearLayout
-       
+
+    <LinearLayout
         android:id="@+id/login_linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
         android:layout_marginLeft="24dp"
         android:layout_marginRight="24dp"
+        android:layout_marginTop="12dp"
         android:orientation="vertical" >
 
- 		<LinearLayout
- 		    android:layout_width="match_parent"
- 		    android:layout_height="wrap_content"
- 		    android:orientation="vertical" >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
 
- 		    <TextView
- 		        android:id="@+id/textView1"
- 		        android:layout_width="wrap_content"
- 		        android:layout_height="36dp"
- 		        android:gravity="center"
- 		        android:text="账号信息"
- 		        android:textColor="@color/gray_color" />
- 		</LinearLayout>
+            <TextView
+                android:id="@+id/textView1"
+                android:layout_width="wrap_content"
+                android:layout_height="36dp"
+                android:gravity="center"
+                android:text="账号信息"
+                android:textColor="@color/gray_color" />
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="fill_parent"
@@ -70,7 +70,6 @@
         </LinearLayout>
 
         <LinearLayout
-           
             android:layout_width="fill_parent"
             android:layout_height="50dp"
             android:background="@drawable/setting_list_bottom_bg_white"
@@ -126,11 +125,9 @@
                 android:gravity="center"
                 android:text="基本资料"
                 android:textColor="@color/gray_color" />
-
         </LinearLayout>
-        
+
         <LinearLayout
-           
             android:layout_width="fill_parent"
             android:layout_height="50dp"
             android:background="@drawable/setting_list_top_bg_white"
@@ -153,17 +150,15 @@
                 android:background="@null"
                 android:gravity="center_vertical"
                 android:hint="@string/input_nickname_hint"
-                android:inputType="textPassword"
+                android:inputType="text"
                 android:singleLine="true"
                 android:textColor="@color/black_color"
                 android:textColorHint="@color/hint_text_color"
                 android:textSize="16sp"
                 android:windowSoftInputMode="stateHidden" />
-
-          
         </LinearLayout>
+
         <LinearLayout
-           
             android:layout_width="fill_parent"
             android:layout_height="50dp"
             android:background="@drawable/setting_list_bottom_bg_white"
@@ -186,27 +181,26 @@
                 android:background="@null"
                 android:gravity="center_vertical"
                 android:hint="请输入手机"
-                android:inputType="textPassword"
+                android:inputType="text|phone"
                 android:singleLine="true"
                 android:textColor="@color/black_color"
                 android:textColorHint="@color/hint_text_color"
                 android:textSize="16sp"
                 android:windowSoftInputMode="stateHidden" />
-
-          
         </LinearLayout>
     </LinearLayout>
-    
+
     <TextView
         android:id="@+id/button"
         android:layout_width="match_parent"
         android:layout_height="46dp"
         android:layout_marginLeft="24dp"
         android:layout_marginRight="24dp"
-        android:gravity="center"
         android:layout_marginTop="32dp"
         android:background="@drawable/button_orange_shape"
+        android:gravity="center"
+        android:text="@string/register"
         android:textColor="@color/white_color"
-        android:textSize="24sp"
-        android:text="@string/register" />
+        android:textSize="24sp" />
+
 </LinearLayout>

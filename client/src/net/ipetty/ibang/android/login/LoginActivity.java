@@ -21,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class LoginActivity extends Activity {
+
 	private AutoCompleteTextView accountView;
 	private EditText passwordView;
 	private String account = null;
@@ -80,7 +81,7 @@ public class LoginActivity extends Activity {
 	// 密码可见
 	private OnClickListener togglePasswordClick = new OnClickListener() {
 		@Override
-		public void onClick(View arg0) {
+		public void onClick(View view) {
 			int index = passwordView.getSelectionStart();
 			if (!psdDisplayFlg) {
 				// display password text, for example "123456"

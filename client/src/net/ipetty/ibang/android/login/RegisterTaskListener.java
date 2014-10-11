@@ -1,36 +1,31 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package net.ipetty.ibang.android.login;
 
 import net.ipetty.ibang.android.core.ActivityManager;
 import net.ipetty.ibang.android.core.DefaultTaskListener;
 import net.ipetty.ibang.android.core.util.AppUtils;
-import net.ipetty.ibang.android.main.MainActivity;
+import net.ipetty.ibang.android.user.UserProfileActivity;
 import net.ipetty.ibang.vo.LoginResultVO;
 import android.app.Activity;
 import android.util.Log;
 
 /**
- * LoginTaskListener
+ * RegisterTaskListener
  * 
  * @author luocanfeng
- * @date 2014年9月30日
+ * @date 2014年10月11日
  */
-public class LoginTaskListener extends DefaultTaskListener<LoginResultVO> {
+public class RegisterTaskListener extends DefaultTaskListener<LoginResultVO> {
 
 	private String TAG = getClass().getSimpleName();
 
-	public LoginTaskListener(Activity activity) {
-		super(activity, "正在登录...");
+	public RegisterTaskListener(Activity activity) {
+		super(activity, "正在注册...");
 	}
 
 	@Override
 	public void onSuccess(LoginResultVO result) {
-		Log.d(TAG, "login success");
-		AppUtils.goTo(activity, MainActivity.class);
+		Log.d(TAG, "register success");
+		AppUtils.goTo(activity, UserProfileActivity.class);
 		ActivityManager.getInstance().removeActivity(activity);
 		ActivityManager.getInstance().finishLoginAndRegister();
 	}

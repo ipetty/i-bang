@@ -163,4 +163,5 @@ public class MainMeFragment extends Fragment {
 		super.onDestroy();
 		this.getActivity().unregisterReceiver(broadcastreciver);
 	}
+
 }
