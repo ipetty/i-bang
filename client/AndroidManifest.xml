@@ -68,7 +68,7 @@
             android:label="@string/title_activity_publish" >
         </activity>
         <activity
-            android:name="net.ipetty.ibang.android.publish.UploadLarginImageActivity"
+            android:name="net.ipetty.ibang.android.publish.UploadLargerImageActivity"
             android:label="@string/title_activity_upload_largin_image" >
         </activity>
         <activity
@@ -119,6 +119,10 @@
         <activity
             android:name="net.ipetty.ibang.android.seek.MyDelegationActivity"
             android:label="@string/title_activity_my_delegation" >
+        </activity>
+        <activity
+            android:name="net.ipetty.ibang.android.seek.LargerImageActivity"
+            android:label="@string/title_activity_larger_image" >
         </activity>
     </application>
 

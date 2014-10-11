@@ -14,6 +14,9 @@ public class Constants {
 	public static final String BROADCAST_INTENT_UPDATA_USER = "BROADCAST_INTENT_UPDATA_USER";
 	public static final String BROADCAST_INTENT_NEW_MESSAGE = "BROADCAST_INTENT_NEW_MESSAGE";
 
+	public final static String INTENT_IMAGE_ORIGINAL_KEY = "ORIGINAL_url";
+	public final static String INTENT_IMAGE_SAMILL_KEY = "SAMILL_url";
+
 	public static final String INTENT_CATEGORY = "INTENT_CATEGORY";
 	public static final String INTENT_SUB_CATEGORY = "INTENT_SUB_CATEGORY";
 	public static final String INTENT_IMAGE_UPLOAD_PATH = "INTENT_IMAGE_UPLOAD_PATH";

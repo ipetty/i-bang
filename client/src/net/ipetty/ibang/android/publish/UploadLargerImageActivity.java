@@ -14,7 +14,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
 
-public class UploadLarginImageActivity extends Activity {
+public class UploadLargerImageActivity extends Activity {
 	private ImageView image;
 	private PhotoViewAttacher mAttacher;
 	private String path;
@@ -22,7 +22,7 @@ public class UploadLarginImageActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_upload_largin_image);
+		setContentView(R.layout.activity_upload_larger_image);
 
 		ImageView btnBack = (ImageView) this.findViewById(R.id.action_bar_left_image);
 		btnBack.setOnClickListener(new BackClickListener(this));

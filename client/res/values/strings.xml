@@ -68,5 +68,6 @@
     <string name="title_activity_my_seek">我的求助</string>
     <string name="title_activity_delegation">应征委托</string>
     <string name="title_activity_my_delegation">我的应征</string>
+    <string name="title_activity_larger_image">LargerImageActivity</string>
 
 </resources>

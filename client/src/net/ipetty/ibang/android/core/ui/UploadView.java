@@ -11,7 +11,7 @@ import net.ipetty.ibang.android.core.util.DeviceUtils;
 import net.ipetty.ibang.android.core.util.DialogUtils;
 import net.ipetty.ibang.android.core.util.ImageUtils;
 import net.ipetty.ibang.android.core.util.PathUtils;
-import net.ipetty.ibang.android.publish.UploadLarginImageActivity;
+import net.ipetty.ibang.android.publish.UploadLargerImageActivity;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
@@ -99,7 +99,7 @@ public class UploadView {
 				cameraDialog = DialogUtils.modPopupDialog(activity, dialogItems, cameraDialog);
 			} else {
 				curIndex = i - 1;
-				Intent intent = new Intent(activity, UploadLarginImageActivity.class);
+				Intent intent = new Intent(activity, UploadLargerImageActivity.class);
 				intent.putExtra(Constants.INTENT_IMAGE_UPLOAD_PATH, pathList.get(curIndex).getAbsolutePath());
 				activity.startActivityForResult(intent, REQUEST_CODE__DELETE);
 			}
