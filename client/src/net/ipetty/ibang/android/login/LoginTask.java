@@ -4,7 +4,6 @@ import net.ipetty.ibang.android.core.Constants;
 import net.ipetty.ibang.android.core.Task;
 import net.ipetty.ibang.android.sdk.context.ApiContext;
 import net.ipetty.ibang.android.sdk.factory.IbangApi;
-import net.ipetty.ibang.api.UserApi;
 import net.ipetty.ibang.vo.LoginResultVO;
 import android.app.Activity;
 import android.content.Intent;
@@ -30,7 +29,7 @@ public class LoginTask extends Task<String, LoginResultVO> {
 		String loginName = args[0];
 		String password = args[1];
 
-		LoginResultVO result = IbangApi.init(activity).create(UserApi.class).login(loginName, password);
+		LoginResultVO result = IbangApi.init(activity).getUserApi().login(loginName, password);
 
 		// process api context after login
 		ApiContext.getInstance(activity).setUserToken(result.getUserToken());

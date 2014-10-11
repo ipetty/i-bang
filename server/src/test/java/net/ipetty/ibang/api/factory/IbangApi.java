@@ -2,6 +2,8 @@ package net.ipetty.ibang.api.factory;
 
 import java.util.Date;
 
+import net.ipetty.ibang.api.UserApi;
+import net.ipetty.ibang.api.UserApiImpl;
 import net.ipetty.ibang.api.exception.ApiExceptionHandler;
 import net.ipetty.ibang.api.interceptor.ApiInterceptor;
 import net.ipetty.ibang.api.util.DateTypeAdapter;
@@ -50,6 +52,13 @@ public class IbangApi {
 	 */
 	public <T> T create(Class<T> clazz) {
 		return restAdapter.create(clazz);
+	}
+
+	/**
+	 * 获取UserApiImpl
+	 */
+	public UserApi getUserApi() {
+		return new UserApiImpl();
 	}
 
 }

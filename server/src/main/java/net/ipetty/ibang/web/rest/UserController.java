@@ -26,7 +26,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
@@ -48,7 +47,6 @@ public class UserController extends BaseController {
 	 * 用户登陆验证
 	 */
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
-	@ResponseBody
 	public LoginResultVO login(String loginName, String password) {
 		logger.debug("login with loginName={}", loginName);
 		Assert.hasText(loginName, "登录名不能为空");
@@ -101,7 +99,6 @@ public class UserController extends BaseController {
 	 * 用户再次打开App时，使用本地存储的userToken 和refreshToken 登陆
 	 */
 	@RequestMapping(value = "/relogin", method = RequestMethod.POST)
-	@ResponseBody
 	public LoginResultVO relogin(String userToken, String refreshToken) {
 		if (StringUtils.isNotBlank(userToken)) { // 根据userToken获取用户
 			Integer userId = Caches.get(CacheConstants.CACHE_USER_TOKEN_TO_USER_ID, userToken);
@@ -134,7 +131,6 @@ public class UserController extends BaseController {
 	 * 登出
 	 */
 	@RequestMapping(value = "/logout", method = RequestMethod.GET)
-	@ResponseBody
 	public boolean logout() {
 		logger.debug("logout");
 
@@ -155,7 +151,6 @@ public class UserController extends BaseController {
 	 * 注册帐号
 	 */
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
-	@ResponseBody
 	public LoginResultVO register(@RequestBody RegisterVO register) {
 		logger.debug("register={}", register);
 		Assert.notNull(register.getUsername(), "用户名不能为空");
@@ -175,7 +170,6 @@ public class UserController extends BaseController {
 	 * 检查用户名是否可用，true表示可用，false表示不可用
 	 */
 	@RequestMapping(value = "/user/checkUsernameAvailable", method = RequestMethod.GET)
-	@ResponseBody
 	public boolean checkUsernameAvailable(String username) {
 		Assert.hasText(username, "用户名不能为空");
 		User user = userService.getByLoginName(username);
@@ -187,7 +181,6 @@ public class UserController extends BaseController {
 	 * 根据ID获取用户帐号
 	 */
 	@RequestMapping(value = "/user/id/{id}", method = RequestMethod.GET)
-	@ResponseBody
 	public UserVO getById(@PathVariable("id") Integer id) {
 		Assert.notNull(id, "ID不能为空");
 		User user = userService.getById(id);
@@ -202,7 +195,6 @@ public class UserController extends BaseController {
 	 * 根据用户帐号获取用户信息
 	 */
 	@RequestMapping(value = "/user/{username}", method = RequestMethod.GET)
-	@ResponseBody
 	public UserVO getByUsername(@PathVariable("username") String username) {
 		Assert.hasText(username, "用户帐号不能为空");
 		try {
@@ -218,11 +210,10 @@ public class UserController extends BaseController {
 	 * 修改密码
 	 */
 	@RequestMapping(value = "/changePassword", method = RequestMethod.POST)
-	@ResponseBody
 	public boolean changePassword(String oldPassword, String newPassword) {
 		UserPrincipal currentUser = UserContext.getContext();
 		if (currentUser == null || currentUser.getId() == null) {
-			throw new RestException("注册用户才能修改密码");
+			throw new RestException("用户登录后才能修改密码");
 		}
 		// Assert.hasText(oldPassword, "旧密码不能为空");
 		Assert.hasText(newPassword, "新密码不能为空");
@@ -234,11 +225,10 @@ public class UserController extends BaseController {
 	 * 更新用户头像
 	 */
 	@RequestMapping(value = "/user/updateAvatar", method = RequestMethod.POST)
-	@ResponseBody
 	public UserVO updateAvatar(MultipartFile imageFile) {
 		UserPrincipal currentUser = UserContext.getContext();
 		if (currentUser == null || currentUser.getId() == null) {
-			throw new RestException("注册用户才能更新头像");
+			throw new RestException("用户登录后才能更新头像");
 		}
 		return userService.updateAvatar(imageFile, currentUser.getId()).toVO();
 	}
@@ -247,14 +237,13 @@ public class UserController extends BaseController {
 	 * 修改用户个人信息
 	 */
 	@RequestMapping(value = "/user/update", method = RequestMethod.POST)
-	@ResponseBody
 	public UserVO update(@RequestBody UserFormVO userFormVo) {
 		Assert.notNull(userFormVo, "用户个人信息表单不能为空");
 		Assert.notNull(userFormVo.getId(), "用户ID不能为空");
 
 		UserPrincipal currentUser = UserContext.getContext();
 		if (currentUser == null || currentUser.getId() == null) {
-			throw new RestException("注册用户才能修改个人信息");
+			throw new RestException("用户登录后才能修改个人信息");
 		}
 
 		Assert.isTrue(userFormVo.getId().equals(currentUser.getId()), "只能修改自己的个人信息");

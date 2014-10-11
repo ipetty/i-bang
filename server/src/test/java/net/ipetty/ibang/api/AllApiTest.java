@@ -15,7 +15,7 @@ import org.junit.runners.Suite;
  * @date 2014年9月28日
  */
 @RunWith(Suite.class)
-@Suite.SuiteClasses({ UserApiTest.class, CrashLogApiTest.class })
+@Suite.SuiteClasses({ UserApiTest.class, SeekApiTest.class, CrashLogApiTest.class })
 public class AllApiTest extends BaseApiTest {
 
 	@BeforeClass

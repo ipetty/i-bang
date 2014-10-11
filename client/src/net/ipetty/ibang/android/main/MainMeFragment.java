@@ -5,6 +5,7 @@ import net.ipetty.ibang.android.core.Constants;
 import net.ipetty.ibang.android.core.MyApplication;
 import net.ipetty.ibang.android.core.ui.UnLoginView;
 import net.ipetty.ibang.android.core.util.AppUtils;
+import net.ipetty.ibang.android.sdk.context.ApiContext;
 import net.ipetty.ibang.android.seek.MyDelegationActivity;
 import net.ipetty.ibang.android.seek.MySeekActivity;
 import net.ipetty.ibang.android.setting.SettingActivity;
@@ -30,6 +31,7 @@ import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 public class MainMeFragment extends Fragment {
+
 	private boolean isLogin = false;
 	public UnLoginView unLoginView;
 	public View user_layout;
@@ -48,6 +50,8 @@ public class MainMeFragment extends Fragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		isLogin = ApiContext.getInstance(MainMeFragment.this.getActivity()).isAuthorized();
+
 		IntentFilter filter = new IntentFilter();
 		filter.addAction(Constants.BROADCAST_INTENT_IS_LOGIN);
 		filter.addAction(Constants.BROADCAST_INTENT_UPDATA_USER);

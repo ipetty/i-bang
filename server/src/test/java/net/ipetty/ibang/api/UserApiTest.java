@@ -1,6 +1,5 @@
 package net.ipetty.ibang.api;
 
-import net.ipetty.ibang.api.context.ApiContext;
 import net.ipetty.ibang.api.exception.ApiException;
 import net.ipetty.ibang.api.factory.IbangApi;
 import net.ipetty.ibang.vo.LoginResultVO;
@@ -12,16 +11,14 @@ import org.junit.Assert;
 import org.junit.Test;
 
 /**
- * UserApiTest<br />
- * 由于Retrofit 没法进行Post 拦截进行ApiContext 操作，故这里进行了一下ApiContext 的操作；<br />
- * 实际客户端在调用Api 以后也要进行这些ApiContext 的操作
+ * UserApiTest
  * 
  * @author luocanfeng
  * @date 2014年9月28日
  */
 public class UserApiTest extends BaseApiTest {
 
-	private UserApi userApi = IbangApi.init().create(UserApi.class);
+	private UserApi userApi = IbangApi.init().getUserApi();
 
 	private static final String TEST_ACCOUNT_USERNAME = "ibang";
 	private static final String TEST_ACCOUNT_EMAIL = "ibang@ipetty.net";
@@ -30,70 +27,50 @@ public class UserApiTest extends BaseApiTest {
 
 	@Test
 	public void testLogin() {
-		ApiContext.getInstance().setUserToken(null);
-		ApiContext.getInstance().setRefreshToken(null);
+		userApi.logout();
 		LoginResultVO result = userApi.login(TEST_ACCOUNT_USERNAME, TEST_ACCOUNT_PASSWORD);
-		ApiContext.getInstance().setUserToken(result.getUserToken());
-		ApiContext.getInstance().setRefreshToken(result.getRefreshToken());
 
 		logger.debug("login success, principal={}", result);
 	}
 
 	@Test
 	public void testLoginWithEmail() {
-		ApiContext.getInstance().setUserToken(null);
-		ApiContext.getInstance().setRefreshToken(null);
+		userApi.logout();
 		LoginResultVO result = userApi.login(TEST_ACCOUNT_EMAIL, TEST_ACCOUNT_PASSWORD);
-		ApiContext.getInstance().setUserToken(result.getUserToken());
-		ApiContext.getInstance().setRefreshToken(result.getRefreshToken());
 
 		logger.debug("login success, principal={}", result);
 	}
 
 	@Test
 	public void testRelogin() {
-		ApiContext.getInstance().setUserToken(null);
-		ApiContext.getInstance().setRefreshToken(null);
+		userApi.logout();
 		LoginResultVO result = userApi.login(TEST_ACCOUNT_USERNAME, TEST_ACCOUNT_PASSWORD);
-		ApiContext.getInstance().setUserToken(result.getUserToken());
-		ApiContext.getInstance().setRefreshToken(result.getRefreshToken());
 		result = userApi.relogin(result.getUserToken(), result.getRefreshToken());
-		ApiContext.getInstance().setUserToken(result.getUserToken());
-		ApiContext.getInstance().setRefreshToken(result.getRefreshToken());
 
 		logger.debug("relogin success, principal={}", result);
 	}
 
 	@Test
 	public void testLogout() {
-		ApiContext.getInstance().setUserToken(null);
-		ApiContext.getInstance().setRefreshToken(null);
-		LoginResultVO result = userApi.login(TEST_ACCOUNT_USERNAME, TEST_ACCOUNT_PASSWORD);
-		ApiContext.getInstance().setUserToken(result.getUserToken());
-		ApiContext.getInstance().setRefreshToken(result.getRefreshToken());
+		userApi.logout();
+		userApi.login(TEST_ACCOUNT_USERNAME, TEST_ACCOUNT_PASSWORD);
 
 		userApi.logout();
-		ApiContext.getInstance().setUserToken(null);
-		ApiContext.getInstance().setRefreshToken(null);
 
 		logger.debug("logout success.");
 	}
 
 	@Test
 	public void testRegister() {
-		ApiContext.getInstance().setUserToken(null);
-		ApiContext.getInstance().setRefreshToken(null);
+		userApi.logout();
 		LoginResultVO result = userApi.register(new RegisterVO("testRegister", TEST_PASSWORD, "昵称", "159*****757"));
-		ApiContext.getInstance().setUserToken(result.getUserToken());
-		ApiContext.getInstance().setRefreshToken(result.getRefreshToken());
 
 		logger.debug("register success, principal={}", result);
 	}
 
 	@Test
 	public void testCheckUsernameAvailable() {
-		ApiContext.getInstance().setUserToken(null);
-		ApiContext.getInstance().setRefreshToken(null);
+		userApi.logout();
 		boolean usernameAvailable = userApi.checkUsernameAvailable(TEST_ACCOUNT_USERNAME);
 		Assert.assertTrue(!usernameAvailable);
 
@@ -103,11 +80,8 @@ public class UserApiTest extends BaseApiTest {
 
 	@Test
 	public void testGetById() {
-		ApiContext.getInstance().setUserToken(null);
-		ApiContext.getInstance().setRefreshToken(null);
+		userApi.logout();
 		LoginResultVO result = userApi.login(TEST_ACCOUNT_USERNAME, TEST_ACCOUNT_PASSWORD);
-		ApiContext.getInstance().setUserToken(result.getUserToken());
-		ApiContext.getInstance().setRefreshToken(result.getRefreshToken());
 
 		UserVO user = userApi.getById(result.getUserVo().getId());
 		logger.debug("get by id success, user={}", user);
@@ -115,8 +89,7 @@ public class UserApiTest extends BaseApiTest {
 
 	@Test
 	public void testGetByIdFail() {
-		ApiContext.getInstance().setUserToken(null);
-		ApiContext.getInstance().setRefreshToken(null);
+		userApi.logout();
 		try {
 			userApi.getById(0);
 		} catch (ApiException e) {
@@ -126,16 +99,14 @@ public class UserApiTest extends BaseApiTest {
 
 	@Test
 	public void testGetByUsername() {
-		ApiContext.getInstance().setUserToken(null);
-		ApiContext.getInstance().setRefreshToken(null);
+		userApi.logout();
 		UserVO user = userApi.getByUsername(TEST_ACCOUNT_USERNAME);
 		logger.debug("get by username success, user={}", user);
 	}
 
 	@Test
 	public void testGetByUsernameFail() {
-		ApiContext.getInstance().setUserToken(null);
-		ApiContext.getInstance().setRefreshToken(null);
+		userApi.logout();
 		try {
 			userApi.getByUsername("testGetByUsernameFail");
 		} catch (ApiException e) {
@@ -145,11 +116,8 @@ public class UserApiTest extends BaseApiTest {
 
 	@Test
 	public void testChangePassword() {
-		ApiContext.getInstance().setUserToken(null);
-		ApiContext.getInstance().setRefreshToken(null);
-		LoginResultVO result = userApi.login(TEST_ACCOUNT_USERNAME, TEST_ACCOUNT_PASSWORD);
-		ApiContext.getInstance().setUserToken(result.getUserToken());
-		ApiContext.getInstance().setRefreshToken(result.getRefreshToken());
+		userApi.logout();
+		userApi.login(TEST_ACCOUNT_USERNAME, TEST_ACCOUNT_PASSWORD);
 
 		Assert.assertTrue(userApi.changePassword(TEST_ACCOUNT_PASSWORD, "666666"));
 		Assert.assertTrue(userApi.changePassword("666666", TEST_ACCOUNT_PASSWORD));
@@ -158,11 +126,8 @@ public class UserApiTest extends BaseApiTest {
 
 	@Test
 	public void testChangePasswordWithoutLogin() {
-		ApiContext.getInstance().setUserToken(null);
-		ApiContext.getInstance().setRefreshToken(null);
-		LoginResultVO result = userApi.login(TEST_ACCOUNT_USERNAME, TEST_ACCOUNT_PASSWORD);
-		ApiContext.getInstance().setUserToken(result.getUserToken());
-		ApiContext.getInstance().setRefreshToken(result.getRefreshToken());
+		userApi.logout();
+		userApi.login(TEST_ACCOUNT_USERNAME, TEST_ACCOUNT_PASSWORD);
 
 		Assert.assertTrue(userApi.logout());
 		try {
@@ -174,11 +139,8 @@ public class UserApiTest extends BaseApiTest {
 
 	@Test
 	public void testChangePasswordFail() {
-		ApiContext.getInstance().setUserToken(null);
-		ApiContext.getInstance().setRefreshToken(null);
-		LoginResultVO result = userApi.login(TEST_ACCOUNT_USERNAME, TEST_ACCOUNT_PASSWORD);
-		ApiContext.getInstance().setUserToken(result.getUserToken());
-		ApiContext.getInstance().setRefreshToken(result.getRefreshToken());
+		userApi.logout();
+		userApi.login(TEST_ACCOUNT_USERNAME, TEST_ACCOUNT_PASSWORD);
 
 		try {
 			userApi.changePassword("666666", TEST_ACCOUNT_PASSWORD);
@@ -189,11 +151,8 @@ public class UserApiTest extends BaseApiTest {
 
 	@Test
 	public void testUpdateAvatar() {
-		ApiContext.getInstance().setUserToken(null);
-		ApiContext.getInstance().setRefreshToken(null);
-		LoginResultVO result = userApi.login(TEST_ACCOUNT_USERNAME, TEST_ACCOUNT_PASSWORD);
-		ApiContext.getInstance().setUserToken(result.getUserToken());
-		ApiContext.getInstance().setRefreshToken(result.getRefreshToken());
+		userApi.logout();
+		userApi.login(TEST_ACCOUNT_USERNAME, TEST_ACCOUNT_PASSWORD);
 
 		UserVO user = userApi.updateAvatar(getTestPhoto());
 		Assert.assertNotNull(user);
@@ -202,11 +161,8 @@ public class UserApiTest extends BaseApiTest {
 
 	@Test
 	public void testUpdate() {
-		ApiContext.getInstance().setUserToken(null);
-		ApiContext.getInstance().setRefreshToken(null);
+		userApi.logout();
 		LoginResultVO result = userApi.login(TEST_ACCOUNT_USERNAME, TEST_ACCOUNT_PASSWORD);
-		ApiContext.getInstance().setUserToken(result.getUserToken());
-		ApiContext.getInstance().setRefreshToken(result.getRefreshToken());
 
 		UserVO user = result.getUserVo();
 		UserFormVO userFormVO = new UserFormVO();

@@ -3,9 +3,11 @@ package net.ipetty.ibang.android.sdk.factory;
 import java.util.Date;
 
 import net.ipetty.ibang.android.core.Constants;
+import net.ipetty.ibang.android.sdk.UserApiImpl;
 import net.ipetty.ibang.android.sdk.exception.ApiExceptionHandler;
 import net.ipetty.ibang.android.sdk.interceptor.ApiInterceptor;
 import net.ipetty.ibang.android.sdk.util.DateTypeAdapter;
+import net.ipetty.ibang.api.UserApi;
 import retrofit.ErrorHandler;
 import retrofit.RequestInterceptor;
 import retrofit.RestAdapter;
@@ -55,6 +57,13 @@ public class IbangApi {
 	 */
 	public <T> T create(Class<T> clazz) {
 		return restAdapter.create(clazz);
+	}
+
+	/**
+	 * 获取UserApiImpl
+	 */
+	public UserApi getUserApi() {
+		return new UserApiImpl(context);
 	}
 
 }

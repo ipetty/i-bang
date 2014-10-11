@@ -3,7 +3,6 @@ package net.ipetty.ibang.android.login;
 import net.ipetty.ibang.android.core.Task;
 import net.ipetty.ibang.android.sdk.context.ApiContext;
 import net.ipetty.ibang.android.sdk.factory.IbangApi;
-import net.ipetty.ibang.api.UserApi;
 import net.ipetty.ibang.vo.LoginResultVO;
 import android.app.Activity;
 import android.util.Log;
@@ -28,7 +27,7 @@ public class ReloginTask extends Task<String, LoginResultVO> {
 		String userToken = args[0];
 		String refreshToken = args[1];
 
-		LoginResultVO result = IbangApi.init(activity).create(UserApi.class).login(userToken, refreshToken);
+		LoginResultVO result = IbangApi.init(activity).getUserApi().login(userToken, refreshToken);
 
 		// process api context after login
 		ApiContext.getInstance(activity).setUserToken(result.getUserToken());

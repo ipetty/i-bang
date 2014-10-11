@@ -3,7 +3,6 @@ package net.ipetty.ibang.android.login;
 import net.ipetty.ibang.android.core.Task;
 import net.ipetty.ibang.android.sdk.context.ApiContext;
 import net.ipetty.ibang.android.sdk.factory.IbangApi;
-import net.ipetty.ibang.api.UserApi;
 import net.ipetty.ibang.vo.LoginResultVO;
 import net.ipetty.ibang.vo.RegisterVO;
 import android.app.Activity;
@@ -28,7 +27,7 @@ public class RegisterTask extends Task<RegisterVO, LoginResultVO> {
 		Log.d(TAG, "register");
 		RegisterVO register = args[0];
 
-		LoginResultVO result = IbangApi.init(activity).create(UserApi.class).register(register);
+		LoginResultVO result = IbangApi.init(activity).getUserApi().register(register);
 
 		// process api context after register
 		ApiContext.getInstance(activity).setUserToken(result.getUserToken());

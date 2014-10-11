@@ -3,7 +3,6 @@ package net.ipetty.ibang.android.login;
 import net.ipetty.ibang.android.core.Task;
 import net.ipetty.ibang.android.sdk.context.ApiContext;
 import net.ipetty.ibang.android.sdk.factory.IbangApi;
-import net.ipetty.ibang.api.UserApi;
 import android.app.Activity;
 import android.util.Log;
 
@@ -24,7 +23,7 @@ public class LogoutTask extends Task<Void, Boolean> {
 	@Override
 	protected Boolean myDoInBackground(Void... args) {
 		Log.d(TAG, "logout");
-		boolean result = IbangApi.init(activity).create(UserApi.class).logout();
+		boolean result = IbangApi.init(activity).getUserApi().logout();
 		if (result) {
 			// process api context after logout
 			ApiContext.getInstance(activity).setUserToken(null);

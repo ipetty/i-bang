@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import net.ipetty.ibang.exception.BusinessException;
 import net.ipetty.ibang.model.Image;
 import net.ipetty.ibang.model.Offer;
 import net.ipetty.ibang.model.Seek;
@@ -83,7 +84,12 @@ public class SeekService extends BaseService {
 	 * 获取
 	 */
 	public Seek getById(Long id) {
+		Assert.notNull(id, "求助单ID不能为空");
+
 		Seek seek = seekDao.getById(id);
+		if (seek == null) {
+			throw new BusinessException("指定ID（" + id + "）的求助单不存在");
+		}
 
 		// 求助单中的图片信息
 		List<Image> images = imageService.listBySeekId(id);
