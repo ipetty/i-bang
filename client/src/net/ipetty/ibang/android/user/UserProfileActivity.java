@@ -121,6 +121,8 @@ public class UserProfileActivity extends Activity {
 			genderValue = value;
 			genderDialog.cancel();
 			user.setGender(value);
+
+			// TODO 这里与服务器交互 更新用户性别
 		}
 	};
 
@@ -233,6 +235,9 @@ public class UserProfileActivity extends Activity {
 			avatar.setImageURI(Uri.fromFile(new File(filePath)));
 			// user.setAvatar(filePath);
 			// 上传后获取正确的服务器地址
+
+			// TODO: 这里与服务器交互 更新用户头像操作
+
 		} else {
 			avatar.setImageResource(R.drawable.default_avatar);
 		}

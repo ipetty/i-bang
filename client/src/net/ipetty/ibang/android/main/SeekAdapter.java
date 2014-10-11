@@ -29,9 +29,6 @@ public class SeekAdapter extends BaseAdapter implements OnScrollListener {
 
 	public SeekAdapter(Activity activity) {
 		inflater = LayoutInflater.from(activity);
-
-		list.add(new SeekVO());
-		list.add(new SeekVO());
 	}
 
 	public void loadDate(List<SeekVO> list) {
