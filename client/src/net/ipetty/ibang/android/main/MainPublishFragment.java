@@ -16,7 +16,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 
 public class MainPublishFragment extends Fragment {
-	private boolean isLogin = false;
+	private boolean isLogin = true;
 	private UnLoginView unLoginView;
 
 	private View layout_jzfu;

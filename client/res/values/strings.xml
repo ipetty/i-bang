@@ -68,6 +68,14 @@
     <string name="title_activity_my_seek">我的求助</string>
     <string name="title_activity_delegation">应征委托</string>
     <string name="title_activity_my_delegation">我的应征</string>
-    <string name="title_activity_larger_image">LargerImageActivity</string>
+    <string name="title_activity_larger_image">查看大图</string>
+    
+    
+    <string name="pull_to_refresh_pull_label">下拉可以刷新</string>
+    <string name="pull_to_refresh_release_label">释放可以刷新</string>
+    <string name="pull_to_refresh_refreshing_label">加载中...</string>
+    <string name="pull_to_refresh_tap_label">下拉刷新</string>
+    <string name="drop_to_more_label">更多</string>
+    <string name="drop_to_more_load_label">加载中...</string>
 
 </resources>

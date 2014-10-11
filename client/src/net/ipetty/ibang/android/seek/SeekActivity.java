@@ -55,21 +55,16 @@ public class SeekActivity extends Activity {
 		text.setText(this.getResources().getString(R.string.title_activity_seek));
 		btnBack.setOnClickListener(new BackClickListener(this));
 
+		// 界面元素绑定
 		// image
 		imageView = this.findViewById(R.id.imageView_layout);
 		viewPager = (ViewPager) findViewById(R.id.vp);
 		imageViewText = (TextView) this.findViewById(R.id.imageView_text);
-
-		seekVO = new SeekVO();
-		ImageVO img = new ImageVO();
-		seekVO.getImages().add(img);
-		seekVO.getImages().add(img);
-
-		initImageView();
-
 		offerBtn = (TextView) this.findViewById(R.id.offer);
+		delegationListView = (LinearLayout) this.findViewById(R.id.delegationList);
+		offerListView = (LinearLayout) this.findViewById(R.id.offerList);
+		// 事件绑定
 		offerBtn.setOnClickListener(new OnClickListener() {
-
 			@Override
 			public void onClick(View view) {
 				// TODO Auto-generated method stub
@@ -78,18 +73,25 @@ public class SeekActivity extends Activity {
 			}
 		});
 
-		delegationListView = (LinearLayout) this.findViewById(R.id.delegationList);
+		// 模拟数据
+		seekVO = new SeekVO();
+		ImageVO img = new ImageVO();
+		seekVO.getImages().add(img);
+		seekVO.getImages().add(img);
+
 		List<DelegationVO> delegationList = new ArrayList<DelegationVO>();
 		DelegationVO tt = new DelegationVO();
 		delegationList.add(tt);
 		delegationList.add(tt);
-		initDelegationView(delegationList);
 
-		offerListView = (LinearLayout) this.findViewById(R.id.offerList);
 		List<OfferVO> offerList = new ArrayList<OfferVO>();
 		OfferVO t = new OfferVO();
 		offerList.add(t);
 		offerList.add(t);
+
+		// 数据加载
+		initImageView();
+		initDelegationView(delegationList);
 		initOfferView(offerList);
 	}
 
