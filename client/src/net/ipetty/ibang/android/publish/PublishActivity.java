@@ -1,6 +1,7 @@
 package net.ipetty.ibang.android.publish;
 
 import java.io.File;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -88,6 +89,13 @@ public class PublishActivity extends Activity {
 				seek.setSeekerId(user.getId());
 				seek.setContent(contentView.getText().toString());
 				seek.setDelegateNumber(Integer.valueOf(delegateNumberView.getText().toString()));
+				String str = exipireDateView.getText().toString();
+				try {
+					seek.setExipireDate(dateFormat.parse(str));
+				} catch (ParseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 
 				// 获取到上传文件地址
 				List<File> listFile = uploadView.getFiles();
