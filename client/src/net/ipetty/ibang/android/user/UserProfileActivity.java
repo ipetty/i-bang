@@ -12,6 +12,7 @@ import net.ipetty.ibang.android.core.util.AppUtils;
 import net.ipetty.ibang.android.core.util.DeviceUtils;
 import net.ipetty.ibang.android.core.util.DialogUtils;
 import net.ipetty.ibang.android.core.util.PathUtils;
+import net.ipetty.ibang.android.sdk.context.ApiContext;
 import net.ipetty.ibang.vo.UserVO;
 
 import org.apache.commons.lang3.StringUtils;
@@ -33,6 +34,7 @@ import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 public class UserProfileActivity extends Activity {
+
 	private ImageView avatar; // 头像
 	private Dialog changeAvatarDialog; // 更换头像对话框
 	private String mImageName = Constants.PIC_USER_HEAD_IMAGE_NAME; // 默认头像值
@@ -56,13 +58,13 @@ public class UserProfileActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_user_profile);
 
-		user = ((MyApplication) getApplicationContext()).getUser();
+		user = ApiContext.getInstance(UserProfileActivity.this).getCurrentUser();
 
 		/* action bar */
 		ImageView btnBack = (ImageView) this.findViewById(R.id.action_bar_left_image);
+		btnBack.setOnClickListener(new BackClickListener(this));
 		TextView text = (TextView) this.findViewById(R.id.action_bar_title);
 		text.setText(this.getResources().getString(R.string.title_activity_user_profile));
-		btnBack.setOnClickListener(new BackClickListener(this));
 
 		cameraItems = new ArrayList<ModDialogItem>();
 		cameraItems.add(new ModDialogItem(null, "拍照", takePhotoClick));
@@ -97,7 +99,6 @@ public class UserProfileActivity extends Activity {
 		gender_layout.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
 				genderDialog = DialogUtils.modPopupDialog(UserProfileActivity.this, genderItems, genderDialog);
 			}
 		});
@@ -132,7 +133,6 @@ public class UserProfileActivity extends Activity {
 
 		@Override
 		public void onClick(View v) {
-			// TODO Auto-generated method stub
 			Intent intent = new Intent(UserProfileActivity.this, UserEditActivity.class);
 			intent.putExtra(Constants.INTENT_USER_EDIT_TYPE, this.type);
 			UserProfileActivity.this.startActivityForResult(intent, Constants.REQUEST_CODE_USER_EDIT);
@@ -229,7 +229,6 @@ public class UserProfileActivity extends Activity {
 	}
 
 	public void updateAvatar(final String filePath) {
-
 		if (StringUtils.isNotBlank(filePath)) {
 			avatar.setImageURI(Uri.fromFile(new File(filePath)));
 			// user.setAvatar(filePath);
@@ -237,6 +236,6 @@ public class UserProfileActivity extends Activity {
 		} else {
 			avatar.setImageResource(R.drawable.default_avatar);
 		}
-
 	}
+
 }

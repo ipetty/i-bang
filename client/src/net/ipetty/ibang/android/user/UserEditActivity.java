@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 public class UserEditActivity extends Activity {
+
 	private String type;
 	private View nickname_Layout;
 	private View phone_Layout;

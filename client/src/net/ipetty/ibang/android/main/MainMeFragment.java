@@ -2,7 +2,6 @@ package net.ipetty.ibang.android.main;
 
 import net.ipetty.ibang.R;
 import net.ipetty.ibang.android.core.Constants;
-import net.ipetty.ibang.android.core.MyApplication;
 import net.ipetty.ibang.android.core.ui.UnLoginView;
 import net.ipetty.ibang.android.core.util.AppUtils;
 import net.ipetty.ibang.android.sdk.context.ApiContext;
@@ -120,12 +119,6 @@ public class MainMeFragment extends Fragment {
 		}
 	}
 
-	private void init() {
-		// TODO Auto-generated method stub
-		unLoginView.hide();
-		initUser();
-	}
-
 	private BroadcastReceiver broadcastreciver = new BroadcastReceiver() {
 
 		@Override
@@ -140,12 +133,17 @@ public class MainMeFragment extends Fragment {
 			if (Constants.BROADCAST_INTENT_UPDATA_USER.equals(action)) {
 				initUser();
 			}
-
 		}
 	};
 
+	private void init() {
+		// TODO Auto-generated method stub
+		unLoginView.hide();
+		initUser();
+	}
+
 	private void initUser() {
-		user = ((MyApplication) getActivity().getApplicationContext()).getUser();
+		user = ApiContext.getInstance(getActivity()).getCurrentUser();
 		nickname.setText(user.getNickname());
 		signature.setText(user.getSignature());
 
