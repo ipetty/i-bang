@@ -9,11 +9,13 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends FragmentActivity {
 	private boolean isLogin = false;
@@ -161,13 +163,6 @@ public class MainActivity extends FragmentActivity {
 				publish_image.setImageResource(R.drawable.tab_publish_active);
 				break;
 			}
-			/*
-			 * case 2: {
-			 * discover_text.setTextColor(getResources().getColor(R.color
-			 * .base_color));
-			 * discover_image.setImageResource(R.drawable.tab_search_active);
-			 * break; }
-			 */
 			case 2: {
 				me_text.setTextColor(getResources().getColor(R.color.base_color));
 				me_image.setImageResource(R.drawable.tab_me_active);
@@ -178,4 +173,23 @@ public class MainActivity extends FragmentActivity {
 		}
 
 	};
+
+	private long mExitTime;
+
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		if (keyCode == KeyEvent.KEYCODE_BACK) {
+			if ((System.currentTimeMillis() - mExitTime) > 2000) {
+				String exit_once_again = "再按一次退出程序";
+				Toast.makeText(this, exit_once_again, Toast.LENGTH_SHORT).show();
+				mExitTime = System.currentTimeMillis();
+			} else {
+				ActivityManager.getInstance().exit();
+			}
+			return true;
+		}
+		return super.onKeyDown(keyCode, event);
+
+	}
+
 }

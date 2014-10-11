@@ -126,11 +126,11 @@
                 </LinearLayout>
                 <include layout="@layout/line_horizontal_divider"/>
 
-                <ListView
+                <net.ipetty.ibang.android.core.ui.MyPullToRefreshListView
                     android:id="@+id/listView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" >
-                </ListView>
+                </net.ipetty.ibang.android.core.ui.MyPullToRefreshListView>
 
             </LinearLayout>
 

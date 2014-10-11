@@ -3,7 +3,10 @@ package net.ipetty.ibang.android.main;
 import net.ipetty.ibang.R;
 import net.ipetty.ibang.android.city.CityActivity;
 import net.ipetty.ibang.android.core.Constants;
+import net.ipetty.ibang.android.core.MyAppStateManager;
+import net.ipetty.ibang.android.core.ui.MyPullToRefreshListView;
 import net.ipetty.ibang.android.core.ui.UnLoginView;
+import net.ipetty.ibang.android.core.util.NetWorkUtils;
 import net.ipetty.ibang.android.message.MessageActivity;
 import net.ipetty.ibang.android.seek.SeekActivity;
 import net.ipetty.ibang.android.type.TypeActivity;
@@ -17,6 +20,7 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -28,18 +32,25 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.handmark.pulltorefresh.library.PullToRefreshBase;
+import com.handmark.pulltorefresh.library.PullToRefreshBase.OnLastItemVisibleListener;
+import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener;
+
 public class MainHomeFragment extends Fragment {
 
+	private boolean isLogin = false;
 	public UnLoginView unLoginView;
 	private TextView city;
 	private TextView search;
 	private ImageView msg;
-	private String category ="";
-	private String subCategory ="";
-	private ListView list;
+	private String category = "";
+	private String subCategory = "";
+	private MyPullToRefreshListView listView;
 	private SeekAdapter adapter;
 
 	private Button type, order;
+	private Long lastTimeMillis;
+	private Boolean hasMore = true;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -76,7 +87,7 @@ public class MainHomeFragment extends Fragment {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				
+
 			}
 		});
 
@@ -104,22 +115,48 @@ public class MainHomeFragment extends Fragment {
 
 			}
 		});
-		
-		list = (ListView) getView().findViewById(R.id.listView);
+
+		listView = (MyPullToRefreshListView) getView().findViewById(R.id.listView);
 		adapter = new SeekAdapter(getActivity());
-		list.setAdapter(adapter);
-		list.setOnItemClickListener(new OnItemClickListener() {
+		listView.setAdapter(adapter);
+		listView.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
-			public void onItemClick(AdapterView<?> parent, View view, int position,
-					long id) {
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				// TODO Auto-generated method stub
-				Intent intent = new Intent(getActivity(),SeekActivity.class);
+				Intent intent = new Intent(getActivity(), SeekActivity.class);
 				intent.putExtra(Constants.INTENT_SEEK_ID, id);
 				startActivity(intent);
 			}
 		});
-		
+
+		listView.hideMoreView();
+
+		listView.setOnRefreshListener(new OnRefreshListener<ListView>() {
+
+			@Override
+			public void onRefresh(PullToRefreshBase<ListView> refreshView) {
+				// TODO Auto-generated method stub
+				String label = DateUtils.formatDateTime(MainHomeFragment.this.getActivity().getApplicationContext(),
+						getRefreshTime(), DateUtils.FORMAT_SHOW_TIME | DateUtils.FORMAT_SHOW_DATE
+								| DateUtils.FORMAT_ABBREV_ALL);
+				refreshView.getLoadingLayoutProxy().setLastUpdatedLabel(label);
+			}
+
+		});
+
+		listView.setOnLastItemVisibleListener(new OnLastItemVisibleListener() {
+
+			@Override
+			public void onLastItemVisible() {
+				// TODO Auto-generated method stub
+				if (hasMore) {
+
+				}
+			}
+
+		});
+
 	}
 
 	private BroadcastReceiver broadcastreciver = new BroadcastReceiver() {
@@ -130,13 +167,28 @@ public class MainHomeFragment extends Fragment {
 			String action = intent.getAction();
 
 			if (Constants.BROADCAST_INTENT_IS_LOGIN.equals(action)) {
-
+				isLogin = true;
+				init();
 			}
 
 			if (Constants.BROADCAST_INTENT_NEW_MESSAGE.equals(action)) {
 				setNewMessage();
 			}
 
+			if (Constants.BROADCAST_INTENT_UPDATA_USER.equals(action)) {
+				initUser();
+			}
+		}
+
+		private void init() {
+			// TODO Auto-generated method stub
+			adapter.notifyDataSetChanged();
+
+		}
+
+		private void initUser() {
+			// TODO Auto-generated method stub
+			adapter.notifyDataSetChanged();
 		}
 
 		private void setNewMessage() {
@@ -150,24 +202,35 @@ public class MainHomeFragment extends Fragment {
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		// TODO Auto-generated method stub
 		super.onActivityResult(requestCode, resultCode, data);
-		
-		if (requestCode ==  Constants.REQUEST_CODE_CATEGORY) {
+
+		if (requestCode == Constants.REQUEST_CODE_CATEGORY) {
 			if (resultCode == FragmentActivity.RESULT_OK) {
 				Intent intent = data;
 				category = intent.getStringExtra(Constants.INTENT_CATEGORY);
 				subCategory = intent.getStringExtra(Constants.INTENT_SUB_CATEGORY);
-				setCategoryText(category,subCategory);
-				
+				setCategoryText(category, subCategory);
+
 			}
 		}
 	}
 
+	// 获取刷新时间，若网络不可用则取最后一次刷新时间
+	private Long getRefreshTime() {
+		if (NetWorkUtils.isNetworkConnected(this.getActivity())) {
+			this.lastTimeMillis = System.currentTimeMillis();
+			MyAppStateManager.setLastRefrsh4Home(this.getActivity(), this.lastTimeMillis);
+			return this.lastTimeMillis;
+		}
+
+		return MyAppStateManager.getLastRefrsh4Home(this.getActivity());
+	}
+
 	private void setCategoryText(String category, String subCategory) {
 		String str = subCategory;
-		if(StringUtils.isEmpty(str)){
+		if (StringUtils.isEmpty(str)) {
 			str = category;
 		}
-		if(StringUtils.isEmpty(str)){
+		if (StringUtils.isEmpty(str)) {
 			str = "全部分类";
 		}
 		type.setText(str);

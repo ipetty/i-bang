@@ -49,8 +49,8 @@ public class UserEditActivity extends Activity {
 		job = (EditText) this.findViewById(R.id.job);
 
 		button = this.findViewById(R.id.button);
-		button.setOnClickListener(new OnClickListener() {
 
+		button.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 
@@ -59,6 +59,10 @@ public class UserEditActivity extends Activity {
 				user.setSignature(signature.getText().toString());
 				user.setJob(job.getText().toString());
 				// TODO update user;
+
+				// 通知用户更新
+				Intent intent2 = new Intent(Constants.BROADCAST_INTENT_UPDATA_USER);
+				sendBroadcast(intent2);
 
 				Intent intent = new Intent();
 				setResult(RESULT_OK, intent);
@@ -71,7 +75,6 @@ public class UserEditActivity extends Activity {
 		Intent intent = getIntent();
 		type = intent.getStringExtra(Constants.INTENT_USER_EDIT_TYPE);
 		initType();
-
 		nickname.setText(user.getNickname());
 		phone.setText(user.getPhone());
 		signature.setText(user.getSignature());

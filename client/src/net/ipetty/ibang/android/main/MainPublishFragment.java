@@ -34,6 +34,7 @@ public class MainPublishFragment extends Fragment {
 
 		IntentFilter filter = new IntentFilter();
 		filter.addAction(Constants.BROADCAST_INTENT_IS_LOGIN);
+		filter.addAction(Constants.BROADCAST_INTENT_UPDATA_USER);
 		this.getActivity().registerReceiver(broadcastreciver, filter);
 	}
 
@@ -93,6 +94,11 @@ public class MainPublishFragment extends Fragment {
 
 	}
 
+	private void initUser() {
+		// TODO Auto-generated method stub
+
+	}
+
 	private BroadcastReceiver broadcastreciver = new BroadcastReceiver() {
 
 		@Override
@@ -102,6 +108,10 @@ public class MainPublishFragment extends Fragment {
 
 			if (Constants.BROADCAST_INTENT_IS_LOGIN.equals(action)) {
 				init();
+			}
+
+			if (Constants.BROADCAST_INTENT_UPDATA_USER.equals(action)) {
+				initUser();
 			}
 
 		}
