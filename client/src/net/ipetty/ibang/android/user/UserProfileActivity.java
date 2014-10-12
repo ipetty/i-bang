@@ -13,6 +13,7 @@ import net.ipetty.ibang.android.core.util.DeviceUtils;
 import net.ipetty.ibang.android.core.util.DialogUtils;
 import net.ipetty.ibang.android.core.util.PathUtils;
 import net.ipetty.ibang.android.sdk.context.ApiContext;
+import net.ipetty.ibang.vo.UserFormVO;
 import net.ipetty.ibang.vo.UserVO;
 
 import org.apache.commons.lang3.StringUtils;
@@ -120,9 +121,20 @@ public class UserProfileActivity extends Activity {
 			gender.setText(label);
 			genderValue = value;
 			genderDialog.cancel();
-			user.setGender(value);
 
-			// TODO 这里与服务器交互 更新用户性别
+			// 这里与服务器交互，更新用户性别
+			user = ApiContext.getInstance(UserProfileActivity.this).getCurrentUser();
+			UserFormVO userForm = new UserFormVO();
+			userForm.setId(user.getId());
+			userForm.setNickname(user.getNickname());
+			userForm.setGender(value);
+			userForm.setJob(user.getJob());
+			userForm.setPhone(user.getPhone());
+			userForm.setTelephone(user.getTelephone());
+			userForm.setSignature(user.getSignature());
+			userForm.setAddress(user.getAddress());
+			new UpdateProfileTask(UserProfileActivity.this).setListener(
+					new UpdateProfileTaskListener(UserProfileActivity.this)).execute(userForm);
 		}
 	};
 
@@ -236,8 +248,9 @@ public class UserProfileActivity extends Activity {
 			// user.setAvatar(filePath);
 			// 上传后获取正确的服务器地址
 
-			// TODO: 这里与服务器交互 更新用户头像操作
-
+			// 这里与服务器交互，更新用户头像操作
+			new UpdateAvatarTask(UserProfileActivity.this).setListener(
+					new UpdateAvatarTaskListener(UserProfileActivity.this)).execute(filePath);
 		} else {
 			avatar.setImageResource(R.drawable.default_avatar);
 		}

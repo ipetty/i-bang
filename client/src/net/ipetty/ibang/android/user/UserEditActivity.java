@@ -2,8 +2,9 @@ package net.ipetty.ibang.android.user;
 
 import net.ipetty.ibang.R;
 import net.ipetty.ibang.android.core.Constants;
-import net.ipetty.ibang.android.core.MyApplication;
 import net.ipetty.ibang.android.core.ui.BackClickListener;
+import net.ipetty.ibang.android.sdk.context.ApiContext;
+import net.ipetty.ibang.vo.UserFormVO;
 import net.ipetty.ibang.vo.UserVO;
 import android.app.Activity;
 import android.content.Intent;
@@ -54,12 +55,19 @@ public class UserEditActivity extends Activity {
 		button.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				UserFormVO userForm = new UserFormVO();
+				userForm.setId(ApiContext.getInstance(UserEditActivity.this).getCurrentUserId());
+				userForm.setNickname(nickname.getText().toString());
+				// userForm.setGender(gender);
+				userForm.setJob(job.getText().toString());
+				userForm.setPhone(phone.getText().toString());
+				// userForm.setTelephone(telephone);
+				userForm.setSignature(signature.getText().toString());
+				// userForm.setAddress(address);
 
-				user.setNickname(nickname.getText().toString());
-				user.setPhone(phone.getText().toString());
-				user.setSignature(signature.getText().toString());
-				user.setJob(job.getText().toString());
-				// TODO update user;
+				// update user;
+				new UpdateProfileTask(UserEditActivity.this).setListener(
+						new UpdateProfileTaskListener(UserEditActivity.this)).execute(userForm);
 
 				// 通知用户更新
 				Intent intent2 = new Intent(Constants.BROADCAST_INTENT_UPDATA_USER);
@@ -71,7 +79,7 @@ public class UserEditActivity extends Activity {
 			}
 		});
 
-		user = ((MyApplication) getApplicationContext()).getUser();
+		user = ApiContext.getInstance(UserEditActivity.this).getCurrentUser();
 
 		Intent intent = getIntent();
 		type = intent.getStringExtra(Constants.INTENT_USER_EDIT_TYPE);
