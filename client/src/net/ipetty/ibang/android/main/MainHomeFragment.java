@@ -1,5 +1,7 @@
 package net.ipetty.ibang.android.main;
 
+import java.util.Date;
+
 import net.ipetty.ibang.R;
 import net.ipetty.ibang.android.city.CityActivity;
 import net.ipetty.ibang.android.core.Constants;
@@ -9,6 +11,8 @@ import net.ipetty.ibang.android.core.ui.UnLoginView;
 import net.ipetty.ibang.android.core.util.JSONUtils;
 import net.ipetty.ibang.android.core.util.NetWorkUtils;
 import net.ipetty.ibang.android.message.MessageActivity;
+import net.ipetty.ibang.android.seek.ListLatestAvaliableSeeksTask;
+import net.ipetty.ibang.android.seek.ListLatestAvaliableSeeksTaskListener;
 import net.ipetty.ibang.android.seek.SeekActivity;
 import net.ipetty.ibang.android.type.TypeActivity;
 
@@ -50,6 +54,8 @@ public class MainHomeFragment extends Fragment {
 	private SeekAdapter adapter;
 
 	private Button type, order;
+	private Integer pageNumber = 0;
+	private final Integer pageSize = 20;
 	private Long lastTimeMillis;
 	private Boolean hasMore = true;
 
@@ -104,7 +110,6 @@ public class MainHomeFragment extends Fragment {
 
 		type = (Button) getView().findViewById(R.id.type);
 		type.setOnClickListener(new OnClickListener() {
-
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
@@ -121,7 +126,6 @@ public class MainHomeFragment extends Fragment {
 		adapter = new SeekAdapter(getActivity());
 		listView.setAdapter(adapter);
 		listView.setOnItemClickListener(new OnItemClickListener() {
-
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				// TODO Auto-generated method stub
@@ -133,9 +137,7 @@ public class MainHomeFragment extends Fragment {
 		});
 
 		listView.hideMoreView();
-
 		listView.setOnRefreshListener(new OnRefreshListener<ListView>() {
-
 			@Override
 			public void onRefresh(PullToRefreshBase<ListView> refreshView) {
 				// TODO Auto-generated method stub
@@ -144,11 +146,9 @@ public class MainHomeFragment extends Fragment {
 								| DateUtils.FORMAT_ABBREV_ALL);
 				refreshView.getLoadingLayoutProxy().setLastUpdatedLabel(label);
 			}
-
 		});
 
 		listView.setOnLastItemVisibleListener(new OnLastItemVisibleListener() {
-
 			@Override
 			public void onLastItemVisible() {
 				// TODO Auto-generated method stub
@@ -156,27 +156,27 @@ public class MainHomeFragment extends Fragment {
 
 				}
 			}
-
 		});
 
+		// 加载数据
+		new ListLatestAvaliableSeeksTask(getActivity()).setListener(
+				new ListLatestAvaliableSeeksTaskListener(getActivity(), adapter, listView)).execute(
+				net.ipetty.ibang.android.core.util.DateUtils.toDatetimeString(new Date(getRefreshTime())),
+				String.valueOf(pageNumber++), String.valueOf(pageSize));
 	}
 
 	private BroadcastReceiver broadcastreciver = new BroadcastReceiver() {
-
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			// TODO Auto-generated method stub
 			String action = intent.getAction();
-
 			if (Constants.BROADCAST_INTENT_IS_LOGIN.equals(action)) {
 				isLogin = true;
 				init();
 			}
-
 			if (Constants.BROADCAST_INTENT_NEW_MESSAGE.equals(action)) {
 				setNewMessage();
 			}
-
 			if (Constants.BROADCAST_INTENT_UPDATA_USER.equals(action)) {
 				initUser();
 			}
@@ -197,7 +197,6 @@ public class MainHomeFragment extends Fragment {
 			// TODO Auto-generated method stub
 			msg.setImageResource(R.drawable.action_bar_msg_new);
 		}
-
 	};
 
 	@Override
@@ -237,4 +236,5 @@ public class MainHomeFragment extends Fragment {
 		}
 		type.setText(str);
 	}
+
 }

@@ -41,7 +41,7 @@ public class SeekAdapter extends BaseAdapter implements OnScrollListener {
 		list.add(seekVO);
 	}
 
-	public void loadDate(List<SeekVO> list) {
+	public void loadData(List<SeekVO> list) {
 		this.list.clear();
 		this.list.addAll(list);
 		this.notifyDataSetChanged();

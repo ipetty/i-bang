@@ -1,6 +1,8 @@
 package net.ipetty.ibang.api.factory;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import net.ipetty.ibang.api.UserApi;
 import net.ipetty.ibang.api.UserApiImpl;
@@ -24,6 +26,7 @@ import com.google.gson.GsonBuilder;
 public class IbangApi {
 
 	private static IbangApi instance;
+	private static Map<String, Object> apiHolder = new HashMap<String, Object>();
 
 	private static RestAdapter restAdapter;
 	/** Api请求拦截器 */
@@ -51,7 +54,13 @@ public class IbangApi {
 	 * 工厂方法
 	 */
 	public <T> T create(Class<T> clazz) {
-		return restAdapter.create(clazz);
+		@SuppressWarnings("unchecked")
+		T t = (T) apiHolder.get(clazz.toString());
+		if (t == null) {
+			t = restAdapter.create(clazz);
+			apiHolder.put(clazz.toString(), t);
+		}
+		return t;
 	}
 
 	/**
