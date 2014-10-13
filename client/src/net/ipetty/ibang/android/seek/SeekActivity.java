@@ -156,7 +156,8 @@ public class SeekActivity extends Activity {
 
 	private void initSeekUserLayout() {
 		if (StringUtils.isNotBlank(seekUser.getAvatar())) {
-			ImageLoader.getInstance().displayImage(Constants.FILE_SERVER_BASE + user.getAvatar(), seek_avatar, options);
+			ImageLoader.getInstance().displayImage(Constants.FILE_SERVER_BASE + seekUser.getAvatar(), seek_avatar,
+					options);
 		}
 		seek_username.setText(seekUser.getNickname());
 
