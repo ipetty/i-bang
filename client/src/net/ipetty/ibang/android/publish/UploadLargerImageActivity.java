@@ -15,6 +15,7 @@ import android.view.View.OnClickListener;
 import android.widget.ImageView;
 
 public class UploadLargerImageActivity extends Activity {
+
 	private ImageView image;
 	private PhotoViewAttacher mAttacher;
 	private String path;
@@ -29,7 +30,6 @@ public class UploadLargerImageActivity extends Activity {
 
 		ImageView btnDel = (ImageView) this.findViewById(R.id.action_bar_right_image);
 		btnDel.setOnClickListener(new OnClickListener() {
-
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
@@ -50,4 +50,5 @@ public class UploadLargerImageActivity extends Activity {
 		image.setImageURI(uri);
 		mAttacher = new PhotoViewAttacher(image);
 	}
+
 }

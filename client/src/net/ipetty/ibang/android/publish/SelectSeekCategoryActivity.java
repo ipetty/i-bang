@@ -20,9 +20,10 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-public class PublishSubTypeActivity extends Activity {
-	private String title = null;
-	private String[] subCategory = null;
+public class SelectSeekCategoryActivity extends Activity {
+
+	private String categoryL1 = null;
+	private String[] l2Categories = null;
 	private ListView listView;
 
 	@Override
@@ -31,51 +32,44 @@ public class PublishSubTypeActivity extends Activity {
 		setContentView(R.layout.activity_publish_sub_type);
 
 		ActivityManager.getInstance().addActivity(this);
-		title = this.getIntent().getExtras().getString(Constants.INTENT_CATEGORY);
-		if (title == null) {
+		categoryL1 = this.getIntent().getExtras().getString(Constants.INTENT_CATEGORY);
+		if (categoryL1 == null) {
 			finish();
 		}
 
 		/* action bar */
 		ImageView btnBack = (ImageView) this.findViewById(R.id.action_bar_left_image);
-		TextView text = (TextView) this.findViewById(R.id.action_bar_title);
-		text.setText(title);
 		btnBack.setOnClickListener(new BackClickListener(this));
+		((TextView) this.findViewById(R.id.action_bar_title)).setText(categoryL1);
 
-		subCategory = SeekCategoryUtils.listL2Categories(title);
+		l2Categories = SeekCategoryUtils.listL2Categories(categoryL1);
 		listView = (ListView) this.findViewById(R.id.listView);
-		listView.setAdapter(new SubCategoryAdapter());
+		listView.setAdapter(new L2CategoriesAdapter());
 		listView.setOnItemClickListener(new OnItemClickListener() {
-
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				// TODO Auto-generated method stub
-				Intent intent = new Intent(PublishSubTypeActivity.this, PublishActivity.class);
-				intent.putExtra(Constants.INTENT_CATEGORY, title);
-				intent.putExtra(Constants.INTENT_SUB_CATEGORY, subCategory[position]);
+				Intent intent = new Intent(SelectSeekCategoryActivity.this, PublishActivity.class);
+				intent.putExtra(Constants.INTENT_CATEGORY, categoryL1);
+				intent.putExtra(Constants.INTENT_SUB_CATEGORY, l2Categories[position]);
 				startActivity(intent);
 				finish();
 			}
 		});
 	}
 
-	public class SubCategoryAdapter extends BaseAdapter implements OnScrollListener {
-
+	public class L2CategoriesAdapter extends BaseAdapter implements OnScrollListener {
 		@Override
 		public int getCount() {
-			// TODO Auto-generated method stub
-			return subCategory.length;
+			return l2Categories.length;
 		}
 
 		@Override
 		public Object getItem(int position) {
-			// TODO Auto-generated method stub
-			return subCategory[position];
+			return l2Categories[position];
 		}
 
 		@Override
 		public long getItemId(int position) {
-			// TODO Auto-generated method stub
 			return 0;
 		}
 
@@ -87,10 +81,9 @@ public class PublishSubTypeActivity extends Activity {
 
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
-			// TODO Auto-generated method stub
 			View view;
 			if (convertView == null) {
-				LayoutInflater inflater = LayoutInflater.from(PublishSubTypeActivity.this);
+				LayoutInflater inflater = LayoutInflater.from(SelectSeekCategoryActivity.this);
 				view = inflater.inflate(R.layout.list_sub_category_item, null);
 				holder = new ViewHolder();
 				holder.name = (TextView) view.findViewById(R.id.name);
@@ -108,15 +101,12 @@ public class PublishSubTypeActivity extends Activity {
 		@Override
 		public void onScrollStateChanged(AbsListView view, int scrollState) {
 			// TODO Auto-generated method stub
-
 		}
 
 		@Override
 		public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
 			// TODO Auto-generated method stub
-
 		}
-
 	}
 
 }

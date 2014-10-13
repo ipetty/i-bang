@@ -3,7 +3,7 @@ package net.ipetty.ibang.android.main;
 import net.ipetty.ibang.R;
 import net.ipetty.ibang.android.core.Constants;
 import net.ipetty.ibang.android.core.ui.UnLoginView;
-import net.ipetty.ibang.android.publish.PublishSubTypeActivity;
+import net.ipetty.ibang.android.publish.SelectSeekCategoryActivity;
 import net.ipetty.ibang.android.sdk.context.ApiContext;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -60,14 +60,14 @@ public class MainPublishFragment extends Fragment {
 		layout_healthy = getView().findViewById(R.id.layout_healthy);
 		layout_repair = getView().findViewById(R.id.layout_repair);
 
-		layout_jzfu.setOnClickListener(new PublishSubTypeListener("家政服务"));
-		layout_it.setOnClickListener(new PublishSubTypeListener("IT服务"));
-		layout_edu.setOnClickListener(new PublishSubTypeListener("教育培训"));
-		layout_healthy.setOnClickListener(new PublishSubTypeListener("健康安全"));
-		layout_repair.setOnClickListener(new PublishSubTypeListener("家电维修"));
-		layout_car.setOnClickListener(new PublishSubTypeListener("汽车服务"));
-		layout_travel.setOnClickListener(new PublishSubTypeListener("旅游休闲"));
-		layout_express.setOnClickListener(new PublishSubTypeListener("物流运输"));
+		layout_jzfu.setOnClickListener(new SelectSeekCategoryListener("家政服务"));
+		layout_it.setOnClickListener(new SelectSeekCategoryListener("IT服务"));
+		layout_edu.setOnClickListener(new SelectSeekCategoryListener("教育培训"));
+		layout_healthy.setOnClickListener(new SelectSeekCategoryListener("健康安全"));
+		layout_repair.setOnClickListener(new SelectSeekCategoryListener("家电维修"));
+		layout_car.setOnClickListener(new SelectSeekCategoryListener("汽车服务"));
+		layout_travel.setOnClickListener(new SelectSeekCategoryListener("旅游休闲"));
+		layout_express.setOnClickListener(new SelectSeekCategoryListener("物流运输"));
 
 		isLogin = ApiContext.getInstance(getActivity()).isAuthorized();
 		if (isLogin) {
@@ -75,16 +75,16 @@ public class MainPublishFragment extends Fragment {
 		}
 	}
 
-	public class PublishSubTypeListener implements OnClickListener {
+	public class SelectSeekCategoryListener implements OnClickListener {
 		String type;
 
-		public PublishSubTypeListener(String type) {
+		public SelectSeekCategoryListener(String type) {
 			this.type = type;
 		}
 
 		@Override
 		public void onClick(View v) {
-			Intent intent = new Intent(getActivity(), PublishSubTypeActivity.class);
+			Intent intent = new Intent(getActivity(), SelectSeekCategoryActivity.class);
 			intent.putExtra(Constants.INTENT_CATEGORY, this.type);
 			startActivity(intent);
 		}
