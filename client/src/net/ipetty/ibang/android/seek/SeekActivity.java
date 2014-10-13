@@ -46,6 +46,7 @@ public class SeekActivity extends Activity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_seek);
 
@@ -96,7 +97,6 @@ public class SeekActivity extends Activity {
 	}
 
 	private void initImageView() {
-
 		List<ImageVO> imageList = seekVO.getImages();
 		if (imageList.size() == 0) {
 			imageView.setVisibility(View.GONE);
@@ -152,7 +152,6 @@ public class SeekActivity extends Activity {
 	}
 
 	private class pageAdapter extends PagerAdapter {
-
 		@Override
 		public int getCount() {
 			// TODO Auto-generated method stub
@@ -176,17 +175,14 @@ public class SeekActivity extends Activity {
 	}
 
 	private class MyPageChangeListener implements OnPageChangeListener {
-
 		@Override
 		public void onPageScrollStateChanged(int arg0) {
 			// TODO Auto-generated method stub
-
 		}
 
 		@Override
 		public void onPageScrolled(int arg0, float arg1, int arg2) {
 			// TODO Auto-generated method stub
-
 		}
 
 		@Override
@@ -194,9 +190,7 @@ public class SeekActivity extends Activity {
 			// TODO Auto-generated method stub
 			currentItem = position;
 			setImageViewText();
-
 		}
-
 	}
 
 	private void initDelegationView(List<DelegationVO> delegationList) {
@@ -218,4 +212,5 @@ public class SeekActivity extends Activity {
 			offerListView.addView(view);
 		}
 	}
+
 }
