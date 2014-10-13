@@ -13,6 +13,8 @@ import android.widget.TextView;
 public class UserInfoActivity extends Activity {
 	private UserVO user;
 	private UserVO seekUser;
+	private String seekUserJSON;
+	private int seekUserId;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -21,7 +23,7 @@ public class UserInfoActivity extends Activity {
 
 		user = ApiContext.getInstance(UserInfoActivity.this).getCurrentUser();
 
-		seekUserId = this.getIntent().getExtras().getLong(Constants.INTENT_USER_ID);
+		seekUserId = this.getIntent().getExtras().getInt(Constants.INTENT_USER_ID);
 		seekUserJSON = this.getIntent().getExtras().getString(Constants.INTENT_USER_JSON);
 
 		ImageView btnBack = (ImageView) this.findViewById(R.id.action_bar_left_image);
