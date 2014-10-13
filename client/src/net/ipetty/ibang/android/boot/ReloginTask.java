@@ -1,4 +1,4 @@
-package net.ipetty.ibang.android.login;
+package net.ipetty.ibang.android.boot;
 
 import net.ipetty.ibang.android.core.Task;
 import net.ipetty.ibang.android.sdk.factory.IbangApi;
@@ -12,18 +12,18 @@ import android.util.Log;
  * @author luocanfeng
  * @date 2014年9月30日
  */
-public class LoginTask extends Task<String, LoginResultVO> {
+public class ReloginTask extends Task<String, LoginResultVO> {
 
 	private String TAG = getClass().getSimpleName();
 
-	public LoginTask(Activity activity) {
+	public ReloginTask(Activity activity) {
 		super(activity);
 	}
 
 	@Override
 	protected LoginResultVO myDoInBackground(String... args) {
-		Log.d(TAG, "login");
-		return IbangApi.init(activity).getUserApi().login(args[0], args[1]);
+		Log.d(TAG, "relogin");
+		return IbangApi.init(activity).getUserApi().relogin(args[0], args[1]);
 	}
 
 }

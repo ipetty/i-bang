@@ -32,6 +32,9 @@ public class UserApiImpl implements UserApi {
 		LoginResultVO result = userApi.login(loginName, password);
 		ApiContext.getInstance(context).setUserToken(result.getUserToken());
 		ApiContext.getInstance(context).setRefreshToken(result.getRefreshToken());
+		ApiContext.getInstance(context).setAuthorized(true);
+		ApiContext.getInstance(context).setCurrentUser(result.getUserVo());
+		ApiContext.getInstance(context).setCurrentUserId(result.getUserVo().getId());
 		return result;
 	}
 
@@ -40,6 +43,9 @@ public class UserApiImpl implements UserApi {
 		LoginResultVO result = userApi.relogin(userToken, refreshToken);
 		ApiContext.getInstance(context).setUserToken(result.getUserToken());
 		ApiContext.getInstance(context).setRefreshToken(result.getRefreshToken());
+		ApiContext.getInstance(context).setAuthorized(true);
+		ApiContext.getInstance(context).setCurrentUser(result.getUserVo());
+		ApiContext.getInstance(context).setCurrentUserId(result.getUserVo().getId());
 		return result;
 	}
 
@@ -48,6 +54,9 @@ public class UserApiImpl implements UserApi {
 		if (userApi.logout()) {
 			ApiContext.getInstance(context).setUserToken(null);
 			ApiContext.getInstance(context).setRefreshToken(null);
+			ApiContext.getInstance(context).setAuthorized(false);
+			ApiContext.getInstance(context).setCurrentUser(null);
+			ApiContext.getInstance(context).setCurrentUserId(null);
 			return true;
 		}
 		return false;
@@ -58,6 +67,9 @@ public class UserApiImpl implements UserApi {
 		LoginResultVO result = userApi.register(register);
 		ApiContext.getInstance(context).setUserToken(result.getUserToken());
 		ApiContext.getInstance(context).setRefreshToken(result.getRefreshToken());
+		ApiContext.getInstance(context).setAuthorized(true);
+		ApiContext.getInstance(context).setCurrentUser(result.getUserVo());
+		ApiContext.getInstance(context).setCurrentUserId(result.getUserVo().getId());
 		return result;
 	}
 
@@ -83,12 +95,16 @@ public class UserApiImpl implements UserApi {
 
 	@Override
 	public UserVO updateAvatar(TypedFile imageFile) {
-		return userApi.updateAvatar(imageFile);
+		UserVO user = userApi.updateAvatar(imageFile);
+		ApiContext.getInstance(context).setCurrentUser(user);
+		return user;
 	}
 
 	@Override
 	public UserVO update(UserFormVO userFormVo) {
-		return userApi.update(userFormVo);
+		UserVO user = userApi.update(userFormVo);
+		ApiContext.getInstance(context).setCurrentUser(user);
+		return user;
 	}
 
 }

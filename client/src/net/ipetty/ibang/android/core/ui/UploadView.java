@@ -65,7 +65,6 @@ public class UploadView {
 	}
 
 	private void setImageView() {
-		// TODO Auto-generated method stub列表
 		int j = pathList.size();
 
 		for (int i = 0; i < imageViews.size(); i++) {
@@ -82,7 +81,6 @@ public class UploadView {
 				upload.setImageURI(Uri.fromFile(pathList.get(i)));
 			}
 		}
-
 	}
 
 	private class MyOnClickListener implements OnClickListener {
@@ -94,7 +92,6 @@ public class UploadView {
 
 		@Override
 		public void onClick(View v) {
-			// TODO Auto-generated method stub
 			if (i > pathList.size()) {
 				cameraDialog = DialogUtils.modPopupDialog(activity, dialogItems, cameraDialog);
 			} else {
@@ -138,7 +135,6 @@ public class UploadView {
 				compressImage(path);
 			}
 		}
-
 		if (requestCode == DeviceUtils.REQUEST_CODE_TAKE_IMAGE) {
 			if (resultCode == Activity.RESULT_OK) {
 				String path = MyAppStateManager.getCameraTempFile(activity);
@@ -146,7 +142,6 @@ public class UploadView {
 
 			}
 		}
-
 		if (requestCode == REQUEST_CODE__DELETE) {
 			if (resultCode == Activity.RESULT_OK) {
 				pathList.remove(curIndex);
@@ -170,4 +165,5 @@ public class UploadView {
 	public List<File> getFiles() {
 		return this.pathList;
 	}
+
 }

@@ -24,6 +24,7 @@ import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 public class SeekAdapter extends BaseAdapter implements OnScrollListener {
+
 	private List<SeekVO> list = new ArrayList<SeekVO>();
 	private DisplayImageOptions options = AppUtils.getNormalImageOptions();
 	private LayoutInflater inflater;

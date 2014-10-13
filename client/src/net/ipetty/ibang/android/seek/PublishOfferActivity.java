@@ -1,12 +1,9 @@
 package net.ipetty.ibang.android.seek;
 
 import net.ipetty.ibang.R;
-import net.ipetty.ibang.R.id;
-import net.ipetty.ibang.R.layout;
-import net.ipetty.ibang.R.string;
 import net.ipetty.ibang.android.core.Constants;
-import net.ipetty.ibang.android.core.MyApplication;
 import net.ipetty.ibang.android.core.ui.BackClickListener;
+import net.ipetty.ibang.android.sdk.context.ApiContext;
 import net.ipetty.ibang.android.user.UserEditActivity;
 import net.ipetty.ibang.vo.UserVO;
 import android.app.Activity;
@@ -19,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 public class PublishOfferActivity extends Activity {
+
 	private EditText content;
 	private TextView button;
 	private TextView nicknameView;
@@ -52,7 +50,7 @@ public class PublishOfferActivity extends Activity {
 		nicknameView.setOnClickListener(new EditOnClickListener(Constants.INTENT_USER_EDIT_TYPE_NICKNAME));
 		phoneView.setOnClickListener(new EditOnClickListener(Constants.INTENT_USER_EDIT_TYPE_PHONE));
 
-		user = ((MyApplication) getApplicationContext()).getUser();
+		user = ApiContext.getInstance(PublishOfferActivity.this).getCurrentUser();
 		initUserInfo(user);
 	}
 
@@ -84,10 +82,9 @@ public class PublishOfferActivity extends Activity {
 
 		if (requestCode == Constants.REQUEST_CODE_USER_EDIT) {
 			// 从上下文重新获取用户信息
-			user = ((MyApplication) getApplicationContext()).getUser();
+			user = ApiContext.getInstance(PublishOfferActivity.this).getCurrentUser();
 			initUserInfo(user);
 		}
-
 	}
 
 }

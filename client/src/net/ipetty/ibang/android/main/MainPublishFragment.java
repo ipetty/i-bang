@@ -3,7 +3,8 @@ package net.ipetty.ibang.android.main;
 import net.ipetty.ibang.R;
 import net.ipetty.ibang.android.core.Constants;
 import net.ipetty.ibang.android.core.ui.UnLoginView;
-import net.ipetty.ibang.android.publish.PublishSubTypeActivity;
+import net.ipetty.ibang.android.publish.SelectSeekCategoryActivity;
+import net.ipetty.ibang.android.sdk.context.ApiContext;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -16,7 +17,8 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 
 public class MainPublishFragment extends Fragment {
-	private boolean isLogin = true;
+
+	private boolean isLogin = false;
 	private UnLoginView unLoginView;
 
 	private View layout_jzfu;
@@ -31,6 +33,7 @@ public class MainPublishFragment extends Fragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		isLogin = ApiContext.getInstance(getActivity()).isAuthorized();
 
 		IntentFilter filter = new IntentFilter();
 		filter.addAction(Constants.BROADCAST_INTENT_IS_LOGIN);
@@ -57,71 +60,61 @@ public class MainPublishFragment extends Fragment {
 		layout_healthy = getView().findViewById(R.id.layout_healthy);
 		layout_repair = getView().findViewById(R.id.layout_repair);
 
-		layout_jzfu.setOnClickListener(new MyOnClickListener("家政服务"));
-		layout_it.setOnClickListener(new MyOnClickListener("IT服务"));
-		layout_edu.setOnClickListener(new MyOnClickListener("教育培训"));
-		layout_healthy.setOnClickListener(new MyOnClickListener("健康安全"));
-		layout_repair.setOnClickListener(new MyOnClickListener("家电维修"));
-		layout_car.setOnClickListener(new MyOnClickListener("汽车服务"));
-		layout_travel.setOnClickListener(new MyOnClickListener("旅游休闲"));
-		layout_express.setOnClickListener(new MyOnClickListener("物流运输"));
+		layout_jzfu.setOnClickListener(new SelectSeekCategoryListener("家政服务"));
+		layout_it.setOnClickListener(new SelectSeekCategoryListener("IT服务"));
+		layout_edu.setOnClickListener(new SelectSeekCategoryListener("教育培训"));
+		layout_healthy.setOnClickListener(new SelectSeekCategoryListener("健康安全"));
+		layout_repair.setOnClickListener(new SelectSeekCategoryListener("家电维修"));
+		layout_car.setOnClickListener(new SelectSeekCategoryListener("汽车服务"));
+		layout_travel.setOnClickListener(new SelectSeekCategoryListener("旅游休闲"));
+		layout_express.setOnClickListener(new SelectSeekCategoryListener("物流运输"));
 
+		isLogin = ApiContext.getInstance(getActivity()).isAuthorized();
 		if (isLogin) {
 			init();
 		}
-
 	}
 
-	public class MyOnClickListener implements OnClickListener {
+	public class SelectSeekCategoryListener implements OnClickListener {
 		String type;
 
-		public MyOnClickListener(String type) {
+		public SelectSeekCategoryListener(String type) {
 			this.type = type;
 		}
 
 		@Override
 		public void onClick(View v) {
-			// TODO Auto-generated method stub
-			Intent intent = new Intent(getActivity(), PublishSubTypeActivity.class);
+			Intent intent = new Intent(getActivity(), SelectSeekCategoryActivity.class);
 			intent.putExtra(Constants.INTENT_CATEGORY, this.type);
 			startActivity(intent);
 		}
 	}
 
 	private void init() {
-		// TODO Auto-generated method stub
 		unLoginView.hide();
-
 	}
 
 	private void initUser() {
 		// TODO Auto-generated method stub
-
 	}
 
 	private BroadcastReceiver broadcastreciver = new BroadcastReceiver() {
-
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			// TODO Auto-generated method stub
 			String action = intent.getAction();
-
 			if (Constants.BROADCAST_INTENT_IS_LOGIN.equals(action)) {
 				init();
 			}
-
 			if (Constants.BROADCAST_INTENT_UPDATA_USER.equals(action)) {
 				initUser();
 			}
-
 		}
-
 	};
 
 	@Override
 	public void onDestroy() {
-		// TODO Auto-generated method stub
 		super.onDestroy();
 		this.getActivity().unregisterReceiver(broadcastreciver);
 	}
+
 }

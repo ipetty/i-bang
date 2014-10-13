@@ -14,13 +14,12 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.lang.Thread.UncaughtExceptionHandler;
 import java.lang.reflect.Field;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.CountDownLatch;
 
 import net.ipetty.ibang.android.core.util.AppUtils;
+import net.ipetty.ibang.android.core.util.DateUtils;
 import net.ipetty.ibang.android.core.util.NetWorkUtils;
 import net.ipetty.ibang.android.core.util.PathUtils;
 import net.ipetty.ibang.android.sdk.context.ApiContext;
@@ -45,7 +44,6 @@ public class MyAppCrashHandler implements UncaughtExceptionHandler {
 	private final Context context;
 
 	private final Map<String, String> info = new HashMap<String, String>();// 用来存储设备信息和异常信息
-	private final SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");// 用于格式化日期,作为日志文件名的一部分
 	private String crashInfo = "";
 
 	public MyAppCrashHandler(Context context) {
@@ -190,7 +188,7 @@ public class MyAppCrashHandler implements UncaughtExceptionHandler {
 
 		// 如果有外部存储则保存文件
 		long timetamp = System.currentTimeMillis();
-		String time = format.format(new Date());
+		String time = DateUtils.getCurrentDatetime();
 		String fileName = "crash-" + time + "-" + timetamp + ".log";
 		if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
 			try {

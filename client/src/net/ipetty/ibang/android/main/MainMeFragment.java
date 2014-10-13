@@ -66,6 +66,7 @@ public class MainMeFragment extends Fragment {
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		unLoginView = new UnLoginView(getActivity(), getView(), R.string.un_login_me);
+
 		user_layout = this.getActivity().findViewById(R.id.user_layout);
 		user_layout.setOnClickListener(new OnClickListener() {
 
@@ -75,12 +76,11 @@ public class MainMeFragment extends Fragment {
 				startActivity(intent);
 			}
 		});
+
 		setting = getActivity().findViewById(R.id.action_bar_right_image);
 		setting.setOnClickListener(new OnClickListener() {
-
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
 				Intent intent = new Intent(getActivity(), SettingActivity.class);
 				startActivity(intent);
 			}
@@ -91,45 +91,36 @@ public class MainMeFragment extends Fragment {
 		signature = (TextView) getView().findViewById(R.id.signature);
 
 		seek_layout = getView().findViewById(R.id.seek_layout);
-
 		seek_layout.setOnClickListener(new OnClickListener() {
-
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
 				Intent intent = new Intent(getActivity(), MySeekActivity.class);
 				startActivity(intent);
 			}
 		});
 
 		delegation_layout = getView().findViewById(R.id.delegation_layout);
-
 		delegation_layout.setOnClickListener(new OnClickListener() {
-
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
 				Intent intent = new Intent(getActivity(), MyDelegationActivity.class);
 				startActivity(intent);
 			}
 		});
 
+		isLogin = ApiContext.getInstance(MainMeFragment.this.getActivity()).isAuthorized();
 		if (isLogin) {
 			init();
 		}
 	}
 
 	private BroadcastReceiver broadcastreciver = new BroadcastReceiver() {
-
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			// TODO Auto-generated method stub
 			String action = intent.getAction();
-
 			if (Constants.BROADCAST_INTENT_IS_LOGIN.equals(action)) {
 				init();
 			}
-
 			if (Constants.BROADCAST_INTENT_UPDATA_USER.equals(action)) {
 				initUser();
 			}
@@ -137,7 +128,6 @@ public class MainMeFragment extends Fragment {
 	};
 
 	private void init() {
-		// TODO Auto-generated method stub
 		unLoginView.hide();
 		initUser();
 	}
@@ -157,7 +147,6 @@ public class MainMeFragment extends Fragment {
 
 	@Override
 	public void onDestroy() {
-		// TODO Auto-generated method stub
 		super.onDestroy();
 		this.getActivity().unregisterReceiver(broadcastreciver);
 	}

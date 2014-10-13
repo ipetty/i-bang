@@ -18,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class ChangePwdActivity extends Activity {
+
 	private boolean psdDisplayFlg = false;
 	private TextView toggleView = null;
 	private EditText oldPasswordEditor;
@@ -69,7 +70,6 @@ public class ChangePwdActivity extends Activity {
 	private OnClickListener btnOnClick = new OnClickListener() {
 		@Override
 		public void onClick(View v) {
-
 			String oldPassword = ChangePwdActivity.this.oldPasswordEditor.getText().toString();
 			String password = ChangePwdActivity.this.passwordEditor.getText().toString();
 
@@ -89,6 +89,8 @@ public class ChangePwdActivity extends Activity {
 				return;
 			}
 
+			new ChangePasswordTask(ChangePwdActivity.this).setListener(
+					new ChangePasswordTaskListener(ChangePwdActivity.this)).execute(oldPassword, password);
 		}
 	};
 

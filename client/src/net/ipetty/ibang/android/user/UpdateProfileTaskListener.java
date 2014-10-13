@@ -34,6 +34,6 @@ public class UpdateProfileTaskListener extends DefaultTaskListener<UserVO> {
 		if (activity instanceof UserEditActivity) {
 			((UserEditActivity) activity).updateUserSuceess();
 		}
-
 	}
+
 }
