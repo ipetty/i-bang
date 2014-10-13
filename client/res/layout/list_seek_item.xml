@@ -33,18 +33,10 @@
     android:layout_toRightOf="@+id/imageView"
     android:ellipsize="end"
     android:maxLines="2"
-    android:text="我饿的索拉卡山东黄金阿卡丽加大款上到了看流程卡瓦纳和王亮昆仑山看DV卡上风口山东龙口的绿城看房坑口女在思考的内存卡刷脸付款"
+    android:text="我饿的索拉卡山"
     android:textSize="16sp" />
 
-<TextView
-    android:id="@+id/time"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_alignBottom="@+id/imageView"
-    android:layout_alignRight="@+id/content"
-    android:text="2小时前"
-    android:textColor="@color/gray_color"
-    android:textSize="12sp" />
+
 
 <TextView
     android:id="@+id/category"
@@ -53,6 +45,17 @@
     android:layout_alignBottom="@+id/imageView"
     android:layout_toRightOf="@+id/imageView"
     android:text="软件开发-家政服务"
+    android:textColor="@color/gray_color"
+    android:textSize="12sp" />
+
+<TextView
+    android:id="@+id/time"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignBaseline="@+id/category"
+    android:layout_alignBottom="@+id/imageView"
+    android:layout_alignParentRight="true"
+    android:text="2小时前"
     android:textColor="@color/gray_color"
     android:textSize="12sp" />
 

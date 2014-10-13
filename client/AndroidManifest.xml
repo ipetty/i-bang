@@ -124,6 +124,10 @@
             android:name="net.ipetty.ibang.android.seek.LargerImageActivity"
             android:label="@string/title_activity_larger_image" >
         </activity>
+        <activity
+            android:name="net.ipetty.ibang.android.user.UserInfoActivity"
+            android:label="@string/title_activity_user_info" >
+        </activity>
     </application>
 
 </manifest>

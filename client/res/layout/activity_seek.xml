@@ -15,7 +15,7 @@
         layout="@layout/action_bar_simple_back" />
 
  	 	<ScrollView
- 	 	    android:id="@+id/scrollView1"
+ 	 	    android:id="@+id/scrollView"
  	 	    android:layout_width="match_parent"
  	 	    android:layout_height="wrap_content" >
 
@@ -58,29 +58,15 @@
     android:background="@drawable/list_color_item_bg_white" >
 
 			    <ImageView
-			        android:id="@+id/avatar"
+			        android:id="@+id/seek_avatar"
 			        android:layout_width="32dp"
 			        android:layout_height="32dp"
 			        android:layout_alignParentBottom="true"
 			        android:layout_alignParentLeft="true"
 			        android:scaleType="fitXY"
 			        android:src="@drawable/default_avatar" />
-
-			    <TextView
-			        android:id="@+id/name"
-			        android:layout_width="wrap_content"
-			        android:layout_height="32dp"
-			        android:layout_alignParentBottom="true"
-			        android:layout_marginLeft="16dp"
-			        android:layout_toRightOf="@+id/avatar"
-			        android:ellipsize="end"
-			        android:gravity="left|center"
-			        android:singleLine="true"
-			        android:text="张三"
-			        android:textColor="@color/base_color"
-			        android:textSize="20dp" />
 <TextView
-				        android:id="@+id/created_at"
+				        android:id="@+id/seek_created_at"
 				        android:layout_width="wrap_content"
 				        android:layout_height="wrap_content"
 				        android:layout_alignParentRight="true"
@@ -89,6 +75,21 @@
 				        android:textSize="12sp" 
 				        android:textColor="@color/gray_color"
 				        android:text="2分钟前"/>
+
+<TextView
+    android:id="@+id/seek_username"
+    android:layout_width="wrap_content"
+    android:layout_height="32dp"
+    android:layout_alignParentBottom="true"
+    android:layout_marginLeft="14dp"
+    android:layout_toRightOf="@+id/seek_avatar"
+    android:ellipsize="end"
+    android:gravity="left|center"
+    android:singleLine="true"
+    android:text=""
+    android:textColor="@color/base_color"
+    android:textSize="20dp" />
+
 	</RelativeLayout>
  	 	        <RelativeLayout
  	 	            android:layout_width="match_parent"
@@ -102,7 +103,7 @@
  	 	                android:layout_height="wrap_content"
  	 	                android:layout_alignParentLeft="true"
  	 	                android:layout_alignParentTop="true"
- 	 	                android:text="我测试是事实是否实施 上Wii成为i测试时说车事实上是是是覅是hcishdichscis我测试后是否尝试尝试和城市化w我测试是事实是否实施我ishishishsihsishish2测试时城市和城市化城市"
+ 	 	               android:text=""
  	 	                android:color="@color/black_color" 
  	 	                android:textSize="16dp" />
 
@@ -118,17 +119,6 @@
  	 	                android:textColor="@color/gray_color" />
 
  	 	            <TextView
- 	 	                android:id="@+id/TextView01"
- 	 	                android:layout_width="wrap_content"
- 	 	                android:layout_height="wrap_content"
- 	 	                android:layout_alignBaseline="@+id/closedOn"
- 	 	                android:layout_alignBottom="@+id/closedOn"
- 	 	                android:layout_toLeftOf="@+id/delegateNumber"
- 	 	                android:text="应征人数"
- 	 	                android:textSize="14dp"
- 	 	                android:textColor="@color/gray_color" />
-
- 	 	            <TextView
  	 	                android:id="@+id/closedOn"
  	 	                android:layout_width="wrap_content"
  	 	                android:layout_height="wrap_content"
@@ -140,15 +130,26 @@
  	 	                android:textColor="@color/gray_color" />
 
  	 	            <TextView
- 	 	                android:id="@+id/delegateNumber"
+ 	 	                android:id="@+id/number"
  	 	                android:layout_width="wrap_content"
  	 	                android:layout_height="wrap_content"
- 	 	                android:layout_alignBaseline="@+id/TextView01"
- 	 	                android:layout_alignBottom="@+id/TextView01"
- 	 	                android:layout_alignRight="@+id/content"
+ 	 	                android:layout_alignBaseline="@+id/closedOn"
+ 	 	                android:layout_alignBottom="@+id/closedOn"
+ 	 	                android:layout_alignParentRight="true"
  	 	                android:text="2/4"
- 	 	                android:textSize="14dp"
- 	 	                android:textColor="@color/gray_color" />
+ 	 	                android:textColor="@color/gray_color"
+ 	 	                android:textSize="14dp" />
+
+ 	 	            <TextView
+ 	 	                android:id="@+id/TextView01"
+ 	 	                android:layout_width="wrap_content"
+ 	 	                android:layout_height="wrap_content"
+ 	 	                android:layout_alignBaseline="@+id/number"
+ 	 	                android:layout_alignBottom="@+id/number"
+ 	 	                android:layout_toLeftOf="@+id/number"
+ 	 	                android:text="应征人数"
+ 	 	                android:textColor="@color/gray_color"
+ 	 	                android:textSize="14dp" />
 
  	 	        </RelativeLayout>
  	 	        <include layout="@layout/line_horizontal_divider" />

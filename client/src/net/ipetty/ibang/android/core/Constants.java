@@ -21,6 +21,9 @@ public class Constants {
 	public static final String INTENT_SUB_CATEGORY = "INTENT_SUB_CATEGORY";
 	public static final String INTENT_IMAGE_UPLOAD_PATH = "INTENT_IMAGE_UPLOAD_PATH";
 	public static final String INTENT_SEEK_ID = "INTENT_SEEK_ID";
+	public static final String INTENT_SEEK_JSON = "INTENT_SEEK_JSON";
+	public static final String INTENT_USER_ID = "INTENT_USER_ID";
+	public static final String INTENT_USER_JSON = "INTENT_USER_JSON";
 
 	public final static float COMPRESS_IMAGE_MAX_WIDTH = 960f;
 	public final static float COMPRESS_IMAGE_MAX_HEIGHT = 1280f;

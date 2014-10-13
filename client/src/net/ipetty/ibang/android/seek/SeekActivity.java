@@ -1,16 +1,23 @@
 package net.ipetty.ibang.android.seek;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import net.ipetty.ibang.R;
 import net.ipetty.ibang.android.core.Constants;
 import net.ipetty.ibang.android.core.ui.BackClickListener;
 import net.ipetty.ibang.android.core.util.AppUtils;
+import net.ipetty.ibang.android.core.util.JSONUtils;
+import net.ipetty.ibang.android.core.util.PrettyDateFormat;
+import net.ipetty.ibang.android.sdk.context.ApiContext;
+import net.ipetty.ibang.android.user.UserInfoActivity;
 import net.ipetty.ibang.vo.DelegationVO;
 import net.ipetty.ibang.vo.ImageVO;
 import net.ipetty.ibang.vo.OfferVO;
 import net.ipetty.ibang.vo.SeekVO;
+import net.ipetty.ibang.vo.UserVO;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -33,21 +40,40 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 
 public class SeekActivity extends Activity {
 
+	private boolean isLogin = false;
 	private TextView offerBtn;
 	private LinearLayout offerListView;
 	private LinearLayout delegationListView;
 	private View imageView;
 	private ViewPager viewPager;
+	private TextView content;
+	private TextView closedOn;
+	private TextView seek_created_at;
+	private TextView seek_username;
+	private ImageView seek_avatar;
+
 	private List<ImageView> imageViews = new ArrayList<ImageView>(); // 滑动的图片
 	private int currentItem = 0;// 当前图片的索引号
 	private TextView imageViewText;
 	private SeekVO seekVO = null;
 	private DisplayImageOptions options = AppUtils.getNormalImageOptions();
+	private UserVO user;
+
+	private Long seekId = null;
+	private String seekJSON = null;
+	private UserVO seekUser;
+
+	public static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_seek);
+
+		user = ApiContext.getInstance(this).getCurrentUser();
+
+		seekId = this.getIntent().getExtras().getLong(Constants.INTENT_SEEK_ID);
+		seekJSON = this.getIntent().getExtras().getString(Constants.INTENT_SEEK_JSON);
 
 		/* action bar */
 		ImageView btnBack = (ImageView) this.findViewById(R.id.action_bar_left_image);
@@ -63,6 +89,12 @@ public class SeekActivity extends Activity {
 		offerBtn = (TextView) this.findViewById(R.id.offer);
 		delegationListView = (LinearLayout) this.findViewById(R.id.delegationList);
 		offerListView = (LinearLayout) this.findViewById(R.id.offerList);
+		content = (TextView) this.findViewById(R.id.content);
+		closedOn = (TextView) this.findViewById(R.id.closedOn);
+		seek_created_at = (TextView) this.findViewById(R.id.seek_created_at);
+		seek_username = (TextView) this.findViewById(R.id.seek_username);
+		seek_avatar = (ImageView) this.findViewById(R.id.seek_avatar);
+
 		// 事件绑定
 		offerBtn.setOnClickListener(new OnClickListener() {
 			@Override
@@ -72,6 +104,11 @@ public class SeekActivity extends Activity {
 				startActivity(intent);
 			}
 		});
+
+		// 加载数据
+		if (seekJSON != null) {
+			seekVO = JSONUtils.fromJSON(seekJSON, SeekVO.class);
+		}
 
 		// 模拟数据
 		seekVO = new SeekVO();
@@ -91,8 +128,99 @@ public class SeekActivity extends Activity {
 
 		// 数据加载
 		initImageView();
+		initContent();
+
+		// 需要加载用户
+		initSeekUser();
+
+		// 数据重新加载后显示
+		initViewLayout();
 		initDelegationView(delegationList);
 		initOfferView(offerList);
+
+	}
+
+	private void initSeekUser() {
+		// TODO Auto-generated method stub
+		if (isOwner()) {
+			seekUser = user;
+			initSeekUserLayout();
+		} else {
+			// TODO: 异步加载获取
+			seekUser = user;
+			initSeekUserLayout();
+		}
+
+	}
+
+	private void initSeekUserLayout() {
+		if (StringUtils.isNotBlank(seekUser.getAvatar())) {
+			ImageLoader.getInstance().displayImage(Constants.FILE_SERVER_BASE + user.getAvatar(), seek_avatar, options);
+		}
+		seek_username.setText(seekUser.getNickname());
+
+		seek_avatar.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(SeekActivity.this, UserInfoActivity.class);
+				intent.putExtra(Constants.INTENT_USER_ID, seekUser.getId());
+				intent.putExtra(Constants.INTENT_USER_JSON, JSONUtils.toJson(seekUser).toString());
+				startActivity(intent);
+			}
+		});
+		seek_username.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(SeekActivity.this, UserInfoActivity.class);
+				intent.putExtra(Constants.INTENT_USER_ID, seekUser.getId());
+				intent.putExtra(Constants.INTENT_USER_JSON, JSONUtils.toJson(seekUser).toString());
+				startActivity(intent);
+			}
+		});
+	}
+
+	private void initContent() {
+		// TODO Auto-generated method stub
+		seek_avatar.setImageResource(R.drawable.default_avatar);
+		content.setText(seekVO.getContent());
+		Calendar c = Calendar.getInstance();
+		c.setTime(seekVO.getClosedOn());
+		String str = dateFormat.format(c.getTime());
+		closedOn.setText(str);
+		String creatAt = new PrettyDateFormat("@", "yyyy-MM-dd HH:mm:dd").format(seekVO.getCreatedOn());
+		seek_created_at.setText(creatAt);
+	}
+
+	private void initViewLayout() {
+		// TODO Auto-generated method stub
+		String status = seekVO.getStatus();
+
+		if (net.ipetty.ibang.vo.Constants.SEEK_STATUS_CREATED.equals(status)) {
+
+		}
+
+		if (net.ipetty.ibang.vo.Constants.SEEK_STATUS_OFFERED.equals(status)) {
+
+		}
+
+		if (net.ipetty.ibang.vo.Constants.SEEK_STATUS_DELEGATED.equals(status)) {
+
+		}
+		if (net.ipetty.ibang.vo.Constants.SEEK_STATUS_FINISHED.equals(status)) {
+
+		}
+
+		if (net.ipetty.ibang.vo.Constants.SEEK_STATUS_CLOSED.equals(status)) {
+
+		}
+
+	}
+
+	private boolean isOwner() {
+		if (!isLogin) {
+			return false;
+		}
+		return seekVO.getSeekerId().equals(user.getId());
 	}
 
 	private void initImageView() {

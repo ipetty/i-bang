@@ -1,6 +1,7 @@
 package net.ipetty.ibang.android.main;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import net.ipetty.ibang.R;
@@ -29,6 +30,14 @@ public class SeekAdapter extends BaseAdapter implements OnScrollListener {
 
 	public SeekAdapter(Activity activity) {
 		inflater = LayoutInflater.from(activity);
+
+		SeekVO seekVO = new SeekVO();
+		seekVO.setId(111L);
+		seekVO.setCategoryL1("分类一");
+		seekVO.setCategoryL2("分类二");
+		seekVO.setContent("KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK");
+		seekVO.setCreatedOn(new Date());
+		list.add(seekVO);
 	}
 
 	public void loadDate(List<SeekVO> list) {
@@ -93,7 +102,7 @@ public class SeekAdapter extends BaseAdapter implements OnScrollListener {
 					options);
 		}
 
-		String category = seek.getCategoryL2() + "-" + seek.getCategoryL2();
+		String category = seek.getCategoryL1() + "-" + seek.getCategoryL2();
 		holder.category.setText(category);
 		holder.content.setText(seek.getContent());
 		String creatAt = new PrettyDateFormat("@", "yyyy-MM-dd HH:mm:dd").format(seek.getCreatedOn());

@@ -6,6 +6,7 @@ import net.ipetty.ibang.android.core.Constants;
 import net.ipetty.ibang.android.core.MyAppStateManager;
 import net.ipetty.ibang.android.core.ui.MyPullToRefreshListView;
 import net.ipetty.ibang.android.core.ui.UnLoginView;
+import net.ipetty.ibang.android.core.util.JSONUtils;
 import net.ipetty.ibang.android.core.util.NetWorkUtils;
 import net.ipetty.ibang.android.message.MessageActivity;
 import net.ipetty.ibang.android.seek.SeekActivity;
@@ -126,6 +127,7 @@ public class MainHomeFragment extends Fragment {
 				// TODO Auto-generated method stub
 				Intent intent = new Intent(getActivity(), SeekActivity.class);
 				intent.putExtra(Constants.INTENT_SEEK_ID, id);
+				intent.putExtra(Constants.INTENT_SEEK_JSON, JSONUtils.toJson(adapter.getItem(position)).toString());
 				startActivity(intent);
 			}
 		});
