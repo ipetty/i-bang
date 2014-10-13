@@ -2,9 +2,9 @@ package net.ipetty.ibang.android.setting;
 
 import net.ipetty.ibang.R;
 import net.ipetty.ibang.android.core.Constants;
-import net.ipetty.ibang.android.core.MyApplication;
 import net.ipetty.ibang.android.core.ui.BackClickListener;
 import net.ipetty.ibang.android.core.util.AppUtils;
+import net.ipetty.ibang.android.sdk.context.ApiContext;
 import net.ipetty.ibang.android.user.UserProfileActivity;
 import net.ipetty.ibang.vo.UserVO;
 
@@ -23,6 +23,7 @@ import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 public class SettingActivity extends Activity {
+
 	private Button logout;
 	private ImageView avatar; // 头像
 	private DisplayImageOptions options = AppUtils.getNormalImageOptions();
@@ -37,16 +38,14 @@ public class SettingActivity extends Activity {
 		text.setText(this.getResources().getString(R.string.title_activity_setting));
 		btnBack.setOnClickListener(new BackClickListener(this));
 
-		UserVO user = ((MyApplication) getApplicationContext()).getUser();
+		UserVO user = ApiContext.getInstance(SettingActivity.this).getCurrentUser();
 		TextView account = (TextView) this.findViewById(R.id.account);
 		account.setText(user.getUsername());
 
 		avatar = (ImageView) this.findViewById(R.id.avatar);
 		avatar.setOnClickListener(new OnClickListener() {
-
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
 				Intent intent = new Intent(SettingActivity.this, UserProfileActivity.class);
 				startActivity(intent);
 			}
@@ -71,12 +70,8 @@ public class SettingActivity extends Activity {
 		logout.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				// String platformName =
-				// SDKStateManager.getPlatformName(SettingActivity.this);
-				// MyAppStateManager.setLastLogoutPlatform(SettingActivity.this,
-				// platformName);
-				// new Logout(SettingActivity.this).setListener(new
-				// LogoutTaskListener(SettingActivity.this)).execute();
+				new LogoutTask(SettingActivity.this).setListener(new LogoutTaskListener(SettingActivity.this))
+						.execute();
 			}
 		});
 	}

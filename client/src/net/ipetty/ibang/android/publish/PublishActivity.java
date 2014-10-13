@@ -10,10 +10,10 @@ import java.util.List;
 import net.ipetty.ibang.R;
 import net.ipetty.ibang.android.core.ActivityManager;
 import net.ipetty.ibang.android.core.Constants;
-import net.ipetty.ibang.android.core.MyApplication;
 import net.ipetty.ibang.android.core.ui.BackClickListener;
 import net.ipetty.ibang.android.core.ui.UploadView;
 import net.ipetty.ibang.android.core.util.DialogUtils;
+import net.ipetty.ibang.android.sdk.context.ApiContext;
 import net.ipetty.ibang.android.user.UserEditActivity;
 import net.ipetty.ibang.vo.SeekVO;
 import net.ipetty.ibang.vo.UserVO;
@@ -30,6 +30,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 public class PublishActivity extends Activity {
+
+	public static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
 	private String title = null;
 	private String categoryL1;
 	private String categoryL2;
@@ -40,8 +43,6 @@ public class PublishActivity extends Activity {
 	private UserVO user;
 	private EditText delegateNumberView;
 	private TextView button;
-
-	public static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
 	private UploadView uploadView;
 
@@ -79,7 +80,6 @@ public class PublishActivity extends Activity {
 		phoneView.setOnClickListener(new EditOnClickListener(Constants.INTENT_USER_EDIT_TYPE_PHONE));
 		// 发布
 		button.setOnClickListener(new OnClickListener() {
-
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
@@ -120,7 +120,7 @@ public class PublishActivity extends Activity {
 	}
 
 	private void initUserInfo() {
-		user = ((MyApplication) getApplicationContext()).getUser();
+		user = ApiContext.getInstance(PublishActivity.this).getCurrentUser();
 		// TODO Auto-generated method stub
 		nicknameView.setText(user.getNickname());
 		phoneView.setText(user.getPhone());
@@ -151,7 +151,6 @@ public class PublishActivity extends Activity {
 			// 从上下文重新获取用户信息
 			initUserInfo();
 		}
-
 	}
 
 	private OnDateSetListener exipireDateClick = new OnDateSetListener() {
