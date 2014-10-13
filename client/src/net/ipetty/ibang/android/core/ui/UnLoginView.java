@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.TextView;
 
 public class UnLoginView {
+
 	private Activity activity;
 	private View unlogin;
 
