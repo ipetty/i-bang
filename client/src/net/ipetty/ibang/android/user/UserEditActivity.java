@@ -69,13 +69,6 @@ public class UserEditActivity extends Activity {
 				new UpdateProfileTask(UserEditActivity.this).setListener(
 						new UpdateProfileTaskListener(UserEditActivity.this)).execute(userForm);
 
-				// 通知用户更新
-				Intent intent2 = new Intent(Constants.BROADCAST_INTENT_UPDATA_USER);
-				sendBroadcast(intent2);
-
-				Intent intent = new Intent();
-				setResult(RESULT_OK, intent);
-				finish();
 			}
 		});
 
@@ -89,6 +82,12 @@ public class UserEditActivity extends Activity {
 		signature.setText(user.getSignature());
 		job.setText(user.getJob());
 
+	}
+
+	public void updateUserSuceess() {
+		Intent intent = new Intent();
+		setResult(RESULT_OK, intent);
+		finish();
 	}
 
 	private void initType() {

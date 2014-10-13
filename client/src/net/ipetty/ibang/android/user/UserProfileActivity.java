@@ -5,7 +5,6 @@ import java.util.ArrayList;
 
 import net.ipetty.ibang.R;
 import net.ipetty.ibang.android.core.Constants;
-import net.ipetty.ibang.android.core.MyApplication;
 import net.ipetty.ibang.android.core.ui.BackClickListener;
 import net.ipetty.ibang.android.core.ui.ModDialogItem;
 import net.ipetty.ibang.android.core.util.AppUtils;
@@ -231,7 +230,8 @@ public class UserProfileActivity extends Activity {
 
 		if (requestCode == Constants.REQUEST_CODE_USER_EDIT) {
 			// 从上下文重新获取用户信息
-			initTextUser(((MyApplication) getApplicationContext()).getUser());
+			user = ApiContext.getInstance(UserProfileActivity.this).getCurrentUser();
+			initTextUser(user);
 		}
 	}
 
@@ -251,6 +251,7 @@ public class UserProfileActivity extends Activity {
 			// 这里与服务器交互，更新用户头像操作
 			new UpdateAvatarTask(UserProfileActivity.this).setListener(
 					new UpdateAvatarTaskListener(UserProfileActivity.this)).execute(filePath);
+
 		} else {
 			avatar.setImageResource(R.drawable.default_avatar);
 		}
