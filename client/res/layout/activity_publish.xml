@@ -304,6 +304,7 @@
         android:textColor="@color/white_color"
         android:textSize="24sp"
         android:text="立即发布" />
+<include layout="@layout/line_space" />
  	 	    </LinearLayout>
  	 	</ScrollView>
 </LinearLayout>

@@ -235,12 +235,13 @@
  	 	         </LinearLayout>
 
  	 	         <LinearLayout
- 	 	             android:id="@+id/offer_layout"
+ 	 	             android:id="@+id/offerBtn_layout"
  	 	             android:layout_width="match_parent"
  	 	             android:layout_height="match_parent"
- 	 	             android:orientation="vertical" >
+ 	 	             android:orientation="vertical" 
+ 	 	             android:visibility="gone">
 									<TextView
-				        android:id="@+id/offer"
+				        android:id="@+id/offerBtn"
 				        android:layout_width="match_parent"
 				        android:layout_height="46dp"
 				        android:layout_marginLeft="24dp"
@@ -253,20 +254,22 @@
 				        android:text="我要应征" />
 									<include layout="@layout/line_space" />
  	 	         </LinearLayout>
- 	 	         
- 	 	         <TextView
- 	 	             android:id="@+id/textView1"
- 	 	             android:layout_width="wrap_content"
- 	 	            android:layout_height="20dp" 
- 	 	             android:textSize="12sp"
- 	 	             android:layout_margin="8dp"
- 	 	             android:text="已应征的人员" />
  	
  	 	         <LinearLayout
  	 	             android:id="@+id/delegationList_layout"
  	 	             android:layout_width="match_parent"
  	 	            android:layout_height="wrap_content" 
- 	 	             android:orientation="vertical" >
+ 	 	             android:orientation="vertical" 
+ 	 	             android:visibility="gone">
+
+ 	 	             <TextView
+ 	 	                 android:id="@+id/delegation_label"
+ 	 	                 android:layout_width="wrap_content"
+ 	 	                 android:layout_height="20dp"
+ 	 	                 android:layout_margin="8dp"
+ 	 	                 android:text="已应征的人员"
+ 	 	                 android:textSize="12sp" />
+
 					<include layout="@layout/line_horizontal_divider" />
  	 	             <LinearLayout
  	 	                 android:id="@+id/delegationList"
@@ -276,21 +279,23 @@
  	 	             </LinearLayout>
 
  	 	         </LinearLayout>
-
- 	 	         <TextView
- 	 	             android:id="@+id/textView1"
- 	 	             android:layout_width="wrap_content"
- 	 	              android:layout_height="20dp" 
- 	 	              android:textSize="12sp"
- 	 	               	             android:layout_margin="8dp"
- 	 	             android:text="待应征的人员" />
  	 	         
 
  	 	         <LinearLayout
  	 	             android:id="@+id/offerList_layout"
  	 	             android:layout_width="match_parent"
  	 	             android:layout_height="wrap_content"
- 	 	             android:orientation="vertical" >
+ 	 	             android:orientation="vertical" 
+ 	 	             android:visibility="gone">
+
+ 	 	             <TextView
+ 	 	                 android:id="@+id/offerList_label"
+ 	 	                 android:layout_width="wrap_content"
+ 	 	                 android:layout_height="20dp"
+ 	 	                 android:layout_margin="8dp"
+ 	 	                 android:text="待应征的人员"
+ 	 	                 android:textSize="12sp" />
+
 					<include layout="@layout/line_horizontal_divider" />
  	 	             <LinearLayout
  	 	                 android:id="@+id/offerList"

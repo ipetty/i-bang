@@ -63,6 +63,13 @@ public class SeekActivity extends Activity {
 	private String seekJSON = null;
 	private UserVO seekUser;
 
+	private View offerBtn_layout;
+	private View delegationList_layout;
+	private View offerList_layout;
+
+	List<DelegationVO> delegationList = new ArrayList<DelegationVO>();
+	List<OfferVO> offerList = new ArrayList<OfferVO>();
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -84,7 +91,7 @@ public class SeekActivity extends Activity {
 		imageView = this.findViewById(R.id.imageView_layout);
 		viewPager = (ViewPager) findViewById(R.id.vp);
 		imageViewText = (TextView) this.findViewById(R.id.imageView_text);
-		offerBtn = (TextView) this.findViewById(R.id.offer);
+		offerBtn = (TextView) this.findViewById(R.id.offerBtn);
 		delegationListView = (LinearLayout) this.findViewById(R.id.delegationList);
 		offerListView = (LinearLayout) this.findViewById(R.id.offerList);
 		content = (TextView) this.findViewById(R.id.content);
@@ -92,6 +99,10 @@ public class SeekActivity extends Activity {
 		seek_created_at = (TextView) this.findViewById(R.id.seek_created_at);
 		seek_username = (TextView) this.findViewById(R.id.seek_username);
 		seek_avatar = (ImageView) this.findViewById(R.id.seek_avatar);
+
+		offerBtn_layout = this.findViewById(R.id.offerBtn_layout);
+		delegationList_layout = this.findViewById(R.id.delegationList_layout);
+		offerList_layout = this.findViewById(R.id.offerList_layout);
 
 		// 事件绑定
 		offerBtn.setOnClickListener(new OnClickListener() {
@@ -108,28 +119,20 @@ public class SeekActivity extends Activity {
 			seekVO = JSONUtils.fromJSON(seekJSON, SeekVO.class);
 		}
 
-		// 模拟数据
-		// seekVO = new SeekVO();
-		// ImageVO img = new ImageVO();
-		// seekVO.getImages().add(img);
-		// seekVO.getImages().add(img);
+		// 可以本地加载
+		initImageView();
+		initContent();
 
-		List<DelegationVO> delegationList = new ArrayList<DelegationVO>();
+		// 需要从服务器加载
+		initSeekUser();
+		// 模拟数据
 		DelegationVO tt = new DelegationVO();
 		delegationList.add(tt);
 		delegationList.add(tt);
 
-		List<OfferVO> offerList = new ArrayList<OfferVO>();
 		OfferVO t = new OfferVO();
 		offerList.add(t);
 		offerList.add(t);
-
-		// 数据加载
-		initImageView();
-		initContent();
-
-		// 需要加载用户
-		initSeekUser();
 
 		// 数据重新加载后显示
 		initViewLayout();
@@ -193,22 +196,33 @@ public class SeekActivity extends Activity {
 		String status = seekVO.getStatus();
 
 		if (net.ipetty.ibang.vo.Constants.SEEK_STATUS_CREATED.equals(status)) {
+			if (!isOwner()) {
+				offerBtn_layout.setVisibility(View.VISIBLE);
+			}
+		} else if (net.ipetty.ibang.vo.Constants.SEEK_STATUS_OFFERED.equals(status)) {
+			if (!isOwner()) {
+				offerBtn_layout.setVisibility(View.VISIBLE);
+			}
+		} else if (net.ipetty.ibang.vo.Constants.SEEK_STATUS_DELEGATED.equals(status)) {
+
+		} else if (net.ipetty.ibang.vo.Constants.SEEK_STATUS_FINISHED.equals(status)) {
+
+		} else if (net.ipetty.ibang.vo.Constants.SEEK_STATUS_CLOSED.equals(status)) {
 
 		}
 
-		if (net.ipetty.ibang.vo.Constants.SEEK_STATUS_OFFERED.equals(status)) {
-
+		int delegateNumber = delegationList.size();
+		if (delegateNumber == 0) {
+			delegationList_layout.setVisibility(View.GONE);
+		} else {
+			delegationList_layout.setVisibility(View.VISIBLE);
 		}
 
-		if (net.ipetty.ibang.vo.Constants.SEEK_STATUS_DELEGATED.equals(status)) {
-
-		}
-		if (net.ipetty.ibang.vo.Constants.SEEK_STATUS_FINISHED.equals(status)) {
-
-		}
-
-		if (net.ipetty.ibang.vo.Constants.SEEK_STATUS_CLOSED.equals(status)) {
-
+		int offerNumber = offerList.size();
+		if (offerNumber == 0) {
+			delegationList_layout.setVisibility(View.GONE);
+		} else {
+			delegationList_layout.setVisibility(View.VISIBLE);
 		}
 
 	}
