@@ -43,6 +43,10 @@ public class MainMeFragment extends Fragment {
 	private View seek_layout;
 	private View delegation_layout;
 
+	private TextView seekCount;
+	private TextView offerCount;
+	private TextView seekerTotalPoint;
+
 	private DisplayImageOptions options = AppUtils.getCacheImageBublder()
 			.showImageForEmptyUri(R.drawable.default_avatar).build();
 
@@ -89,6 +93,9 @@ public class MainMeFragment extends Fragment {
 		avatar = (ImageView) getView().findViewById(R.id.avatar);
 		nickname = (TextView) getView().findViewById(R.id.nickname);
 		signature = (TextView) getView().findViewById(R.id.signature);
+		seekCount = (TextView) getView().findViewById(R.id.seekCount);
+		offerCount = (TextView) getView().findViewById(R.id.offerCount);
+		seekerTotalPoint = (TextView) getView().findViewById(R.id.seekerTotalPoint);
 
 		seek_layout = getView().findViewById(R.id.seek_layout);
 		seek_layout.setOnClickListener(new OnClickListener() {
@@ -136,6 +143,9 @@ public class MainMeFragment extends Fragment {
 		user = ApiContext.getInstance(getActivity()).getCurrentUser();
 		nickname.setText(user.getNickname());
 		signature.setText(user.getSignature());
+		seekCount.setText(user.getSeekCount());
+		offerCount.setText(user.getOfferCount());
+		seekerTotalPoint.setText(user.getSeekerTotalPoint());
 
 		if (StringUtils.isNotBlank(user.getAvatar())) {
 			String str = Constants.FILE_SERVER_BASE + user.getAvatar();

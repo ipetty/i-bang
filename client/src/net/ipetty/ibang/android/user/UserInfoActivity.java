@@ -29,6 +29,15 @@ public class UserInfoActivity extends Activity {
 	private TextView nickname;
 	private TextView signature;
 
+	private TextView seekCount;
+	private TextView offerCount;
+	private TextView seekerTotalPoint;
+
+	private TextView phoneView;
+	private TextView jobView;
+	private TextView gender;
+	private String genderValue; // 性别传值
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -47,6 +56,13 @@ public class UserInfoActivity extends Activity {
 		avatar = (ImageView) this.findViewById(R.id.avatar);
 		nickname = (TextView) this.findViewById(R.id.nickname);
 		signature = (TextView) this.findViewById(R.id.signature);
+		seekCount = (TextView) this.findViewById(R.id.seekCount);
+		offerCount = (TextView) this.findViewById(R.id.offerCount);
+		seekerTotalPoint = (TextView) this.findViewById(R.id.seekerTotalPoint);
+
+		phoneView = (TextView) this.findViewById(R.id.phone);
+		gender = (TextView) this.findViewById(R.id.gender);
+		jobView = (TextView) this.findViewById(R.id.job);
 
 		// 先从传递的参数进行加载
 		if (seekUserId == user.getId()) {
@@ -67,7 +83,15 @@ public class UserInfoActivity extends Activity {
 			avatar.setImageResource(R.drawable.default_avatar);
 		}
 		nickname.setText(seekUser.getNickname());
-		// TODO : 待完善
+		signature.setText(user.getSignature());
+		seekCount.setText(user.getSeekCount());
+		offerCount.setText(user.getOfferCount());
+		seekerTotalPoint.setText(user.getSeekerTotalPoint());
+
+		phoneView.setText(user.getPhone());
+		gender.setText(user.getGender());
+		jobView.setText(user.getJob());
+
 	}
 
 	private void loadUser() {
