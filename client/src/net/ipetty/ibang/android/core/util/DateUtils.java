@@ -4,6 +4,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -21,14 +22,14 @@ public class DateUtils {
 	/** 由于DateFormat不是线程安全的，存在性能问题，故设计为ThreadLocal */
 	private static ThreadLocal<DateFormat> dateFormat = new ThreadLocal<DateFormat>() {
 		protected synchronized DateFormat initialValue() {
-			return new SimpleDateFormat(DATE_FORMAT_STRING);
+			return new SimpleDateFormat(DATE_FORMAT_STRING, Locale.ENGLISH);
 		}
 	};
 
 	/** 由于DateFormat不是线程安全的，存在性能问题，故设计为ThreadLocal */
 	private static ThreadLocal<DateFormat> datetimeFormat = new ThreadLocal<DateFormat>() {
 		protected synchronized DateFormat initialValue() {
-			return new SimpleDateFormat(DATETIME_FORMAT_STRING);
+			return new SimpleDateFormat(DATETIME_FORMAT_STRING, Locale.ENGLISH);
 		}
 	};
 

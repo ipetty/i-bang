@@ -5,6 +5,9 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
+
+import android.util.Log;
 
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.TypeAdapter;
@@ -20,7 +23,9 @@ import com.google.gson.stream.JsonWriter;
  */
 public class DateTypeAdapter extends TypeAdapter<Date> {
 
-	private static final DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	private String TAG = getClass().getSimpleName();
+
+	private static final DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
 
 	@Override
 	public void write(JsonWriter out, Date value) throws IOException {
@@ -29,6 +34,7 @@ public class DateTypeAdapter extends TypeAdapter<Date> {
 			return;
 		}
 		String dateFormatAsString = DATE_FORMAT.format(value);
+		Log.d(TAG, "formatted date is " + dateFormatAsString);
 		out.value(dateFormatAsString);
 	}
 
