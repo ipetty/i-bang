@@ -1,7 +1,6 @@
 package net.ipetty.ibang.android.main;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import net.ipetty.ibang.R;
@@ -31,14 +30,6 @@ public class SeekAdapter extends BaseAdapter implements OnScrollListener {
 
 	public SeekAdapter(Activity activity) {
 		inflater = LayoutInflater.from(activity);
-
-		SeekVO seekVO = new SeekVO();
-		seekVO.setId(111L);
-		seekVO.setCategoryL1("分类一");
-		seekVO.setCategoryL2("分类二");
-		seekVO.setContent("KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK");
-		seekVO.setCreatedOn(new Date());
-		list.add(seekVO);
 	}
 
 	public void loadData(List<SeekVO> list) {
@@ -49,19 +40,16 @@ public class SeekAdapter extends BaseAdapter implements OnScrollListener {
 
 	@Override
 	public int getCount() {
-		// TODO Auto-generated method stub
 		return list.size();
 	}
 
 	@Override
 	public Object getItem(int arg0) {
-		// TODO Auto-generated method stub
 		return list.get(arg0);
 	}
 
 	@Override
 	public long getItemId(int arg0) {
-		// TODO Auto-generated method stub
 		return ((SeekVO) this.getItem(arg0)).getId();
 	}
 
@@ -77,7 +65,6 @@ public class SeekAdapter extends BaseAdapter implements OnScrollListener {
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		// TODO Auto-generated method stub
 		View view;
 		if (convertView == null) {
 			view = inflater.inflate(R.layout.list_seek_item, null);
@@ -115,13 +102,11 @@ public class SeekAdapter extends BaseAdapter implements OnScrollListener {
 	@Override
 	public void onScroll(AbsListView arg0, int arg1, int arg2, int arg3) {
 		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void onScrollStateChanged(AbsListView arg0, int arg1) {
 		// TODO Auto-generated method stub
-
 	}
 
 }

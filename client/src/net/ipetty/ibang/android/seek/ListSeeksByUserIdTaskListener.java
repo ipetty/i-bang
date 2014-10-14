@@ -10,19 +10,19 @@ import android.app.Activity;
 import android.util.Log;
 
 /**
- * ListLatestAvaliableSeeksTaskListener
+ * ListSeeksByUserIdTaskListener
  * 
  * @author luocanfeng
- * @date 2014年10月13日
+ * @date 2014年10月14日
  */
-public class ListLatestAvaliableSeeksTaskListener extends DefaultTaskListener<List<SeekVO>> {
+public class ListSeeksByUserIdTaskListener extends DefaultTaskListener<List<SeekVO>> {
 
 	private String TAG = getClass().getSimpleName();
 
 	private final SeekAdapter adapter;
 	private final MyPullToRefreshListView listView;
 
-	public ListLatestAvaliableSeeksTaskListener(Activity activity, SeekAdapter adapter, MyPullToRefreshListView listView) {
+	public ListSeeksByUserIdTaskListener(Activity activity, SeekAdapter adapter, MyPullToRefreshListView listView) {
 		super(activity);
 		this.adapter = adapter;
 		this.listView = listView;
@@ -30,7 +30,7 @@ public class ListLatestAvaliableSeeksTaskListener extends DefaultTaskListener<Li
 
 	@Override
 	public void onSuccess(List<SeekVO> seeks) {
-		Log.d(TAG, "list latest avaliable seeks success");
+		Log.d(TAG, "list seeks by user id success");
 		adapter.loadData(seeks);
 		if (null != listView) {
 			listView.onRefreshComplete();

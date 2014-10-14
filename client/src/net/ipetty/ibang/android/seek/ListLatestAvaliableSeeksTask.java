@@ -26,7 +26,7 @@ public class ListLatestAvaliableSeeksTask extends Task<String, List<SeekVO>> {
 
 	@Override
 	protected List<SeekVO> myDoInBackground(String... args) {
-		Log.d(TAG, "list latest avaliable seek");
+		Log.d(TAG, "list latest avaliable seeks");
 		return IbangApi.init(activity).create(SeekApi.class)
 				.listLatest(DateUtils.fromDatetimeString(args[0]), Integer.valueOf(args[1]), Integer.valueOf(args[2]));
 	}

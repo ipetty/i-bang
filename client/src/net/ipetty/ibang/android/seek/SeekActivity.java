@@ -1,6 +1,5 @@
 package net.ipetty.ibang.android.seek;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -9,6 +8,7 @@ import net.ipetty.ibang.R;
 import net.ipetty.ibang.android.core.Constants;
 import net.ipetty.ibang.android.core.ui.BackClickListener;
 import net.ipetty.ibang.android.core.util.AppUtils;
+import net.ipetty.ibang.android.core.util.DateUtils;
 import net.ipetty.ibang.android.core.util.JSONUtils;
 import net.ipetty.ibang.android.core.util.PrettyDateFormat;
 import net.ipetty.ibang.android.sdk.context.ApiContext;
@@ -63,11 +63,8 @@ public class SeekActivity extends Activity {
 	private String seekJSON = null;
 	private UserVO seekUser;
 
-	public static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_seek);
 
@@ -78,9 +75,9 @@ public class SeekActivity extends Activity {
 
 		/* action bar */
 		ImageView btnBack = (ImageView) this.findViewById(R.id.action_bar_left_image);
+		btnBack.setOnClickListener(new BackClickListener(this));
 		TextView text = (TextView) this.findViewById(R.id.action_bar_title);
 		text.setText(this.getResources().getString(R.string.title_activity_seek));
-		btnBack.setOnClickListener(new BackClickListener(this));
 
 		// 界面元素绑定
 		// image
@@ -112,10 +109,10 @@ public class SeekActivity extends Activity {
 		}
 
 		// 模拟数据
-		seekVO = new SeekVO();
-		ImageVO img = new ImageVO();
-		seekVO.getImages().add(img);
-		seekVO.getImages().add(img);
+		// seekVO = new SeekVO();
+		// ImageVO img = new ImageVO();
+		// seekVO.getImages().add(img);
+		// seekVO.getImages().add(img);
 
 		List<DelegationVO> delegationList = new ArrayList<DelegationVO>();
 		DelegationVO tt = new DelegationVO();
@@ -142,7 +139,6 @@ public class SeekActivity extends Activity {
 	}
 
 	private void initSeekUser() {
-		// TODO Auto-generated method stub
 		if (isOwner()) {
 			seekUser = user;
 			initSeekUserLayout();
@@ -187,7 +183,7 @@ public class SeekActivity extends Activity {
 		content.setText(seekVO.getContent());
 		Calendar c = Calendar.getInstance();
 		c.setTime(seekVO.getClosedOn());
-		String str = dateFormat.format(c.getTime());
+		String str = DateUtils.toDateString(c.getTime());
 		closedOn.setText(str);
 		String creatAt = new PrettyDateFormat("@", "yyyy-MM-dd HH:mm:dd").format(seekVO.getCreatedOn());
 		seek_created_at.setText(creatAt);

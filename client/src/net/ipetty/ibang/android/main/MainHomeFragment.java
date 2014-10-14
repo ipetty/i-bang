@@ -128,7 +128,6 @@ public class MainHomeFragment extends Fragment {
 		listView.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				// TODO Auto-generated method stub
 				Intent intent = new Intent(getActivity(), SeekActivity.class);
 				intent.putExtra(Constants.INTENT_SEEK_ID, id);
 				intent.putExtra(Constants.INTENT_SEEK_JSON, JSONUtils.toJson(adapter.getItem(position)).toString());
@@ -140,7 +139,6 @@ public class MainHomeFragment extends Fragment {
 		listView.setOnRefreshListener(new OnRefreshListener<ListView>() {
 			@Override
 			public void onRefresh(PullToRefreshBase<ListView> refreshView) {
-				// TODO Auto-generated method stub
 				String label = DateUtils.formatDateTime(MainHomeFragment.this.getActivity().getApplicationContext(),
 						getRefreshTime(), DateUtils.FORMAT_SHOW_TIME | DateUtils.FORMAT_SHOW_DATE
 								| DateUtils.FORMAT_ABBREV_ALL);
