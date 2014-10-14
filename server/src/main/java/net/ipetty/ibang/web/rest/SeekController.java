@@ -4,7 +4,6 @@ import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 
 import net.ipetty.ibang.context.UserContext;
 import net.ipetty.ibang.context.UserPrincipal;
@@ -32,9 +31,6 @@ public class SeekController extends BaseController {
 
 	@Resource
 	private SeekService seekService;
-
-	@Resource
-	private HttpServletRequest request;
 
 	/**
 	 * 发布求助

@@ -1,6 +1,8 @@
 package net.ipetty.ibang.model;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import net.ipetty.ibang.vo.OfferVO;
 
@@ -42,6 +44,14 @@ public class Offer extends AbstractEntity {
 		Offer entity = new Offer();
 		BeanUtils.copyProperties(vo, entity);
 		return entity;
+	}
+
+	public static List<OfferVO> listToVoList(List<Offer> offerList) {
+		List<OfferVO> voList = new ArrayList<OfferVO>();
+		for (Offer offer : offerList) {
+			voList.add(offer.toVO());
+		}
+		return voList;
 	}
 
 	public Long getId() {

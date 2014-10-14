@@ -12,6 +12,7 @@ import net.ipetty.ibang.android.core.util.DateUtils;
 import net.ipetty.ibang.android.core.util.JSONUtils;
 import net.ipetty.ibang.android.core.util.PrettyDateFormat;
 import net.ipetty.ibang.android.sdk.context.ApiContext;
+import net.ipetty.ibang.android.user.GetUserByIdSynchronously;
 import net.ipetty.ibang.android.user.UserInfoActivity;
 import net.ipetty.ibang.vo.DelegationVO;
 import net.ipetty.ibang.vo.ImageVO;
@@ -77,6 +78,7 @@ public class SeekActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_seek);
 
+		isLogin = ApiContext.getInstance(this).isAuthorized();
 		user = ApiContext.getInstance(this).getCurrentUser();
 
 		seekId = this.getIntent().getExtras().getLong(Constants.INTENT_SEEK_ID);
@@ -114,6 +116,7 @@ public class SeekActivity extends Activity {
 			public void onClick(View view) {
 				// TODO Auto-generated method stub
 				Intent intent = new Intent(SeekActivity.this, PublishOfferActivity.class);
+				intent.putExtra(Constants.INTENT_SEEK_ID, seekId);
 				startActivity(intent);
 			}
 		});
@@ -159,8 +162,7 @@ public class SeekActivity extends Activity {
 			seekUser = user;
 			initSeekUserLayout();
 		} else {
-			// TODO: 异步加载获取
-			seekUser = user;
+			seekUser = GetUserByIdSynchronously.get(SeekActivity.this, seekVO.getSeekerId());
 			initSeekUserLayout();
 		}
 	}
@@ -211,28 +213,19 @@ public class SeekActivity extends Activity {
 		offerBtn_layout.setVisibility(View.GONE);
 		closeBtn_layout.setVisibility(View.GONE);
 
-		if (net.ipetty.ibang.vo.Constants.SEEK_STATUS_CREATED.equals(status)) {
-			if (!isOwner()) {
-				offerBtn_layout.setVisibility(View.VISIBLE);
-			} else {
-				closeBtn_layout.setVisibility(View.VISIBLE);
-			}
-		} else if (net.ipetty.ibang.vo.Constants.SEEK_STATUS_OFFERED.equals(status)) {
-			if (!isOwner()) {
-				offerBtn_layout.setVisibility(View.VISIBLE);
-			} else {
-				closeBtn_layout.setVisibility(View.VISIBLE);
-			}
-		} else if (net.ipetty.ibang.vo.Constants.SEEK_STATUS_DELEGATED.equals(status)) {
-			if (isOwner()) {
-				closeBtn_layout.setVisibility(View.VISIBLE);
-			}
-		} else if (net.ipetty.ibang.vo.Constants.SEEK_STATUS_FINISHED.equals(status)) {
-			if (isOwner()) {
-				closeBtn_layout.setVisibility(View.VISIBLE);
-			}
-		} else if (net.ipetty.ibang.vo.Constants.SEEK_STATUS_CLOSED.equals(status)) {
+		if (isLogin) { // 只有已登录用户才有可能看到这两个按钮
+			if (!net.ipetty.ibang.vo.Constants.SEEK_STATUS_FINISHED.equals(status)
+					&& !net.ipetty.ibang.vo.Constants.SEEK_STATUS_CLOSED.equals(status)) {
+				if (isOwner()) {
+					closeBtn_layout.setVisibility(View.VISIBLE);
+				} else {
+					offerBtn_layout.setVisibility(View.VISIBLE);
+				}
 
+				if (net.ipetty.ibang.vo.Constants.SEEK_STATUS_DELEGATED.equals(status) && !isOwner()) {
+					offerBtn_layout.setVisibility(View.VISIBLE);
+				}
+			}
 		}
 
 		int delegateNumber = delegationList.size();

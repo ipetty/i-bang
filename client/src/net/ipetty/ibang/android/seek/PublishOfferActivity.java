@@ -5,6 +5,7 @@ import net.ipetty.ibang.android.core.Constants;
 import net.ipetty.ibang.android.core.ui.BackClickListener;
 import net.ipetty.ibang.android.sdk.context.ApiContext;
 import net.ipetty.ibang.android.user.UserEditActivity;
+import net.ipetty.ibang.vo.OfferVO;
 import net.ipetty.ibang.vo.UserVO;
 import android.app.Activity;
 import android.content.Intent;
@@ -22,6 +23,7 @@ public class PublishOfferActivity extends Activity {
 	private TextView nicknameView;
 	private TextView phoneView;
 	private UserVO user;
+	private Long seekId;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -30,20 +32,13 @@ public class PublishOfferActivity extends Activity {
 
 		/* action bar */
 		ImageView btnBack = (ImageView) this.findViewById(R.id.action_bar_left_image);
+		btnBack.setOnClickListener(new BackClickListener(this));
 		TextView text = (TextView) this.findViewById(R.id.action_bar_title);
 		text.setText(this.getResources().getString(R.string.title_activity_publish_offer));
-		btnBack.setOnClickListener(new BackClickListener(this));
+
+		seekId = this.getIntent().getExtras().getLong(Constants.INTENT_SEEK_ID);
 
 		content = (EditText) this.findViewById(R.id.content);
-		button = (TextView) this.findViewById(R.id.button);
-
-		button.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				finish();
-			}
-		});
 
 		nicknameView = (TextView) this.findViewById(R.id.nickname);
 		phoneView = (TextView) this.findViewById(R.id.phone);
@@ -52,6 +47,19 @@ public class PublishOfferActivity extends Activity {
 
 		user = ApiContext.getInstance(PublishOfferActivity.this).getCurrentUser();
 		initUserInfo(user);
+
+		button = (TextView) this.findViewById(R.id.button);
+		button.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				OfferVO offer = new OfferVO();
+				offer.setContent(content.getText().toString());
+				offer.setSeekId(seekId);
+				offer.setOffererId(user.getId());
+				new PublishOfferTask(PublishOfferActivity.this).setListener(
+						new PublishOfferTaskListener(PublishOfferActivity.this)).execute(offer);
+			}
+		});
 	}
 
 	private void initUserInfo(UserVO user) {
