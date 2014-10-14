@@ -84,9 +84,9 @@ public class UserInfoActivity extends Activity {
 		}
 		nickname.setText(seekUser.getNickname());
 		signature.setText(user.getSignature());
-		seekCount.setText(user.getSeekCount());
-		offerCount.setText(user.getOfferCount());
-		seekerTotalPoint.setText(user.getSeekerTotalPoint());
+		seekCount.setText(String.valueOf(user.getSeekCount()));
+		offerCount.setText(String.valueOf(user.getOfferCount()));
+		seekerTotalPoint.setText(String.valueOf(user.getSeekerTotalPoint()));
 
 		phoneView.setText(user.getPhone());
 		gender.setText(user.getGender());

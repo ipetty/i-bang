@@ -147,7 +147,6 @@ public class SeekActivity extends Activity {
 			seekUser = user;
 			initSeekUserLayout();
 		}
-
 	}
 
 	private void initSeekUserLayout() {
