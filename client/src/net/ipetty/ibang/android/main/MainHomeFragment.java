@@ -28,7 +28,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.text.format.DateUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -133,7 +132,8 @@ public class MainHomeFragment extends Fragment {
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				Intent intent = new Intent(getActivity(), SeekActivity.class);
 				intent.putExtra(Constants.INTENT_SEEK_ID, id);
-				intent.putExtra(Constants.INTENT_SEEK_JSON, JSONUtils.toJson(adapter.getItem(position)).toString());
+				intent.putExtra(Constants.INTENT_SEEK_JSON, JSONUtils.toJson(parent.getAdapter().getItem(position))
+						.toString());
 				startActivity(intent);
 			}
 		});
@@ -257,8 +257,6 @@ public class MainHomeFragment extends Fragment {
 			hasMore = true;
 			listView.showMoreView();
 		}
-
-		Log.d("xx", "--22------------------->");
 	}
 
 }
