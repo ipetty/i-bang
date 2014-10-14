@@ -78,7 +78,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:orientation="vertical" >
 
                 <LinearLayout
@@ -128,7 +128,7 @@
                 <net.ipetty.ibang.android.core.ui.MyPullToRefreshListView
                     android:id="@+id/listView"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" >
+                    android:layout_height="match_parent" >
                 </net.ipetty.ibang.android.core.ui.MyPullToRefreshListView>
             </LinearLayout>
         </FrameLayout>

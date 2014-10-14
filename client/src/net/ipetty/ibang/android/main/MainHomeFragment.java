@@ -1,6 +1,7 @@
 package net.ipetty.ibang.android.main;
 
 import java.util.Date;
+import java.util.List;
 
 import net.ipetty.ibang.R;
 import net.ipetty.ibang.android.city.CityActivity;
@@ -15,6 +16,7 @@ import net.ipetty.ibang.android.seek.ListLatestAvaliableSeeksTask;
 import net.ipetty.ibang.android.seek.ListLatestAvaliableSeeksTaskListener;
 import net.ipetty.ibang.android.seek.SeekActivity;
 import net.ipetty.ibang.android.type.TypeActivity;
+import net.ipetty.ibang.vo.SeekVO;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -26,6 +28,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.text.format.DateUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -135,7 +138,7 @@ public class MainHomeFragment extends Fragment {
 			}
 		});
 
-		listView.hideMoreView();
+		// listView.hideMoreView();
 		listView.setOnRefreshListener(new OnRefreshListener<ListView>() {
 			@Override
 			public void onRefresh(PullToRefreshBase<ListView> refreshView) {
@@ -143,7 +146,9 @@ public class MainHomeFragment extends Fragment {
 						getRefreshTime(), DateUtils.FORMAT_SHOW_TIME | DateUtils.FORMAT_SHOW_DATE
 								| DateUtils.FORMAT_ABBREV_ALL);
 				refreshView.getLoadingLayoutProxy().setLastUpdatedLabel(label);
+				loadSeek(true);
 			}
+
 		});
 
 		listView.setOnLastItemVisibleListener(new OnLastItemVisibleListener() {
@@ -151,14 +156,23 @@ public class MainHomeFragment extends Fragment {
 			public void onLastItemVisible() {
 				// TODO Auto-generated method stub
 				if (hasMore) {
-
+					loadSeek(false);
 				}
 			}
 		});
 
+		loadSeek(true);
+
+	}
+
+	public void loadSeek(boolean isRefresh) {
+		// TODO Auto-generated method stub
+		if (isRefresh) {
+			pageNumber = 0;
+		}
 		// 加载数据
 		new ListLatestAvaliableSeeksTask(getActivity()).setListener(
-				new ListLatestAvaliableSeeksTaskListener(getActivity(), adapter, listView)).execute(
+				new ListLatestAvaliableSeeksTaskListener(MainHomeFragment.this, adapter, listView, isRefresh)).execute(
 				net.ipetty.ibang.android.core.util.DateUtils.toDatetimeString(new Date(getRefreshTime())),
 				String.valueOf(pageNumber++), String.valueOf(pageSize));
 	}
@@ -233,6 +247,18 @@ public class MainHomeFragment extends Fragment {
 			str = "全部分类";
 		}
 		type.setText(str);
+	}
+
+	public void loadMoreForResult(List<SeekVO> result) {
+		if (result.size() < pageSize) {
+			hasMore = false;
+			listView.hideMoreView();
+		} else {
+			hasMore = true;
+			listView.showMoreView();
+		}
+
+		Log.d("xx", "--22------------------->");
 	}
 
 }
