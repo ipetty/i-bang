@@ -42,6 +42,7 @@ public class SeekActivity extends Activity {
 
 	private boolean isLogin = false;
 	private TextView offerBtn;
+	private TextView closeBtn;
 	private LinearLayout offerListView;
 	private LinearLayout delegationListView;
 	private View imageView;
@@ -66,6 +67,7 @@ public class SeekActivity extends Activity {
 	private View offerBtn_layout;
 	private View delegationList_layout;
 	private View offerList_layout;
+	private View closeBtn_layout;
 
 	List<DelegationVO> delegationList = new ArrayList<DelegationVO>();
 	List<OfferVO> offerList = new ArrayList<OfferVO>();
@@ -92,6 +94,7 @@ public class SeekActivity extends Activity {
 		viewPager = (ViewPager) findViewById(R.id.vp);
 		imageViewText = (TextView) this.findViewById(R.id.imageView_text);
 		offerBtn = (TextView) this.findViewById(R.id.offerBtn);
+		closeBtn = (TextView) this.findViewById(R.id.closeBtn);
 		delegationListView = (LinearLayout) this.findViewById(R.id.delegationList);
 		offerListView = (LinearLayout) this.findViewById(R.id.offerList);
 		content = (TextView) this.findViewById(R.id.content);
@@ -103,6 +106,7 @@ public class SeekActivity extends Activity {
 		offerBtn_layout = this.findViewById(R.id.offerBtn_layout);
 		delegationList_layout = this.findViewById(R.id.delegationList_layout);
 		offerList_layout = this.findViewById(R.id.offerList_layout);
+		closeBtn_layout = this.findViewById(R.id.closeBtn_layout);
 
 		// 事件绑定
 		offerBtn.setOnClickListener(new OnClickListener() {
@@ -111,6 +115,15 @@ public class SeekActivity extends Activity {
 				// TODO Auto-generated method stub
 				Intent intent = new Intent(SeekActivity.this, PublishOfferActivity.class);
 				startActivity(intent);
+			}
+		});
+
+		// 关闭
+		closeBtn.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+
 			}
 		});
 
@@ -194,19 +207,29 @@ public class SeekActivity extends Activity {
 	private void initViewLayout() {
 		// TODO Auto-generated method stub
 		String status = seekVO.getStatus();
+		offerBtn_layout.setVisibility(View.GONE);
+		closeBtn_layout.setVisibility(View.GONE);
 
 		if (net.ipetty.ibang.vo.Constants.SEEK_STATUS_CREATED.equals(status)) {
 			if (!isOwner()) {
 				offerBtn_layout.setVisibility(View.VISIBLE);
+			} else {
+				closeBtn_layout.setVisibility(View.VISIBLE);
 			}
 		} else if (net.ipetty.ibang.vo.Constants.SEEK_STATUS_OFFERED.equals(status)) {
 			if (!isOwner()) {
 				offerBtn_layout.setVisibility(View.VISIBLE);
+			} else {
+				closeBtn_layout.setVisibility(View.VISIBLE);
 			}
 		} else if (net.ipetty.ibang.vo.Constants.SEEK_STATUS_DELEGATED.equals(status)) {
-
+			if (isOwner()) {
+				closeBtn_layout.setVisibility(View.VISIBLE);
+			}
 		} else if (net.ipetty.ibang.vo.Constants.SEEK_STATUS_FINISHED.equals(status)) {
-
+			if (isOwner()) {
+				closeBtn_layout.setVisibility(View.VISIBLE);
+			}
 		} else if (net.ipetty.ibang.vo.Constants.SEEK_STATUS_CLOSED.equals(status)) {
 
 		}
