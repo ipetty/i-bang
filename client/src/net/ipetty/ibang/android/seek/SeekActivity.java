@@ -196,10 +196,11 @@ public class SeekActivity extends Activity {
 		// TODO Auto-generated method stub
 		seek_avatar.setImageResource(R.drawable.default_avatar);
 		content.setText(seekVO.getContent());
-		Calendar c = Calendar.getInstance();
-		c.setTime(seekVO.getClosedOn());
-		String str = DateUtils.toDateString(c.getTime());
-		closedOn.setText(str);
+		if (seekVO.getClosedOn() != null) {
+			Calendar c = Calendar.getInstance();
+			c.setTime(seekVO.getClosedOn());
+			closedOn.setText(DateUtils.toDateString(c.getTime()));
+		}
 		String creatAt = new PrettyDateFormat("@", "yyyy-MM-dd HH:mm:dd").format(seekVO.getCreatedOn());
 		seek_created_at.setText(creatAt);
 	}
@@ -247,7 +248,6 @@ public class SeekActivity extends Activity {
 		} else {
 			delegationList_layout.setVisibility(View.VISIBLE);
 		}
-
 	}
 
 	private boolean isOwner() {

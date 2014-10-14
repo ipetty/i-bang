@@ -22,40 +22,40 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="48dp" >
-			<Button 
-			        android:id="@+id/city"
-			       android:layout_width="wrap_content"
-			        android:layout_height="wrap_content"
-			        android:background="@null"
-			        android:drawableRight="@drawable/ic_arrow_down"
-			        android:paddingLeft="2dp"
-			        android:paddingRight="2dp"
-			        android:text="苏州"
-			         android:textSize="18sp"
-			        android:textColor="@color/base_color"/>
 
-			<TextView
-			    android:id="@+id/search"
-			    android:layout_width="wrap_content"
-			    android:layout_weight="1"
-			    android:layout_height="32dp"
-			    android:layout_gravity="center"
-			    android:background="@drawable/button_white_shape"
-			    android:gravity="center|left"
-			    android:layout_marginLeft="8dp"
-			    android:textColor="@color/gray_color"
-			    android:paddingLeft="8dp"
-			     android:paddingRight="8dp"
-			     android:textSize="14sp"
-			    android:text="查找需要帮助的信息" />
+                <Button
+                    android:id="@+id/city"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:drawableRight="@drawable/ic_arrow_down"
+                    android:paddingLeft="2dp"
+                    android:paddingRight="2dp"
+                    android:text="苏州"
+                    android:textColor="@color/base_color"
+                    android:textSize="18sp" />
 
-			<ImageView
-			    android:id="@+id/msg"
-			    android:layout_width="48dp"
-			    android:layout_height="48dp"
-			    android:src="@drawable/action_bar_msg" 
-			    style="@style/ActionBarButton"/>
-          
+                <TextView
+                    android:id="@+id/search"
+                    android:layout_width="wrap_content"
+                    android:layout_height="32dp"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="8dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/button_white_shape"
+                    android:gravity="center|left"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="8dp"
+                    android:text="查找需要帮助的信息"
+                    android:textColor="@color/gray_color"
+                    android:textSize="14sp" />
+
+                <ImageView
+                    android:id="@+id/msg"
+                    style="@style/ActionBarButton"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:src="@drawable/action_bar_msg" />
             </LinearLayout>
 
             <include layout="@layout/line_horizontal_divider" />
@@ -89,8 +89,8 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:gravity="center"
                         android:layout_weight="1"
+                        android:gravity="center"
                         android:orientation="vertical" >
 
                         <Button
@@ -102,7 +102,6 @@
                             android:text="全部分类"
                             android:textColor="@color/gray_color"
                             android:textSize="16sp" />
-
                     </LinearLayout>
 
                     <LinearLayout
@@ -121,20 +120,18 @@
                             android:text="最新发布"
                             android:textColor="@color/gray_color"
                             android:textSize="16sp" />
-
                     </LinearLayout>
                 </LinearLayout>
-                <include layout="@layout/line_horizontal_divider"/>
+
+                <include layout="@layout/line_horizontal_divider" />
 
                 <net.ipetty.ibang.android.core.ui.MyPullToRefreshListView
                     android:id="@+id/listView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" >
                 </net.ipetty.ibang.android.core.ui.MyPullToRefreshListView>
-
             </LinearLayout>
-
         </FrameLayout>
-
     </LinearLayout>
+
 </FrameLayout>
