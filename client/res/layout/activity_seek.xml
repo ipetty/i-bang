@@ -305,6 +305,29 @@
  	 	             </LinearLayout>
 
  	 	         </LinearLayout>
+
+ 	 	         <LinearLayout
+ 	 	             android:id="@+id/closeBtn_layout"
+ 	 	             android:layout_width="match_parent"
+ 	 	             android:layout_height="match_parent"
+ 	 	             android:orientation="vertical"
+ 	 	             android:visibility="gone" >
+
+ 	 	             <TextView
+ 	 	                 android:id="@+id/closeBtn"
+ 	 	                 android:layout_width="match_parent"
+ 	 	                 android:layout_height="46dp"
+ 	 	                 android:layout_below="@+id/login_linearLayout"
+ 	 	                 android:layout_marginLeft="24dp"
+ 	 	                 android:layout_marginRight="24dp"
+ 	 	                 android:background="@drawable/button_orange_shape"
+ 	 	                 android:gravity="center"
+ 	 	                 android:text="关闭"
+ 	 	                 android:textColor="@color/white_color"
+ 	 	                 android:textSize="24sp" />
+
+ 	 	             <include layout="@layout/line_space" />
+ 	 	         </LinearLayout>
  	 	        
  	 	    </LinearLayout>
  	 	</ScrollView>
