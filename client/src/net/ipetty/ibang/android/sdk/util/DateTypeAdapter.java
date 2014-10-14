@@ -49,6 +49,7 @@ public class DateTypeAdapter extends TypeAdapter<Date> {
 
 	private synchronized Date deserializeToDate(String json) {
 		try {
+			Log.d(TAG, "date json string is " + json);
 			return DATE_FORMAT.parse(json);
 		} catch (ParseException e) {
 			throw new JsonSyntaxException(json, e);

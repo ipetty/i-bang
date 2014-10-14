@@ -1,6 +1,7 @@
 package net.ipetty.ibang.android.main;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import net.ipetty.ibang.R;
@@ -30,6 +31,14 @@ public class SeekAdapter extends BaseAdapter implements OnScrollListener {
 
 	public SeekAdapter(Activity activity) {
 		inflater = LayoutInflater.from(activity);
+
+		SeekVO seekVO = new SeekVO();
+		seekVO.setId(111L);
+		seekVO.setCategoryL1("分类一");
+		seekVO.setCategoryL2("分类二");
+		seekVO.setContent("KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK");
+		seekVO.setCreatedOn(new Date());
+		list.add(seekVO);
 	}
 
 	public void loadData(List<SeekVO> list) {

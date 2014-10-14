@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 import org.codehaus.jackson.JsonGenerator;
 import org.codehaus.jackson.JsonProcessingException;
@@ -22,11 +23,11 @@ import org.slf4j.LoggerFactory;
  */
 public class DateObjectMapper extends ObjectMapper {
 
-	private static DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	private static DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
 	Logger logger = LoggerFactory.getLogger(getClass());
 
 	public DateObjectMapper() {
-		super.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
+		super.setDateFormat(dateFormat);
 
 		CustomSerializerFactory factory = new CustomSerializerFactory();
 		factory.addGenericMapping(Date.class, new JsonSerializer<Date>() {

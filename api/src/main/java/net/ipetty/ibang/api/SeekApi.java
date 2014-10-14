@@ -1,6 +1,5 @@
 package net.ipetty.ibang.api;
 
-import java.util.Date;
 import java.util.List;
 
 import net.ipetty.ibang.vo.SeekVO;
@@ -36,7 +35,7 @@ public interface SeekApi {
 	 *            分页页码，从0开始
 	 */
 	@GET("/seeklist/latest")
-	public List<SeekVO> listLatest(@Query("timeline") Date timeline, @Query("pageNumber") int pageNumber,
+	public List<SeekVO> listLatest(@Query("timeline") String timeline, @Query("pageNumber") int pageNumber,
 			@Query("pageSize") int pageSize);
 
 	/**

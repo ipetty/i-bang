@@ -10,9 +10,11 @@ import net.ipetty.ibang.context.UserContext;
 import net.ipetty.ibang.context.UserPrincipal;
 import net.ipetty.ibang.model.Seek;
 import net.ipetty.ibang.service.SeekService;
+import net.ipetty.ibang.util.DateUtils;
 import net.ipetty.ibang.vo.SeekVO;
 import net.ipetty.ibang.web.rest.exception.RestException;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -73,11 +75,9 @@ public class SeekController extends BaseController {
 	 *            分页页码，从0开始
 	 */
 	@RequestMapping(value = "/seeklist/latest", method = RequestMethod.GET)
-	public List<SeekVO> listLatest(Date timeline, int pageNumber, int pageSize) {
-		if (timeline == null) {
-			timeline = new Date();
-		}
-		List<Seek> seeks = seekService.listLatest(timeline, pageNumber, pageSize);
+	public List<SeekVO> listLatest(String timeline, int pageNumber, int pageSize) {
+		Date date = StringUtils.isBlank(timeline) ? new Date() : DateUtils.fromDatetimeString(timeline);
+		List<Seek> seeks = seekService.listLatest(date, pageNumber, pageSize);
 		return Seek.listToVoList(seeks);
 	}
 

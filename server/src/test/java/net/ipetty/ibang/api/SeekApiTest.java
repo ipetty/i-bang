@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import net.ipetty.ibang.api.factory.IbangApi;
+import net.ipetty.ibang.util.DateUtils;
 import net.ipetty.ibang.vo.Constants;
 import net.ipetty.ibang.vo.ImageVO;
 import net.ipetty.ibang.vo.LoginResultVO;
@@ -51,14 +52,14 @@ public class SeekApiTest extends BaseApiTest {
 		seek = seekApi.getById(seek.getId());
 		Assert.assertEquals(2, seek.getImages().size());
 
-		List<SeekVO> seeks = seekApi.listLatest(new Date(), 0, 20);
+		List<SeekVO> seeks = seekApi.listLatest(DateUtils.toDatetimeString(new Date()), 0, 20);
 		Assert.assertEquals(1, seeks.size());
 
 		seeks = seekApi.listByUserId(user.getId(), 0, 20);
 		Assert.assertEquals(1, seeks.size());
 
 		Assert.assertTrue(seekApi.close(seek.getId()));
-		seeks = seekApi.listLatest(new Date(), 0, 20);
+		seeks = seekApi.listLatest(DateUtils.toDatetimeString(new Date()), 0, 20);
 		Assert.assertEquals(0, seeks.size());
 	}
 
