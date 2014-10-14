@@ -6,6 +6,7 @@ import java.util.List;
 
 import net.ipetty.ibang.R;
 import net.ipetty.ibang.android.core.Constants;
+import net.ipetty.ibang.android.core.DefaultTaskListener;
 import net.ipetty.ibang.android.core.ui.BackClickListener;
 import net.ipetty.ibang.android.core.util.AppUtils;
 import net.ipetty.ibang.android.core.util.DateUtils;
@@ -141,13 +142,11 @@ public class SeekActivity extends Activity {
 
 		// 需要从服务器加载
 		initSeekUser();
-		// 模拟数据
 
 		// 数据重新加载后显示
 		initViewLayout();
 		initDelegationView();
 		initOfferView();
-
 	}
 
 	private void initSeekUser() {
@@ -365,7 +364,7 @@ public class SeekActivity extends Activity {
 	public View getItemDelegationView(DelegationVO delegationVO) {
 		View view = LayoutInflater.from(this).inflate(R.layout.list_delegation_simple_item, null);
 		DelegationHolder holder = new DelegationHolder();
-		holder.layout = (ImageView) view.findViewById(R.id.layout);
+		holder.layout = view.findViewById(R.id.layout);
 		holder.avator = (ImageView) view.findViewById(R.id.avatar);
 		holder.nickname = (TextView) view.findViewById(R.id.nickname);
 		holder.created_at = (TextView) view.findViewById(R.id.created_at);
@@ -394,18 +393,18 @@ public class SeekActivity extends Activity {
 	}
 
 	private void initOfferView() {
-		// TODO: 从服务端加载 offerList
-		OfferVO t = new OfferVO();
-		offerList.add(t);
-		offerList.add(t);
-
-		// TODO Auto-generated method stub
 		offerListView.removeAllViews();
-		LayoutInflater inflater = LayoutInflater.from(this);
-		for (OfferVO offer : offerList) {
-			View view = inflater.inflate(R.layout.list_offer_item, null);
-			offerListView.addView(view);
-		}
+		new ListOfferBySeekIdTask(SeekActivity.this).setListener(
+				new DefaultTaskListener<List<OfferVO>>(SeekActivity.this) {
+					@Override
+					public void onSuccess(List<OfferVO> offers) {
+						LayoutInflater inflater = LayoutInflater.from(activity);
+						for (OfferVO offer : offers) {
+							View view = inflater.inflate(R.layout.list_offer_item, null);
+							offerListView.addView(view);
+						}
+					}
+				}).execute(seekId);
 	}
 
 }

@@ -53,7 +53,8 @@ public class MySeekActivity extends Activity {
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				Intent intent = new Intent(MySeekActivity.this, SeekActivity.class);
 				intent.putExtra(Constants.INTENT_SEEK_ID, id);
-				intent.putExtra(Constants.INTENT_SEEK_JSON, JSONUtils.toJson(adapter.getItem(position)).toString());
+				intent.putExtra(Constants.INTENT_SEEK_JSON, JSONUtils.toJson(parent.getAdapter().getItem(position))
+						.toString());
 				startActivity(intent);
 			}
 		});
