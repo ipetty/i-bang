@@ -167,7 +167,13 @@ public class UserApiTest extends BaseApiTest {
 		UserVO user = result.getUserVo();
 		UserFormVO userFormVO = new UserFormVO();
 		userFormVO.setId(user.getId());
+		userFormVO.setNickname(user.getNickname());
+		userFormVO.setGender(user.getGender());
+		userFormVO.setPhone(user.getPhone());
+		userFormVO.setTelephone(user.getTelephone());
+		userFormVO.setSignature(user.getSignature());
 		userFormVO.setJob("系统架构师");
+		userFormVO.setAddress(user.getAddress());
 		user = userApi.update(userFormVO);
 		Assert.assertNotNull(user.getJob());
 	}

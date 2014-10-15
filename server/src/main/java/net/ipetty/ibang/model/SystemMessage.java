@@ -1,6 +1,8 @@
 package net.ipetty.ibang.model;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import net.ipetty.ibang.vo.SystemMessageVO;
 
@@ -53,6 +55,14 @@ public class SystemMessage extends AbstractEntity {
 		SystemMessage entity = new SystemMessage();
 		BeanUtils.copyProperties(vo, entity);
 		return entity;
+	}
+
+	public static List<SystemMessageVO> listToVoList(List<SystemMessage> systemMessageList) {
+		List<SystemMessageVO> voList = new ArrayList<SystemMessageVO>();
+		for (SystemMessage systemMessage : systemMessageList) {
+			voList.add(systemMessage.toVO());
+		}
+		return voList;
 	}
 
 	public Long getId() {

@@ -131,7 +131,7 @@ public class UserServiceTest extends BaseServiceTest {
 	@Test
 	public void testUpdateProfile() {
 		User user = userService.getByUsername(TEST_ACCOUNT_USERNAME);
-		String udpatedNickname = "ibang2";
+		String udpatedNickname = "爱帮";
 		user.setNickname(udpatedNickname);
 		userService.updateProfile(user);
 		user = userService.getById(user.getId());

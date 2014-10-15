@@ -313,22 +313,23 @@ public class SeekActivity extends Activity {
 	}
 
 	private void initDelegationView() {
-		// TODO: 从服务端加载 delegationList
-		DelegationVO tt = new DelegationVO();
-		delegationList.add(tt);
-		delegationList.add(tt);
-
-		if (delegationList.size() == 0) {
-			delegationList_layout.setVisibility(View.GONE);
-		} else {
-			delegationList_layout.setVisibility(View.VISIBLE);
-		}
-
-		// TODO Auto-generated method stub
 		delegationListView.removeAllViews();
-		for (DelegationVO delegationVO : delegationList) {
-			delegationListView.addView(getItemDelegationView(delegationVO));
-		}
+		new ListDelegationBySeekIdTask(SeekActivity.this).setListener(
+				new DefaultTaskListener<List<DelegationVO>>(SeekActivity.this) {
+					@Override
+					public void onSuccess(List<DelegationVO> delegations) {
+						if (delegations.size() == 0) {
+							delegationList_layout.setVisibility(View.GONE);
+						} else {
+							delegationList_layout.setVisibility(View.VISIBLE);
+						}
+
+						for (DelegationVO delegation : delegations) {
+							View view = getItemDelegationView(delegation);
+							delegationListView.addView(view);
+						}
+					}
+				}).execute(seekId);
 	}
 
 	public View getItemDelegationView(DelegationVO delegationVO) {
