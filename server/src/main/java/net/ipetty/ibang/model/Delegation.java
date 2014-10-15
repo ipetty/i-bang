@@ -1,6 +1,8 @@
 package net.ipetty.ibang.model;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import net.ipetty.ibang.vo.DelegationVO;
 
@@ -42,6 +44,14 @@ public class Delegation extends AbstractEntity {
 		Delegation entity = new Delegation();
 		BeanUtils.copyProperties(vo, entity);
 		return entity;
+	}
+
+	public static List<DelegationVO> listToVoList(List<Delegation> delegationList) {
+		List<DelegationVO> voList = new ArrayList<DelegationVO>();
+		for (Delegation delegation : delegationList) {
+			voList.add(delegation.toVO());
+		}
+		return voList;
 	}
 
 	public Long getId() {

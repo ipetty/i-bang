@@ -91,17 +91,6 @@ public class OfferController extends BaseController {
 	}
 
 	/**
-	 * 完成应征
-	 */
-	@RequestMapping(value = "/offer/finish", method = RequestMethod.POST)
-	public boolean finish(Long offerId) {
-		Assert.notNull(offerId, "应征单ID不能为空");
-
-		offerService.finish(offerId);
-		return true;
-	}
-
-	/**
 	 * 关闭应征
 	 */
 	@RequestMapping(value = "/offer/close", method = RequestMethod.POST)

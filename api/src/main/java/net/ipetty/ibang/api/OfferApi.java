@@ -49,12 +49,6 @@ public interface OfferApi {
 			@Query("pageSize") int pageSize);
 
 	/**
-	 * 完成应征
-	 */
-	@POST("/offer/finish")
-	public boolean finish(@Query("offerId") Long offerId);
-
-	/**
 	 * 关闭应征
 	 */
 	@POST("/offer/close")
