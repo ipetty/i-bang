@@ -64,15 +64,12 @@ public class OfferController extends BaseController {
 
 	/**
 	 * 获取指定求助单的应征单列表
-	 * 
-	 * @param pageNumber
-	 *            分页页码，从0开始
 	 */
 	@RequestMapping(value = "/offerlist/byseek", method = RequestMethod.GET)
-	public List<OfferVO> listBySeekId(Long seekId, int pageNumber, int pageSize) {
+	public List<OfferVO> listBySeekId(Long seekId) {
 		Assert.notNull(seekId, "应征单ID不能为空");
 
-		List<Offer> offers = offerService.listBySeekId(seekId, pageNumber, pageSize);
+		List<Offer> offers = offerService.listBySeekId(seekId);
 		return Offer.listToVoList(offers);
 	}
 

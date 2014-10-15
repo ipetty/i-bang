@@ -143,7 +143,7 @@ public class SeekService extends BaseService {
 
 		// 向所有应征者发送系统消息
 		Seek seek = getById(seekId);
-		List<Offer> offers = offerService.listBySeekId(seekId, 0, 1000);
+		List<Offer> offers = offerService.listBySeekId(seekId);
 		for (Offer offer : offers) {
 			// 保存系统消息
 			SystemMessage systemMessage = new SystemMessage(null, offer.getOffererId(),

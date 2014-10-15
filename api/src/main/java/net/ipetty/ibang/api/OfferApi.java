@@ -30,13 +30,9 @@ public interface OfferApi {
 
 	/**
 	 * 获取指定求助单的应征单列表
-	 * 
-	 * @param pageNumber
-	 *            分页页码，从0开始
 	 */
 	@GET("/offerlist/byseek")
-	public List<OfferVO> listBySeekId(@Query("seekId") Long seekId, @Query("pageNumber") int pageNumber,
-			@Query("pageSize") int pageSize);
+	public List<OfferVO> listBySeekId(@Query("seekId") Long seekId);
 
 	/**
 	 * 获取指定用户的应征列表

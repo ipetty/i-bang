@@ -69,7 +69,7 @@ public class OfferServiceTest extends BaseServiceTest {
 		offer = offerService.getById(offer.getId());
 		Assert.assertEquals(seek.getId(), offer.getSeekId());
 
-		List<Offer> offers = offerService.listBySeekId(seek.getId(), 0, 20);
+		List<Offer> offers = offerService.listBySeekId(seek.getId());
 		Assert.assertEquals(1, offers.size());
 
 		offers = offerService.listByUserId(user.getId(), 0, 20);

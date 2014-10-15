@@ -65,7 +65,7 @@ public class OfferApiTest extends BaseApiTest {
 		offer = offerApi.getById(offer.getId());
 		Assert.assertEquals(seek.getId(), offer.getSeekId());
 
-		List<OfferVO> offers = offerApi.listBySeekId(seek.getId(), 0, 20);
+		List<OfferVO> offers = offerApi.listBySeekId(seek.getId());
 		Assert.assertEquals(1, offers.size());
 
 		offers = offerApi.listByUserId(user.getId(), 0, 20);

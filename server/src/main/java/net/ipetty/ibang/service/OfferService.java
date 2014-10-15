@@ -91,12 +91,9 @@ public class OfferService extends BaseService {
 
 	/**
 	 * 获取指定求助单的应征单列表
-	 * 
-	 * @param pageNumber
-	 *            分页页码，从0开始
 	 */
-	public List<Offer> listBySeekId(Long seekId, int pageNumber, int pageSize) {
-		List<Long> offerIds = offerDao.listBySeekId(seekId, pageNumber, pageSize);
+	public List<Offer> listBySeekId(Long seekId) {
+		List<Long> offerIds = offerDao.listBySeekId(seekId);
 		List<Offer> offers = new ArrayList<Offer>();
 		for (Long offerId : offerIds) {
 			offers.add(offerDao.getById(offerId));

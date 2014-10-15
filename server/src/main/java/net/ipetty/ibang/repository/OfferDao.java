@@ -24,11 +24,8 @@ public interface OfferDao {
 
 	/**
 	 * 获取指定求助单的应征单ID列表
-	 * 
-	 * @param pageNumber
-	 *            分页页码，从0开始
 	 */
-	public List<Long> listBySeekId(Long seekId, int pageNumber, int pageSize);
+	public List<Long> listBySeekId(Long seekId);
 
 	/**
 	 * 获取指定用户的应征单ID列表

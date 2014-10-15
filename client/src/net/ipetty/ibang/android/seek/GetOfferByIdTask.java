@@ -1,7 +1,5 @@
 package net.ipetty.ibang.android.seek;
 
-import java.util.List;
-
 import net.ipetty.ibang.android.core.Task;
 import net.ipetty.ibang.android.sdk.factory.IbangApi;
 import net.ipetty.ibang.api.OfferApi;
@@ -10,23 +8,23 @@ import android.app.Activity;
 import android.util.Log;
 
 /**
- * ListOfferBySeekIdTask
+ * GetOfferByIdTask
  * 
  * @author luocanfeng
- * @date 2014年10月14日
+ * @date 2014年10月15日
  */
-public class ListOfferBySeekIdTask extends Task<Long, List<OfferVO>> {
+public class GetOfferByIdTask extends Task<Long, OfferVO> {
 
 	private String TAG = getClass().getSimpleName();
 
-	public ListOfferBySeekIdTask(Activity activity) {
+	public GetOfferByIdTask(Activity activity) {
 		super(activity);
 	}
 
 	@Override
-	protected List<OfferVO> myDoInBackground(Long... args) {
-		Log.d(TAG, "list offers by seek id");
-		return IbangApi.init(activity).create(OfferApi.class).listBySeekId(args[0]);
+	protected OfferVO myDoInBackground(Long... args) {
+		Log.d(TAG, "get offer");
+		return IbangApi.init(activity).create(OfferApi.class).getById(args[0]);
 	}
 
 }

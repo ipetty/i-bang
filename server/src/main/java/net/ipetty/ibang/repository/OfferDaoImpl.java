@@ -90,18 +90,14 @@ public class OfferDaoImpl extends BaseJdbcDaoSupport implements OfferDao {
 		return super.queryUniqueEntity(GET_BY_ID_SQL, ROW_MAPPER, id);
 	}
 
-	private static final String LIST_BY_SEEK_ID_SQL = "select id from offer where seek_id=? order by created_on desc limit ?,?";
+	private static final String LIST_BY_SEEK_ID_SQL = "select id from offer where seek_id=? order by created_on desc";
 
 	/**
 	 * 获取指定求助单的应征单ID列表
-	 * 
-	 * @param pageNumber
-	 *            分页页码，从0开始
 	 */
 	@Override
-	public List<Long> listBySeekId(Long seekId, int pageNumber, int pageSize) {
-		return super.getJdbcTemplate().query(LIST_BY_SEEK_ID_SQL, LONG_ROW_MAPPER, seekId, pageNumber * pageSize,
-				pageSize);
+	public List<Long> listBySeekId(Long seekId) {
+		return super.getJdbcTemplate().query(LIST_BY_SEEK_ID_SQL, LONG_ROW_MAPPER, seekId);
 	}
 
 	private static final String LIST_BY_USER_ID_SQL = "select id from offer where offerer_id=? order by created_on desc limit ?,?";
