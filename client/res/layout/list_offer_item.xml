@@ -5,7 +5,8 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@drawable/list_color_item_bg_white"
-    android:paddingTop="13.0dip" >
+    android:paddingTop="13.0dip" 
+    android:id="@+id/layout">
 
 <LinearLayout android:orientation="horizontal"     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
@@ -28,7 +29,7 @@
             android:gravity="center" >
            
             <TextView
-                android:id="@+id/username"
+                android:id="@+id/nickname"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
@@ -57,10 +58,11 @@
             android:id="@+id/content" 
             android:layout_width="fill_parent" 
             android:layout_height="wrap_content" 
-            android:layout_marginTop="6.0dip" 
+            android:layout_marginTop="2.0dip" 
+            android:layout_marginBottom="2.0dip" 
             android:textColor="@android:color/black"
             android:textSize="14sp"
-            android:text="我可以提供给您需要的帮助提供要的帮助帮助提给您需要的帮助提供给您需要的帮助提供给您需要的帮助提供给您需要的帮助提供给您需要的帮助提供给您需要的帮助提供给您需要的帮助提供给您需要的帮助提供给您需要的帮助提供给您需要的帮助提供给您需要的帮助提供给您需要的帮助提供给您需要的帮助提供给您需要的帮助提供给您需要的帮助"/>
+            android:text="我可以提供"/>
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -76,7 +78,8 @@
 			    android:gravity="center"
 			    android:text="接受应征"
 			    android:textColor="@color/white_color"
-			    android:textSize="12sp" />
+			    android:textSize="12sp" 
+			    android:visibility="gone"/>
 			
 			<TextView
 			    android:id="@+id/textView1"
@@ -86,6 +89,18 @@
 			    android:layout_alignBottom="@+id/accept_button"
 			    android:layout_alignParentLeft="true"
 			    android:text="积分1000"
+			    android:textColor="@color/gray_color"
+			    android:textSize="12sp" />
+
+			<TextView
+			    android:id="@+id/status"
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:layout_alignParentRight="true"
+			    android:layout_alignParentTop="true"
+			    android:gravity="center"
+			    android:text="状态"
+			    android:textColor="@color/gray_color"
 			    android:textSize="12sp" />
 
         </RelativeLayout>

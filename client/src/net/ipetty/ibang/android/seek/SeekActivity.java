@@ -2,6 +2,7 @@ package net.ipetty.ibang.android.seek;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import net.ipetty.ibang.R;
@@ -160,30 +161,7 @@ public class SeekActivity extends Activity {
 	}
 
 	private void initSeekUserLayout() {
-		if (StringUtils.isNotBlank(seekUser.getAvatar())) {
-			ImageLoader.getInstance().displayImage(Constants.FILE_SERVER_BASE + seekUser.getAvatar(), seek_avatar,
-					options);
-		}
-		seek_username.setText(seekUser.getNickname());
-
-		seek_avatar.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				Intent intent = new Intent(SeekActivity.this, UserInfoActivity.class);
-				intent.putExtra(Constants.INTENT_USER_ID, seekUser.getId());
-				intent.putExtra(Constants.INTENT_USER_JSON, JSONUtils.toJson(seekUser).toString());
-				startActivity(intent);
-			}
-		});
-		seek_username.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				Intent intent = new Intent(SeekActivity.this, UserInfoActivity.class);
-				intent.putExtra(Constants.INTENT_USER_ID, seekUser.getId());
-				intent.putExtra(Constants.INTENT_USER_JSON, JSONUtils.toJson(seekUser).toString());
-				startActivity(intent);
-			}
-		});
+		bindUser(seekUser, seek_avatar, seek_username);
 	}
 
 	private void initContent() {
@@ -195,8 +173,7 @@ public class SeekActivity extends Activity {
 			c.setTime(seekVO.getClosedOn());
 			closedOn.setText(DateUtils.toDateString(c.getTime()));
 		}
-		String creatAt = new PrettyDateFormat("@", "yyyy-MM-dd HH:mm:dd").format(seekVO.getCreatedOn());
-		seek_created_at.setText(creatAt);
+		bindTime(seekVO.getCreatedOn(), seek_created_at);
 	}
 
 	private void initViewLayout() {
@@ -220,19 +197,6 @@ public class SeekActivity extends Activity {
 			}
 		}
 
-		int delegateNumber = delegationList.size();
-		if (delegateNumber == 0) {
-			delegationList_layout.setVisibility(View.GONE);
-		} else {
-			delegationList_layout.setVisibility(View.VISIBLE);
-		}
-
-		int offerNumber = offerList.size();
-		if (offerNumber == 0) {
-			offerList_layout.setVisibility(View.GONE);
-		} else {
-			offerList_layout.setVisibility(View.VISIBLE);
-		}
 	}
 
 	private boolean isSeekOwner() {
@@ -354,6 +318,12 @@ public class SeekActivity extends Activity {
 		delegationList.add(tt);
 		delegationList.add(tt);
 
+		if (delegationList.size() == 0) {
+			delegationList_layout.setVisibility(View.GONE);
+		} else {
+			delegationList_layout.setVisibility(View.VISIBLE);
+		}
+
 		// TODO Auto-generated method stub
 		delegationListView.removeAllViews();
 		for (DelegationVO delegationVO : delegationList) {
@@ -373,12 +343,9 @@ public class SeekActivity extends Activity {
 
 		holder.phone.setVisibility(View.GONE);
 
-		String str = "查看委托";
-
 		final Long id = delegationVO.getId();
 		if (isSeekOwner()) {
 			holder.phone.setVisibility(View.VISIBLE);
-			holder.more.setText("查看委托");
 			holder.more.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
@@ -392,19 +359,110 @@ public class SeekActivity extends Activity {
 		return view;
 	}
 
+	private class OfferHolder {
+		View layout;
+		ImageView avator;
+		TextView nickname;
+		TextView created_at;
+		TextView accept_button;
+		TextView status;
+		TextView content;
+	}
+
 	private void initOfferView() {
 		offerListView.removeAllViews();
 		new ListOfferBySeekIdTask(SeekActivity.this).setListener(
 				new DefaultTaskListener<List<OfferVO>>(SeekActivity.this) {
 					@Override
 					public void onSuccess(List<OfferVO> offers) {
-						LayoutInflater inflater = LayoutInflater.from(activity);
+						if (offers.size() == 0) {
+							offerList_layout.setVisibility(View.GONE);
+						} else {
+							offerList_layout.setVisibility(View.VISIBLE);
+						}
+
 						for (OfferVO offer : offers) {
-							View view = inflater.inflate(R.layout.list_offer_item, null);
+							View view = getItemOfferView(offer);
 							offerListView.addView(view);
 						}
 					}
 				}).execute(seekId);
 	}
 
+	public View getItemOfferView(OfferVO offer) {
+		View view = LayoutInflater.from(this).inflate(R.layout.list_offer_item, null);
+		OfferHolder holder = new OfferHolder();
+		holder.layout = view.findViewById(R.id.layout);
+		holder.avator = (ImageView) view.findViewById(R.id.avatar);
+		holder.nickname = (TextView) view.findViewById(R.id.nickname);
+		holder.created_at = (TextView) view.findViewById(R.id.created_at);
+		holder.accept_button = (TextView) view.findViewById(R.id.accept_button);
+		holder.status = (TextView) view.findViewById(R.id.status);
+		holder.content = (TextView) view.findViewById(R.id.content);
+		holder.accept_button.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// TODO 接受应征
+
+			}
+		});
+
+		String status = "";
+
+		if (offer.getStatus().equals(net.ipetty.ibang.vo.Constants.OFFER_STATUS_OFFERED)) {
+			status = "应征中";
+		} else if (offer.getStatus().equals(net.ipetty.ibang.vo.Constants.OFFER_STATUS_DELEGATED)) {
+			status = "应征中";
+		} else if (offer.getStatus().equals(net.ipetty.ibang.vo.Constants.OFFER_STATUS_FINISHED)) {
+			status = "已完成";
+		} else if (offer.getStatus().equals(net.ipetty.ibang.vo.Constants.OFFER_STATUS_DELEGATED)) {
+			status = "已关闭";
+		}
+		bindTime(offer.getCreatedOn(), holder.created_at);
+		holder.status.setText(status);
+		holder.content.setText(offer.getContent());
+
+		if (isSeekOwner() && offer.getStatus().equals(net.ipetty.ibang.vo.Constants.OFFER_STATUS_OFFERED)) {
+			holder.accept_button.setVisibility(View.VISIBLE);
+			holder.status.setVisibility(View.GONE);
+		} else {
+			holder.accept_button.setVisibility(View.GONE);
+			holder.status.setVisibility(View.VISIBLE);
+		}
+
+		int userId = offer.getOffererId();
+		UserVO user = GetUserByIdSynchronously.get(SeekActivity.this, userId);
+		bindUser(user, holder.avator, holder.nickname);
+		return view;
+	}
+
+	private void bindTime(Date date, TextView time) {
+		String creatAt = new PrettyDateFormat("@", "yyyy-MM-dd HH:mm:dd").format(date);
+		time.setText(creatAt);
+	}
+
+	private void bindUser(final UserVO user, ImageView avatar, TextView nickname) {
+		if (StringUtils.isNotBlank(user.getAvatar())) {
+			ImageLoader.getInstance().displayImage(Constants.FILE_SERVER_BASE + user.getAvatar(), avatar, options);
+		}
+		nickname.setText(user.getNickname());
+		avatar.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(SeekActivity.this, UserInfoActivity.class);
+				intent.putExtra(Constants.INTENT_USER_ID, user.getId());
+				intent.putExtra(Constants.INTENT_USER_JSON, JSONUtils.toJson(user).toString());
+				startActivity(intent);
+			}
+		});
+		nickname.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(SeekActivity.this, UserInfoActivity.class);
+				intent.putExtra(Constants.INTENT_USER_ID, user.getId());
+				intent.putExtra(Constants.INTENT_USER_JSON, JSONUtils.toJson(user).toString());
+				startActivity(intent);
+			}
+		});
+	}
 }
