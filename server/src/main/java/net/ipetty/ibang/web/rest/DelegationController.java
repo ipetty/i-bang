@@ -54,6 +54,9 @@ public class DelegationController extends BaseController {
 		Offer offer = offerService.getById(delegation.getOfferId());
 		Assert.notNull(offer, "找不到对应的应征单");
 		delegation.setOffererId(offer.getOffererId());
+		if (delegation.getDeadline() == null) {
+			delegation.setDeadline(offer.getDeadline());
+		}
 
 		UserPrincipal currentUser = UserContext.getContext();
 		if (currentUser == null || currentUser.getId() == null) {

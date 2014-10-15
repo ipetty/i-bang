@@ -389,9 +389,9 @@ public class SeekActivity extends Activity {
 				}).execute(seekId);
 	}
 
-	public View getItemOfferView(OfferVO offer) {
+	public View getItemOfferView(final OfferVO offer) {
 		View view = LayoutInflater.from(this).inflate(R.layout.list_offer_item, null);
-		OfferHolder holder = new OfferHolder();
+		final OfferHolder holder = new OfferHolder();
 		holder.layout = view.findViewById(R.id.layout);
 		holder.avator = (ImageView) view.findViewById(R.id.avatar);
 		holder.nickname = (TextView) view.findViewById(R.id.nickname);
@@ -402,8 +402,19 @@ public class SeekActivity extends Activity {
 		holder.accept_button.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				// TODO 接受应征
-
+				DelegationVO delegation = new DelegationVO();
+				delegation.setSeekId(seekId);
+				delegation.setOfferId(offer.getId());
+				new AcceptOfferTask(SeekActivity.this).setListener(
+						new DefaultTaskListener<DelegationVO>(SeekActivity.this) {
+							@Override
+							public void onSuccess(DelegationVO result) {
+								// 接受应征后进行界面操作
+								holder.status.setText("已委托");
+								holder.accept_button.setVisibility(View.GONE);
+								holder.status.setVisibility(View.VISIBLE);
+							}
+						}).execute(delegation);
 			}
 		});
 
@@ -412,7 +423,7 @@ public class SeekActivity extends Activity {
 		if (offer.getStatus().equals(net.ipetty.ibang.vo.Constants.OFFER_STATUS_OFFERED)) {
 			status = "应征中";
 		} else if (offer.getStatus().equals(net.ipetty.ibang.vo.Constants.OFFER_STATUS_DELEGATED)) {
-			status = "应征中";
+			status = "已委托";
 		} else if (offer.getStatus().equals(net.ipetty.ibang.vo.Constants.OFFER_STATUS_FINISHED)) {
 			status = "已完成";
 		} else if (offer.getStatus().equals(net.ipetty.ibang.vo.Constants.OFFER_STATUS_DELEGATED)) {
