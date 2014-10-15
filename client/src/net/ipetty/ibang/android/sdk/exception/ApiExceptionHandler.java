@@ -2,6 +2,8 @@ package net.ipetty.ibang.android.sdk.exception;
 
 import java.io.IOException;
 
+import net.ipetty.ibang.api.Constants;
+
 import org.apache.commons.io.IOUtils;
 
 import retrofit.ErrorHandler;
@@ -20,8 +22,6 @@ public class ApiExceptionHandler implements ErrorHandler {
 
 	private String TAG = getClass().getSimpleName();
 
-	private static final String UTF8 = "utf8";
-
 	@Override
 	public Throwable handleError(RetrofitError cause) {
 		try {
@@ -30,7 +30,7 @@ public class ApiExceptionHandler implements ErrorHandler {
 				int status = response.getStatus();
 				if (status >= 400) {
 					TypedInput bodyInputStream = response.getBody();
-					String body = IOUtils.toString(bodyInputStream.in(), UTF8);
+					String body = IOUtils.toString(bodyInputStream.in(), Constants.UTF8);
 					Log.d(TAG, "status=" + status + ", body=" + body);
 					return new ApiException(body);
 				}

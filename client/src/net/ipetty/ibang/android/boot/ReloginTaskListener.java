@@ -32,9 +32,13 @@ public class ReloginTaskListener extends DefaultTaskListener<LoginResultVO> {
 
 	@Override
 	public void onSuccess(LoginResultVO result) {
-		Log.d(TAG, "relogin success");
-		Intent intent = new Intent(Constants.BROADCAST_INTENT_IS_LOGIN);
-		activity.sendBroadcast(intent);
+		if (result == null) { // token失效
+			Log.d(TAG, "token失效");
+		} else { // 使用token重新登录成功
+			Log.d(TAG, "relogin success");
+			Intent intent = new Intent(Constants.BROADCAST_INTENT_IS_LOGIN);
+			activity.sendBroadcast(intent);
+		}
 
 		AppUtils.goTo(activity, MainActivity.class);
 		AnimUtils.fadeInToOut(activity);

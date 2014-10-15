@@ -12,6 +12,7 @@ import net.ipetty.ibang.exception.BusinessException;
 import net.ipetty.ibang.model.User;
 import net.ipetty.ibang.model.UserRefreshToken;
 import net.ipetty.ibang.service.UserService;
+import net.ipetty.ibang.util.Encodes;
 import net.ipetty.ibang.util.UUIDUtils;
 import net.ipetty.ibang.vo.LoginResultVO;
 import net.ipetty.ibang.vo.RegisterVO;
@@ -54,8 +55,12 @@ public class UserController extends BaseController {
 		User user = userService.login(loginName, password); // 未发生异常则已登录成功
 
 		String deviceUuid = request.getHeader(Constants.HEADER_NAME_DEVICE_UUID);
+		deviceUuid = StringUtils.isBlank(deviceUuid) ? null : new String(Encodes.decodeBase64(deviceUuid),
+				Constants.UTF8);
 		String deviceId = request.getHeader(Constants.HEADER_NAME_DEVICE_ID);
+		deviceId = StringUtils.isBlank(deviceId) ? null : new String(Encodes.decodeBase64(deviceId), Constants.UTF8);
 		String deviceMac = request.getHeader(Constants.HEADER_NAME_DEVICE_MAC);
+		deviceMac = StringUtils.isBlank(deviceMac) ? null : new String(Encodes.decodeBase64(deviceMac), Constants.UTF8);
 		logger.debug("deviceUuid={}, deviceId={}, deviceMac={}", deviceUuid, deviceId, deviceMac);
 		return loginPostProcess(user, deviceUuid, deviceId, deviceMac);
 	}

@@ -13,7 +13,6 @@ import net.ipetty.ibang.model.UserRefreshToken;
 import net.ipetty.ibang.service.UserService;
 import net.ipetty.ibang.util.Encodes;
 import net.ipetty.ibang.util.UUIDUtils;
-import net.ipetty.ibang.web.rest.exception.RestException;
 
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -48,9 +47,10 @@ public class UserContextInterceptor implements HandlerInterceptor {
 			return true;
 		}
 
-		if (StringUtils.isNotBlank(encodedUserToken) || StringUtils.isNotBlank(encodedRefreshToken)) {
-			throw new RestException("Token无效或已过期，请重新登录");
-		}
+		// if (StringUtils.isNotBlank(encodedUserToken) ||
+		// StringUtils.isNotBlank(encodedRefreshToken)) {
+		// throw new RestException("Token无效或已过期，请重新登录");
+		// }
 
 		return true;
 	}

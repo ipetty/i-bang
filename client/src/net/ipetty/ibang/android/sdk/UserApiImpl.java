@@ -41,11 +41,19 @@ public class UserApiImpl implements UserApi {
 	@Override
 	public LoginResultVO relogin(String userToken, String refreshToken) {
 		LoginResultVO result = userApi.relogin(userToken, refreshToken);
-		ApiContext.getInstance(context).setUserToken(result.getUserToken());
-		ApiContext.getInstance(context).setRefreshToken(result.getRefreshToken());
-		ApiContext.getInstance(context).setAuthorized(true);
-		ApiContext.getInstance(context).setCurrentUser(result.getUserVo());
-		ApiContext.getInstance(context).setCurrentUserId(result.getUserVo().getId());
+		if (result != null) {
+			ApiContext.getInstance(context).setUserToken(result.getUserToken());
+			ApiContext.getInstance(context).setRefreshToken(result.getRefreshToken());
+			ApiContext.getInstance(context).setAuthorized(true);
+			ApiContext.getInstance(context).setCurrentUser(result.getUserVo());
+			ApiContext.getInstance(context).setCurrentUserId(result.getUserVo().getId());
+		} else {
+			ApiContext.getInstance(context).setUserToken(null);
+			ApiContext.getInstance(context).setRefreshToken(null);
+			ApiContext.getInstance(context).setAuthorized(false);
+			ApiContext.getInstance(context).setCurrentUser(null);
+			ApiContext.getInstance(context).setCurrentUserId(null);
+		}
 		return result;
 	}
 
