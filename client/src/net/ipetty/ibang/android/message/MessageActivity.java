@@ -1,5 +1,6 @@
 package net.ipetty.ibang.android.message;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import net.ipetty.ibang.R;
@@ -42,7 +43,7 @@ public class MessageActivity extends Activity {
 	public UnLoginView unLoginView;
 	public ListView listView;
 	public MessageAdapter adapter;
-	public List<SystemMessageVO> list;
+	public List<SystemMessageVO> list = new ArrayList<SystemMessageVO>();
 	private DisplayImageOptions options = AppUtils.getNormalImageOptions();
 
 	public String SYS_MSG_TYPE_NEW_OFFER = "应征您的求助"; // 您的求助单有了新的应征

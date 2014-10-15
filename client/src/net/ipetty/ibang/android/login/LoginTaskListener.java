@@ -30,6 +30,7 @@ public class LoginTaskListener extends DefaultTaskListener<LoginResultVO> {
 	@Override
 	public void onSuccess(LoginResultVO result) {
 		Log.d(TAG, "login success");
+
 		Intent intent = new Intent(Constants.BROADCAST_INTENT_IS_LOGIN);
 		activity.sendBroadcast(intent);
 
