@@ -29,6 +29,12 @@ public interface DelegationApi {
 	public DelegationVO getById(@Query("id") Long id);
 
 	/**
+	 * 根据应征单ID获取委托单，如没有对应的委托则返回null
+	 */
+	@GET("/delegation/byoffer")
+	public DelegationVO getByOfferId(@Query("offerId") Long offerId);
+
+	/**
 	 * 获取指定用户的委托列表
 	 * 
 	 * @param pageNumber

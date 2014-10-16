@@ -1,7 +1,6 @@
 package net.ipetty.ibang.android.seek;
 
 import net.ipetty.ibang.android.core.DefaultTaskListener;
-import net.ipetty.ibang.vo.UserVO;
 import android.app.Activity;
 import android.util.Log;
 import android.widget.Toast;
@@ -12,7 +11,7 @@ import android.widget.Toast;
  * @author luocanfeng
  * @date 2014年10月14日
  */
-public class CloseSeekTaskListener extends DefaultTaskListener<UserVO> {
+public class CloseSeekTaskListener extends DefaultTaskListener<Boolean> {
 
 	private String TAG = getClass().getSimpleName();
 
@@ -21,11 +20,10 @@ public class CloseSeekTaskListener extends DefaultTaskListener<UserVO> {
 	}
 
 	@Override
-	public void onSuccess(UserVO user) {
+	public void onSuccess(Boolean result) {
 		Log.d(TAG, "close seek success");
 		Toast.makeText(activity, "关闭求助单成功！", Toast.LENGTH_SHORT).show();
-
-		// TODO
+		activity.finish();
 	}
 
 }

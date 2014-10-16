@@ -9,25 +9,25 @@ package net.ipetty.ibang.vo;
 public interface Constants {
 
 	/* seek status */
-	public static final String SEEK_STATUS_CREATED = "created"; // 已创建（求助中）
-	public static final String SEEK_STATUS_OFFERED = "offered"; // 应征中（已有应征者应征，甚至已有部分应征已达成委托协议）
-	public static final String SEEK_STATUS_DELEGATED = "delegated"; // 已委托（达到委托数上限时才会成为此状态）
-	public static final String SEEK_STATUS_FINISHED = "finished"; // 已完成（所有委托都已结束（双方已评价）或已关闭）
-	public static final String SEEK_STATUS_CLOSED = "closed"; // 已关闭（已中止求助）
+	public static final String SEEK_STATUS_CREATED = "求助中"; // 已创建（求助中）
+	public static final String SEEK_STATUS_OFFERED = "应征中"; // 应征中（已有应征者应征，甚至已有部分应征已达成委托协议）
+	public static final String SEEK_STATUS_DELEGATED = " 已委托"; // 已委托（达到委托数上限时才会成为此状态）
+	public static final String SEEK_STATUS_FINISHED = "已完成"; // 已完成（所有委托都已结束（双方已评价）或已关闭）
+	public static final String SEEK_STATUS_CLOSED = "已关闭"; // 已关闭（已中止求助）
 
 	/* offer status */
-	public static final String OFFER_STATUS_OFFERED = "offered"; // 应征中（已发出应征）
-	public static final String OFFER_STATUS_DELEGATED = "delegated"; // 已委托（求助者已接受应征）
-	public static final String OFFER_STATUS_FINISHED = "finished"; // 已完成（已完成委托）
-	public static final String OFFER_STATUS_CLOSED = "closed"; // 已关闭（已中止委托）
+	public static final String OFFER_STATUS_OFFERED = "应征中"; // 应征中（已发出应征）
+	public static final String OFFER_STATUS_DELEGATED = "已委托"; // 已委托（求助者已接受应征）
+	public static final String OFFER_STATUS_FINISHED = "已完成"; // 已完成（已完成委托）
+	public static final String OFFER_STATUS_CLOSED = "已关闭"; // 已关闭（已中止委托）
 
 	/* delegate status */
-	public static final String DELEGATE_STATUS_DELEGATED = "delegated"; // 已委托（求助者已接受应征）
-	public static final String DELEGATE_STATUS_FINISHED = "finished"; // 已完成（已完成委托）
-	public static final String DELEGATE_STATUS_SEEKER_EVALUATED = "seeker_evaluated"; // 求助者已评价
-	public static final String DELEGATE_STATUS_OFFERER_EVALUATED = "offerer_evaluated"; // 帮助者已评价
-	public static final String DELEGATE_STATUS_BI_EVALUATED = "bi_evaluated"; // 双方已评价
-	public static final String DELEGATE_STATUS_CLOSED = "closed"; // 已关闭（已中止委托）
+	public static final String DELEGATE_STATUS_DELEGATED = "已委托"; // 已委托（求助者已接受应征）
+	public static final String DELEGATE_STATUS_FINISHED = "已完成"; // 已完成（已完成委托）
+	public static final String DELEGATE_STATUS_SEEKER_EVALUATED = "求助者已评价"; // 求助者已评价
+	public static final String DELEGATE_STATUS_OFFERER_EVALUATED = "帮助者已评"; // 帮助者已评价
+	public static final String DELEGATE_STATUS_BI_EVALUATED = "双方已评价"; // 双方已评价
+	public static final String DELEGATE_STATUS_CLOSED = "已关闭"; // 已关闭（已中止委托）
 
 	/* evaluation type */
 	public static final String EVALUATION_TYPE_SEEKER_TO_OFFERER = "seeker_to_offerer"; // 求助者对帮助者的评价

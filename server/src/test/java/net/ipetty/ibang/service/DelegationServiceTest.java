@@ -88,6 +88,11 @@ public class DelegationServiceTest extends BaseServiceTest {
 		Assert.assertNotNull(delegation.getId());
 		Assert.assertEquals(Constants.DELEGATE_STATUS_DELEGATED, delegation.getStatus());
 
+		delegation = delegationService.getById(delegation.getId());
+		Assert.assertNotNull(delegation);
+		delegation = delegationService.getByOfferId(delegation.getOfferId());
+		Assert.assertNotNull(delegation);
+
 		List<Delegation> delegations = delegationService.listByUserId(user.getId(), 0, 20);
 		Assert.assertEquals(1, delegations.size());
 		delegations = delegationService.listByUserId(offerer.getId(), 0, 20);
