@@ -13,6 +13,7 @@ import net.ipetty.ibang.android.core.util.AppUtils;
 import net.ipetty.ibang.android.core.util.DateUtils;
 import net.ipetty.ibang.android.core.util.JSONUtils;
 import net.ipetty.ibang.android.core.util.PrettyDateFormat;
+import net.ipetty.ibang.android.login.LoginActivity;
 import net.ipetty.ibang.android.sdk.context.ApiContext;
 import net.ipetty.ibang.android.user.GetUserByIdSynchronously;
 import net.ipetty.ibang.android.user.UserInfoActivity;
@@ -73,7 +74,6 @@ public class SeekActivity extends Activity {
 	private UserVO seekUser;
 
 	private View offerBtn_layout;
-	// private View delegationList_layout;
 	private View offerList_layout;
 	private View closeBtn_layout;
 	private View contact_layout;
@@ -111,8 +111,6 @@ public class SeekActivity extends Activity {
 		imageViewText = (TextView) this.findViewById(R.id.imageView_text);
 		offerBtn = (TextView) this.findViewById(R.id.offerBtn);
 		closeBtn = (TextView) this.findViewById(R.id.closeBtn);
-		// delegationListView = (LinearLayout)
-		// this.findViewById(R.id.delegationList);
 		offerListView = (LinearLayout) this.findViewById(R.id.offerList);
 		content = (TextView) this.findViewById(R.id.content);
 		closedOn = (TextView) this.findViewById(R.id.closedOn);
@@ -122,45 +120,42 @@ public class SeekActivity extends Activity {
 		// TODO：该字段显示(应征数/委托总数)；
 		number = (TextView) this.findViewById(R.id.number);
 
-		// TODO: 如果用户已经应征了 那么可以看到 seek发布者的手机号 contact_layout 显示即可看到
 		contact_layout = this.findViewById(R.id.contact_layout);
-		// TODO：需要填充手机号
+		contact_layout.setVisibility(View.GONE);
 		phone = (TextView) this.findViewById(R.id.phone);
 
 		offerBtn_layout = this.findViewById(R.id.offerBtn_layout);
-		// delegationList_layout =
-		// this.findViewById(R.id.delegationList_layout);
+		offerBtn_layout.setVisibility(View.GONE);
 		offerList_layout = this.findViewById(R.id.offerList_layout);
 		closeBtn_layout = this.findViewById(R.id.closeBtn_layout);
+		closeBtn_layout.setVisibility(View.GONE);
 		login_layout = this.findViewById(R.id.login_layout);
 
 		// 事件绑定
 		offerBtn.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				// TODO Auto-generated method stub
 				Intent intent = new Intent(SeekActivity.this, PublishOfferActivity.class);
 				intent.putExtra(Constants.INTENT_SEEK_ID, seekId);
 				startActivity(intent);
 			}
 		});
 
-		// TODO：关闭应征
+		// 关闭求助
 		closeBtn.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
-
+				new CloseSeekTask(SeekActivity.this).setListener(new CloseSeekTaskListener(SeekActivity.this)).execute(
+						seekId);
 			}
 		});
 
 		// 触发到登陆界面
 		login_layout.setOnClickListener(new OnClickListener() {
-
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
-
+				Intent intent = new Intent(SeekActivity.this, LoginActivity.class);
+				SeekActivity.this.startActivity(intent);
 			}
 		});
 
@@ -178,7 +173,6 @@ public class SeekActivity extends Activity {
 
 		// 数据重新加载后显示
 		initViewLayout();
-		// initDelegationView();
 		initOfferView();
 	}
 
@@ -194,6 +188,8 @@ public class SeekActivity extends Activity {
 
 	private void initSeekUserLayout() {
 		bindUser(seekUser, seek_avatar, seek_username);
+		// 填充手机号
+		phone.setText(seekUser.getPhone());
 	}
 
 	private void initContent() {
@@ -211,8 +207,6 @@ public class SeekActivity extends Activity {
 	private void initViewLayout() {
 		// TODO Auto-generated method stub
 		String status = seekVO.getStatus();
-		offerBtn_layout.setVisibility(View.GONE);
-		closeBtn_layout.setVisibility(View.GONE);
 
 		if (isLogin) { // 只有已登录用户才有可能看到这两个按钮
 			login_layout.setVisibility(View.GONE);
@@ -231,9 +225,7 @@ public class SeekActivity extends Activity {
 
 		} else {
 			login_layout.setVisibility(View.VISIBLE);
-
 		}
-
 	}
 
 	private boolean isSeekOwner() {
@@ -340,46 +332,6 @@ public class SeekActivity extends Activity {
 		}
 	}
 
-	/*
-	 * private class DelegationHolder { View layout; ImageView avator; TextView
-	 * nickname; TextView created_at; TextView more; TextView phone; }
-	 * 
-	 * private void initDelegationView() { // TODO: 从服务端加载 delegationList
-	 * DelegationVO tt = new DelegationVO(); delegationList.add(tt);
-	 * delegationList.add(tt);
-	 * 
-	 * if (delegationList.size() == 0) {
-	 * delegationList_layout.setVisibility(View.GONE); } else {
-	 * delegationList_layout.setVisibility(View.VISIBLE); }
-	 * 
-	 * // TODO Auto-generated method stub delegationListView.removeAllViews();
-	 * for (DelegationVO delegationVO : delegationList) {
-	 * delegationListView.addView(getItemDelegationView(delegationVO)); } }
-	 * 
-	 * public View getItemDelegationView(DelegationVO delegationVO) { View view
-	 * = LayoutInflater.from(this).inflate(R.layout.list_delegation_simple_item,
-	 * null); DelegationHolder holder = new DelegationHolder(); holder.layout =
-	 * view.findViewById(R.id.layout); holder.avator = (ImageView)
-	 * view.findViewById(R.id.avatar); holder.nickname = (TextView)
-	 * view.findViewById(R.id.nickname); holder.created_at = (TextView)
-	 * view.findViewById(R.id.created_at); holder.more = (TextView)
-	 * view.findViewById(R.id.more); holder.phone = (TextView)
-	 * view.findViewById(R.id.phone);
-	 * 
-	 * holder.phone.setVisibility(View.GONE);
-	 * 
-	 * final Long id = delegationVO.getId(); if (isSeekOwner()) {
-	 * holder.phone.setVisibility(View.VISIBLE);
-	 * holder.more.setOnClickListener(new OnClickListener() {
-	 * 
-	 * @Override public void onClick(View v) { Intent intent = new
-	 * Intent(SeekActivity.this, DelegationActivity.class);
-	 * intent.putExtra(Constants.INTENT_OFFER_ID, id); startActivity(intent); }
-	 * }); }
-	 * 
-	 * return view; }
-	 */
-
 	private class OfferHolder {
 		View layout;
 		ImageView avator;
@@ -425,6 +377,13 @@ public class SeekActivity extends Activity {
 		holder.totalPoint = (TextView) view.findViewById(R.id.totalPoint);
 		holder.delegation_info_btn = (TextView) view.findViewById(R.id.delegation_info_btn);
 
+		// 如果已应征过，则应征按钮不可见（不能重复应征），求助者联系方式可见
+		if (user != null && offer.getOffererId().equals(user.getId())) {
+			offerBtn_layout.setVisibility(View.GONE);
+			contact_layout.setVisibility(View.VISIBLE);
+		}
+
+		// 接受应征按钮
 		holder.accept_button.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -436,53 +395,42 @@ public class SeekActivity extends Activity {
 							@Override
 							public void onSuccess(DelegationVO result) {
 								// 接受应征后进行界面操作
-								// holder.status.setText("已委托");
-								holder.delegation_info_btn.setVisibility(View.VISIBLE); // 查看委托按钮
 								holder.accept_button.setVisibility(View.GONE);
 								holder.status.setVisibility(View.VISIBLE);
+								holder.delegation_info_btn.setVisibility(View.VISIBLE); // 查看委托按钮
 							}
 						}).execute(delegation);
 			}
 		});
+		// 接受应征按钮可见性
+		if (isLogin && isSeekOwner() && net.ipetty.ibang.vo.Constants.OFFER_STATUS_OFFERED.equals(offer.getStatus())) {
+			holder.accept_button.setVisibility(View.VISIBLE);
+		} else {
+			holder.accept_button.setVisibility(View.GONE);
+		}
 
+		// 查看委托按钮
 		holder.delegation_info_btn.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				// TODO 获取委托的ID信息等等
-				int id = 1;
 				Intent intent = new Intent(SeekActivity.this, DelegationActivity.class);
-				intent.putExtra(Constants.INTENT_DELEGATION_ID, seekId);
+				intent.putExtra(Constants.INTENT_OFFER_ID, offer.getId()); // 查看委托界面是通过offerId获取委托的
 				startActivity(intent);
-
 			}
 		});
-
-		String status = "";
-
-		if (offer.getStatus().equals(net.ipetty.ibang.vo.Constants.OFFER_STATUS_OFFERED)) {
-			status = "应征中";
+		// 查看委托按钮可见性
+		if (net.ipetty.ibang.vo.Constants.OFFER_STATUS_DELEGATED.equals(offer.getStatus())
+				|| net.ipetty.ibang.vo.Constants.OFFER_STATUS_FINISHED.equals(offer.getStatus())) {
+			holder.delegation_info_btn.setVisibility(View.VISIBLE);
 		} else {
-			status = "已委托";
+			holder.delegation_info_btn.setVisibility(View.GONE);
 		}
+
+		holder.status.setText(offer.getStatus());
+		holder.status.setVisibility(View.VISIBLE);
+
 		bindTime(offer.getCreatedOn(), holder.created_at);
-		holder.status.setText(status);
 		holder.content.setText(offer.getContent());
-
-		holder.delegation_info_btn.setVisibility(View.GONE); // 查看委托按钮
-
-		// TODO: 如果是应征人员 应该和 seekOwner权限一致 待修改逻辑
-		if (isSeekOwner()) {
-			holder.status.setVisibility(View.GONE);
-			if (offer.getStatus().equals(net.ipetty.ibang.vo.Constants.OFFER_STATUS_OFFERED)) {
-				holder.accept_button.setVisibility(View.VISIBLE);
-			} else {
-				holder.delegation_info_btn.setVisibility(View.VISIBLE);
-				// TODO: 已经应征 看到的 offer的内容是否变成电话号码？？？？
-			}
-		} else {
-			holder.accept_button.setVisibility(View.GONE);
-			holder.status.setVisibility(View.VISIBLE);
-		}
 
 		int userId = offer.getOffererId();
 		UserVO user = GetUserByIdSynchronously.get(SeekActivity.this, userId);
@@ -521,16 +469,17 @@ public class SeekActivity extends Activity {
 		});
 	}
 
-	// TODO: 从未登录 到登陆 需要重新加载视图
+	// 登录后需要重新加载视图
 	private void init() {
-		// TODO Auto-generated method stub
 		initUser();
 	}
 
 	// 重新加载当前的用户及相关视图
 	private void initUser() {
-		// TODO Auto-generated method stub
-
+		user = ApiContext.getInstance(this).getCurrentUser();
+		if (isSeekOwner()) {
+			initSeekUser();
+		}
 	}
 
 	private BroadcastReceiver broadcastreciver = new BroadcastReceiver() {
@@ -539,12 +488,12 @@ public class SeekActivity extends Activity {
 			String action = intent.getAction();
 			if (Constants.BROADCAST_INTENT_IS_LOGIN.equals(action)) {
 				init();
+				// TODO 需要重新刷新界面组件状态
 			}
 			if (Constants.BROADCAST_INTENT_UPDATA_USER.equals(action)) {
 				initUser();
 			}
 		}
-
 	};
 
 	@Override
