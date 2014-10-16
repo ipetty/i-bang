@@ -11,10 +11,12 @@ import net.ipetty.ibang.android.core.util.AppUtils;
 import net.ipetty.ibang.android.core.util.DateUtils;
 import net.ipetty.ibang.android.core.util.JSONUtils;
 import net.ipetty.ibang.android.core.util.PrettyDateFormat;
+import net.ipetty.ibang.android.evaluation.EvaluationActivity;
 import net.ipetty.ibang.android.sdk.context.ApiContext;
 import net.ipetty.ibang.android.user.GetUserByIdSynchronously;
 import net.ipetty.ibang.android.user.UserInfoActivity;
 import net.ipetty.ibang.vo.DelegationVO;
+import net.ipetty.ibang.vo.OfferVO;
 import net.ipetty.ibang.vo.SeekVO;
 import net.ipetty.ibang.vo.UserVO;
 
@@ -40,15 +42,16 @@ public class DelegationActivity extends Activity {
 	private TextView seek_content;
 	private TextView seek_closedOn;
 	private TextView seek_phone;
-	private View seek_contact_layout;
+	// private View seek_contact_layout;
 	private View seek_evaluation_layout;
 	private TextView seek_evaluation;
 
 	private ImageView delegation_avatar;
 	private TextView delegation_nickname;
 	private TextView delegation_created_on;
+	private TextView offer_content;
 	private TextView delegation_phone;
-	private View delegation_contact_layout;
+	// private View delegation_contact_layout;
 	private TextView finish_delegation_btn;
 	private View finish_delegation_btn_layout;
 	private TextView close_delegation_btn;
@@ -59,14 +62,15 @@ public class DelegationActivity extends Activity {
 	private View evaluation_layout;
 	private TextView evaluation;
 
+	private Long seekId;
+	private Long offerId;
+	private Long delegationId;
 	private SeekVO seekVO;
+	private OfferVO offerVO;
 	private DelegationVO delegationVO;
 	private UserVO seeker;
 	private UserVO offerer;
 	private UserVO currentUser;
-	private Long seekId;
-	private Long offerId;
-	private Long delegationId;
 
 	private DisplayImageOptions options = AppUtils.getNormalImageOptions();
 
@@ -87,15 +91,17 @@ public class DelegationActivity extends Activity {
 		seek_nickname = (TextView) this.findViewById(R.id.nickname);
 		seek_closedOn = (TextView) this.findViewById(R.id.closedOn);
 		seek_phone = (TextView) this.findViewById(R.id.phone);
-		seek_contact_layout = this.findViewById(R.id.contact_layout);
+		// seek_contact_layout = this.findViewById(R.id.contact_layout);
 		seek_evaluation_layout = this.findViewById(R.id.seek_evaluation_layout);// 评分布局，对方评分后显示
 		seek_evaluation = (TextView) this.findViewById(R.id.seek_evaluation);
 
 		delegation_avatar = (ImageView) this.findViewById(R.id.delegation_avatar);
 		delegation_nickname = (TextView) this.findViewById(R.id.delegation_nickname);
 		delegation_created_on = (TextView) this.findViewById(R.id.delegation_created_at);
+		offer_content = (TextView) this.findViewById(R.id.offer_content);
 		delegation_phone = (TextView) this.findViewById(R.id.delegation_phone);
-		delegation_contact_layout = this.findViewById(R.id.delegation_contact_layout);
+		// delegation_contact_layout =
+		// this.findViewById(R.id.delegation_contact_layout);
 		finish_delegation_btn = (TextView) this.findViewById(R.id.delegation_btn);
 		finish_delegation_btn_layout = this.findViewById(R.id.delegation_btn_layout); // 完成委托按钮
 		close_delegation_btn = (TextView) this.findViewById(R.id.close_delegation_btn);
@@ -106,19 +112,31 @@ public class DelegationActivity extends Activity {
 
 		evaluation_layout = this.findViewById(R.id.evaluation_layout); // 评价按钮根据权限显示不同的评价
 		evaluation = (TextView) this.findViewById(R.id.evaluation);
-		evaluation.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				// TODO 根据不同的人进入评价界面
-			}
-		});
 
 		// 获取当前用户
 		currentUser = ApiContext.getInstance(this).getCurrentUser();
 
-		// 获取委托信息
+		seekId = this.getIntent().getExtras().getLong(Constants.INTENT_SEEK_ID);
+		String seekJSON = this.getIntent().getExtras().getString(Constants.INTENT_SEEK_JSON);
+		seekVO = JSONUtils.fromJSON(seekJSON, SeekVO.class);
 		offerId = this.getIntent().getExtras().getLong(Constants.INTENT_OFFER_ID);
-		// 根据传递的参数 获取到 delegationVO seekVO seekUser delegationUser
+		String offerJSON = this.getIntent().getExtras().getString(Constants.INTENT_OFFER_JSON);
+		offerVO = JSONUtils.fromJSON(offerJSON, OfferVO.class);
+
+		// 求助信息
+		seeker = GetUserByIdSynchronously.get(DelegationActivity.this, seekVO.getSeekerId());
+		bindUser(seeker, seek_avatar, seek_nickname);
+		bindTime(seekVO.getCreatedOn(), seek_created_at);
+		seek_content.setText(seekVO.getContent());
+		seek_phone.setText(seeker.getPhone());
+
+		if (seekVO.getClosedOn() != null) {
+			Calendar c = Calendar.getInstance();
+			c.setTime(seekVO.getClosedOn());
+			seek_closedOn.setText(DateUtils.toDateString(c.getTime()));
+		}
+
+		// 获取委托信息
 		new GetDelegationByOfferIdTask(DelegationActivity.this).setListener(
 				new DefaultTaskListener<DelegationVO>(DelegationActivity.this) {
 					@Override
@@ -131,39 +149,68 @@ public class DelegationActivity extends Activity {
 						}
 
 						delegationId = result.getId();
-						seekId = result.getSeekId();
 
-						// 获取求助信息
-						new GetSeekByIdTask(DelegationActivity.this).setListener(
-								new DefaultTaskListener<SeekVO>(DelegationActivity.this) {
-									@Override
-									public void onSuccess(SeekVO result) {
-										seekVO = result;
-										// 获取求助信息
-										if (result == null) {
-											Toast.makeText(DelegationActivity.this, "找不到对应的求助", Toast.LENGTH_SHORT)
-													.show();
-											return;
-										}
+						// 评分信息
+						if (net.ipetty.ibang.vo.Constants.DELEGATE_STATUS_BI_EVALUATED.equals(delegationVO.getStatus())) {
+							// TODO 帮助者对此次委托的评分信息
+							// TODO 求助者对此次委托的评分信息
+							seek_evaluation_layout.setVisibility(View.VISIBLE);
+							delegation_evaluation_layout.setVisibility(View.VISIBLE);
+						} else {
+							seek_evaluation_layout.setVisibility(View.GONE);
+							delegation_evaluation_layout.setVisibility(View.GONE);
+						}
 
-										seeker = GetUserByIdSynchronously.get(DelegationActivity.this,
-												seekVO.getSeekerId());
-										bindUser(seeker, seek_avatar, seek_nickname);
-										bindTime(seekVO.getCreatedOn(), seek_created_at);
-										seek_content.setText(seekVO.getContent());
-										seek_phone.setText(seeker.getPhone());
+						// 评价按钮
+						evaluation.setOnClickListener(new OnClickListener() {
+							@Override
+							public void onClick(View v) {
+								Intent intent = new Intent(DelegationActivity.this, EvaluationActivity.class);
+								intent.putExtra(Constants.INTENT_DELEGATION_ID, delegationVO.getId());
 
-										if (seekVO.getClosedOn() != null) {
-											Calendar c = Calendar.getInstance();
-											c.setTime(seekVO.getClosedOn());
-											seek_closedOn.setText(DateUtils.toDateString(c.getTime()));
-										}
-									}
-								}).execute(seekId);
+								if (isSeekOwner()
+										&& (net.ipetty.ibang.vo.Constants.DELEGATE_STATUS_FINISHED.equals(delegationVO
+												.getStatus()) || net.ipetty.ibang.vo.Constants.DELEGATE_STATUS_OFFERER_EVALUATED
+												.equals(delegationVO.getStatus()))) {
+									// 求助者评价
+									intent.putExtra(Constants.INTENT_EVALUATOR_TYPE,
+											net.ipetty.ibang.vo.Constants.EVALUATION_TYPE_SEEKER_TO_OFFERER);
+									intent.putExtra(Constants.INTENT_EVALUATOR_ID, seeker.getId());
+									intent.putExtra(Constants.INTENT_EVALUATE_TARGET_ID, offerer.getId());
+									startActivity(intent);
+								} else if (isDelegationOwner()
+										&& (net.ipetty.ibang.vo.Constants.DELEGATE_STATUS_FINISHED.equals(delegationVO
+												.getStatus()) || net.ipetty.ibang.vo.Constants.DELEGATE_STATUS_SEEKER_EVALUATED
+												.equals(delegationVO.getStatus()))) {
+									// 帮助者评价
+									intent.putExtra(Constants.INTENT_EVALUATOR_TYPE,
+											net.ipetty.ibang.vo.Constants.EVALUATION_TYPE_OFFERER_TO_SEEKER);
+									intent.putExtra(Constants.INTENT_EVALUATOR_ID, offerer.getId());
+									intent.putExtra(Constants.INTENT_EVALUATE_TARGET_ID, seeker.getId());
+									startActivity(intent);
+								}
+							}
+						});
+						// 评价按钮可见性
+						if (isSeekOwner()
+								&& (net.ipetty.ibang.vo.Constants.DELEGATE_STATUS_FINISHED.equals(delegationVO
+										.getStatus()) || net.ipetty.ibang.vo.Constants.DELEGATE_STATUS_OFFERER_EVALUATED
+										.equals(delegationVO.getStatus()))) {
+							evaluation_layout.setVisibility(View.VISIBLE);
+						} else if (isDelegationOwner()
+								&& (net.ipetty.ibang.vo.Constants.DELEGATE_STATUS_FINISHED.equals(delegationVO
+										.getStatus()) || net.ipetty.ibang.vo.Constants.DELEGATE_STATUS_SEEKER_EVALUATED
+										.equals(delegationVO.getStatus()))) {
+							evaluation_layout.setVisibility(View.VISIBLE);
+						} else {
+							evaluation_layout.setVisibility(View.GONE);
+						}
 
+						// 求助/委托信息
 						offerer = GetUserByIdSynchronously.get(DelegationActivity.this, delegationVO.getOffererId());
 						bindUser(offerer, delegation_avatar, delegation_nickname);
 						bindTime(delegationVO.getCreatedOn(), delegation_created_on);
+						offer_content.setText(offerVO.getContent());
 						delegation_phone.setText(offerer.getPhone());
 
 						// 完成委托按钮

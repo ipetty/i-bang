@@ -429,6 +429,9 @@ public class SeekActivity extends Activity {
 			public void onClick(View v) {
 				Intent intent = new Intent(SeekActivity.this, DelegationActivity.class);
 				intent.putExtra(Constants.INTENT_OFFER_ID, offer.getId()); // 查看委托界面是通过offerId获取委托的
+				intent.putExtra(Constants.INTENT_OFFER_JSON, JSONUtils.toJson(offer).toString());
+				intent.putExtra(Constants.INTENT_SEEK_ID, seekVO.getId());
+				intent.putExtra(Constants.INTENT_SEEK_JSON, seekJSON);
 				startActivity(intent);
 			}
 		});

@@ -10,411 +10,424 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".DelegationActivity" >
 
- 	 	<include
+    <include
         android:id="@+id/include"
         layout="@layout/action_bar_simple_back" />
 
- 	 	<ScrollView
- 	 	    android:id="@+id/scrollView1"
- 	 	    android:layout_width="match_parent"
- 	 	    android:layout_height="wrap_content" >
+    <ScrollView
+        android:id="@+id/scrollView1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
 
- 	 	    <LinearLayout
- 	 	        android:layout_width="match_parent"
- 	 	        android:layout_height="match_parent"
- 	 	        android:orientation="vertical" >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical" >
 
- 	 	        <ImageSwitcher
- 	 	            android:id="@+id/imageSwitcher"
- 	 	            android:layout_width="fill_parent"
- 	 	            android:layout_height="200dp"
- 	 	            android:background="@color/white_color"
- 	 	            android:visibility="gone" >
- 	 	        </ImageSwitcher>
- 	 	        
-<RelativeLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:gravity="left"
-    android:orientation="horizontal"
-	android:paddingTop="8dp" 
-	android:paddingLeft="8dp"
-	android:paddingRight="8dp"
-    android:background="@drawable/list_color_item_bg_white" >
+            <ImageSwitcher
+                android:id="@+id/imageSwitcher"
+                android:layout_width="fill_parent"
+                android:layout_height="200dp"
+                android:background="@color/white_color"
+                android:visibility="gone" >
+            </ImageSwitcher>
 
-			    <ImageView
-			        android:id="@+id/avatar"
-			        android:layout_width="40dp"
-			        android:layout_height="40dp"
-			        android:layout_marginRight="11.0dip"
-			        android:layout_alignParentBottom="true"
-			        android:layout_alignParentLeft="true"
-			        android:scaleType="fitXY"
-			        android:src="@drawable/default_avatar" />
-<TextView
-				        android:id="@+id/created_at"
-				        android:layout_width="wrap_content"
-				        android:layout_height="wrap_content"
-				        android:layout_alignParentRight="true"
-				        android:layout_centerVertical="true"
-				        android:gravity="center"
-				        android:textSize="12sp" 
-				        android:textColor="@color/gray_color"
-				        android:text="2分钟前"/>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/list_color_item_bg_white"
+                android:gravity="left"
+                android:orientation="horizontal"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:paddingTop="8dp" >
 
-<TextView
-    android:id="@+id/nickname"
-    android:layout_width="wrap_content"
-    android:layout_height="32dp"
-    android:layout_alignTop="@+id/avatar"
-    android:layout_toRightOf="@+id/avatar"
-    android:ellipsize="end"
-    android:gravity="left|center"
-    android:singleLine="true"
-    android:text="张三"
-    android:textColor="@color/base_color"
-    android:textSize="20dp" />
+                <ImageView
+                    android:id="@+id/avatar"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginRight="11.0dip"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/default_avatar" />
 
-	</RelativeLayout>
- 	 	        <RelativeLayout
- 	 	            android:layout_width="match_parent"
- 	 	            android:layout_height="wrap_content"
- 	 	            android:background="@color/white_color"
- 	 	            android:padding="8dp" >
+                <TextView
+                    android:id="@+id/created_at"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:gravity="center"
+                    android:text="2分钟前"
+                    android:textColor="@color/gray_color"
+                    android:textSize="12sp" />
 
- 	 	            <TextView
- 	 	                android:id="@+id/content"
- 	 	                android:layout_width="wrap_content"
- 	 	                android:layout_height="wrap_content"
- 	 	                android:layout_alignParentLeft="true"
- 	 	                android:layout_alignParentTop="true"
- 	 	                android:text="我测试是事"
- 	 	                android:color="@color/black_color" 
- 	 	                android:textSize="16dp" />
+                <TextView
+                    android:id="@+id/nickname"
+                    android:layout_width="wrap_content"
+                    android:layout_height="32dp"
+                    android:layout_alignTop="@+id/avatar"
+                    android:layout_toRightOf="@+id/avatar"
+                    android:ellipsize="end"
+                    android:gravity="left|center"
+                    android:singleLine="true"
+                    android:text="张三"
+                    android:textColor="@color/base_color"
+                    android:textSize="20dp" />
+            </RelativeLayout>
 
- 	 	            <TextView
- 	 	                android:id="@+id/textView"
- 	 	                android:layout_width="wrap_content"
- 	 	                android:layout_height="wrap_content"
- 	 	                android:layout_alignLeft="@+id/content"
- 	 	                android:layout_marginTop="8dp"
- 	 	                 android:layout_below="@+id/content"
- 	 	                android:text="截止日期"
- 	 	                android:textSize="14dp"
- 	 	                android:textColor="@color/gray_color" />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white_color"
+                android:padding="8dp" >
 
- 	 	            <TextView
- 	 	                android:id="@+id/closedOn"
- 	 	                android:layout_width="wrap_content"
- 	 	                android:layout_height="wrap_content"
- 	 	                android:layout_alignBaseline="@+id/textView"
- 	 	                android:layout_alignBottom="@+id/textView"
- 	 	                android:layout_toRightOf="@+id/textView"
- 	 	                android:text="2014-12-12"
- 	 	                android:textSize="14dp"
- 	 	                android:textColor="@color/gray_color" />
+                <TextView
+                    android:id="@+id/content"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentTop="true"
+                    android:text="我测试是事"
+                    android:textSize="16dp"
+                    android:color="@color/black_color" />
 
- 	 	        </RelativeLayout>
+                <TextView
+                    android:id="@+id/textView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/content"
+                    android:layout_below="@+id/content"
+                    android:layout_marginTop="8dp"
+                    android:text="截止日期"
+                    android:textColor="@color/gray_color"
+                    android:textSize="14dp" />
 
- 	 	         <LinearLayout
- 	 	             android:layout_width="match_parent"
- 	 	             android:layout_height="wrap_content"
- 	 	             android:orientation="vertical"
- 	 	             android:id="@+id/contact_layout">
+                <TextView
+                    android:id="@+id/closedOn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@+id/textView"
+                    android:layout_alignBottom="@+id/textView"
+                    android:layout_toRightOf="@+id/textView"
+                    android:text="2014-12-12"
+                    android:textColor="@color/gray_color"
+                    android:textSize="14dp" />
+            </RelativeLayout>
 
- 	 	             <include layout="@layout/line_horizontal_divider" />
+            <LinearLayout
+                android:id="@+id/contact_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
 
- 	 	             <LinearLayout
- 	 	                 android:layout_width="fill_parent"
- 	 	                 android:layout_height="46dp"
- 	 	                 android:background="@drawable/list_color_item_bg_white"
- 	 	                 android:gravity="center_vertical" >
+                <include layout="@layout/line_horizontal_divider" />
 
- 	 	                 <TextView
- 	 	                     android:layout_width="wrap_content"
- 	 	                     android:layout_height="wrap_content"
- 	 	                     android:layout_marginLeft="16dp"
- 	 	                     android:text="手机"
- 	 	                     android:textColor="@color/black_color"
- 	 	                     android:textSize="16sp" />
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="46dp"
+                    android:background="@drawable/list_color_item_bg_white"
+                    android:gravity="center_vertical" >
 
- 	 	                 <TextView
- 	 	                     android:id="@+id/phone"
- 	 	                     android:layout_width="0.0dip"
- 	 	                     android:layout_height="wrap_content"
- 	 	                     android:layout_marginLeft="16dp"
- 	 	                     android:layout_marginRight="16dp"
- 	 	                     android:layout_weight="1.0"
- 	 	                     android:background="@null"
- 	 	                     android:focusable="false"
- 	 	                     android:gravity="right|center_vertical"
- 	 	                     android:text="13913440000"
- 	 	    	              android:singleLine="true"
- 	 	                     android:textColor="@color/gray_color"
- 	 	                     android:textColorHint="@color/gray_color"
- 	 	                     android:textSize="16sp"
- 	 	                     android:windowSoftInputMode="stateHidden" />
- 	 	             </LinearLayout>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dp"
+                        android:text="手机"
+                        android:textColor="@color/black_color"
+                        android:textSize="16sp" />
 
- 	 	      
- 	 	         </LinearLayout>
- 	 	         <LinearLayout
- 	 	             android:layout_width="match_parent"
- 	 	             android:layout_height="wrap_content"
- 	 	             android:orientation="vertical"
- 	 	             android:id="@+id/seek_evaluation_layout">
+                    <TextView
+                        android:id="@+id/phone"
+                        android:layout_width="0.0dip"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp"
+                        android:layout_weight="1.0"
+                        android:background="@null"
+                        android:focusable="false"
+                        android:gravity="right|center_vertical"
+                        android:singleLine="true"
+                        android:text="13913440000"
+                        android:textColor="@color/gray_color"
+                        android:textColorHint="@color/gray_color"
+                        android:textSize="16sp"
+                        android:windowSoftInputMode="stateHidden" />
+                </LinearLayout>
+            </LinearLayout>
 
- 	 	             <include layout="@layout/line_horizontal_divider" />
+            <LinearLayout
+                android:id="@+id/seek_evaluation_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
 
- 	 	             <LinearLayout
- 	 	                 android:layout_width="fill_parent"
- 	 	                 android:layout_height="46dp"
- 	 	                 android:background="@drawable/list_color_item_bg_white"
- 	 	                 android:gravity="center_vertical" >
+                <include layout="@layout/line_horizontal_divider" />
 
- 	 	                 <TextView
- 	 	                     android:layout_width="wrap_content"
- 	 	                     android:layout_height="wrap_content"
- 	 	                     android:layout_marginLeft="16dp"
- 	 	                     android:text="评分"
- 	 	                     android:textColor="@color/black_color"
- 	 	                     android:textSize="16sp" />
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="46dp"
+                    android:background="@drawable/list_color_item_bg_white"
+                    android:gravity="center_vertical" >
 
- 	 	                 <TextView
- 	 	                     android:id="@+id/seek_evaluation"
- 	 	                     android:layout_width="0.0dip"
- 	 	                     android:layout_height="wrap_content"
- 	 	                     android:layout_marginLeft="16dp"
- 	 	                     android:layout_marginRight="16dp"
- 	 	                     android:layout_weight="1.0"
- 	 	                     android:background="@null"
- 	 	                     android:focusable="false"
- 	 	                     android:gravity="right|center_vertical"
- 	 	                     android:text="10分"
- 	 	    	              android:singleLine="true"
- 	 	                     android:textColor="@color/gray_color"
- 	 	                     android:textColorHint="@color/gray_color"
- 	 	                     android:textSize="16sp"
- 	 	                     android:windowSoftInputMode="stateHidden" />
- 	 	             </LinearLayout>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dp"
+                        android:text="帮助者对此次委托的评分"
+                        android:textColor="@color/black_color"
+                        android:textSize="16sp" />
 
- 	 	      
- 	 	         </LinearLayout>
- 	 	           <include layout="@layout/line_horizontal_divider" />
-	 	         <include layout="@layout/line_space" />
- 	 	      
- 	 	         <LinearLayout
- 	 	             android:id="@+id/delegation_layout"
- 	 	             android:layout_width="match_parent"
- 	 	             android:layout_height="wrap_content"
- 	 	             android:orientation="vertical" >
-					<include layout="@layout/line_horizontal_divider"/>
- 	 	             <LinearLayout
- 	 	                 android:layout_width="fill_parent"
- 	 	                 android:layout_height="wrap_content"
- 	 	                 android:orientation="horizontal"
- 	 	                 android:paddingBottom="13.0dip"
- 	 	                 android:paddingLeft="10.0dip"
- 	 	                 android:paddingRight="14.0dip"
- 	 	                 android:paddingTop="13dp" 
- 	 	                 android:background="@color/white_color">
+                    <TextView
+                        android:id="@+id/seek_evaluation"
+                        android:layout_width="0.0dip"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp"
+                        android:layout_weight="1.0"
+                        android:background="@null"
+                        android:focusable="false"
+                        android:gravity="right|center_vertical"
+                        android:singleLine="true"
+                        android:text="10分"
+                        android:textColor="@color/gray_color"
+                        android:textColorHint="@color/gray_color"
+                        android:textSize="16sp"
+                        android:windowSoftInputMode="stateHidden" />
+                </LinearLayout>
+            </LinearLayout>
 
- 	 	                 <ImageView
- 	 	                     android:id="@+id/delegation_avatar"
- 	 	                     android:layout_width="40.0dip"
- 	 	                     android:layout_height="40.0dip"
- 	 	                     android:layout_marginRight="11.0dip"
- 	 	                     android:scaleType="centerCrop"
- 	 	                     android:src="@drawable/default_avatar" />
+            <include layout="@layout/line_horizontal_divider" />
 
- 	 	                 <LinearLayout
- 	 	                     android:layout_width="fill_parent"
- 	 	                     android:layout_height="wrap_content"
- 	 	                     android:orientation="vertical" >
+            <include layout="@layout/line_space" />
 
- 	 	                     <RelativeLayout
- 	 	                         android:layout_width="match_parent"
- 	 	                         android:layout_height="wrap_content"
- 	 	                         android:gravity="center" >
+            <LinearLayout
+                android:id="@+id/delegation_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
 
- 	 	                         <TextView
- 	 	                             android:id="@+id/delegation_created_at"
- 	 	                             android:layout_width="wrap_content"
- 	 	                             android:layout_height="wrap_content"
- 	 	                             android:layout_alignParentRight="true"
- 	 	                             android:layout_centerVertical="true"
- 	 	                             android:gravity="center"
- 	 	                             android:text="2分钟前"
- 	 	                             android:textColor="@color/gray_color"
- 	 	                             android:textSize="12sp" />
+                <include layout="@layout/line_horizontal_divider" />
 
- 	 	                         <TextView
- 	 	                             android:id="@+id/delegation_nickname"
- 	 	                             android:layout_width="wrap_content"
- 	 	                             android:layout_height="wrap_content"
- 	 	                             android:layout_alignParentLeft="true"
- 	 	                             android:layout_alignParentTop="true"
- 	 	                             android:ellipsize="end"
- 	 	                             android:singleLine="true"
- 	 	                             android:text="张先生"
- 	 	                             android:textColor="@color/base_color"
- 	 	                             android:textSize="20sp"
- 	 	                             android:textStyle="bold" />
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white_color"
+                    android:orientation="horizontal"
+                    android:paddingBottom="13.0dip"
+                    android:paddingLeft="10.0dip"
+                    android:paddingRight="14.0dip"
+                    android:paddingTop="13dp" >
 
- 	 	                     </RelativeLayout>
- 	 	                 </LinearLayout>
- 	 	                  
- 	 	             </LinearLayout>
- 	 	            
- 	 	            
-				<LinearLayout
- 	 	             android:layout_width="match_parent"
- 	 	             android:layout_height="wrap_content"
- 	 	             android:orientation="vertical"
- 	 	             android:id="@+id/delegation_contact_layout">
+                    <ImageView
+                        android:id="@+id/delegation_avatar"
+                        android:layout_width="40.0dip"
+                        android:layout_height="40.0dip"
+                        android:layout_marginRight="11.0dip"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/default_avatar" />
 
- 	 	             <include layout="@layout/line_horizontal_divider" />
+                    <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical" >
 
- 	 	             <LinearLayout
- 	 	                 android:layout_width="fill_parent"
- 	 	                 android:layout_height="46dp"
- 	 	                 android:background="@drawable/list_color_item_bg_white"
- 	 	                 android:gravity="center_vertical" >
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center" >
 
- 	 	                 <TextView
- 	 	                     android:layout_width="wrap_content"
- 	 	                     android:layout_height="wrap_content"
- 	 	                     android:layout_marginLeft="16dp"
- 	 	                     android:text="手机"
- 	 	                     android:textColor="@color/black_color"
- 	 	                     android:textSize="16sp" />
+                            <TextView
+                                android:id="@+id/delegation_created_at"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentRight="true"
+                                android:layout_centerVertical="true"
+                                android:gravity="center"
+                                android:text="2分钟前"
+                                android:textColor="@color/gray_color"
+                                android:textSize="12sp" />
 
- 	 	                 <TextView
- 	 	                     android:id="@+id/delegation_phone"
- 	 	                     android:layout_width="0.0dip"
- 	 	                     android:layout_height="wrap_content"
- 	 	                     android:layout_marginLeft="16dp"
- 	 	                     android:layout_marginRight="16dp"
- 	 	                     android:layout_weight="1.0"
- 	 	                     android:background="@null"
- 	 	                     android:focusable="false"
- 	 	                     android:gravity="right|center_vertical"
- 	 	                     android:text="13913440000"
- 	 	    	              android:singleLine="true"
- 	 	                     android:textColor="@color/gray_color"
- 	 	                     android:textColorHint="@color/gray_color"
- 	 	                     android:textSize="16sp"
- 	 	                     android:windowSoftInputMode="stateHidden" />
- 	 	             </LinearLayout>
+                            <TextView
+                                android:id="@+id/offer_content"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentLeft="true"
+                                android:layout_alignParentTop="true"
+                                android:text=""
+                                android:textSize="16dp"
+                                android:color="@color/black_color" />
 
- 	 	      
- 	 	         </LinearLayout>
- 	 	         <LinearLayout
- 	 	             android:layout_width="match_parent"
- 	 	             android:layout_height="wrap_content"
- 	 	             android:orientation="vertical"
- 	 	             android:id="@+id/delegation_evaluation_layout">
+                            <TextView
+                                android:id="@+id/delegation_nickname"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentLeft="true"
+                                android:layout_alignParentTop="true"
+                                android:ellipsize="end"
+                                android:singleLine="true"
+                                android:text="张先生"
+                                android:textColor="@color/base_color"
+                                android:textSize="20sp"
+                                android:textStyle="bold" />
+                        </RelativeLayout>
+                    </LinearLayout>
+                </LinearLayout>
 
- 	 	             <include layout="@layout/line_horizontal_divider" />
+                <LinearLayout
+                    android:id="@+id/delegation_contact_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" >
 
- 	 	             <LinearLayout
- 	 	                 android:layout_width="fill_parent"
- 	 	                 android:layout_height="46dp"
- 	 	                 android:background="@drawable/list_color_item_bg_white"
- 	 	                 android:gravity="center_vertical" >
+                    <include layout="@layout/line_horizontal_divider" />
 
- 	 	                 <TextView
- 	 	                     android:layout_width="wrap_content"
- 	 	                     android:layout_height="wrap_content"
- 	 	                     android:layout_marginLeft="16dp"
- 	 	                     android:text="评分"
- 	 	                     android:textColor="@color/black_color"
- 	 	                     android:textSize="16sp" />
+                    <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="46dp"
+                        android:background="@drawable/list_color_item_bg_white"
+                        android:gravity="center_vertical" >
 
- 	 	                 <TextView
- 	 	                     android:id="@+id/delegation_evaluation"
- 	 	                     android:layout_width="0.0dip"
- 	 	                     android:layout_height="wrap_content"
- 	 	                     android:layout_marginLeft="16dp"
- 	 	                     android:layout_marginRight="16dp"
- 	 	                     android:layout_weight="1.0"
- 	 	                     android:background="@null"
- 	 	                     android:focusable="false"
- 	 	                     android:gravity="right|center_vertical"
- 	 	                     android:text="10"
- 	 	    	              android:singleLine="true"
- 	 	                     android:textColor="@color/gray_color"
- 	 	                     android:textColorHint="@color/gray_color"
- 	 	                     android:textSize="16sp"
- 	 	                     android:windowSoftInputMode="stateHidden" />
- 	 	             </LinearLayout>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="16dp"
+                            android:text="手机"
+                            android:textColor="@color/black_color"
+                            android:textSize="16sp" />
 
- 	 	      
- 	 	         </LinearLayout>
- 	 	         <include layout="@layout/line_horizontal_divider"/>
-				<include layout="@layout/line_space"/>
- 	 	         </LinearLayout>
- 	 	         
- 	 	         
- 	 	         
- 	 	           <LinearLayout
- 	 	             android:id="@+id/delegation_btn_layout"
- 	 	             android:layout_width="match_parent"
- 	 	             android:layout_height="match_parent"
- 	 	             android:orientation="vertical" >
-									<TextView
-				        android:id="@+id/delegation_btn"
-				        android:layout_width="match_parent"
-				        android:layout_height="46dp"
-				        android:layout_marginLeft="24dp"
-				        android:layout_marginRight="24dp"
-				        android:gravity="center"
-				        android:layout_below="@+id/login_linearLayout"
-				        android:background="@drawable/button_orange_shape"
-				        android:textColor="@color/white_color"
-				        android:textSize="24sp"
-				        android:text="已完成帮助" />
-									<include layout="@layout/line_space"/>
- 	 	         </LinearLayout>
- 	 	         <LinearLayout
- 	 	             android:id="@+id/close_delegation_btn_layout"
- 	 	             android:layout_width="match_parent"
- 	 	             android:layout_height="match_parent"
- 	 	             android:orientation="vertical" >
-									<TextView
-				        android:id="@+id/close_delegation_btn"
-				        android:layout_width="match_parent"
-				        android:layout_height="46dp"
-				        android:layout_marginLeft="24dp"
-				        android:layout_marginRight="24dp"
-				        android:gravity="center"
-				        android:layout_below="@+id/login_linearLayout"
-				        android:background="@drawable/button_orange_shape"
-				        android:textColor="@color/white_color"
-				        android:textSize="24sp"
-				        android:text="关闭委托" />
-									<include layout="@layout/line_space"/>
- 	 	         </LinearLayout>
- 	 	        <LinearLayout
- 	 	             android:id="@+id/evaluation_layout"
- 	 	             android:layout_width="match_parent"
- 	 	             android:layout_height="match_parent"
- 	 	             android:orientation="vertical" >
-									<TextView
-				        android:id="@+id/evaluation"
-				        android:layout_width="match_parent"
-				        android:layout_height="46dp"
-				        android:layout_marginLeft="24dp"
-				        android:layout_marginRight="24dp"
-				        android:gravity="center"
-				        android:layout_below="@+id/login_linearLayout"
-				        android:background="@drawable/button_orange_shape"
-				        android:textColor="@color/white_color"
-				        android:textSize="24sp"
-				        android:text="评价" />
-									<include layout="@layout/line_space"/>
- 	 	         </LinearLayout>
- 	 	    </LinearLayout>
- 	 	</ScrollView>
+                        <TextView
+                            android:id="@+id/delegation_phone"
+                            android:layout_width="0.0dip"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="16dp"
+                            android:layout_marginRight="16dp"
+                            android:layout_weight="1.0"
+                            android:background="@null"
+                            android:focusable="false"
+                            android:gravity="right|center_vertical"
+                            android:singleLine="true"
+                            android:text="13913440000"
+                            android:textColor="@color/gray_color"
+                            android:textColorHint="@color/gray_color"
+                            android:textSize="16sp"
+                            android:windowSoftInputMode="stateHidden" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/delegation_evaluation_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" >
+
+                    <include layout="@layout/line_horizontal_divider" />
+
+                    <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="46dp"
+                        android:background="@drawable/list_color_item_bg_white"
+                        android:gravity="center_vertical" >
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="16dp"
+                            android:text="求助者对此次委托的评分"
+                            android:textColor="@color/black_color"
+                            android:textSize="16sp" />
+
+                        <TextView
+                            android:id="@+id/delegation_evaluation"
+                            android:layout_width="0.0dip"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="16dp"
+                            android:layout_marginRight="16dp"
+                            android:layout_weight="1.0"
+                            android:background="@null"
+                            android:focusable="false"
+                            android:gravity="right|center_vertical"
+                            android:singleLine="true"
+                            android:text="10"
+                            android:textColor="@color/gray_color"
+                            android:textColorHint="@color/gray_color"
+                            android:textSize="16sp"
+                            android:windowSoftInputMode="stateHidden" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <include layout="@layout/line_horizontal_divider" />
+
+                <include layout="@layout/line_space" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/delegation_btn_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:id="@+id/delegation_btn"
+                    android:layout_width="match_parent"
+                    android:layout_height="46dp"
+                    android:layout_below="@+id/login_linearLayout"
+                    android:layout_marginLeft="24dp"
+                    android:layout_marginRight="24dp"
+                    android:background="@drawable/button_orange_shape"
+                    android:gravity="center"
+                    android:text="已完成帮助"
+                    android:textColor="@color/white_color"
+                    android:textSize="24sp" />
+
+                <include layout="@layout/line_space" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/close_delegation_btn_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:id="@+id/close_delegation_btn"
+                    android:layout_width="match_parent"
+                    android:layout_height="46dp"
+                    android:layout_below="@+id/login_linearLayout"
+                    android:layout_marginLeft="24dp"
+                    android:layout_marginRight="24dp"
+                    android:background="@drawable/button_orange_shape"
+                    android:gravity="center"
+                    android:text="关闭委托"
+                    android:textColor="@color/white_color"
+                    android:textSize="24sp" />
+
+                <include layout="@layout/line_space" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/evaluation_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:id="@+id/evaluation"
+                    android:layout_width="match_parent"
+                    android:layout_height="46dp"
+                    android:layout_below="@+id/login_linearLayout"
+                    android:layout_marginLeft="24dp"
+                    android:layout_marginRight="24dp"
+                    android:background="@drawable/button_orange_shape"
+                    android:gravity="center"
+                    android:text="评价"
+                    android:textColor="@color/white_color"
+                    android:textSize="24sp" />
+
+                <include layout="@layout/line_space" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
 
 </LinearLayout>

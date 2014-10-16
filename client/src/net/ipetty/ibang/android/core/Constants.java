@@ -25,7 +25,11 @@ public class Constants {
 	public static final String INTENT_USER_ID = "INTENT_USER_ID";
 	public static final String INTENT_USER_JSON = "INTENT_USER_JSON";
 	public static final String INTENT_OFFER_ID = "INTENT_OFFER_ID";
+	public static final String INTENT_OFFER_JSON = "INTENT_OFFER_JSON";
 	public static final String INTENT_DELEGATION_ID = "INTENT_DELEGATION_ID";
+	public static final String INTENT_EVALUATOR_TYPE = "INTENT_EVALUATOR_TYPE";
+	public static final String INTENT_EVALUATOR_ID = "INTENT_EVALUATOR_ID";
+	public static final String INTENT_EVALUATE_TARGET_ID = "INTENT_EVALUATE_TARGET_ID";
 
 	public final static float COMPRESS_IMAGE_MAX_WIDTH = 960f;
 	public final static float COMPRESS_IMAGE_MAX_HEIGHT = 1280f;
