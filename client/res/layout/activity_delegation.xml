@@ -44,26 +44,13 @@
 
 			    <ImageView
 			        android:id="@+id/avatar"
-			        android:layout_width="32dp"
-			        android:layout_height="32dp"
+			        android:layout_width="40dp"
+			        android:layout_height="40dp"
+			        android:layout_marginRight="11.0dip"
 			        android:layout_alignParentBottom="true"
 			        android:layout_alignParentLeft="true"
 			        android:scaleType="fitXY"
 			        android:src="@drawable/default_avatar" />
-
-			    <TextView
-			        android:id="@+id/name"
-			        android:layout_width="wrap_content"
-			        android:layout_height="32dp"
-			        android:layout_alignParentBottom="true"
-			        android:layout_marginLeft="16dp"
-			        android:layout_toRightOf="@+id/avatar"
-			        android:ellipsize="end"
-			        android:gravity="left|center"
-			        android:singleLine="true"
-			        android:text="张三"
-			        android:textColor="@color/base_color"
-			        android:textSize="20dp" />
 <TextView
 				        android:id="@+id/created_at"
 				        android:layout_width="wrap_content"
@@ -74,6 +61,20 @@
 				        android:textSize="12sp" 
 				        android:textColor="@color/gray_color"
 				        android:text="2分钟前"/>
+
+<TextView
+    android:id="@+id/nickname"
+    android:layout_width="wrap_content"
+    android:layout_height="32dp"
+    android:layout_alignTop="@+id/avatar"
+    android:layout_toRightOf="@+id/avatar"
+    android:ellipsize="end"
+    android:gravity="left|center"
+    android:singleLine="true"
+    android:text="张三"
+    android:textColor="@color/base_color"
+    android:textSize="20dp" />
+
 	</RelativeLayout>
  	 	        <RelativeLayout
  	 	            android:layout_width="match_parent"
@@ -114,49 +115,12 @@
  	 	                android:textColor="@color/gray_color" />
 
  	 	        </RelativeLayout>
- 	 	        <include layout="@layout/line_horizontal_divider" />
- 	 	         <include layout="@layout/line_space" />
 
  	 	         <LinearLayout
  	 	             android:layout_width="match_parent"
  	 	             android:layout_height="wrap_content"
  	 	             android:orientation="vertical"
- 	 	             android:id="@+id/contact"
- 	 	             android:visibility="gone" >
-
- 	 	             <include layout="@layout/line_horizontal_divider" />
-
- 	 	             <LinearLayout
- 	 	                 android:layout_width="fill_parent"
- 	 	                 android:layout_height="46dp"
- 	 	                 android:background="@drawable/list_color_item_bg_white"
- 	 	                 android:gravity="center_vertical" >
-
- 	 	                 <TextView
- 	 	                     android:layout_width="wrap_content"
- 	 	                     android:layout_height="wrap_content"
- 	 	                     android:layout_marginLeft="16dp"
- 	 	                     android:text="姓名"
- 	 	                     android:textColor="@color/black_color"
- 	 	                     android:textSize="16sp" />
-
- 	 	                 <TextView
- 	 	                     android:id="@+id/nickname"
- 	 	                     android:layout_width="0.0dip"
- 	 	                     android:layout_height="wrap_content"
- 	 	                     android:layout_marginLeft="16dp"
- 	 	                     android:layout_marginRight="16dp"
- 	 	                     android:layout_weight="1.0"
- 	 	                     android:background="@null"
- 	 	                     android:focusable="false"
- 	 	                     android:gravity="right|center_vertical"
- 	 	                     android:hint="请输入姓名"
- 	 	                     android:singleLine="true"
- 	 	                     android:textColor="@color/gray_color"
- 	 	                     android:textColorHint="@color/gray_color"
- 	 	                     android:textSize="16sp"
- 	 	                     android:windowSoftInputMode="stateHidden" />
- 	 	             </LinearLayout>
+ 	 	             android:id="@+id/contact_layout">
 
  	 	             <include layout="@layout/line_horizontal_divider" />
 
@@ -184,37 +148,19 @@
  	 	                     android:background="@null"
  	 	                     android:focusable="false"
  	 	                     android:gravity="right|center_vertical"
- 	 	                     android:hint="请输入手机"
- 	 	                     android:singleLine="true"
+ 	 	                     android:text="13913440000"
+ 	 	    	              android:singleLine="true"
  	 	                     android:textColor="@color/gray_color"
  	 	                     android:textColorHint="@color/gray_color"
  	 	                     android:textSize="16sp"
  	 	                     android:windowSoftInputMode="stateHidden" />
  	 	             </LinearLayout>
 
- 	 	             <include layout="@layout/line_horizontal_divider" />
-					<include layout="@layout/line_space" />
+ 	 	      
  	 	         </LinearLayout>
-
- 	 	         <LinearLayout
- 	 	             android:id="@+id/offer_layout"
- 	 	             android:layout_width="match_parent"
- 	 	             android:layout_height="match_parent"
- 	 	             android:orientation="vertical" >
-									<TextView
-				        android:id="@+id/offer"
-				        android:layout_width="match_parent"
-				        android:layout_height="46dp"
-				        android:layout_marginLeft="24dp"
-				        android:layout_marginRight="24dp"
-				        android:gravity="center"
-				        android:layout_below="@+id/login_linearLayout"
-				        android:background="@drawable/button_orange_shape"
-				        android:textColor="@color/white_color"
-				        android:textSize="24sp"
-				        android:text="已完成帮助" />
- 	 	         </LinearLayout>
-
+ 	 	           <include layout="@layout/line_horizontal_divider" />
+	 	         <include layout="@layout/line_space" />
+ 	 	      
  	 	         <LinearLayout
  	 	             android:id="@+id/delegation_layout"
  	 	             android:layout_width="match_parent"
@@ -228,10 +174,11 @@
  	 	                 android:paddingBottom="13.0dip"
  	 	                 android:paddingLeft="10.0dip"
  	 	                 android:paddingRight="14.0dip"
- 	 	                 android:paddingTop="13dp" >
+ 	 	                 android:paddingTop="13dp" 
+ 	 	                 android:background="@color/white_color">
 
  	 	                 <ImageView
- 	 	                     android:id="@+id/avatar"
+ 	 	                     android:id="@+id/delegation_avatar"
  	 	                     android:layout_width="40.0dip"
  	 	                     android:layout_height="40.0dip"
  	 	                     android:layout_marginRight="11.0dip"
@@ -249,20 +196,7 @@
  	 	                         android:gravity="center" >
 
  	 	                         <TextView
- 	 	                             android:id="@+id/username"
- 	 	                             android:layout_width="wrap_content"
- 	 	                             android:layout_height="wrap_content"
- 	 	                             android:layout_alignParentLeft="true"
- 	 	                             android:layout_centerVertical="true"
- 	 	                             android:ellipsize="end"
- 	 	                             android:singleLine="true"
- 	 	                             android:text="张先生"
- 	 	                             android:textColor="@color/base_color"
- 	 	                             android:textSize="16sp"
- 	 	                             android:textStyle="bold" />
-
- 	 	                         <TextView
- 	 	                             android:id="@+id/created_at"
+ 	 	                             android:id="@+id/delegation_created_at"
  	 	                             android:layout_width="wrap_content"
  	 	                             android:layout_height="wrap_content"
  	 	                             android:layout_alignParentRight="true"
@@ -271,35 +205,109 @@
  	 	                             android:text="2分钟前"
  	 	                             android:textColor="@color/gray_color"
  	 	                             android:textSize="12sp" />
- 	 	                     </RelativeLayout>
-
- 	 	                     <TextView
- 	 	                         android:id="@+id/content"
- 	 	                         android:layout_width="fill_parent"
- 	 	                         android:layout_height="wrap_content"
- 	 	                         android:layout_marginTop="6.0dip"
- 	 	                         android:text="我可以提供给您需要的帮助提"
- 	 	                         android:textColor="@android:color/black"
- 	 	                         android:textSize="14sp" />
-
- 	 	                     <RelativeLayout
- 	 	                         android:layout_width="match_parent"
- 	 	                         android:layout_height="wrap_content" >
 
  	 	                         <TextView
- 	 	                             android:id="@+id/textView1"
+ 	 	                             android:id="@+id/delegation_nickname"
  	 	                             android:layout_width="wrap_content"
  	 	                             android:layout_height="wrap_content"
  	 	                             android:layout_alignParentLeft="true"
- 	 	                             android:text="积分1000"
- 	 	                             android:textSize="12sp" />
+ 	 	                             android:layout_alignParentTop="true"
+ 	 	                             android:ellipsize="end"
+ 	 	                             android:singleLine="true"
+ 	 	                             android:text="张先生"
+ 	 	                             android:textColor="@color/base_color"
+ 	 	                             android:textSize="20sp"
+ 	 	                             android:textStyle="bold" />
+
  	 	                     </RelativeLayout>
  	 	                 </LinearLayout>
+ 	 	                  
  	 	             </LinearLayout>
-				<include layout="@layout/line_horizontal_divider"/>
+ 	 	            
+ 	 	            
+				<LinearLayout
+ 	 	             android:layout_width="match_parent"
+ 	 	             android:layout_height="wrap_content"
+ 	 	             android:orientation="vertical"
+ 	 	             android:id="@+id/delegation_contact_layout">
+
+ 	 	             <include layout="@layout/line_horizontal_divider" />
+
+ 	 	             <LinearLayout
+ 	 	                 android:layout_width="fill_parent"
+ 	 	                 android:layout_height="46dp"
+ 	 	                 android:background="@drawable/list_color_item_bg_white"
+ 	 	                 android:gravity="center_vertical" >
+
+ 	 	                 <TextView
+ 	 	                     android:layout_width="wrap_content"
+ 	 	                     android:layout_height="wrap_content"
+ 	 	                     android:layout_marginLeft="16dp"
+ 	 	                     android:text="手机"
+ 	 	                     android:textColor="@color/black_color"
+ 	 	                     android:textSize="16sp" />
+
+ 	 	                 <TextView
+ 	 	                     android:id="@+id/delegation_phone"
+ 	 	                     android:layout_width="0.0dip"
+ 	 	                     android:layout_height="wrap_content"
+ 	 	                     android:layout_marginLeft="16dp"
+ 	 	                     android:layout_marginRight="16dp"
+ 	 	                     android:layout_weight="1.0"
+ 	 	                     android:background="@null"
+ 	 	                     android:focusable="false"
+ 	 	                     android:gravity="right|center_vertical"
+ 	 	                     android:text="13913440000"
+ 	 	    	              android:singleLine="true"
+ 	 	                     android:textColor="@color/gray_color"
+ 	 	                     android:textColorHint="@color/gray_color"
+ 	 	                     android:textSize="16sp"
+ 	 	                     android:windowSoftInputMode="stateHidden" />
+ 	 	             </LinearLayout>
+
+ 	 	      
+ 	 	         </LinearLayout>
+ 	 	         <include layout="@layout/line_horizontal_divider"/>
 				<include layout="@layout/line_space"/>
  	 	         </LinearLayout>
- 	 	         
+ 	 	           <LinearLayout
+ 	 	             android:id="@+id/delegation_btn_layout"
+ 	 	             android:layout_width="match_parent"
+ 	 	             android:layout_height="match_parent"
+ 	 	             android:orientation="vertical" >
+									<TextView
+				        android:id="@+id/delegation_btn"
+				        android:layout_width="match_parent"
+				        android:layout_height="46dp"
+				        android:layout_marginLeft="24dp"
+				        android:layout_marginRight="24dp"
+				        android:gravity="center"
+				        android:layout_below="@+id/login_linearLayout"
+				        android:background="@drawable/button_orange_shape"
+				        android:textColor="@color/white_color"
+				        android:textSize="24sp"
+				        android:text="已完成帮助" />
+									<include layout="@layout/line_space"/>
+ 	 	         </LinearLayout>
+ 	 	         <LinearLayout
+ 	 	             android:id="@+id/close_delegation_btn_layout"
+ 	 	             android:layout_width="match_parent"
+ 	 	             android:layout_height="match_parent"
+ 	 	             android:orientation="vertical" >
+									<TextView
+				        android:id="@+id/close_delegation_btn"
+				        android:layout_width="match_parent"
+				        android:layout_height="46dp"
+				        android:layout_marginLeft="24dp"
+				        android:layout_marginRight="24dp"
+				        android:gravity="center"
+				        android:layout_below="@+id/login_linearLayout"
+				        android:background="@drawable/button_orange_shape"
+				        android:textColor="@color/white_color"
+				        android:textSize="24sp"
+				        android:text="关闭委托" />
+									<include layout="@layout/line_space"/>
+ 	 	         </LinearLayout>
  	 	        <LinearLayout
  	 	             android:id="@+id/evaluation_layout"
  	 	             android:layout_width="match_parent"
@@ -317,6 +325,7 @@
 				        android:textColor="@color/white_color"
 				        android:textSize="24sp"
 				        android:text="评价" />
+									<include layout="@layout/line_space"/>
  	 	         </LinearLayout>
  	 	    </LinearLayout>
  	 	</ScrollView>
