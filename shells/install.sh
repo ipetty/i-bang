@@ -28,11 +28,9 @@ case "$1" in
 		installNginx
 		installNmon
 		#installGvm
-		installAndroidSDK
 		configNginx
 		configTomcat $tomcatAdminUser $tomcatAdminPass
 		configMysql
-		service	mysql restart
 		service	tomcat restart
 		service	nginx restart
 		service	ntpd restart
@@ -65,7 +63,6 @@ case "$1" in
 	mysql)
 		installMysql
 		configMysql
-		service	mysql restart
 		echo "mysql	OK"
 		;;
 	nginx)

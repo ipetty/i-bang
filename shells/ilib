@@ -251,6 +251,7 @@ function configMysql(){
 	initGlobalDir
 	##ÕËºÅ¹ÜÀí
 	#mysqladmin	-uroot password	"${MYSQL_ROOT_PASSWORD}"
+	service mysqld start
 	mysql -uroot -e	"GRANT REPLICATION SLAVE ON	*.*	TO 'repl'@'%' identified by	\"repl\";"
 
 	#ÅäÖÃ
@@ -299,6 +300,7 @@ function configMysql(){
 		#echo "*/1 * * * * $MYSQL_BACKUP_CMD" >>/var/spool/cron/root
 	}
 	service	crond restart
+	service	mysqld restart
 }
 
 function downloadProbe(){
@@ -376,7 +378,7 @@ function deployIServer(){
   chown	-R tomcat $ISERVER_UPLOAD_DIR
   chgrp	-R tomcat $ISERVER_UPLOAD_DIR
   ln -sf $ISERVER_UPLOAD_DIR $TOMCAT_HOME/webapps/ROOT
-  mysql	-e "create database	if not exists ipetty default charset utf8;"
+  mysql	-e "create database if not exists $ISERVER_DATABASE_NAME default charset utf8;"
   service tomcat restart
 }
 
@@ -434,11 +436,12 @@ function compileIclinet(){
 }
 
 function deployIclient(){
-  \cp -av $GLOBAL_SOURCECODE_DIR/$ICLIENT_PROJECT_NAME/bin/i-client-release.apk	$ISERVER_UPLOAD_DIR/ipetty.apk
+  \cp -av $GLOBAL_SOURCECODE_DIR/$ICLIENT_PROJECT_NAME/bin/i-client-release.apk	$ISERVER_UPLOAD_DIR/$ICLIENT_RELEASE_NAME
   \cp -av $GLOBAL_SOURCECODE_DIR/$ICLIENT_PROJECT_NAME/update.json $ISERVER_UPLOAD_DIR/
 }
 
 function installIclient(){
+	installAndroidSDK
 	mkdir -p $ICLIENT_CONFIG_DIR
 	if [ ! -f "$ICLIENT_CONFIG_FILE" ];	then
 		echo ""	> $ICLIENT_CONFIG_FILE
@@ -447,19 +450,19 @@ function installIclient(){
 	fi
 
 	if [ -z	"$ICLIENT_KEY_STORE_FILE" ]; then
-		prompt ICLIENT_KEY_STORE_FILE 'Ipetty keystore file	path' '/root/ibang.keystore'
+		prompt ICLIENT_KEY_STORE_FILE 'keystore file	path' '/root/ibang.keystore'
 		echo "ICLIENT_KEY_STORE_FILE=$ICLIENT_KEY_STORE_FILE" >> $ICLIENT_CONFIG_FILE
 	fi
 	if [ -z	"$ICLIENT_KEY_STORE_PASSWORD" ]; then
-		prompt ICLIENT_KEY_STORE_PASSWORD 'Ipetty keystore password' 'somepassword'
+		prompt ICLIENT_KEY_STORE_PASSWORD 'keystore password' 'somepassword'
 		echo "ICLIENT_KEY_STORE_PASSWORD=$ICLIENT_KEY_STORE_PASSWORD" >> $ICLIENT_CONFIG_FILE
 	fi
 	if [ -z	"$ICLIENT_KEY_ALIAS" ];	then
-		prompt ICLIENT_KEY_ALIAS 'Ipetty key alias'	'ibang.ks'
+		prompt ICLIENT_KEY_ALIAS 'key alias'	'ibang.ks'
 		echo "ICLIENT_KEY_ALIAS=$ICLIENT_KEY_ALIAS"	>> $ICLIENT_CONFIG_FILE
 	fi
 	if [ -z	"$ICLIENT_KEY_ALIAS_PASSWORD" ]; then
-		prompt ICLIENT_KEY_ALIAS_PASSWORD 'Ipetty key alias	password' 'somepassword'
+		prompt ICLIENT_KEY_ALIAS_PASSWORD 'key alias	password' 'somepassword'
 		echo "ICLIENT_KEY_ALIAS_PASSWORD=$ICLIENT_KEY_ALIAS_PASSWORD" >> $ICLIENT_CONFIG_FILE
 	fi
 	getIclientCode
