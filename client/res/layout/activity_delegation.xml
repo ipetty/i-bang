@@ -158,6 +158,48 @@
 
  	 	      
  	 	         </LinearLayout>
+ 	 	         <LinearLayout
+ 	 	             android:layout_width="match_parent"
+ 	 	             android:layout_height="wrap_content"
+ 	 	             android:orientation="vertical"
+ 	 	             android:id="@+id/seek_evaluation_layout">
+
+ 	 	             <include layout="@layout/line_horizontal_divider" />
+
+ 	 	             <LinearLayout
+ 	 	                 android:layout_width="fill_parent"
+ 	 	                 android:layout_height="46dp"
+ 	 	                 android:background="@drawable/list_color_item_bg_white"
+ 	 	                 android:gravity="center_vertical" >
+
+ 	 	                 <TextView
+ 	 	                     android:layout_width="wrap_content"
+ 	 	                     android:layout_height="wrap_content"
+ 	 	                     android:layout_marginLeft="16dp"
+ 	 	                     android:text="评分"
+ 	 	                     android:textColor="@color/black_color"
+ 	 	                     android:textSize="16sp" />
+
+ 	 	                 <TextView
+ 	 	                     android:id="@+id/seek_evaluation"
+ 	 	                     android:layout_width="0.0dip"
+ 	 	                     android:layout_height="wrap_content"
+ 	 	                     android:layout_marginLeft="16dp"
+ 	 	                     android:layout_marginRight="16dp"
+ 	 	                     android:layout_weight="1.0"
+ 	 	                     android:background="@null"
+ 	 	                     android:focusable="false"
+ 	 	                     android:gravity="right|center_vertical"
+ 	 	                     android:text="10分"
+ 	 	    	              android:singleLine="true"
+ 	 	                     android:textColor="@color/gray_color"
+ 	 	                     android:textColorHint="@color/gray_color"
+ 	 	                     android:textSize="16sp"
+ 	 	                     android:windowSoftInputMode="stateHidden" />
+ 	 	             </LinearLayout>
+
+ 	 	      
+ 	 	         </LinearLayout>
  	 	           <include layout="@layout/line_horizontal_divider" />
 	 	         <include layout="@layout/line_space" />
  	 	      
@@ -267,9 +309,54 @@
 
  	 	      
  	 	         </LinearLayout>
+ 	 	         <LinearLayout
+ 	 	             android:layout_width="match_parent"
+ 	 	             android:layout_height="wrap_content"
+ 	 	             android:orientation="vertical"
+ 	 	             android:id="@+id/delegation_evaluation_layout">
+
+ 	 	             <include layout="@layout/line_horizontal_divider" />
+
+ 	 	             <LinearLayout
+ 	 	                 android:layout_width="fill_parent"
+ 	 	                 android:layout_height="46dp"
+ 	 	                 android:background="@drawable/list_color_item_bg_white"
+ 	 	                 android:gravity="center_vertical" >
+
+ 	 	                 <TextView
+ 	 	                     android:layout_width="wrap_content"
+ 	 	                     android:layout_height="wrap_content"
+ 	 	                     android:layout_marginLeft="16dp"
+ 	 	                     android:text="评分"
+ 	 	                     android:textColor="@color/black_color"
+ 	 	                     android:textSize="16sp" />
+
+ 	 	                 <TextView
+ 	 	                     android:id="@+id/delegation_evaluation"
+ 	 	                     android:layout_width="0.0dip"
+ 	 	                     android:layout_height="wrap_content"
+ 	 	                     android:layout_marginLeft="16dp"
+ 	 	                     android:layout_marginRight="16dp"
+ 	 	                     android:layout_weight="1.0"
+ 	 	                     android:background="@null"
+ 	 	                     android:focusable="false"
+ 	 	                     android:gravity="right|center_vertical"
+ 	 	                     android:text="10"
+ 	 	    	              android:singleLine="true"
+ 	 	                     android:textColor="@color/gray_color"
+ 	 	                     android:textColorHint="@color/gray_color"
+ 	 	                     android:textSize="16sp"
+ 	 	                     android:windowSoftInputMode="stateHidden" />
+ 	 	             </LinearLayout>
+
+ 	 	      
+ 	 	         </LinearLayout>
  	 	         <include layout="@layout/line_horizontal_divider"/>
 				<include layout="@layout/line_space"/>
  	 	         </LinearLayout>
+ 	 	         
+ 	 	         
+ 	 	         
  	 	           <LinearLayout
  	 	             android:id="@+id/delegation_btn_layout"
  	 	             android:layout_width="match_parent"

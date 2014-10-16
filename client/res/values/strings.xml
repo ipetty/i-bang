@@ -70,5 +70,6 @@
     <string name="title_activity_my_delegation">我的应征</string>
     <string name="title_activity_larger_image">查看大图</string>
     <string name="title_activity_user_info">用户信息</string>
+    <string name="title_activity_evaluation">评价</string>
 
 </resources>

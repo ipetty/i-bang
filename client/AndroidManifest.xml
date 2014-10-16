@@ -128,6 +128,10 @@
             android:name="net.ipetty.ibang.android.user.UserInfoActivity"
             android:label="@string/title_activity_user_info" >
         </activity>
+        <activity
+            android:name="net.ipetty.ibang.android.evaluation.EvaluationActivity"
+            android:label="@string/title_activity_evaluation" >
+        </activity>
     </application>
 
 </manifest>

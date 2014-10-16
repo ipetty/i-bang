@@ -38,6 +38,8 @@ public class DelegationActivity extends Activity {
 	private TextView seek_closedOn;
 	private TextView seek_phone;
 	private View seek_contact_layout;
+	private View seek_evaluation_layout;
+	private TextView seek_evaluation;
 
 	private ImageView delegation_avatar;
 	private TextView delegation_nickname;
@@ -47,6 +49,8 @@ public class DelegationActivity extends Activity {
 	private View delegation_btn_layout;
 	private TextView close_delegation_btn;
 	private View close_delegation_btn_layout;
+	private View delegation_evaluation_layout;
+	private TextView delegation_evaluation;
 
 	private View evaluation_layout;
 	private TextView evaluation;
@@ -76,6 +80,9 @@ public class DelegationActivity extends Activity {
 		seek_nickname = (TextView) this.findViewById(R.id.nickname);
 		seek_closedOn = (TextView) this.findViewById(R.id.closedOn);
 		seek_contact_layout = this.findViewById(R.id.contact_layout);
+		seek_evaluation_layout = this.findViewById(R.id.seek_evaluation_layout);// 评分布局
+																				// 对方评分后显示
+		seek_evaluation = (TextView) this.findViewById(R.id.seek_evaluation);
 
 		delegation_avatar = (ImageView) this.findViewById(R.id.delegation_avatar);
 		delegation_nickname = (TextView) this.findViewById(R.id.delegation_nickname);
@@ -85,6 +92,10 @@ public class DelegationActivity extends Activity {
 		delegation_btn_layout = this.findViewById(R.id.delegation_btn_layout); // 完成帮助按钮
 		close_delegation_btn = (TextView) this.findViewById(R.id.close_delegation_btn);
 		close_delegation_btn_layout = this.findViewById(R.id.close_delegation_btn_layout); // 完成帮助按钮
+
+		delegation_evaluation_layout = this.findViewById(R.id.delegation_evaluation_layout);// 评分布局
+																							// 对方评分后显示
+		delegation_evaluation = (TextView) this.findViewById(R.id.delegation_evaluation);
 
 		evaluation_layout = this.findViewById(R.id.evaluation_layout); // 评价按钮根据权限显示不同的评价
 		evaluation = (TextView) this.findViewById(R.id.evaluation);
