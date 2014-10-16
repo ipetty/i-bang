@@ -35,6 +35,7 @@ import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -91,6 +92,7 @@ public class SeekActivity extends Activity {
 		IntentFilter filter = new IntentFilter();
 		filter.addAction(Constants.BROADCAST_INTENT_IS_LOGIN);
 		filter.addAction(Constants.BROADCAST_INTENT_UPDATA_USER);
+		filter.addAction(Constants.BROADCAST_INTENT_PUBLISH_SEEK);
 		this.registerReceiver(broadcastreciver, filter);
 
 		isLogin = ApiContext.getInstance(this).isAuthorized();
@@ -168,12 +170,23 @@ public class SeekActivity extends Activity {
 		initImageView();
 		initContent();
 
-		// 需要从服务器加载
-		initSeekUser();
+		init();
 
+	}
+
+	// 登录后需要重新加载视图
+	private void init() {
+		isLogin = ApiContext.getInstance(this).isAuthorized();
+		initUser();
 		// 数据重新加载后显示
 		initViewLayout();
 		initOfferView();
+	}
+
+	// 重新加载当前的用户及相关视图
+	private void initUser() {
+		user = ApiContext.getInstance(this).getCurrentUser();
+		initSeekUser();
 	}
 
 	private void initSeekUser() {
@@ -187,6 +200,9 @@ public class SeekActivity extends Activity {
 	}
 
 	private void initSeekUserLayout() {
+
+		Log.i("XXXXXXXXX------->", seekUser.getNickname());
+
 		bindUser(seekUser, seek_avatar, seek_username);
 		// 填充手机号
 		phone.setText(seekUser.getPhone());
@@ -486,19 +502,6 @@ public class SeekActivity extends Activity {
 		});
 	}
 
-	// 登录后需要重新加载视图
-	private void init() {
-		initUser();
-	}
-
-	// 重新加载当前的用户及相关视图
-	private void initUser() {
-		user = ApiContext.getInstance(this).getCurrentUser();
-		if (isSeekOwner()) {
-			initSeekUser();
-		}
-	}
-
 	private BroadcastReceiver broadcastreciver = new BroadcastReceiver() {
 		@Override
 		public void onReceive(Context context, Intent intent) {
@@ -509,6 +512,9 @@ public class SeekActivity extends Activity {
 			}
 			if (Constants.BROADCAST_INTENT_UPDATA_USER.equals(action)) {
 				initUser();
+			}
+			if (Constants.BROADCAST_INTENT_PUBLISH_SEEK.equals(action)) {
+				init();
 			}
 		}
 	};

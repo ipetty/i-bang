@@ -1,8 +1,10 @@
 package net.ipetty.ibang.android.seek;
 
+import net.ipetty.ibang.android.core.Constants;
 import net.ipetty.ibang.android.core.DefaultTaskListener;
 import net.ipetty.ibang.vo.OfferVO;
 import android.app.Activity;
+import android.content.Intent;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -24,6 +26,11 @@ public class PublishOfferTaskListener extends DefaultTaskListener<OfferVO> {
 	public void onSuccess(OfferVO offer) {
 		Log.d(TAG, "publish offer success");
 		Toast.makeText(activity, "发布应征成功！", Toast.LENGTH_SHORT).show();
+
+		// 通知用户更新
+		Intent intent = new Intent(Constants.BROADCAST_INTENT_PUBLISH_SEEK);
+		activity.sendBroadcast(intent);
+
 		activity.finish();
 	}
 

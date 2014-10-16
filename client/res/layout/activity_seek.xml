@@ -59,9 +59,10 @@
 
 			    <ImageView
 			        android:id="@+id/seek_avatar"
-			        android:layout_width="32dp"
-			        android:layout_height="32dp"
+			        android:layout_width="40dp"
+			        android:layout_height="40dp"
 			        android:layout_alignParentBottom="true"
+			        android:layout_marginRight="11.0dip"
 			        android:layout_alignParentLeft="true"
 			        android:scaleType="fitXY"
 			        android:src="@drawable/default_avatar" />
@@ -74,14 +75,13 @@
 				        android:gravity="center"
 				        android:textSize="12sp" 
 				        android:textColor="@color/gray_color"
-				        android:text="2分钟前"/>
+				        android:text=""/>
 
 <TextView
     android:id="@+id/seek_username"
     android:layout_width="wrap_content"
     android:layout_height="32dp"
     android:layout_alignParentBottom="true"
-    android:layout_marginLeft="14dp"
     android:layout_toRightOf="@+id/seek_avatar"
     android:ellipsize="end"
     android:gravity="left|center"
@@ -125,7 +125,7 @@
  	 	                android:layout_alignBaseline="@+id/textView"
  	 	                android:layout_alignBottom="@+id/textView"
  	 	                android:layout_toRightOf="@+id/textView"
- 	 	                android:text="2014-12-12"
+ 	 	                android:text=""
  	 	                android:textSize="14dp"
  	 	                android:textColor="@color/gray_color" />
 
@@ -136,7 +136,7 @@
  	 	                android:layout_alignBaseline="@+id/closedOn"
  	 	                android:layout_alignBottom="@+id/closedOn"
  	 	                android:layout_alignParentRight="true"
- 	 	                android:text="2/4"
+ 	 	                android:text=""
  	 	                android:textColor="@color/gray_color"
  	 	                android:textSize="14dp" />
 
