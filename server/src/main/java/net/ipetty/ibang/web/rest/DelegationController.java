@@ -84,6 +84,17 @@ public class DelegationController extends BaseController {
 	}
 
 	/**
+	 * 根据应征单ID获取委托单，如没有对应的委托则返回null
+	 */
+	@RequestMapping(value = "/delegation/byoffer", method = RequestMethod.GET)
+	public DelegationVO getByOfferId(Long offerId) {
+		Assert.notNull(offerId, "委托单ID不能为空");
+
+		Delegation delegation = delegationService.getByOfferId(offerId);
+		return delegation == null ? null : delegation.toVO();
+	}
+
+	/**
 	 * 获取指定用户的委托列表
 	 * 
 	 * @param pageNumber

@@ -91,6 +91,15 @@ public class DelegationDaoImpl extends BaseJdbcDaoSupport implements DelegationD
 		return super.queryUniqueEntity(GET_BY_ID_SQL, ROW_MAPPER, id);
 	}
 
+	private static final String GET_BY_OFFER_ID_SQL = "select * from delegation where offer_id=?";
+
+	/**
+	 * 根据应征单ID获取委托单，如没有对应的委托则返回null
+	 */
+	public Delegation getByOfferId(Long offerId) {
+		return super.queryUniqueEntity(GET_BY_OFFER_ID_SQL, ROW_MAPPER, offerId);
+	}
+
 	private static final String LIST_BY_USER_ID_SQL = "select id from delegation where seeker_id=? or offerer_id=? order by created_on desc limit ?,?";
 
 	/**

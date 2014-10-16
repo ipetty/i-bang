@@ -93,6 +93,13 @@ public class DelegationService extends BaseService {
 	}
 
 	/**
+	 * 根据应征单ID获取委托单，如没有对应的委托则返回null
+	 */
+	public Delegation getByOfferId(Long offerId) {
+		return delegationDao.getByOfferId(offerId);
+	}
+
+	/**
 	 * 获取指定用户的委托列表
 	 * 
 	 * @param pageNumber

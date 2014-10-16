@@ -23,6 +23,11 @@ public interface DelegationDao {
 	public Delegation getById(Long id);
 
 	/**
+	 * 根据应征单ID获取委托单，如没有对应的委托则返回null
+	 */
+	public Delegation getByOfferId(Long offerId);
+
+	/**
 	 * 获取指定用户的委托ID列表
 	 * 
 	 * @param pageNumber

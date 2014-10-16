@@ -88,6 +88,11 @@ public class DelegationApiTest extends BaseApiTest {
 		Assert.assertNotNull(delegation.getId());
 		Assert.assertEquals(Constants.DELEGATE_STATUS_DELEGATED, delegation.getStatus());
 
+		delegation = delegationApi.getById(delegation.getId());
+		Assert.assertNotNull(delegation);
+		delegation = delegationApi.getByOfferId(delegation.getOfferId());
+		Assert.assertNotNull(delegation);
+
 		List<DelegationVO> delegations = delegationApi.listByUserId(seeker.getId(), 0, 20);
 		Assert.assertEquals(1, delegations.size());
 		delegations = delegationApi.listByUserId(offerer.getId(), 0, 20);
