@@ -92,6 +92,7 @@ public class MainPublishFragment extends Fragment {
 
 	private void init() {
 		unLoginView.hide();
+		initUser();
 	}
 
 	private void initUser() {

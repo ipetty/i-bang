@@ -67,6 +67,8 @@ public class MainHomeFragment extends Fragment {
 		IntentFilter filter = new IntentFilter();
 		filter.addAction(Constants.BROADCAST_INTENT_IS_LOGIN);
 		filter.addAction(Constants.BROADCAST_INTENT_NEW_MESSAGE);
+		filter.addAction(Constants.BROADCAST_INTENT_PUBLISH_SEEK);
+
 		this.getActivity().registerReceiver(broadcastreciver, filter);
 	}
 

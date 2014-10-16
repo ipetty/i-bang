@@ -27,7 +27,7 @@ public class ReloginTaskListener extends DefaultTaskListener<LoginResultVO> {
 	private String TAG = getClass().getSimpleName();
 
 	public ReloginTaskListener(Activity activity) {
-		super(activity, "正在登录...");
+		super(activity);
 	}
 
 	@Override
