@@ -294,7 +294,7 @@
  	 	                 android:layout_width="wrap_content"
  	 	                 android:layout_height="20dp"
  	 	                 android:layout_margin="8dp"
- 	 	                 android:text="待应征的人员"
+ 	 	                 android:text="应征的人员"
  	 	                 android:textSize="12sp" />
 
 					<include layout="@layout/line_horizontal_divider" />

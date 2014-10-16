@@ -47,7 +47,7 @@ public class SeekActivity extends Activity {
 	private TextView offerBtn;
 	private TextView closeBtn;
 	private LinearLayout offerListView;
-	private LinearLayout delegationListView;
+	// private LinearLayout delegationListView;
 	private View imageView;
 	private ViewPager viewPager;
 	private TextView content;
@@ -68,7 +68,7 @@ public class SeekActivity extends Activity {
 	private UserVO seekUser;
 
 	private View offerBtn_layout;
-	private View delegationList_layout;
+	// private View delegationList_layout;
 	private View offerList_layout;
 	private View closeBtn_layout;
 
@@ -99,7 +99,8 @@ public class SeekActivity extends Activity {
 		imageViewText = (TextView) this.findViewById(R.id.imageView_text);
 		offerBtn = (TextView) this.findViewById(R.id.offerBtn);
 		closeBtn = (TextView) this.findViewById(R.id.closeBtn);
-		delegationListView = (LinearLayout) this.findViewById(R.id.delegationList);
+		// delegationListView = (LinearLayout)
+		// this.findViewById(R.id.delegationList);
 		offerListView = (LinearLayout) this.findViewById(R.id.offerList);
 		content = (TextView) this.findViewById(R.id.content);
 		closedOn = (TextView) this.findViewById(R.id.closedOn);
@@ -108,7 +109,8 @@ public class SeekActivity extends Activity {
 		seek_avatar = (ImageView) this.findViewById(R.id.seek_avatar);
 
 		offerBtn_layout = this.findViewById(R.id.offerBtn_layout);
-		delegationList_layout = this.findViewById(R.id.delegationList_layout);
+		// delegationList_layout =
+		// this.findViewById(R.id.delegationList_layout);
 		offerList_layout = this.findViewById(R.id.offerList_layout);
 		closeBtn_layout = this.findViewById(R.id.closeBtn_layout);
 
@@ -146,7 +148,7 @@ public class SeekActivity extends Activity {
 
 		// 数据重新加载后显示
 		initViewLayout();
-		initDelegationView();
+		// initDelegationView();
 		initOfferView();
 	}
 
@@ -303,62 +305,45 @@ public class SeekActivity extends Activity {
 		}
 	}
 
-	private class DelegationHolder {
-		View layout;
-		ImageView avator;
-		TextView nickname;
-		TextView created_at;
-		TextView more;
-		TextView phone;
-	}
-
-	private void initDelegationView() {
-		delegationListView.removeAllViews();
-		new ListDelegationBySeekIdTask(SeekActivity.this).setListener(
-				new DefaultTaskListener<List<DelegationVO>>(SeekActivity.this) {
-					@Override
-					public void onSuccess(List<DelegationVO> delegations) {
-						if (delegations.size() == 0) {
-							delegationList_layout.setVisibility(View.GONE);
-						} else {
-							delegationList_layout.setVisibility(View.VISIBLE);
-						}
-
-						for (DelegationVO delegation : delegations) {
-							View view = getItemDelegationView(delegation);
-							delegationListView.addView(view);
-						}
-					}
-				}).execute(seekId);
-	}
-
-	public View getItemDelegationView(DelegationVO delegationVO) {
-		View view = LayoutInflater.from(this).inflate(R.layout.list_delegation_simple_item, null);
-		DelegationHolder holder = new DelegationHolder();
-		holder.layout = view.findViewById(R.id.layout);
-		holder.avator = (ImageView) view.findViewById(R.id.avatar);
-		holder.nickname = (TextView) view.findViewById(R.id.nickname);
-		holder.created_at = (TextView) view.findViewById(R.id.created_at);
-		holder.more = (TextView) view.findViewById(R.id.more);
-		holder.phone = (TextView) view.findViewById(R.id.phone);
-
-		holder.phone.setVisibility(View.GONE);
-
-		final Long id = delegationVO.getId();
-		if (isSeekOwner()) {
-			holder.phone.setVisibility(View.VISIBLE);
-			holder.more.setOnClickListener(new OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					Intent intent = new Intent(SeekActivity.this, DelegationActivity.class);
-					intent.putExtra(Constants.INTENT_OFFER_ID, id);
-					startActivity(intent);
-				}
-			});
-		}
-
-		return view;
-	}
+	/*
+	 * private class DelegationHolder { View layout; ImageView avator; TextView
+	 * nickname; TextView created_at; TextView more; TextView phone; }
+	 * 
+	 * private void initDelegationView() { // TODO: 从服务端加载 delegationList
+	 * DelegationVO tt = new DelegationVO(); delegationList.add(tt);
+	 * delegationList.add(tt);
+	 * 
+	 * if (delegationList.size() == 0) {
+	 * delegationList_layout.setVisibility(View.GONE); } else {
+	 * delegationList_layout.setVisibility(View.VISIBLE); }
+	 * 
+	 * // TODO Auto-generated method stub delegationListView.removeAllViews();
+	 * for (DelegationVO delegationVO : delegationList) {
+	 * delegationListView.addView(getItemDelegationView(delegationVO)); } }
+	 * 
+	 * public View getItemDelegationView(DelegationVO delegationVO) { View view
+	 * = LayoutInflater.from(this).inflate(R.layout.list_delegation_simple_item,
+	 * null); DelegationHolder holder = new DelegationHolder(); holder.layout =
+	 * view.findViewById(R.id.layout); holder.avator = (ImageView)
+	 * view.findViewById(R.id.avatar); holder.nickname = (TextView)
+	 * view.findViewById(R.id.nickname); holder.created_at = (TextView)
+	 * view.findViewById(R.id.created_at); holder.more = (TextView)
+	 * view.findViewById(R.id.more); holder.phone = (TextView)
+	 * view.findViewById(R.id.phone);
+	 * 
+	 * holder.phone.setVisibility(View.GONE);
+	 * 
+	 * final Long id = delegationVO.getId(); if (isSeekOwner()) {
+	 * holder.phone.setVisibility(View.VISIBLE);
+	 * holder.more.setOnClickListener(new OnClickListener() {
+	 * 
+	 * @Override public void onClick(View v) { Intent intent = new
+	 * Intent(SeekActivity.this, DelegationActivity.class);
+	 * intent.putExtra(Constants.INTENT_OFFER_ID, id); startActivity(intent); }
+	 * }); }
+	 * 
+	 * return view; }
+	 */
 
 	private class OfferHolder {
 		View layout;
@@ -368,6 +353,8 @@ public class SeekActivity extends Activity {
 		TextView accept_button;
 		TextView status;
 		TextView content;
+		TextView totalPoint;
+		TextView delegation_info_btn;
 	}
 
 	private void initOfferView() {
@@ -400,6 +387,9 @@ public class SeekActivity extends Activity {
 		holder.accept_button = (TextView) view.findViewById(R.id.accept_button);
 		holder.status = (TextView) view.findViewById(R.id.status);
 		holder.content = (TextView) view.findViewById(R.id.content);
+		holder.totalPoint = (TextView) view.findViewById(R.id.totalPoint);
+		holder.delegation_info_btn = (TextView) view.findViewById(R.id.delegation_info_btn);
+
 		holder.accept_button.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -411,7 +401,8 @@ public class SeekActivity extends Activity {
 							@Override
 							public void onSuccess(DelegationVO result) {
 								// 接受应征后进行界面操作
-								holder.status.setText("已委托");
+								// holder.status.setText("已委托");
+								holder.delegation_info_btn.setVisibility(View.VISIBLE); // 查看委托按钮
 								holder.accept_button.setVisibility(View.GONE);
 								holder.status.setVisibility(View.VISIBLE);
 							}
@@ -419,24 +410,35 @@ public class SeekActivity extends Activity {
 			}
 		});
 
+		holder.delegation_info_btn.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// TODO 查看委托按钮
+			}
+		});
+
 		String status = "";
 
 		if (offer.getStatus().equals(net.ipetty.ibang.vo.Constants.OFFER_STATUS_OFFERED)) {
 			status = "应征中";
-		} else if (offer.getStatus().equals(net.ipetty.ibang.vo.Constants.OFFER_STATUS_DELEGATED)) {
+		} else {
 			status = "已委托";
-		} else if (offer.getStatus().equals(net.ipetty.ibang.vo.Constants.OFFER_STATUS_FINISHED)) {
-			status = "已完成";
-		} else if (offer.getStatus().equals(net.ipetty.ibang.vo.Constants.OFFER_STATUS_DELEGATED)) {
-			status = "已关闭";
 		}
 		bindTime(offer.getCreatedOn(), holder.created_at);
 		holder.status.setText(status);
 		holder.content.setText(offer.getContent());
 
-		if (isSeekOwner() && offer.getStatus().equals(net.ipetty.ibang.vo.Constants.OFFER_STATUS_OFFERED)) {
-			holder.accept_button.setVisibility(View.VISIBLE);
+		holder.delegation_info_btn.setVisibility(View.GONE); // 查看委托按钮
+
+		// TODO: 如果是应征人员 应该和 seekOwner权限一致 待修改逻辑
+		if (isSeekOwner()) {
 			holder.status.setVisibility(View.GONE);
+			if (offer.getStatus().equals(net.ipetty.ibang.vo.Constants.OFFER_STATUS_OFFERED)) {
+				holder.accept_button.setVisibility(View.VISIBLE);
+			} else {
+				holder.delegation_info_btn.setVisibility(View.VISIBLE);
+				// TODO: 看到的 offer的内容是否变成电话号码？？？？
+			}
 		} else {
 			holder.accept_button.setVisibility(View.GONE);
 			holder.status.setVisibility(View.VISIBLE);
@@ -445,6 +447,7 @@ public class SeekActivity extends Activity {
 		int userId = offer.getOffererId();
 		UserVO user = GetUserByIdSynchronously.get(SeekActivity.this, userId);
 		bindUser(user, holder.avator, holder.nickname);
+		holder.totalPoint.setText("积分" + String.valueOf(user.getSeekerTotalPoint()));
 		return view;
 	}
 
