@@ -1,5 +1,7 @@
 package net.ipetty.ibang.android.seek;
 
+import java.util.List;
+
 import net.ipetty.ibang.R;
 import net.ipetty.ibang.android.core.ActivityManager;
 import net.ipetty.ibang.android.core.Constants;
@@ -10,6 +12,7 @@ import net.ipetty.ibang.android.core.util.JSONUtils;
 import net.ipetty.ibang.android.core.util.NetWorkUtils;
 import net.ipetty.ibang.android.main.SeekAdapter;
 import net.ipetty.ibang.android.sdk.context.ApiContext;
+import net.ipetty.ibang.vo.SeekVO;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -40,6 +43,7 @@ public class MySeekActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_my_seek);
 		ActivityManager.getInstance().addActivity(this);
+
 		/* action bar */
 		ImageView btnBack = (ImageView) this.findViewById(R.id.action_bar_left_image);
 		TextView text = (TextView) this.findViewById(R.id.action_bar_title);
@@ -60,13 +64,15 @@ public class MySeekActivity extends Activity {
 			}
 		});
 
-		listView.hideMoreView();
+		// listView.hideMoreView();
 		listView.setOnRefreshListener(new OnRefreshListener<ListView>() {
 			@Override
 			public void onRefresh(PullToRefreshBase<ListView> refreshView) {
 				String label = DateUtils.formatDateTime(MySeekActivity.this, getRefreshTime(),
 						DateUtils.FORMAT_SHOW_TIME | DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_ABBREV_ALL);
 				refreshView.getLoadingLayoutProxy().setLastUpdatedLabel(label);
+
+				loadSeek(true);
 			}
 		});
 
@@ -75,14 +81,23 @@ public class MySeekActivity extends Activity {
 			public void onLastItemVisible() {
 				// TODO Auto-generated method stub
 				if (hasMore) {
-
+					loadSeek(false);
 				}
 			}
 		});
 
+		loadSeek(true);
+	}
+
+	public void loadSeek(boolean isRefresh) {
+		// TODO Auto-generated method stub
+		if (isRefresh) {
+			pageNumber = 0;
+		}
 		// 加载数据
+
 		new ListSeeksByUserIdTask(MySeekActivity.this).setListener(
-				new ListSeeksByUserIdTaskListener(MySeekActivity.this, adapter, listView)).execute(
+				new ListSeeksByUserIdTaskListener(MySeekActivity.this, adapter, listView, isRefresh)).execute(
 				ApiContext.getInstance(MySeekActivity.this).getCurrentUserId(), pageNumber++, pageSize);
 	}
 
@@ -95,6 +110,17 @@ public class MySeekActivity extends Activity {
 		}
 
 		return MyAppStateManager.getLastRefrsh4Home(MySeekActivity.this);
+	}
+
+	public void loadMoreForResult(List<SeekVO> result) {
+		// TODO Auto-generated method stub
+		if (result.size() < pageSize) {
+			hasMore = false;
+			listView.hideMoreView();
+		} else {
+			hasMore = true;
+			listView.showMoreView();
+		}
 	}
 
 }
