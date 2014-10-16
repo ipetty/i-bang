@@ -46,10 +46,11 @@ public class DelegationActivity extends Activity {
 
 	private ImageView delegation_avatar;
 	private TextView delegation_nickname;
-	private TextView delegation_created_at;
+	private TextView delegation_created_on;
+	private TextView delegation_phone;
 	private View delegation_contact_layout;
-	private TextView delegation_btn;
-	private View delegation_btn_layout;
+	private TextView finish_delegation_btn;
+	private View finish_delegation_btn_layout;
 	private TextView close_delegation_btn;
 	private View close_delegation_btn_layout;
 	private View delegation_evaluation_layout;
@@ -60,9 +61,9 @@ public class DelegationActivity extends Activity {
 
 	private SeekVO seekVO;
 	private DelegationVO delegationVO;
-	private UserVO seekUser;
-	private UserVO delegationUser;
-	private UserVO user;
+	private UserVO seeker;
+	private UserVO offerer;
+	private UserVO currentUser;
 	private Long seekId;
 	private Long offerId;
 	private Long delegationId;
@@ -85,16 +86,18 @@ public class DelegationActivity extends Activity {
 		seek_created_at = (TextView) this.findViewById(R.id.created_at);
 		seek_nickname = (TextView) this.findViewById(R.id.nickname);
 		seek_closedOn = (TextView) this.findViewById(R.id.closedOn);
+		seek_phone = (TextView) this.findViewById(R.id.phone);
 		seek_contact_layout = this.findViewById(R.id.contact_layout);
 		seek_evaluation_layout = this.findViewById(R.id.seek_evaluation_layout);// 评分布局，对方评分后显示
 		seek_evaluation = (TextView) this.findViewById(R.id.seek_evaluation);
 
 		delegation_avatar = (ImageView) this.findViewById(R.id.delegation_avatar);
 		delegation_nickname = (TextView) this.findViewById(R.id.delegation_nickname);
-		delegation_created_at = (TextView) this.findViewById(R.id.delegation_created_at);
+		delegation_created_on = (TextView) this.findViewById(R.id.delegation_created_at);
+		delegation_phone = (TextView) this.findViewById(R.id.delegation_phone);
 		delegation_contact_layout = this.findViewById(R.id.delegation_contact_layout);
-		delegation_btn = (TextView) this.findViewById(R.id.delegation_btn);
-		delegation_btn_layout = this.findViewById(R.id.delegation_btn_layout); // 完成委托按钮
+		finish_delegation_btn = (TextView) this.findViewById(R.id.delegation_btn);
+		finish_delegation_btn_layout = this.findViewById(R.id.delegation_btn_layout); // 完成委托按钮
 		close_delegation_btn = (TextView) this.findViewById(R.id.close_delegation_btn);
 		close_delegation_btn_layout = this.findViewById(R.id.close_delegation_btn_layout); // 关闭/中止委托按钮
 
@@ -111,7 +114,7 @@ public class DelegationActivity extends Activity {
 		});
 
 		// 获取当前用户
-		user = ApiContext.getInstance(this).getCurrentUser();
+		currentUser = ApiContext.getInstance(this).getCurrentUser();
 
 		// 获取委托信息
 		offerId = this.getIntent().getExtras().getLong(Constants.INTENT_OFFER_ID);
@@ -123,7 +126,7 @@ public class DelegationActivity extends Activity {
 						// 获取委托信息
 						delegationVO = result;
 						if (result == null) {
-							Toast.makeText(DelegationActivity.this, "找不到对应的委托", Toast.LENGTH_SHORT);
+							Toast.makeText(DelegationActivity.this, "找不到对应的委托", Toast.LENGTH_SHORT).show();
 							return;
 						}
 
@@ -138,30 +141,33 @@ public class DelegationActivity extends Activity {
 										seekVO = result;
 										// 获取求助信息
 										if (result == null) {
-											Toast.makeText(DelegationActivity.this, "找不到对应的求助", Toast.LENGTH_SHORT);
+											Toast.makeText(DelegationActivity.this, "找不到对应的求助", Toast.LENGTH_SHORT)
+													.show();
 											return;
 										}
 
-										seekUser = GetUserByIdSynchronously.get(DelegationActivity.this,
+										seeker = GetUserByIdSynchronously.get(DelegationActivity.this,
 												seekVO.getSeekerId());
-										bindUser(seekUser, seek_avatar, seek_nickname);
+										bindUser(seeker, seek_avatar, seek_nickname);
 										bindTime(seekVO.getCreatedOn(), seek_created_at);
 										seek_content.setText(seekVO.getContent());
+										seek_phone.setText(seeker.getPhone());
 
 										if (seekVO.getClosedOn() != null) {
 											Calendar c = Calendar.getInstance();
 											c.setTime(seekVO.getClosedOn());
 											seek_closedOn.setText(DateUtils.toDateString(c.getTime()));
 										}
-
 									}
 								}).execute(seekId);
 
-						delegationUser = new UserVO();
-						bindUser(delegationUser, delegation_avatar, delegation_nickname);
-						bindTime(delegationVO.getCreatedOn(), delegation_created_at);
+						offerer = GetUserByIdSynchronously.get(DelegationActivity.this, delegationVO.getOffererId());
+						bindUser(offerer, delegation_avatar, delegation_nickname);
+						bindTime(delegationVO.getCreatedOn(), delegation_created_on);
+						delegation_phone.setText(offerer.getPhone());
 
-						delegation_btn.setOnClickListener(new OnClickListener() {
+						// 完成委托按钮
+						finish_delegation_btn.setOnClickListener(new OnClickListener() {
 							@Override
 							public void onClick(View v) {
 								new FinishDelegationTask(DelegationActivity.this).setListener(
@@ -169,12 +175,21 @@ public class DelegationActivity extends Activity {
 											@Override
 											public void onSuccess(Boolean result) {
 												// TODO 完成委托后的界面操作
-
+												finish_delegation_btn_layout.setVisibility(View.GONE);
 											}
 										}).execute(delegationId);
 							}
 						});
+						// 完成委托按钮可见性
+						if (isDelegationOwner()
+								&& net.ipetty.ibang.vo.Constants.DELEGATE_STATUS_DELEGATED.equals(delegationVO
+										.getStatus())) {
+							finish_delegation_btn_layout.setVisibility(View.VISIBLE);
+						} else {
+							finish_delegation_btn_layout.setVisibility(View.GONE);
+						}
 
+						// 关闭委托按钮
 						close_delegation_btn.setOnClickListener(new OnClickListener() {
 							@Override
 							public void onClick(View v) {
@@ -183,23 +198,31 @@ public class DelegationActivity extends Activity {
 											@Override
 											public void onSuccess(Boolean result) {
 												// TODO 关闭委托后的界面操作
-
+												close_delegation_btn_layout.setVisibility(View.GONE);
 											}
 										}).execute(delegationId);
 							}
 						});
+						// 关闭委托按钮可见性
+						if (isDelegationOwner()
+								&& net.ipetty.ibang.vo.Constants.DELEGATE_STATUS_DELEGATED.equals(delegationVO
+										.getStatus())) {
+							close_delegation_btn_layout.setVisibility(View.VISIBLE);
+						} else {
+							close_delegation_btn_layout.setVisibility(View.GONE);
+						}
 					}
 				}).execute(offerId);
 	}
 
-	// TODO: 是否seek的创建者
+	// 当前用户是否为当前求助的求助者
 	private boolean isSeekOwner() {
-		return true;
+		return currentUser != null && seeker != null && currentUser.getId().equals(seeker.getId());
 	}
 
-	// TODO: 是否委托的创建者
+	// 当前用户是否为当前委托的帮助者
 	private boolean isDelegationOwner() {
-		return false;
+		return currentUser != null && offerer != null && currentUser.getId().equals(offerer.getId());
 	}
 
 	private void bindTime(Date date, TextView time) {
