@@ -1,6 +1,8 @@
 package net.ipetty.ibang.model;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import net.ipetty.ibang.vo.EvaluationVO;
 
@@ -40,6 +42,14 @@ public class Evaluation extends AbstractEntity {
 		Evaluation entity = new Evaluation();
 		BeanUtils.copyProperties(vo, entity);
 		return entity;
+	}
+
+	public static List<EvaluationVO> listToVoList(List<Evaluation> evaluationList) {
+		List<EvaluationVO> voList = new ArrayList<EvaluationVO>();
+		for (Evaluation evaluation : evaluationList) {
+			voList.add(evaluation.toVO());
+		}
+		return voList;
 	}
 
 	public Long getId() {

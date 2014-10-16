@@ -85,10 +85,23 @@ public class EvaluationDaoImpl extends BaseJdbcDaoSupport implements EvaluationD
 		return super.queryUniqueEntity(GET_BY_ID_SQL, ROW_MAPPER, id);
 	}
 
+	private static final String LIST_BY_DELEGATION_ID_SQL = "select id from evaluation where delegation_id=?";
+
+	/**
+	 * 获取委托对应的评价
+	 */
+	@Override
+	public List<Long> listByDelegationId(Long delegationId) {
+		return super.getJdbcTemplate().query(LIST_BY_DELEGATION_ID_SQL, LONG_ROW_MAPPER, delegationId);
+	}
+
 	private static final String LIST_BY_EVALUATOR_ID_SQL = "select id from evaluation where evaluator_id=? order by created_on desc limit ?,?";
 
 	/**
 	 * 获取指定用户给出的评价ID列表
+	 * 
+	 * @param pageNumber
+	 *            分页页码，从0开始
 	 */
 	public List<Long> listByEvaluatorId(Integer userId, int pageNumber, int pageSize) {
 		return super.getJdbcTemplate().query(LIST_BY_EVALUATOR_ID_SQL, LONG_ROW_MAPPER, userId, pageNumber * pageSize,
@@ -99,6 +112,9 @@ public class EvaluationDaoImpl extends BaseJdbcDaoSupport implements EvaluationD
 
 	/**
 	 * 获取指定用户获得的评价ID列表
+	 * 
+	 * @param pageNumber
+	 *            分页页码，从0开始
 	 */
 	@Override
 	public List<Long> listByEvaluateTargetId(Integer userId, int pageNumber, int pageSize) {

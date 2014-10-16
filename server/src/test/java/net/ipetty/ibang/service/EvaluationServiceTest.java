@@ -120,6 +120,9 @@ public class EvaluationServiceTest extends BaseServiceTest {
 
 		evaluations = evaluationService.listByEvaluateTargetId(user.getId(), 0, 20);
 		Assert.assertEquals(1, evaluations.size());
+
+		evaluations = evaluationService.listByDelegationId(delegation.getId());
+		Assert.assertEquals(2, evaluations.size());
 	}
 
 }

@@ -135,7 +135,22 @@ public class EvaluationService extends BaseService {
 	}
 
 	/**
+	 * 获取委托对应的评价
+	 */
+	public List<Evaluation> listByDelegationId(Long delegationId) {
+		List<Long> evaluationIds = evaluationDao.listByDelegationId(delegationId);
+		List<Evaluation> evaluations = new ArrayList<Evaluation>();
+		for (Long evaluationId : evaluationIds) {
+			evaluations.add(evaluationDao.getById(evaluationId));
+		}
+		return evaluations;
+	}
+
+	/**
 	 * 获取指定用户给出的评价列表
+	 * 
+	 * @param pageNumber
+	 *            分页页码，从0开始
 	 */
 	public List<Evaluation> listByEvaluatorId(Integer userId, int pageNumber, int pageSize) {
 		List<Long> evaluationIds = evaluationDao.listByEvaluatorId(userId, pageNumber, pageSize);
@@ -148,6 +163,9 @@ public class EvaluationService extends BaseService {
 
 	/**
 	 * 获取指定用户获得的评价列表
+	 * 
+	 * @param pageNumber
+	 *            分页页码，从0开始
 	 */
 	public List<Evaluation> listByEvaluateTargetId(Integer userId, int pageNumber, int pageSize) {
 		List<Long> evaluationIds = evaluationDao.listByEvaluateTargetId(userId, pageNumber, pageSize);
