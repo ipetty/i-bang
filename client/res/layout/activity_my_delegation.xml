@@ -14,7 +14,18 @@
         layout="@layout/action_bar_simple_back" />
 <LinearLayout
  	 	    android:layout_width="match_parent"
- 	 	    android:layout_height="42dp" >
+ 	 	    android:layout_height="42dp" 
+ 	 	    android:visibility="gone">
+ 	 	        <TextView
+ 	 	        android:id="@+id/textView1"
+ 	 	        android:layout_width="match_parent"
+ 	 	        android:layout_height="match_parent"
+ 	 	        android:layout_gravity="center"
+ 	 	        android:gravity="center"
+ 	 	        android:background="@drawable/list_color_item_bg_white"
+ 	 	        android:layout_weight="1"
+ 	 	        android:text="全部" />
+<include layout="@layout/line_vertical_divider"/>
  	 	    <TextView
  	 	        android:id="@+id/textView1"
  	 	        android:layout_width="match_parent"
@@ -61,9 +72,10 @@
  	 	    </LinearLayout>
  	 	    <include layout="@layout/line_horizontal_divider"/>
 
-       <ListView
-           android:id="@+id/listView"
-           android:layout_width="match_parent"
-           android:layout_height="wrap_content" >
-       </ListView>
+      <net.ipetty.ibang.android.core.ui.MyPullToRefreshListView
+          android:id="@+id/listView"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent" >
+
+       </net.ipetty.ibang.android.core.ui.MyPullToRefreshListView>
 </LinearLayout>

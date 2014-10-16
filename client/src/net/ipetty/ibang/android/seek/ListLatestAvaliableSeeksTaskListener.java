@@ -69,8 +69,6 @@ public class ListLatestAvaliableSeeksTaskListener extends DefaultTaskListener<Li
 			adapter.addData(seeks);
 		}
 		listView.onRefreshComplete();
-		Log.d(TAG, "--------------------->");
-
 		if (fragment instanceof MainHomeFragment) {
 			((MainHomeFragment) fragment).loadMoreForResult(seeks);
 		}

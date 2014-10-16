@@ -21,11 +21,21 @@ public class ListSeeksByUserIdTaskListener extends DefaultTaskListener<List<Seek
 
 	private final SeekAdapter adapter;
 	private final MyPullToRefreshListView listView;
+	private boolean isRefresh;
 
 	public ListSeeksByUserIdTaskListener(Activity activity, SeekAdapter adapter, MyPullToRefreshListView listView) {
 		super(activity);
 		this.adapter = adapter;
 		this.listView = listView;
+	}
+
+	public ListSeeksByUserIdTaskListener(Activity activity, SeekAdapter adapter, MyPullToRefreshListView listView,
+			boolean isRefresh) {
+		super(activity);
+		// TODO Auto-generated constructor stub
+		this.adapter = adapter;
+		this.listView = listView;
+		this.isRefresh = isRefresh;
 	}
 
 	@Override
@@ -35,6 +45,17 @@ public class ListSeeksByUserIdTaskListener extends DefaultTaskListener<List<Seek
 		if (null != listView) {
 			listView.onRefreshComplete();
 		}
+
+		if (isRefresh) {
+			adapter.loadData(seeks);
+		} else {
+			adapter.addData(seeks);
+		}
+		listView.onRefreshComplete();
+		if (activity instanceof MySeekActivity) {
+			((MySeekActivity) activity).loadMoreForResult(seeks);
+		}
+
 	}
 
 	@Override
