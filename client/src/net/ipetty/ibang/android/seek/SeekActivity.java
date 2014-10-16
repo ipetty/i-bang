@@ -117,7 +117,6 @@ public class SeekActivity extends Activity {
 		seek_created_at = (TextView) this.findViewById(R.id.seek_created_at);
 		seek_username = (TextView) this.findViewById(R.id.seek_username);
 		seek_avatar = (ImageView) this.findViewById(R.id.seek_avatar);
-		// TODO：该字段显示(应征数/委托总数)；
 		number = (TextView) this.findViewById(R.id.number);
 
 		contact_layout = this.findViewById(R.id.contact_layout);
@@ -350,16 +349,26 @@ public class SeekActivity extends Activity {
 				new DefaultTaskListener<List<OfferVO>>(SeekActivity.this) {
 					@Override
 					public void onSuccess(List<OfferVO> offers) {
-						if (offers.size() == 0) {
+						int delegationNum = 0;
+						int offerNum = offers.size();
+
+						if (offerNum == 0) {
 							offerList_layout.setVisibility(View.GONE);
 						} else {
 							offerList_layout.setVisibility(View.VISIBLE);
 						}
 
 						for (OfferVO offer : offers) {
+							if (net.ipetty.ibang.vo.Constants.OFFER_STATUS_DELEGATED.equals(offer.getStatus())
+									|| net.ipetty.ibang.vo.Constants.OFFER_STATUS_FINISHED.equals(offer.getStatus())) {
+								++delegationNum;
+							}
 							View view = getItemOfferView(offer);
 							offerListView.addView(view);
 						}
+
+						// 显示(应征数/委托总数)；
+						number.setText(delegationNum + "/" + offerNum);
 					}
 				}).execute(seekId);
 	}
@@ -422,9 +431,11 @@ public class SeekActivity extends Activity {
 				startActivity(intent);
 			}
 		});
-		// 查看委托按钮可见性
-		if (net.ipetty.ibang.vo.Constants.OFFER_STATUS_DELEGATED.equals(offer.getStatus())
-				|| net.ipetty.ibang.vo.Constants.OFFER_STATUS_FINISHED.equals(offer.getStatus())) {
+		// 查看委托按钮可见性，求助者与委托人能看到
+		if (user != null
+				&& (isSeekOwner() || offer.getOffererId().equals(user.getId()))
+				&& (net.ipetty.ibang.vo.Constants.OFFER_STATUS_DELEGATED.equals(offer.getStatus()) || net.ipetty.ibang.vo.Constants.OFFER_STATUS_FINISHED
+						.equals(offer.getStatus()))) {
 			holder.delegation_info_btn.setVisibility(View.VISIBLE);
 			holder.status.setVisibility(View.GONE);
 		} else {
