@@ -92,7 +92,7 @@ public class SeekActivity extends Activity {
 		IntentFilter filter = new IntentFilter();
 		filter.addAction(Constants.BROADCAST_INTENT_IS_LOGIN);
 		filter.addAction(Constants.BROADCAST_INTENT_UPDATA_USER);
-		filter.addAction(Constants.BROADCAST_INTENT_PUBLISH_SEEK);
+		filter.addAction(Constants.BROADCAST_INTENT_PUBLISH_OFFER);
 		this.registerReceiver(broadcastreciver, filter);
 
 		isLogin = ApiContext.getInstance(this).isAuthorized();
@@ -513,7 +513,7 @@ public class SeekActivity extends Activity {
 			if (Constants.BROADCAST_INTENT_UPDATA_USER.equals(action)) {
 				initUser();
 			}
-			if (Constants.BROADCAST_INTENT_PUBLISH_SEEK.equals(action)) {
+			if (Constants.BROADCAST_INTENT_PUBLISH_OFFER.equals(action)) {
 				init();
 			}
 		}

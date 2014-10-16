@@ -27,8 +27,7 @@ public class PublishOfferTaskListener extends DefaultTaskListener<OfferVO> {
 		Log.d(TAG, "publish offer success");
 		Toast.makeText(activity, "发布应征成功！", Toast.LENGTH_SHORT).show();
 
-		// 通知用户更新
-		Intent intent = new Intent(Constants.BROADCAST_INTENT_PUBLISH_SEEK);
+		Intent intent = new Intent(Constants.BROADCAST_INTENT_PUBLISH_OFFER);
 		activity.sendBroadcast(intent);
 
 		activity.finish();
