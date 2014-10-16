@@ -1,6 +1,7 @@
 package net.ipetty.ibang.android.seek;
 
 import net.ipetty.ibang.R;
+import net.ipetty.ibang.android.core.ActivityManager;
 import net.ipetty.ibang.android.main.SeekAdapter;
 import android.app.Activity;
 import android.content.Intent;
@@ -17,7 +18,7 @@ public class MyDelegationActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_my_delegation);
-
+		ActivityManager.getInstance().addActivity(this);
 		listView = (ListView) this.findViewById(R.id.listView);
 		SeekAdapter adapter = new SeekAdapter(this);
 		listView.setAdapter(adapter);

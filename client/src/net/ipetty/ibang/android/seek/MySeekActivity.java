@@ -1,6 +1,7 @@
 package net.ipetty.ibang.android.seek;
 
 import net.ipetty.ibang.R;
+import net.ipetty.ibang.android.core.ActivityManager;
 import net.ipetty.ibang.android.core.Constants;
 import net.ipetty.ibang.android.core.MyAppStateManager;
 import net.ipetty.ibang.android.core.ui.BackClickListener;
@@ -38,7 +39,7 @@ public class MySeekActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_my_seek);
-
+		ActivityManager.getInstance().addActivity(this);
 		/* action bar */
 		ImageView btnBack = (ImageView) this.findViewById(R.id.action_bar_left_image);
 		TextView text = (TextView) this.findViewById(R.id.action_bar_title);

@@ -1,6 +1,7 @@
 package net.ipetty.ibang.android.setting;
 
 import net.ipetty.ibang.R;
+import net.ipetty.ibang.android.core.ActivityManager;
 import net.ipetty.ibang.android.core.ui.BackClickListener;
 
 import org.apache.commons.lang3.StringUtils;
@@ -28,7 +29,7 @@ public class ChangePwdActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_change_pwd);
-
+		ActivityManager.getInstance().addActivity(this);
 		/* action bar */
 		ImageView btnBack = (ImageView) this.findViewById(R.id.action_bar_left_image);
 		TextView text = (TextView) this.findViewById(R.id.action_bar_title);

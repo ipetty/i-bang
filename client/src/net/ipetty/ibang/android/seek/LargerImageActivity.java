@@ -1,6 +1,7 @@
 package net.ipetty.ibang.android.seek;
 
 import net.ipetty.ibang.R;
+import net.ipetty.ibang.android.core.ActivityManager;
 import net.ipetty.ibang.android.core.Constants;
 import net.ipetty.ibang.android.core.util.AppUtils;
 import uk.co.senab.photoview.PhotoViewAttacher;
@@ -33,7 +34,7 @@ public class LargerImageActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_larger_image);
-
+		ActivityManager.getInstance().addActivity(this);
 		Intent intent = getIntent();
 		original_url = intent.getStringExtra(Constants.INTENT_IMAGE_ORIGINAL_KEY);
 		small_url = intent.getStringExtra(Constants.INTENT_IMAGE_SAMILL_KEY);

@@ -1,6 +1,7 @@
 package net.ipetty.ibang.android.user;
 
 import net.ipetty.ibang.R;
+import net.ipetty.ibang.android.core.ActivityManager;
 import net.ipetty.ibang.android.core.Constants;
 import net.ipetty.ibang.android.core.ui.BackClickListener;
 import net.ipetty.ibang.android.core.util.AppUtils;
@@ -42,7 +43,7 @@ public class UserInfoActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_user_info);
-
+		ActivityManager.getInstance().addActivity(this);
 		user = ApiContext.getInstance(UserInfoActivity.this).getCurrentUser();
 
 		seekUserId = this.getIntent().getExtras().getInt(Constants.INTENT_USER_ID);

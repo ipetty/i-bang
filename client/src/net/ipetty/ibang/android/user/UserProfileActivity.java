@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 
 import net.ipetty.ibang.R;
+import net.ipetty.ibang.android.core.ActivityManager;
 import net.ipetty.ibang.android.core.Constants;
 import net.ipetty.ibang.android.core.ui.BackClickListener;
 import net.ipetty.ibang.android.core.ui.ModDialogItem;
@@ -57,7 +58,7 @@ public class UserProfileActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_user_profile);
-
+		ActivityManager.getInstance().addActivity(this);
 		user = ApiContext.getInstance(UserProfileActivity.this).getCurrentUser();
 
 		/* action bar */

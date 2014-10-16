@@ -3,6 +3,7 @@ package net.ipetty.ibang.android.publish;
 import java.io.File;
 
 import net.ipetty.ibang.R;
+import net.ipetty.ibang.android.core.ActivityManager;
 import net.ipetty.ibang.android.core.Constants;
 import net.ipetty.ibang.android.core.ui.BackClickListener;
 import uk.co.senab.photoview.PhotoViewAttacher;
@@ -24,6 +25,7 @@ public class UploadLargerImageActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_upload_larger_image);
+		ActivityManager.getInstance().addActivity(this);
 
 		ImageView btnBack = (ImageView) this.findViewById(R.id.action_bar_left_image);
 		btnBack.setOnClickListener(new BackClickListener(this));
