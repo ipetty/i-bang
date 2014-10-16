@@ -383,6 +383,9 @@ public class SeekActivity extends Activity {
 			contact_layout.setVisibility(View.VISIBLE);
 		}
 
+		holder.status.setText(offer.getStatus());
+		holder.status.setVisibility(View.VISIBLE);
+
 		// 接受应征按钮
 		holder.accept_button.setOnClickListener(new OnClickListener() {
 			@Override
@@ -396,8 +399,8 @@ public class SeekActivity extends Activity {
 							public void onSuccess(DelegationVO result) {
 								// 接受应征后进行界面操作
 								holder.accept_button.setVisibility(View.GONE);
-								holder.status.setVisibility(View.VISIBLE);
 								holder.delegation_info_btn.setVisibility(View.VISIBLE); // 查看委托按钮
+								offer.setStatus(net.ipetty.ibang.vo.Constants.OFFER_STATUS_DELEGATED);
 							}
 						}).execute(delegation);
 			}
@@ -405,6 +408,7 @@ public class SeekActivity extends Activity {
 		// 接受应征按钮可见性
 		if (isLogin && isSeekOwner() && net.ipetty.ibang.vo.Constants.OFFER_STATUS_OFFERED.equals(offer.getStatus())) {
 			holder.accept_button.setVisibility(View.VISIBLE);
+			holder.status.setVisibility(View.GONE);
 		} else {
 			holder.accept_button.setVisibility(View.GONE);
 		}
@@ -422,12 +426,10 @@ public class SeekActivity extends Activity {
 		if (net.ipetty.ibang.vo.Constants.OFFER_STATUS_DELEGATED.equals(offer.getStatus())
 				|| net.ipetty.ibang.vo.Constants.OFFER_STATUS_FINISHED.equals(offer.getStatus())) {
 			holder.delegation_info_btn.setVisibility(View.VISIBLE);
+			holder.status.setVisibility(View.GONE);
 		} else {
 			holder.delegation_info_btn.setVisibility(View.GONE);
 		}
-
-		holder.status.setText(offer.getStatus());
-		holder.status.setVisibility(View.VISIBLE);
 
 		bindTime(offer.getCreatedOn(), holder.created_at);
 		holder.content.setText(offer.getContent());
