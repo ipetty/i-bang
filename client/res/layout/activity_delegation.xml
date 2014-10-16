@@ -250,16 +250,6 @@
                                 android:textSize="12sp" />
 
                             <TextView
-                                android:id="@+id/offer_content"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_alignParentLeft="true"
-                                android:layout_alignParentTop="true"
-                                android:text=""
-                                android:textSize="16dp"
-                                android:color="@color/black_color" />
-
-                            <TextView
                                 android:id="@+id/delegation_nickname"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -271,7 +261,16 @@
                                 android:textColor="@color/base_color"
                                 android:textSize="20sp"
                                 android:textStyle="bold" />
-                        </RelativeLayout>
+  							</RelativeLayout>
+                            <TextView
+                                android:id="@+id/offer_content"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="1111"
+                                android:textSize="16dp"
+                                android:color="@color/black_color" />
+
+                      
                     </LinearLayout>
                 </LinearLayout>
 
