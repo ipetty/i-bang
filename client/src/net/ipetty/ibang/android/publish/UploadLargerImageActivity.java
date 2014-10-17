@@ -9,6 +9,7 @@ import net.ipetty.ibang.android.core.ui.BackClickListener;
 import uk.co.senab.photoview.PhotoViewAttacher;
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -51,6 +52,16 @@ public class UploadLargerImageActivity extends Activity {
 		Uri uri = Uri.fromFile(new File(path));
 		image.setImageURI(uri);
 		mAttacher = new PhotoViewAttacher(image);
+	}
+
+	@Override
+	protected void onDestroy() {
+		// TODO Auto-generated method stub
+		super.onDestroy();
+		BitmapDrawable bd = (BitmapDrawable) image.getDrawable();
+		bd.getBitmap().recycle();
+		image.setImageBitmap(null);
+
 	}
 
 }

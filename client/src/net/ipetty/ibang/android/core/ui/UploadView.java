@@ -7,6 +7,7 @@ import java.util.List;
 import net.ipetty.ibang.R;
 import net.ipetty.ibang.android.core.Constants;
 import net.ipetty.ibang.android.core.MyAppStateManager;
+import net.ipetty.ibang.android.core.util.AppUtils;
 import net.ipetty.ibang.android.core.util.DeviceUtils;
 import net.ipetty.ibang.android.core.util.DialogUtils;
 import net.ipetty.ibang.android.core.util.ImageUtils;
@@ -20,6 +21,9 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.Toast;
+
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 public class UploadView {
 
@@ -35,6 +39,7 @@ public class UploadView {
 	private ArrayList<ModDialogItem> dialogItems;
 
 	private Dialog cameraDialog;
+	private DisplayImageOptions options = AppUtils.getNormalImageOptions();
 
 	public static int REQUEST_CODE__DELETE = 59;
 	public int curIndex;
@@ -78,7 +83,10 @@ public class UploadView {
 				upload.setImageResource(R.drawable.default_image_add);
 			}
 			if (i < j) {
-				upload.setImageURI(Uri.fromFile(pathList.get(i)));
+				ImageLoader.getInstance().displayImage(Uri.fromFile(pathList.get(i)).toString(), upload);
+				// .displayImage(Uri.fromFile(pathList.get(i)), upload,
+				// options);
+				// upload.setImageURI(Uri.fromFile(pathList.get(i)));
 			}
 		}
 	}
