@@ -15,6 +15,7 @@ public class Constants {
 	public static final String BROADCAST_INTENT_NEW_MESSAGE = "BROADCAST_INTENT_NEW_MESSAGE";
 	public static final String BROADCAST_INTENT_PUBLISH_SEEK = "BROADCAST_INTENT_PUBLISH_SEEK";
 	public static final String BROADCAST_INTENT_PUBLISH_OFFER = "BROADCAST_INTENT_PUBLISH_OFFER";
+	public static final String BROADCAST_INTENT_EVALUATE = "BROADCAST_INTENT_EVALUATE";
 
 	public final static String INTENT_IMAGE_ORIGINAL_KEY = "ORIGINAL_url";
 	public final static String INTENT_IMAGE_SAMILL_KEY = "SAMILL_url";

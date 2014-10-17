@@ -41,14 +41,15 @@ public class EvaluationActivity extends Activity {
 		evaluation.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				// TODO 评价
+				// 评价
 				EvaluationVO e = new EvaluationVO();
 				e.setDelegationId(delegationId);
 				e.setType(evaluatorType);
 				e.setEvaluatorId(evaluatorId);
 				e.setEvaluateTargetId(evaluateTargetId);
 				e.setPoint(point);
-				// new
+				new EvaluateTask(EvaluationActivity.this)
+						.setListener(new EvaluateTaskListener(EvaluationActivity.this)).execute(e);
 			}
 		});
 

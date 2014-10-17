@@ -28,7 +28,10 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.util.CollectionUtils;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -86,6 +89,9 @@ public class DelegationActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_delegation);
 		ActivityManager.getInstance().addActivity(this);
+		IntentFilter filter = new IntentFilter();
+		filter.addAction(Constants.BROADCAST_INTENT_EVALUATE);
+		this.registerReceiver(broadcastreciver, filter);
 
 		/* action bar */
 		ImageView btnBack = (ImageView) this.findViewById(R.id.action_bar_left_image);
@@ -131,8 +137,13 @@ public class DelegationActivity extends Activity {
 		String offerJSON = this.getIntent().getExtras().getString(Constants.INTENT_OFFER_JSON);
 		offerVO = JSONUtils.fromJSON(offerJSON, OfferVO.class);
 
-		// 求助信息
 		seeker = GetUserByIdSynchronously.get(DelegationActivity.this, seekVO.getSeekerId());
+
+		loadData();
+	}
+
+	private void loadData() {
+		// 求助信息
 		bindUser(seeker, seek_avatar, seek_nickname);
 		bindTime(seekVO.getCreatedOn(), seek_created_at);
 		seek_content.setText(seekVO.getContent());
@@ -252,10 +263,8 @@ public class DelegationActivity extends Activity {
 										new DefaultTaskListener<Boolean>(DelegationActivity.this) {
 											@Override
 											public void onSuccess(Boolean result) {
-												// TODO 完成委托后的界面操作
-												finish_delegation_btn_layout.setVisibility(View.GONE);
-												close_delegation_btn_layout.setVisibility(View.GONE);
-												evaluation_layout.setVisibility(View.VISIBLE);
+												// 刷新界面
+												loadData();
 											}
 										}).execute(delegationId);
 							}
@@ -325,6 +334,22 @@ public class DelegationActivity extends Activity {
 				startActivity(intent);
 			}
 		});
+	}
+
+	private BroadcastReceiver broadcastreciver = new BroadcastReceiver() {
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			String action = intent.getAction();
+			if (Constants.BROADCAST_INTENT_EVALUATE.equals(action)) {
+				loadData();
+			}
+		}
+	};
+
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+		unregisterReceiver(broadcastreciver);
 	}
 
 }
