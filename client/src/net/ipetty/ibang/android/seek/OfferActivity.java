@@ -15,6 +15,7 @@ import net.ipetty.ibang.android.core.util.PrettyDateFormat;
 import net.ipetty.ibang.android.sdk.context.ApiContext;
 import net.ipetty.ibang.android.user.GetUserByIdSynchronously;
 import net.ipetty.ibang.android.user.UserInfoActivity;
+import net.ipetty.ibang.vo.DelegationVO;
 import net.ipetty.ibang.vo.OfferVO;
 import net.ipetty.ibang.vo.SeekVO;
 import net.ipetty.ibang.vo.UserVO;
@@ -57,8 +58,8 @@ public class OfferActivity extends Activity {
 
 	private SeekVO seekVO;
 	private OfferVO offerVO;
-	private UserVO seekUser;
-	private UserVO offerUser;
+	private UserVO seeker;
+	private UserVO offerer;
 	private UserVO user;
 	private Long offerId;
 
@@ -99,79 +100,129 @@ public class OfferActivity extends Activity {
 
 		user = ApiContext.getInstance(OfferActivity.this).getCurrentUser();
 
-		// 加载数据
-		loadData();
+		offerId = this.getIntent().getExtras().getLong(Constants.INTENT_OFFER_ID);
+		new GetOfferByIdTask(OfferActivity.this).setListener(new DefaultTaskListener<OfferVO>(OfferActivity.this) {
+			@Override
+			public void onSuccess(OfferVO result) {
+				offerVO = result;
+				new GetSeekByIdTask(OfferActivity.this).setListener(
+						new DefaultTaskListener<SeekVO>(OfferActivity.this) {
+							@Override
+							public void onSuccess(SeekVO result) {
+								seekVO = result;
+
+								seeker = GetUserByIdSynchronously.get(OfferActivity.this, seekVO.getSeekerId());
+								bindUser(seeker, seek_avatar, seek_nickname);
+								bindTime(seekVO.getCreatedOn(), seek_created_at);
+								seek_content.setText(seekVO.getContent());
+								seek_phone.setText(seeker.getPhone());
+								if (seekVO.getClosedOn() != null) {
+									Calendar c = Calendar.getInstance();
+									c.setTime(seekVO.getClosedOn());
+									seek_closedOn.setText(DateUtils.toDateString(c.getTime()));
+								}
+
+								// 加载数据
+								loadData();
+							}
+						}).execute(offerVO.getSeekId());
+			}
+		}).execute(offerId);
 	}
 
 	private void loadData() {
-		// 加载数据
-		offerId = this.getIntent().getExtras().getLong(Constants.INTENT_OFFER_ID);
-		String offerJSON = this.getIntent().getExtras().getString(Constants.INTENT_OFFER_JSON);
-		offerVO = JSONUtils.fromJSON(offerJSON, OfferVO.class);
-
-		new GetSeekByIdTask(OfferActivity.this).setListener(new DefaultTaskListener<SeekVO>(OfferActivity.this) {
-			@Override
-			public void onSuccess(SeekVO result) {
-				seekVO = result;
-
-				seekUser = GetUserByIdSynchronously.get(OfferActivity.this, seekVO.getSeekerId());
-				bindUser(seekUser, seek_avatar, seek_nickname);
-				bindTime(seekVO.getCreatedOn(), seek_created_at);
-				seek_content.setText(seekVO.getContent());
-				seek_phone.setText(seekUser.getPhone());
-				if (seekVO.getClosedOn() != null) {
-					Calendar c = Calendar.getInstance();
-					c.setTime(seekVO.getClosedOn());
-					seek_closedOn.setText(DateUtils.toDateString(c.getTime()));
-				}
-			}
-		}).execute(offerVO.getSeekId());
-
-		offerUser = user;
-		bindUser(offerUser, offer_avatar, offer_nickname);
+		offerer = user;
+		bindUser(offerer, offer_avatar, offer_nickname);
 		bindTime(offerVO.getCreatedOn(), offer_created_at);
 		offer_content.setText(offerVO.getContent());
-		offer_totalPoint.setText("积分" + String.valueOf(offerUser.getSeekerTotalPoint()));
-		offer_phone.setText(offerUser.getPhone());
+		offer_totalPoint.setText("积分" + String.valueOf(offerer.getSeekerTotalPoint()));
+		offer_phone.setText(offerer.getPhone());
 
 		seek_contact_layout.setVisibility(View.GONE);
 		offer_contact_layout.setVisibility(View.GONE);
 		offer_close_layout.setVisibility(View.GONE);
+		delegation_layout.setVisibility(View.GONE);
+		if (isSeekOwner() || isOfferOwner()) {
+			seek_contact_layout.setVisibility(View.VISIBLE);
+			offer_contact_layout.setVisibility(View.VISIBLE);
+		}
 
-		// TODO 可见性
-		// if
-		// (net.ipetty.ibang.vo.Constants.OFFER_STATUS_OFFERED.equals(offerVO.getStatus())
-		// ||
-		// net.ipetty.ibang.vo.Constants.OFFER_STATUS_DELEGATED.equals(offerVO.getStatus()))
-		// {
-		// offer_close_layout.setVisibility(View.VISIBLE);
-		// }
+		// 接受应征/查看委托按钮
+		if (net.ipetty.ibang.vo.Constants.OFFER_STATUS_OFFERED.equals(offerVO.getStatus())) {
+			if (isSeekOwner()) {
+				delegation.setText("接受应征");
+				delegation.setOnClickListener(new OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						// 接受应征
+						DelegationVO delegation = new DelegationVO();
+						delegation.setSeekId(seekVO.getId());
+						delegation.setOfferId(offerVO.getId());
+						new AcceptOfferTask(OfferActivity.this).setListener(
+								new DefaultTaskListener<DelegationVO>(OfferActivity.this) {
+									@Override
+									public void onSuccess(DelegationVO result) {
+										// 接受应征后进行界面操作
+										changeDelegationButtonToShowDelegation();
+									}
+								}).execute(delegation);
+					}
+				});
+				delegation_layout.setVisibility(View.VISIBLE);
+			}
+		} else if (isSeekOwner() || isOfferOwner()) {
+			changeDelegationButtonToShowDelegation();
+		}
 
-		delegation.setText("接受应征");
+		// 关闭应征按钮
+		offer_close.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				new CloseOfferTask(OfferActivity.this).setListener(
+						new DefaultTaskListener<Boolean>(OfferActivity.this) {
+							@Override
+							public void onSuccess(Boolean result) {
+								// 关闭应征后的界面操作
+								offer_close_layout.setVisibility(View.GONE);
+							}
+						}).execute(offerId);
+			}
+		});
+		// 关闭应征按钮可见性
+		if (isOfferOwner()
+				&& (net.ipetty.ibang.vo.Constants.OFFER_STATUS_OFFERED.equals(offerVO.getStatus()) || net.ipetty.ibang.vo.Constants.OFFER_STATUS_DELEGATED
+						.equals(offerVO.getStatus()))) {
+			offer_close_layout.setVisibility(View.VISIBLE);
+		} else {
+			offer_close_layout.setVisibility(View.GONE);
+		}
+	}
+
+	private void changeDelegationButtonToShowDelegation() {
 		delegation.setText("查看委托");
 		delegation.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				// TODO 应征 或者 查看委托单
+				// 查看委托单
+				Intent intent = new Intent(OfferActivity.this, DelegationActivity.class);
+				intent.putExtra(Constants.INTENT_OFFER_ID, offerVO.getId()); // 查看委托界面是通过offerId获取委托的
+				intent.putExtra(Constants.INTENT_OFFER_JSON, JSONUtils.toJson(offerVO).toString());
+				intent.putExtra(Constants.INTENT_SEEK_ID, seekVO.getId());
+				intent.putExtra(Constants.INTENT_SEEK_JSON, JSONUtils.toJson(seekVO).toString());
+				startActivity(intent);
 			}
 		});
-
-		offer_close.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				// TODO 关闭应征
-			}
-		});
+		delegation_layout.setVisibility(View.VISIBLE);
 	}
 
-	// TODO: 是否seek的创建者
+	// 当前用户是否为当前求助单的求助者
 	private boolean isSeekOwner() {
-		return true;
+		return user != null && seeker != null && user.getId().equals(seeker.getId());
 	}
 
-	// TODO: 是否委托的创建者
+	// 当前用户是否为当前应征单的应征者
 	private boolean isOfferOwner() {
-		return false;
+		return user != null && offerer != null && user.getId().equals(offerer.getId());
 	}
 
 	private void bindTime(Date date, TextView time) {
