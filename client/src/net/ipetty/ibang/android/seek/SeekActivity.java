@@ -165,12 +165,17 @@ public class SeekActivity extends Activity {
 			seekVO = JSONUtils.fromJSON(seekJSON, SeekVO.class);
 		}
 
-		// 可以本地加载
-		initImageView();
-		initContent();
-
-		init();
-
+		// 加载求助单
+		new GetSeekByIdTask(SeekActivity.this).setListener(new DefaultTaskListener<SeekVO>(SeekActivity.this) {
+			@Override
+			public void onSuccess(SeekVO result) {
+				seekVO = result;
+				// 可以本地加载
+				initImageView();
+				initContent();
+				init();
+			}
+		}).execute(seekId);
 	}
 
 	// 登录后需要重新加载视图
@@ -220,6 +225,8 @@ public class SeekActivity extends Activity {
 		// TODO Auto-generated method stub
 		String status = seekVO.getStatus();
 
+		closeBtn_layout.setVisibility(View.GONE);
+		offerBtn_layout.setVisibility(View.GONE);
 		if (isLogin) { // 只有已登录用户才有可能看到这两个按钮
 			login_layout.setVisibility(View.GONE);
 			if (!net.ipetty.ibang.vo.Constants.SEEK_STATUS_FINISHED.equals(status)
@@ -234,7 +241,6 @@ public class SeekActivity extends Activity {
 					offerBtn_layout.setVisibility(View.VISIBLE);
 				}
 			}
-
 		} else {
 			login_layout.setVisibility(View.VISIBLE);
 		}
