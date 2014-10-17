@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 
 import net.ipetty.ibang.R;
+import net.ipetty.ibang.android.city.CityActivity;
 import net.ipetty.ibang.android.core.ActivityManager;
 import net.ipetty.ibang.android.core.Constants;
 import net.ipetty.ibang.android.core.ui.BackClickListener;
@@ -82,6 +83,7 @@ public class UserProfileActivity extends Activity {
 		View gender_layout = this.findViewById(R.id.gender_layout);
 		View signature_layout = this.findViewById(R.id.signature_layout);
 		View job_layout = this.findViewById(R.id.job_layout);
+		View city_layout = this.findViewById(R.id.city);
 
 		// 头像
 		avatar = (ImageView) this.findViewById(R.id.avatar);
@@ -111,6 +113,16 @@ public class UserProfileActivity extends Activity {
 			avatar.setImageResource(R.drawable.default_avatar);
 		}
 		gender.setText(user.getGender());
+
+		city_layout.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent intent = new Intent(UserProfileActivity.this, CityActivity.class);
+				startActivity(intent);
+			}
+		});
 	}
 
 	private OnClickListener genderClick = new OnClickListener() {
