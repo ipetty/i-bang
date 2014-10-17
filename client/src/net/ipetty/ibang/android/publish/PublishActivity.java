@@ -8,12 +8,14 @@ import java.util.List;
 import net.ipetty.ibang.R;
 import net.ipetty.ibang.android.core.ActivityManager;
 import net.ipetty.ibang.android.core.Constants;
+import net.ipetty.ibang.android.core.DefaultTaskListener;
 import net.ipetty.ibang.android.core.ui.BackClickListener;
 import net.ipetty.ibang.android.core.ui.UploadView;
 import net.ipetty.ibang.android.core.util.DateUtils;
 import net.ipetty.ibang.android.core.util.DialogUtils;
 import net.ipetty.ibang.android.sdk.context.ApiContext;
 import net.ipetty.ibang.android.user.UserEditActivity;
+import net.ipetty.ibang.vo.ImageVO;
 import net.ipetty.ibang.vo.SeekVO;
 import net.ipetty.ibang.vo.UserVO;
 import android.app.Activity;
@@ -89,7 +91,7 @@ public class PublishActivity extends Activity {
 		button.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				SeekVO seek = new SeekVO();
+				final SeekVO seek = new SeekVO();
 				seek.setSeekerId(user.getId());
 				seek.setCategoryL1(categoryL1);
 				seek.setCategoryL2(categoryL2);
@@ -98,12 +100,23 @@ public class PublishActivity extends Activity {
 				String exipireDateStr = exipireDateView.getText().toString();
 				seek.setExipireDate(DateUtils.fromDateString(exipireDateStr));
 
-				// TODO 获取到上传文件地址
-				List<File> listFile = uploadView.getFiles();
-
-				// 发布求助单
-				new PublishSeekTask(PublishActivity.this)
-						.setListener(new PublishSeekTaskListener(PublishActivity.this)).execute(seek);
+				// 上传图片文件
+				final List<File> files = uploadView.getFiles();
+				final String[] filePaths = new String[files.size()];
+				int i = 0;
+				for (File file : files) {
+					filePaths[i++] = file.getAbsolutePath();
+				}
+				new UploadImagesTask(PublishActivity.this).setListener(
+						new DefaultTaskListener<List<ImageVO>>(PublishActivity.this) {
+							@Override
+							public void onSuccess(List<ImageVO> images) {
+								// 上传图片完成后，发布求助单
+								seek.setImages(images);
+								new PublishSeekTask(PublishActivity.this).setListener(
+										new PublishSeekTaskListener(PublishActivity.this)).execute(seek);
+							}
+						}).execute(filePaths);
 			}
 		});
 	}
