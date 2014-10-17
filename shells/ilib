@@ -362,6 +362,7 @@ function deployIServer(){
   mkdir	-p $ISERVER_UPLOAD_DIR
   chown	-R tomcat $ISERVER_UPLOAD_DIR
   chgrp	-R tomcat $ISERVER_UPLOAD_DIR
+  mkdir -p /temp
   chown	-R tomcat /temp
   chgrp	-R tomcat /temp
   
