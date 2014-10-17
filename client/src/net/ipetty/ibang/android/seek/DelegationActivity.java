@@ -2,6 +2,7 @@ package net.ipetty.ibang.android.seek;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import net.ipetty.ibang.R;
 import net.ipetty.ibang.android.core.ActivityManager;
@@ -13,15 +14,18 @@ import net.ipetty.ibang.android.core.util.DateUtils;
 import net.ipetty.ibang.android.core.util.JSONUtils;
 import net.ipetty.ibang.android.core.util.PrettyDateFormat;
 import net.ipetty.ibang.android.evaluation.EvaluationActivity;
+import net.ipetty.ibang.android.evaluation.ListEvaluationByDelegationIdTask;
 import net.ipetty.ibang.android.sdk.context.ApiContext;
 import net.ipetty.ibang.android.user.GetUserByIdSynchronously;
 import net.ipetty.ibang.android.user.UserInfoActivity;
 import net.ipetty.ibang.vo.DelegationVO;
+import net.ipetty.ibang.vo.EvaluationVO;
 import net.ipetty.ibang.vo.OfferVO;
 import net.ipetty.ibang.vo.SeekVO;
 import net.ipetty.ibang.vo.UserVO;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.util.CollectionUtils;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -36,6 +40,8 @@ import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 public class DelegationActivity extends Activity {
+
+	// private String TAG = getClass().getSimpleName();
 
 	private ImageView seek_avatar;
 	private TextView seek_nickname;
@@ -151,13 +157,37 @@ public class DelegationActivity extends Activity {
 						}
 
 						delegationId = result.getId();
+						offerer = GetUserByIdSynchronously.get(DelegationActivity.this, delegationVO.getOffererId());
 
 						// 评分信息
 						if (net.ipetty.ibang.vo.Constants.DELEGATE_STATUS_BI_EVALUATED.equals(delegationVO.getStatus())) {
-							// TODO 帮助者对此次委托的评分信息
-							// TODO 求助者对此次委托的评分信息
-							seek_evaluation_layout.setVisibility(View.VISIBLE);
-							delegation_evaluation_layout.setVisibility(View.VISIBLE);
+							new ListEvaluationByDelegationIdTask(DelegationActivity.this).setListener(
+									new DefaultTaskListener<List<EvaluationVO>>(DelegationActivity.this) {
+										@Override
+										public void onSuccess(List<EvaluationVO> evaluations) {
+											seek_evaluation_layout.setVisibility(View.GONE);
+											delegation_evaluation_layout.setVisibility(View.GONE);
+											if (!CollectionUtils.isEmpty(evaluations)) {
+												for (EvaluationVO evaluation : evaluations) {
+													if (evaluation == null) {
+														break;
+													}
+													if (net.ipetty.ibang.vo.Constants.EVALUATION_TYPE_SEEKER_TO_OFFERER
+															.equals(evaluation.getType())) {
+														// 求助者对此次委托的评分信息
+														delegation_evaluation.setText(String.valueOf(evaluation
+																.getPoint()));
+														delegation_evaluation_layout.setVisibility(View.VISIBLE);
+													} else if (net.ipetty.ibang.vo.Constants.EVALUATION_TYPE_OFFERER_TO_SEEKER
+															.equals(evaluation.getType())) {
+														// 帮助者对此次委托的评分信息
+														seek_evaluation.setText(String.valueOf(evaluation.getPoint()));
+														seek_evaluation_layout.setVisibility(View.VISIBLE);
+													}
+												}
+											}
+										}
+									}).execute(delegationId);
 						} else {
 							seek_evaluation_layout.setVisibility(View.GONE);
 							delegation_evaluation_layout.setVisibility(View.GONE);
@@ -209,7 +239,6 @@ public class DelegationActivity extends Activity {
 						}
 
 						// 求助/委托信息
-						offerer = GetUserByIdSynchronously.get(DelegationActivity.this, delegationVO.getOffererId());
 						bindUser(offerer, delegation_avatar, delegation_nickname);
 						bindTime(delegationVO.getCreatedOn(), delegation_created_on);
 						offer_content.setText(offerVO.getContent());
@@ -225,6 +254,8 @@ public class DelegationActivity extends Activity {
 											public void onSuccess(Boolean result) {
 												// TODO 完成委托后的界面操作
 												finish_delegation_btn_layout.setVisibility(View.GONE);
+												close_delegation_btn_layout.setVisibility(View.GONE);
+												evaluation_layout.setVisibility(View.VISIBLE);
 											}
 										}).execute(delegationId);
 							}
@@ -247,6 +278,7 @@ public class DelegationActivity extends Activity {
 											@Override
 											public void onSuccess(Boolean result) {
 												// TODO 关闭委托后的界面操作
+												finish_delegation_btn_layout.setVisibility(View.GONE);
 												close_delegation_btn_layout.setVisibility(View.GONE);
 											}
 										}).execute(delegationId);

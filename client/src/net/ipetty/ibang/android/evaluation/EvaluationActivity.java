@@ -1,7 +1,9 @@
 package net.ipetty.ibang.android.evaluation;
 
 import net.ipetty.ibang.R;
+import net.ipetty.ibang.android.core.Constants;
 import net.ipetty.ibang.android.core.ui.BackClickListener;
+import net.ipetty.ibang.vo.EvaluationVO;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
@@ -12,7 +14,12 @@ import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.TextView;
 
 public class EvaluationActivity extends Activity {
+
 	private Integer point = 0;
+	private Long delegationId;
+	private String evaluatorType;
+	private Integer evaluatorId;
+	private Integer evaluateTargetId;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -21,25 +28,28 @@ public class EvaluationActivity extends Activity {
 
 		/* action bar */
 		ImageView btnBack = (ImageView) this.findViewById(R.id.action_bar_left_image);
+		btnBack.setOnClickListener(new BackClickListener(this));
 		TextView text = (TextView) this.findViewById(R.id.action_bar_title);
 		text.setText(this.getResources().getString(R.string.title_activity_evaluation));
-		btnBack.setOnClickListener(new BackClickListener(this));
+
+		delegationId = this.getIntent().getExtras().getLong(Constants.INTENT_DELEGATION_ID);
+		evaluatorType = this.getIntent().getExtras().getString(Constants.INTENT_EVALUATOR_TYPE);
+		evaluatorId = this.getIntent().getExtras().getInt(Constants.INTENT_EVALUATOR_ID);
+		evaluateTargetId = this.getIntent().getExtras().getInt(Constants.INTENT_EVALUATE_TARGET_ID);
 
 		TextView evaluation = (TextView) this.findViewById(R.id.evaluation);
 		evaluation.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				// TODO 评价
-
+				EvaluationVO e = new EvaluationVO();
 			}
 		});
 
 		RadioGroup group = (RadioGroup) this.findViewById(R.id.radioGroup);
 		group.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-
 			@Override
 			public void onCheckedChanged(RadioGroup group, int checkedId) {
-				// TODO Auto-generated method stub
 				int radioButtonId = group.getCheckedRadioButtonId();
 				switch (radioButtonId) {
 				case R.id.radio0: {
@@ -68,8 +78,7 @@ public class EvaluationActivity extends Activity {
 				}
 				}
 			}
-
 		});
-
 	}
+
 }

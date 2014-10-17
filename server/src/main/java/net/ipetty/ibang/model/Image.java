@@ -1,5 +1,8 @@
 package net.ipetty.ibang.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import net.ipetty.ibang.vo.ImageVO;
 
 import org.springframework.beans.BeanUtils;
@@ -42,6 +45,14 @@ public class Image extends AbstractEntity {
 		Image entity = new Image();
 		BeanUtils.copyProperties(vo, entity);
 		return entity;
+	}
+
+	public static List<ImageVO> listToVoList(List<Image> imageList) {
+		List<ImageVO> voList = new ArrayList<ImageVO>();
+		for (Image image : imageList) {
+			voList.add(image.toVO());
+		}
+		return voList;
 	}
 
 	public Long getId() {

@@ -9,8 +9,10 @@ import net.ipetty.ibang.model.Image;
 import net.ipetty.ibang.repository.ImageDao;
 import net.ipetty.ibang.util.UUIDUtils;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
 
 /**
  * ImageService
@@ -29,8 +31,11 @@ public class ImageService extends BaseService {
 	 * 保存
 	 */
 	public void save(Image image) {
+		Assert.notNull(image, "图片对象不能为空");
 		// sn
-		image.setSn(UUIDUtils.generateShortUUID());
+		if (StringUtils.isBlank(image.getSn())) {
+			image.setSn(UUIDUtils.generateShortUUID());
+		}
 
 		imageDao.save(image);
 	}

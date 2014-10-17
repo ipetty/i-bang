@@ -16,7 +16,7 @@ import org.junit.runners.Suite;
  */
 @RunWith(Suite.class)
 @Suite.SuiteClasses({ UserApiTest.class, SeekApiTest.class, OfferApiTest.class, DelegationApiTest.class,
-		EvaluationApiTest.class, SystemMessageApiTest.class, CrashLogApiTest.class })
+		EvaluationApiTest.class, ImageApiTest.class, SystemMessageApiTest.class, CrashLogApiTest.class })
 public class AllApiTest extends BaseApiTest {
 
 	@BeforeClass
