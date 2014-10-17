@@ -512,5 +512,5 @@ function webmin(){
 function aliyunMon(){
   retry "wget -P /tmp http://update.aegis.aliyun.com/download/quartz_install.sh"
   chmod +x /tmp/quartz_install.sh
-  .sh /tmp/quartz_install.sh
+  sh /tmp/quartz_install.sh
 }
