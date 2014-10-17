@@ -57,6 +57,8 @@ function linuxInit(){
 	iptables -A INPUT -i eth1 -p tcp --dport 22 -j ACCEPT
 	iptables -A INPUT -i eth1 -p tcp --dport 80 -j ACCEPT
 	iptables -A INPUT -i eth1 -p tcp --dport 443 -j ACCEPT
+	#webmin
+	iptables -A INPUT -i eth1 -p tcp --dport 10000 -j ACCEPT
 	# DNS
 	iptables -A INPUT -i eth1 -p tcp --dport 53 -j ACCEPT
 	# Ping
@@ -487,4 +489,12 @@ function dataSync(){
 
 	rm -rf $ISERVER_UPLOAD_DIR/*
 	scp -r root@115.29.103.123:/home/data/files/* $ISERVER_UPLOAD_DIR 
+}
+
+function webmin(){
+	#/usr/libexec/webmin
+	retry "wget -P /tmp http://downloads.sourceforge.net/project/webadmin/webmin/1.700/webmin-1.700-1.noarch.rpm"
+	rpm -ivh /tmp/webmin-1.700-1.noarch.rpm
+	rm -rf /tmp/webmin-1.700-1.noarch.rpm
+	echo "now you can use http://localhost:10000/"
 }
