@@ -4,11 +4,8 @@ set	-e
 source ./config.conf
 source ./ilib
 cur_dir=$(cd "$(dirname	"$0")";	pwd)
-
-
-
 function usage(){
-   echo "usage: $0 {all|init|tomcat|ant|maven|mysql|nginx|nmon|goAccess|iserver|irevert|adt|iclient|}"
+   echo "usage: $0 {all|init|tomcat|ant|maven|mysql|nginx|nmon|goAccess|iserver|irevert|adt|iclient|setSwap}"
    RETVAL="2"
 }
 
@@ -96,6 +93,10 @@ case "$1" in
 		iclinetConfigPrompt
 		installIclient
 		echo "iclinet OK"
+		;;
+	setSwap)
+		setSwap
+		echo "setSwap OK"
 		;;
 	*)
 	  usage
