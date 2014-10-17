@@ -15,6 +15,7 @@ function usage(){
 RETVAL="0"
 case "$1" in
 	all)
+		linuxIntiPrompt
 		tomcatConfigPrompt
 		iclinetConfigPrompt
 		linuxInit
@@ -39,6 +40,7 @@ case "$1" in
 		echo "all OK"
 		;;
 	init)
+		linuxIntiPrompt
 		linuxInit
 		service	ntpd restart
 		echo "init OK"

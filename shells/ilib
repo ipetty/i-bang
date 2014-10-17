@@ -40,12 +40,37 @@ function initGlobalDir(){
 	mkdir -p $GLOBAL_DOWNLOAD_DIR
 }
 
+function linuxIntiPrompt(){
+	prompt WAN_ETH 'System Wan device Name :' 'eth1'
+}
+
 function linuxInit(){
-	service	iptables stop
-	chkconfig iptables off
-	chkconfig ntpd on
+	yum install wget git ntp zip unzip mlocate -y
+
 	initGlobalDir
-	yum	install	wget git ntp zip unzip mlocate -y
+
+	chkconfig ntpd on
+	service ntpd restart
+	
+	service iptables stop
+	iptables -F
+	iptables -A INPUT -i eth1 -p tcp --dport 22 -j ACCEPT
+	iptables -A INPUT -i eth1 -p tcp --dport 80 -j ACCEPT
+	iptables -A INPUT -i eth1 -p tcp --dport 443 -j ACCEPT
+	# DNS
+	iptables -A INPUT -i eth1 -p tcp --dport 53 -j ACCEPT
+	# Ping
+	iptables -A INPUT -p icmp --icmp-type echo-request -j ACCEPT
+	# 允许允许本机主动向外发出任何请求
+	iptables -A OUTPUT -j ACCEPT
+	iptables -A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
+	iptables -A OUTPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
+	# 拒绝网卡1上除已有开放规则以外的所有其它请求
+	iptables -A INPUT -i $WAN_ETH -j REJECT
+	iptables -A FORWARD -i $WAN_ETH -j REJECT
+	service iptables save
+	chkconfig iptables on
+	service iptables restart
 }
 
 function installJpackageSource(){
@@ -59,7 +84,6 @@ function installJpackageSource(){
 function tomcatConfigPrompt(){
 	prompt tomcatAdminUser 'Tomcat Admin User' 'admin'
 	prompt tomcatAdminPass 'Tomcat Admin Password' 'admin'
-	echo "tomcatConfigPrompt"
 }
 
 function installTomcat(){
@@ -291,8 +315,6 @@ function installProbe(){
 	rm -rf /tmp/probe.war
 }
 
-#-------------------I-----------------------
-## 更新
 function getIServerCode() {
   mkdir	-p $GLOBAL_SOURCECODE_DIR
   if [ ! -d $GLOBAL_SOURCECODE_DIR/$IAPI_PROJECT_NAME ]
