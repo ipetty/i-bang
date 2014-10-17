@@ -1,15 +1,15 @@
 
-#用户输入 变量 提示内容	默认值
+#用户输入 变量 提示内容 默认值
 function prompt(){
   _variable=$1
   _prompt_text=$2
   _default_value=$3
   if [ -z "$_variable" ]; then
-	echo "Variable name was not given!" && exit 1
+    echo "Variable name was not given!" && exit 1
   fi
-  read -p "$_prompt_text	[$_default_value]: "	$_variable
-  if [ -z "${!_variable}" ];	then
-	eval "$_variable=$_default_value"
+  read -p "$_prompt_text    [$_default_value]: "    $_variable
+  if [ -z "${!_variable}" ];    then
+    eval "$_variable=$_default_value"
   fi
 }
 
@@ -34,319 +34,319 @@ function retry(){
 }
 
 function initGlobalDir(){
-	mkdir -p $GLOBAL_SHELLS_HOME
-	mkdir -p $GLOBAL_SOURCECODE_DIR
-	mkdir -p $GLOBAL_BACKUP_DIR
-	mkdir -p $GLOBAL_DOWNLOAD_DIR
+    mkdir -p $GLOBAL_SHELLS_HOME
+    mkdir -p $GLOBAL_SOURCECODE_DIR
+    mkdir -p $GLOBAL_BACKUP_DIR
+    mkdir -p $GLOBAL_DOWNLOAD_DIR
 }
 
 function linuxIntiPrompt(){
-	prompt WAN_ETH 'System Wan device Name :' 'eth1'
+    prompt WAN_ETH 'System Wan device Name :' 'eth1'
 }
 
 function linuxInit(){
-	yum install wget git ntp zip unzip mlocate -y
+    yum install wget git ntp zip unzip mlocate -y
 
-	initGlobalDir
+    initGlobalDir
 
-	chkconfig ntpd on
-	service ntpd restart
-	
-	service iptables stop
-	iptables -F
-	iptables -A INPUT -i eth1 -p tcp --dport 22 -j ACCEPT
-	iptables -A INPUT -i eth1 -p tcp --dport 80 -j ACCEPT
-	iptables -A INPUT -i eth1 -p tcp --dport 443 -j ACCEPT
-	#webmin
-	iptables -A INPUT -i eth1 -p tcp --dport 10000 -j ACCEPT
-	# DNS
-	iptables -A INPUT -i eth1 -p tcp --dport 53 -j ACCEPT
-	# Ping
-	iptables -A INPUT -p icmp --icmp-type echo-request -j ACCEPT
-	# 允许允许本机主动向外发出任何请求
-	iptables -A OUTPUT -j ACCEPT
-	iptables -A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
-	iptables -A OUTPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
-	# 拒绝网卡1上除已有开放规则以外的所有其它请求
-	iptables -A INPUT -i $WAN_ETH -j REJECT
-	iptables -A FORWARD -i $WAN_ETH -j REJECT
-	service iptables save
-	chkconfig iptables on
-	service iptables restart
+    chkconfig ntpd on
+    service ntpd restart
+    
+    service iptables stop
+    iptables -F
+    iptables -A INPUT -i $WAN_ETH -p tcp --dport 22 -j ACCEPT
+    iptables -A INPUT -i $WAN_ETH -p tcp --dport 80 -j ACCEPT
+    iptables -A INPUT -i $WAN_ETH -p tcp --dport 443 -j ACCEPT
+    #webmin
+    iptables -A INPUT -i $WAN_ETH -p tcp --dport 10000 -j ACCEPT
+    # DNS
+    iptables -A INPUT -i $WAN_ETH -p tcp --dport 53 -j ACCEPT
+    # Ping
+    iptables -A INPUT -p icmp --icmp-type echo-request -j ACCEPT
+    # 允许允许本机主动向外发出任何请求
+    iptables -A OUTPUT -j ACCEPT
+    iptables -A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
+    iptables -A OUTPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
+    # 拒绝网卡1上除已有开放规则以外的所有其它请求
+    iptables -A INPUT -i $WAN_ETH -j REJECT
+    iptables -A FORWARD -i $WAN_ETH -j REJECT
+    service iptables save
+    chkconfig iptables on
+    service iptables restart
 }
 
 function installJpackageSource(){
-	retry "yum install jpackage-utils yum-priorities -y"
-	retry "rpm -ivh --force ftp://ftp.pbone.net/mirror/www.jpackage.org/jpackage/6.0/generic/free/RPMS/jpackage-release-6-3.jpp6.noarch.rpm"
-	rpm	--import /etc/pki/rpm-gpg/RPM*
-	sed	-i '/gpgcheck=1/c\gpgcheck=0' /etc/yum.repos.d/jpackage.repo
+    retry "rpm -ivh --force http://mirrors.ustc.edu.cn/fedora/epel/6/x86_64/epel-release-6-8.noarch.rpm"
+    retry "yum install jpackage-utils yum-priorities -y"
+    retry "rpm -ivh --force ftp://ftp.pbone.net/mirror/www.jpackage.org/jpackage/6.0/generic/free/RPMS/jpackage-release-6-3.jpp6.noarch.rpm"
+    rpm --import /etc/pki/rpm-gpg/RPM*
+    sed -i '/gpgcheck=1/c\gpgcheck=0' /etc/yum.repos.d/jpackage.repo
 }
 
 #处理Tomcat安装前需人工输入的参数，变量输出到tomcatAdminUser,tomcatAdminPass
 function tomcatConfigPrompt(){
-	prompt tomcatAdminUser 'Tomcat Admin User' 'admin'
-	prompt tomcatAdminPass 'Tomcat Admin Password' 'admin'
+    prompt tomcatAdminUser 'Tomcat Admin User' 'admin'
+    prompt tomcatAdminPass 'Tomcat Admin Password' 'admin'
 }
 
 function installTomcat(){
-	installJpackageSource
-	retry "yum install tomcat tomcat-webapps tomcat-native java-1.7.0-openjdk-devel -y"
-	chkconfig tomcat on
-	rm -rf $TOMCAT_HOME/webapps/host-manager
-	rm -rf $TOMCAT_HOME/tomcat/webapps/manager
-	rm -rf $TOMCAT_HOME/tomcat/webapps/examples
-	rm -rf $TOMCAT_HOME/tomcat/webapps/sample
+    installJpackageSource
+    retry "yum install tomcat tomcat-webapps tomcat-native java-1.7.0-openjdk-devel -y"
+    chkconfig tomcat on
+    rm -rf $TOMCAT_HOME/tomcat/webapps/examples
+    rm -rf $TOMCAT_HOME/tomcat/webapps/sample
 
 }
 
 function installAnt(){
-	installJpackageSource
-	yum	install	ant	-y
-	ant	-version
+    installJpackageSource
+    yum install ant -y
+    ant -version
 }
 
 function installMaven(){
-	retry "wget http://repos.fedorapeople.org/repos/dchen/apache-maven/epel-apache-maven.repo -O /etc/yum.repos.d/epel-apache-maven.repo"
-	retry "yum install apache-maven -y"
-	mvn -version
+    installJpackageSource
+    retry "wget http://repos.fedorapeople.org/repos/dchen/apache-maven/epel-apache-maven.repo -O /etc/yum.repos.d/epel-apache-maven.repo"
+    retry "yum install apache-maven -y"
+    mvn -version
 }
 
 function installGvm(){
-	curl -s	get.gvmtool.net	| bash
-	source "/root/.gvm/bin/gvm-init.sh"
-	gvm	version
+    curl -s get.gvmtool.net | bash
+    source "/root/.gvm/bin/gvm-init.sh"
+    gvm version
 }
 
 function installMysql(){
-	retry "rpm -ivh --force http://dev.mysql.com/get/mysql-community-release-el6-5.noarch.rpm"
-	rpm	--import /etc/pki/rpm-gpg/RPM*
-	retry "yum install mysql-community-server mysql-utilities mysql-utilities-extra -y"
-	chkconfig mysqld on
+    retry "rpm -ivh --force http://dev.mysql.com/get/mysql-community-release-el6-5.noarch.rpm"
+    rpm --import /etc/pki/rpm-gpg/RPM*
+    retry "yum install mysql-community-server mysql-utilities mysql-utilities-extra -y"
+    chkconfig mysqld on
 }
 
 function installNginx(){
-	retry "rpm -ivh --force http://nginx.org/packages/centos/6/noarch/RPMS/nginx-release-centos-6-0.el6.ngx.noarch.rpm"
-	rpm	--import /etc/pki/rpm-gpg/RPM*
-	retry "yum install nginx -y"
-	chkconfig nginx	on
+    retry "rpm -ivh --force http://nginx.org/packages/centos/6/noarch/RPMS/nginx-release-centos-6-0.el6.ngx.noarch.rpm"
+    rpm --import /etc/pki/rpm-gpg/RPM*
+    retry "yum install nginx -y"
+    chkconfig nginx on
 }
 
 function installGoAccess(){
-	retry "rpm -ivh --force http://mirrors.ustc.edu.cn/fedora/epel/6/x86_64/epel-release-6-8.noarch.rpm"
-	rpm	--import /etc/pki/rpm-gpg/RPM*
-	retry "yum install goaccess --enablerepo=epel -y"
-	goaccess --v
+    retry "rpm -ivh --force http://mirrors.ustc.edu.cn/fedora/epel/6/x86_64/epel-release-6-8.noarch.rpm"
+    rpm --import /etc/pki/rpm-gpg/RPM*
+    retry "yum install goaccess --enablerepo=epel -y"
+    goaccess --v
 }
 
 function installNmon(){
-	retry "rpm -ivh --force http://pkgs.repoforge.org/rpmforge-release/rpmforge-release-0.5.3-1.el6.rf.x86_64.rpm"
-	rpm	--import /etc/pki/rpm-gpg/RPM*
-	retry "yum install nmon --enablerepo=rpmforge-extras -y"
+    retry "rpm -ivh --force http://pkgs.repoforge.org/rpmforge-release/rpmforge-release-0.5.3-1.el6.rf.x86_64.rpm"
+    rpm --import /etc/pki/rpm-gpg/RPM*
+    retry "yum install nmon --enablerepo=rpmforge-extras -y"
 }
 
 function downloadAndroidSDK(){
-	mkdir -p $GLOBAL_DOWNLOAD_DIR
-	if [ ! -f "$GLOBAL_DOWNLOAD_DIR/adt-bundle-linux-x86_64-20140321.zip" ]; then
-		retry "wget -P	$GLOBAL_DOWNLOAD_DIR  http://dl.google.com/android/adt/22.6.2/adt-bundle-linux-x86_64-20140321.zip"
-	fi
+    mkdir -p $GLOBAL_DOWNLOAD_DIR
+    if [ ! -f "$GLOBAL_DOWNLOAD_DIR/adt-bundle-linux-x86_64-20140321.zip" ]; then
+        retry "wget -P  $GLOBAL_DOWNLOAD_DIR  http://dl.google.com/android/adt/22.6.2/adt-bundle-linux-x86_64-20140321.zip"
+    fi
 }
 
 function installAndroidSDK(){
-	downloadAndroidSDK
-	#for centos6.5
-	retry "yum install -y compat-libstdc++-296.i686 compat-libstdc++-33.i686 zlib.i686 libstdc++.so.6"	
-	if [ ! -d "/opt/" ]; then
-		mkdir -p /opt
-	fi
-	unzip -oq $GLOBAL_DOWNLOAD_DIR/adt-bundle-linux-x86_64-20140321.zip	-d /opt
-	Android_SDK_Home=/opt/adt-bundle-linux-x86_64-20140321/sdk
-	grep -q	"export	AUTO_GEN_ANDROID" /etc/profile &&{
-	echo "ANDROID config exits."
-	}||{
-	echo "#AUTO_GEN_ANDROID" >>/etc/profile
-	echo "export ANDROID_HOME=$Android_SDK_Home	#AUTO_GEN_ANDROID" >>/etc/profile
-	}
-	/opt/adt-bundle-linux-x86_64-20140321/sdk/tools/android	list targets	
-	#/opt/adt-bundle-linux-x86_64-20140321/sdk/tools/android list targets			#检查已安装的SDK版本
-	#/opt/adt-bundle-linux-x86_64-20140321/sdk/tools/android list sdk				#列出所有SDK
-	#/opt/adt-bundle-linux-x86_64-20140321/sdk/tools/android update	sdk	-t 1,2,4 -u			#更新SDK
-	#ant -f	/src/xxyyzz/project/IPet clean release
+    downloadAndroidSDK
+    #for centos6.5
+    retry "yum install -y compat-libstdc++-296.i686 compat-libstdc++-33.i686 zlib.i686 libstdc++.so.6"  
+    if [ ! -d "/opt/" ]; then
+        mkdir -p /opt
+    fi
+    unzip -oq $GLOBAL_DOWNLOAD_DIR/adt-bundle-linux-x86_64-20140321.zip -d /opt
+    Android_SDK_Home=/opt/adt-bundle-linux-x86_64-20140321/sdk
+    grep -q "export AUTO_GEN_ANDROID" /etc/profile &&{
+    echo "ANDROID config exits."
+    }||{
+    echo "#AUTO_GEN_ANDROID" >>/etc/profile
+    echo "export ANDROID_HOME=$Android_SDK_Home #AUTO_GEN_ANDROID" >>/etc/profile
+    }
+    /opt/adt-bundle-linux-x86_64-20140321/sdk/tools/android list targets    
+    #/opt/adt-bundle-linux-x86_64-20140321/sdk/tools/android list targets           #检查已安装的SDK版本
+    #/opt/adt-bundle-linux-x86_64-20140321/sdk/tools/android list sdk               #列出所有SDK
+    #/opt/adt-bundle-linux-x86_64-20140321/sdk/tools/android update sdk -t 1,2,4 -u         #更新SDK
+    #ant -f /src/xxyyzz/project/IPet clean release
 }
 
 function configNginx(){
-	initGlobalDir
-	# 备份/还原
-	if [ ! -d $NGINX_CONFIG_BACKUP_DIR ]
-	then
-		\cp	-av	$NGINX_CONFIG_DIR $NGINX_CONFIG_BACKUP_DIR
-	else
-	   \cp -av $NGINX_CONFIG_BACKUP_DIR/* $NGINX_CONFIG_DIR
-	fi
+    initGlobalDir
+    # 备份/还原
+    if [ ! -d $NGINX_CONFIG_BACKUP_DIR ]
+    then
+        \cp -av $NGINX_CONFIG_DIR $NGINX_CONFIG_BACKUP_DIR
+    else
+       \cp -av $NGINX_CONFIG_BACKUP_DIR/* $NGINX_CONFIG_DIR
+    fi
 
-	# 行前加sed	-i '/http {/i\	  server_tokens	off;'
-	# 行后加
-	sed	-i '/http {/a\	  client_max_body_size 30m;' $NGINX_CONFIG_FILE
-	sed	-i '/http {/a\	  client_body_buffer_size 1024k;' $NGINX_CONFIG_FILE
-	sed	-i '/http {/a\	  underscores_in_headers on;' $NGINX_CONFIG_FILE
-	sed	-i '/http {/a\	  server_tokens	off;' $NGINX_CONFIG_FILE
+    # 行前加sed -i '/http {/i\    server_tokens off;'
+    # 行后加
+    sed -i '/http {/a\    client_max_body_size 30m;' $NGINX_CONFIG_FILE
+    sed -i '/http {/a\    client_body_buffer_size 1024k;' $NGINX_CONFIG_FILE
+    sed -i '/http {/a\    underscores_in_headers on;' $NGINX_CONFIG_FILE
+    sed -i '/http {/a\    server_tokens off;' $NGINX_CONFIG_FILE
 
-	# 替换
-	sed	-i '/#gzip	on;/c\	  gzip	on;' $NGINX_CONFIG_FILE
-	# 删除匹配行
-	sed	-i /gzip_types/d $NGINX_CONFIG_FILE
-	# 行后加
-	sed	-i '/gzip  on;/a\	 gzip_types	text/plain text/css	application/json application/x-javascript text/xml application/xml application/xml+rss text/javascript;' $NGINX_CONFIG_FILE
+    # 替换
+    sed -i '/#gzip  on;/c\    gzip  on;' $NGINX_CONFIG_FILE
+    # 删除匹配行
+    sed -i /gzip_types/d $NGINX_CONFIG_FILE
+    # 行后加
+    sed -i '/gzip  on;/a\    gzip_types text/plain text/css application/json application/x-javascript text/xml application/xml application/xml+rss text/javascript;' $NGINX_CONFIG_FILE
 
-	# 配置/etc/nginx/nginx.conf-->upstream home
-	sed	-i '/gzip_types/a\	  upstream home	{'			$NGINX_CONFIG_FILE
-	sed	-i '/upstream home/a\	 server	127.0.0.1:8080;'	$NGINX_CONFIG_FILE
-	sed	-i '/upstream home/a\	 ip_hash;'			$NGINX_CONFIG_FILE
-	sed	-i '/server	127.0.0.1:8080;/a\	  }'		$NGINX_CONFIG_FILE
+    # 配置/etc/nginx/nginx.conf-->upstream home
+    sed -i '/gzip_types/a\    upstream home {'          $NGINX_CONFIG_FILE
+    sed -i '/upstream home/a\    server 127.0.0.1:8080;'    $NGINX_CONFIG_FILE
+    sed -i '/upstream home/a\    ip_hash;'          $NGINX_CONFIG_FILE
+    sed -i '/server 127.0.0.1:8080;/a\    }'        $NGINX_CONFIG_FILE
 
-	# 删除从0行到index行之间的usr/share所在行以前下一行，相当于删除第一个usr/share行和下一行
-	sed	-i '0,/index  index.html index.htm;/{/\/usr\/share\/nginx\/html/,+1d}' $NGINX_SERVER_CONFIG_FILE
-	# 配置/etc/nginx/conf.d/default.conf-->proxy_pass http://home;
-	sed	-i '/location \/ {/a\		 proxy_pass	http://home;'	$NGINX_SERVER_CONFIG_FILE
+    # 删除从0行到index行之间的usr/share所在行以前下一行，相当于删除第一个usr/share行和下一行
+    sed -i '0,/index  index.html index.htm;/{/\/usr\/share\/nginx\/html/,+1d}' $NGINX_SERVER_CONFIG_FILE
+    # 配置/etc/nginx/conf.d/default.conf-->proxy_pass http://home;
+    sed -i '/location \/ {/a\        proxy_pass http://home;'   $NGINX_SERVER_CONFIG_FILE
 }
 
 # 配置Tomcat adminuser adminpassword
 function configTomcat(){
-	initGlobalDir
-	tomcat_admin_user=$1
-	tomcat_admin_pass=$2
-	# 备份/还原
-	if [ ! -d $TOMCAT_CONFIG_BACKUP_DIR	]
-	then
-	    \cp -av $TOMCAT_CONFIG_DIR $TOMCAT_CONFIG_BACKUP_DIR
-	else
-	    \cp -av $TOMCAT_CONFIG_BACKUP_DIR/* $TOMCAT_CONFIG_DIR
-	fi
+    initGlobalDir
+    tomcat_admin_user=$1
+    tomcat_admin_pass=$2
+    # 备份/还原
+    if [ ! -d $TOMCAT_CONFIG_BACKUP_DIR ]
+    then
+        \cp -av $TOMCAT_CONFIG_DIR $TOMCAT_CONFIG_BACKUP_DIR
+    else
+        \cp -av $TOMCAT_CONFIG_BACKUP_DIR/* $TOMCAT_CONFIG_DIR
+    fi
 
-	sed	-i '/<Context>/c\<Context allowLinking="true">'	$TOMCAT_CONTEXT_FILE
-	sed	-i '/<Connector	port="8080"/a\				 enableLookups="false" ' $TOMCAT_SERVER_FILE
-	sed	-i '/<Connector	port="8080"/a\				 maxThreads="1024" ' $TOMCAT_SERVER_FILE
-	sed	-i '/<Connector	port="8080"/a\				 URIEncoding="UTF-8" ' $TOMCAT_SERVER_FILE
-	sed	-i '/<Connector	port="8080"	protocol="HTTP\/1.1"/c\<Connector port="8080" protocol="HTTP\/1.1"'	$TOMCAT_SERVER_FILE
-	sed	-i '/unpackWARs="true" autoDeploy="true"/c\unpackWARs="false" autoDeploy="false">' $TOMCAT_SERVER_FILE
+    sed -i '/<Context>/c\<Context allowLinking="true">' $TOMCAT_CONTEXT_FILE
+    sed -i '/<Connector port="8080"/a\               enableLookups="false" ' $TOMCAT_SERVER_FILE
+    sed -i '/<Connector port="8080"/a\               maxThreads="1024" ' $TOMCAT_SERVER_FILE
+    sed -i '/<Connector port="8080"/a\               URIEncoding="UTF-8" ' $TOMCAT_SERVER_FILE
+    sed -i '/<Connector port="8080" protocol="HTTP\/1.1"/c\<Connector port="8080" protocol="HTTP\/1.1"' $TOMCAT_SERVER_FILE
+    sed -i '/unpackWARs="true" autoDeploy="true"/c\unpackWARs="false" autoDeploy="false">' $TOMCAT_SERVER_FILE
 
-	#用户配置
-	echo "<?xml	version='1.0' encoding='utf-8'?>" >	$TOMCAT_USER_FILE
-	echo '<tomcat-users>' >> $TOMCAT_USER_FILE
-	echo '<role	rolename="manager"/>' >> $TOMCAT_USER_FILE
-	echo '<role	rolename="tomcat"/>' >>	$TOMCAT_USER_FILE
-	echo '<role	rolename="poweruser"/>'	>> $TOMCAT_USER_FILE
-	echo '<role	rolename="poweruserplus"/>'	>> $TOMCAT_USER_FILE
-	echo '<role	rolename="probeuser"/>'	>> $TOMCAT_USER_FILE
-	echo "<user	username=\"$tomcat_admin_user\"	password=\"$tomcat_admin_pass\"	roles=\"tomcat,manager,probeuser,poweruserplus,poweruser\"/>" >> $TOMCAT_USER_FILE
-	echo '</tomcat-users>' >> $TOMCAT_USER_FILE
+    #用户配置
+    echo "<?xml version='1.0' encoding='utf-8'?>" > $TOMCAT_USER_FILE
+    echo '<tomcat-users>' >> $TOMCAT_USER_FILE
+    echo '<role rolename="manager"/>' >> $TOMCAT_USER_FILE
+    echo '<role rolename="tomcat"/>' >> $TOMCAT_USER_FILE
+    echo '<role rolename="poweruser"/>' >> $TOMCAT_USER_FILE
+    echo '<role rolename="poweruserplus"/>' >> $TOMCAT_USER_FILE
+    echo '<role rolename="probeuser"/>' >> $TOMCAT_USER_FILE
+    echo "<user username=\"$tomcat_admin_user\" password=\"$tomcat_admin_pass\" roles=\"tomcat,manager,probeuser,poweruserplus,poweruser\"/>" >> $TOMCAT_USER_FILE
+    echo '</tomcat-users>' >> $TOMCAT_USER_FILE
 
 }
 
 function configMysql(){
-	initGlobalDir
-	##账号管理
-	#mysqladmin	-uroot password	"${MYSQL_ROOT_PASSWORD}"
-	service mysqld start
-	mysql -uroot -e	"GRANT REPLICATION SLAVE ON	*.*	TO 'repl'@'%' identified by	\"repl\";"
+    initGlobalDir
+    ##账号管理
+    #mysqladmin -uroot password "${MYSQL_ROOT_PASSWORD}"
+    service mysqld start
+    mysql -uroot -e "GRANT REPLICATION SLAVE ON *.* TO 'repl'@'%' identified by \"repl\";"
 
-	#配置
-	if [ ! -f "$MYSQL_BAK_CONFIG_FILE" ]; then
-		\cp	-av	$MYSQL_CONFIG_FILE $MYSQL_BAK_CONFIG_FILE
-	else
-		\cp	-av	$MYSQL_BAK_CONFIG_FILE $MYSQL_CONFIG_FILE
-	fi
+    #配置
+    if [ ! -f "$MYSQL_BAK_CONFIG_FILE" ]; then
+        \cp -av $MYSQL_CONFIG_FILE $MYSQL_BAK_CONFIG_FILE
+    else
+        \cp -av $MYSQL_BAK_CONFIG_FILE $MYSQL_CONFIG_FILE
+    fi
 
-	# Base
-	sed	-i '/\[mysqld\]/a\ skip-name-resolve' $MYSQL_CONFIG_FILE
-	sed	-i '/\[mysqld\]/a\ lower_case_table_names=1' $MYSQL_CONFIG_FILE
-	sed	-i '/\[mysqld\]/a\ innodb_file_per_table ' $MYSQL_CONFIG_FILE
-	# Replication ignore
-	sed	-i '/\[mysqld\]/a\ binlog-ignore-db=mysql' $MYSQL_CONFIG_FILE
-	sed	-i '/\[mysqld\]/a\ binlog-ignore-db=test' $MYSQL_CONFIG_FILE
-	sed	-i '/\[mysqld\]/a\ binlog-ignore-db=information_schema'	$MYSQL_CONFIG_FILE
-	sed	-i '/\[mysqld\]/a\ binlog-ignore-db=performance_schema'	$MYSQL_CONFIG_FILE
-	# Replication Master
-	sed	-i '/\[mysqld\]/a\ log-bin=master-bin.log' $MYSQL_CONFIG_FILE
-	sed	-i '/\[mysqld\]/a\ binlog_format=mixed'	$MYSQL_CONFIG_FILE
-	sed	-i '/\[mysqld\]/a\ expire_logs_days	= 7' $MYSQL_CONFIG_FILE
-	sed	-i '/\[mysqld\]/a\ max_binlog_size = 128M' $MYSQL_CONFIG_FILE
-	# Replication Slave
-	sed	-i '/\[mysqld\]/a\ relay-log-index=slave-relay-bin.index' $MYSQL_CONFIG_FILE
-	sed	-i '/\[mysqld\]/a\ relay-log=slave-relay-bin.log' $MYSQL_CONFIG_FILE
-	# Server ID
-	sed	-i "/\[mysqld\]/a\ server-id=$RANDOM" $MYSQL_CONFIG_FILE
-	# GTID 复制:http://blog.itpub.net/24945919/viewspace-764369/
+    # Base
+    sed -i '/\[mysqld\]/a\ skip-name-resolve' $MYSQL_CONFIG_FILE
+    sed -i '/\[mysqld\]/a\ lower_case_table_names=1' $MYSQL_CONFIG_FILE
+    sed -i '/\[mysqld\]/a\ innodb_file_per_table ' $MYSQL_CONFIG_FILE
+    # Replication ignore
+    sed -i '/\[mysqld\]/a\ binlog-ignore-db=mysql' $MYSQL_CONFIG_FILE
+    sed -i '/\[mysqld\]/a\ binlog-ignore-db=test' $MYSQL_CONFIG_FILE
+    sed -i '/\[mysqld\]/a\ binlog-ignore-db=information_schema' $MYSQL_CONFIG_FILE
+    sed -i '/\[mysqld\]/a\ binlog-ignore-db=performance_schema' $MYSQL_CONFIG_FILE
+    # Replication Master
+    sed -i '/\[mysqld\]/a\ log-bin=master-bin.log' $MYSQL_CONFIG_FILE
+    sed -i '/\[mysqld\]/a\ binlog_format=mixed' $MYSQL_CONFIG_FILE
+    sed -i '/\[mysqld\]/a\ expire_logs_days = 7' $MYSQL_CONFIG_FILE
+    sed -i '/\[mysqld\]/a\ max_binlog_size = 128M' $MYSQL_CONFIG_FILE
+    # Replication Slave
+    sed -i '/\[mysqld\]/a\ relay-log-index=slave-relay-bin.index' $MYSQL_CONFIG_FILE
+    sed -i '/\[mysqld\]/a\ relay-log=slave-relay-bin.log' $MYSQL_CONFIG_FILE
+    # Server ID
+    sed -i "/\[mysqld\]/a\ server-id=$RANDOM" $MYSQL_CONFIG_FILE
+    # GTID 复制:http://blog.itpub.net/24945919/viewspace-764369/
 
-	##定时备份
-	mkdir -p $MYSQL_BACKUP_DIR
-	touch $MYSQL_BACKUP_CMD
-	echo > $MYSQL_BACKUP_CMD
-	echo '#!/bin/sh' >>	$MYSQL_BACKUP_CMD
-	echo 'name=`date '+%Y%m%d%H%M%S'`' >> $MYSQL_BACKUP_CMD
-	echo "mysqldump	--all-databases	|gzip>$MYSQL_BACKUP_DIR/db_\$name.sql.gz" >> $MYSQL_BACKUP_CMD
-	echo "find $MYSQL_BACKUP_DIR/db*.gz	-mtime +30 -exec rm	{} \;" >> $MYSQL_BACKUP_CMD
-	chmod +x $MYSQL_BACKUP_CMD
-	touch /var/spool/cron/root
-	grep -q	"$MYSQL_BACKUP_CMD"	/var/spool/cron/root &&{
-		echo "Backup mysql cron	has	been setted."
-	}||{
-		echo "01 3 * * * $MYSQL_BACKUP_CMD"	>>/var/spool/cron/root
-		#for test
-		#echo "*/1 * * * * $MYSQL_BACKUP_CMD" >>/var/spool/cron/root
-	}
-	service	crond restart
-	service	mysqld restart
+    ##定时备份
+    mkdir -p $MYSQL_BACKUP_DIR
+    touch $MYSQL_BACKUP_CMD
+    echo > $MYSQL_BACKUP_CMD
+    echo '#!/bin/sh' >> $MYSQL_BACKUP_CMD
+    echo 'name=`date '+%Y%m%d%H%M%S'`' >> $MYSQL_BACKUP_CMD
+    echo "mysqldump --all-databases |gzip>$MYSQL_BACKUP_DIR/db_\$name.sql.gz" >> $MYSQL_BACKUP_CMD
+    echo "find $MYSQL_BACKUP_DIR/db*.gz -mtime +30 -exec rm {} \;" >> $MYSQL_BACKUP_CMD
+    chmod +x $MYSQL_BACKUP_CMD
+    touch /var/spool/cron/root
+    grep -q "$MYSQL_BACKUP_CMD" /var/spool/cron/root &&{
+        echo "Backup mysql cron has been setted."
+    }||{
+        echo "01 3 * * * $MYSQL_BACKUP_CMD" >>/var/spool/cron/root
+        #for test
+        #echo "*/1 * * * * $MYSQL_BACKUP_CMD" >>/var/spool/cron/root
+    }
+    service crond restart
+    service mysqld restart
 }
 
 function downloadProbe(){
-	initGlobalDir
-	if [ ! -f "$GLOBAL_DOWNLOAD_DIR/probe-${PROBE_VER}.zip"	]; then
-		export http_proxy="http://202.171.253.134"
-		export https_proxy="https://202.171.253.134"
-		#export	http_proxy="http://211.144.81.68:18000"
-		#export	https_proxy="https://211.144.81.68:18000"
-		#export	http_proxy="http://173.201.95.24"
-		#export	https_proxy="https://173.201.95.24"
-		retry "wget -P $GLOBAL_DOWNLOAD_DIR http://psi-probe.googlecode.com/files/probe-${PROBE_VER}.zip"
-		export http_proxy=
-		export https_proxy=
-	fi
+    initGlobalDir
+    if [ ! -f "$GLOBAL_DOWNLOAD_DIR/probe-${PROBE_VER}.zip" ]; then
+        export http_proxy="http://202.171.253.134"
+        export https_proxy="https://202.171.253.134"
+        #export http_proxy="http://211.144.81.68:18000"
+        #export https_proxy="https://211.144.81.68:18000"
+        #export http_proxy="http://173.201.95.24"
+        #export https_proxy="https://173.201.95.24"
+        retry "wget -P $GLOBAL_DOWNLOAD_DIR http://psi-probe.googlecode.com/files/probe-${PROBE_VER}.zip"
+        export http_proxy=
+        export https_proxy=
+    fi
 }
 
 function installProbe(){
-	downloadProbe
-	unzip -oq $GLOBAL_DOWNLOAD_DIR/probe-${PROBE_VER}.zip -d /tmp
-	mkdir -p $TOMCAT_HOME/webapps/probe
-	rm -rf $TOMCAT_HOME/webapps/probe/*
-	unzip -oq /tmp/probe.war -d	$TOMCAT_HOME/webapps/probe
-	rm -rf /tmp/probe.war
+    downloadProbe
+    unzip -oq $GLOBAL_DOWNLOAD_DIR/probe-${PROBE_VER}.zip -d /tmp
+    mkdir -p $TOMCAT_HOME/webapps/probe
+    rm -rf $TOMCAT_HOME/webapps/probe/*
+    unzip -oq /tmp/probe.war -d $TOMCAT_HOME/webapps/probe
+    rm -rf /tmp/probe.war
 }
 
 function getIServerCode() {
-  mkdir	-p $GLOBAL_SOURCECODE_DIR
+  mkdir -p $GLOBAL_SOURCECODE_DIR
   if [ ! -d $GLOBAL_SOURCECODE_DIR/$IAPI_PROJECT_NAME ]
   then
-	echo "cd $GLOBAL_SOURCECODE_DIR"
-	cd $GLOBAL_SOURCECODE_DIR
-	echo "clone $IAPI_GIT_URL"
-	retry "git clone $IAPI_GIT_URL"
+    echo "cd $GLOBAL_SOURCECODE_DIR"
+    cd $GLOBAL_SOURCECODE_DIR
+    echo "clone $IAPI_GIT_URL"
+    retry "git clone $IAPI_GIT_URL"
   else
-	echo "cd $GLOBAL_SOURCECODE_DIR/$IAPI_PROJECT_NAME"
-	cd $GLOBAL_SOURCECODE_DIR/$IAPI_PROJECT_NAME
-	echo "pull $IAPI_GIT_URL"
-	retry "git pull"
+    echo "cd $GLOBAL_SOURCECODE_DIR/$IAPI_PROJECT_NAME"
+    cd $GLOBAL_SOURCECODE_DIR/$IAPI_PROJECT_NAME
+    echo "pull $IAPI_GIT_URL"
+    retry "git pull"
   fi
   if [ ! -d $GLOBAL_SOURCECODE_DIR/$ISERVER_PROJECT_NAME ]
   then
-	echo "cd $GLOBAL_SOURCECODE_DIR"
-	cd $GLOBAL_SOURCECODE_DIR
-	echo "clone $ISERVER_GIT_URL"
-	retry "git clone $ISERVER_GIT_URL"
+    echo "cd $GLOBAL_SOURCECODE_DIR"
+    cd $GLOBAL_SOURCECODE_DIR
+    echo "clone $ISERVER_GIT_URL"
+    retry "git clone $ISERVER_GIT_URL"
   else
-	echo "cd $GLOBAL_SOURCECODE_DIR/$ISERVER_PROJECT_NAME"
-	cd $GLOBAL_SOURCECODE_DIR/$ISERVER_PROJECT_NAME
-	echo "pull $ISERVER_GIT_URL"
-	retry "git pull"
+    echo "cd $GLOBAL_SOURCECODE_DIR/$ISERVER_PROJECT_NAME"
+    cd $GLOBAL_SOURCECODE_DIR/$ISERVER_PROJECT_NAME
+    echo "pull $ISERVER_GIT_URL"
+    retry "git pull"
   fi
 }
 
@@ -361,27 +361,27 @@ function compileIServer(){
 ## 部署
 function deployIServer(){
   rm -rf $TOMCAT_HOME/webapps/ROOT/*
-  unzip	-oq	$GLOBAL_SOURCECODE_DIR/$ISERVER_PROJECT_NAME/target/$ISERVER_PAKAGE_NAME -d	$TOMCAT_HOME/webapps/ROOT
+  unzip -oq $GLOBAL_SOURCECODE_DIR/$ISERVER_PROJECT_NAME/target/$ISERVER_PAKAGE_NAME -d $TOMCAT_HOME/webapps/ROOT
   sed -i "/^jdbc.username=/c\jdbc.username=root" $TOMCAT_HOME/webapps/ROOT/WEB-INF/classes/jdbc.properties
   sed -i "/^jdbc.password=/c\jdbc.password=" $TOMCAT_HOME/webapps/ROOT/WEB-INF/classes/jdbc.properties
-  mkdir	-p $ISERVER_UPLOAD_DIR
-  chown	-R tomcat $ISERVER_UPLOAD_DIR
-  chgrp	-R tomcat $ISERVER_UPLOAD_DIR
+  mkdir -p $ISERVER_UPLOAD_DIR
+  chown -R tomcat $ISERVER_UPLOAD_DIR
+  chgrp -R tomcat $ISERVER_UPLOAD_DIR
   mkdir -p /temp
-  chown	-R tomcat /temp
-  chgrp	-R tomcat /temp
+  chown -R tomcat /temp
+  chgrp -R tomcat /temp
   
   ln -sf $ISERVER_UPLOAD_DIR $TOMCAT_HOME/webapps/ROOT
-  mysql	-e "create database if not exists $ISERVER_DATABASE_NAME default charset utf8;"
+  mysql -e "create database if not exists $ISERVER_DATABASE_NAME default charset utf8;"
   service tomcat restart
 }
 
 ## 备份应用、附件、数据库
 function backupIServer(){
-  mkdir	-p $ISERVER_DEPLOY_BAKUP_DIR
+  mkdir -p $ISERVER_DEPLOY_BAKUP_DIR
   rm -rf $ISERVER_DEPLOY_BAKUP_DIR/*
-  mkdir	-p $ISERVER_UPLOAD_DIR
-  mysqldump	--all-databases	|gzip>$ISERVER_DEPLOY_BAKUP_DIR/sql.gz
+  mkdir -p $ISERVER_UPLOAD_DIR
+  mysqldump --all-databases |gzip>$ISERVER_DEPLOY_BAKUP_DIR/sql.gz
   cd $ISERVER_UPLOAD_DIR
   set +e
   zip -r9 $ISERVER_DEPLOY_BAKUP_DIR/files.zip *
@@ -393,37 +393,37 @@ function backupIServer(){
 
 ## 还原
 function rollbackIServer(){
-  if [ -f "$ISERVER_DEPLOY_BAKUP_DIR/files.zip"	]; then
-	rm -rf $ISERVER_UPLOAD_DIR/*
-	unzip -oq $ISERVER_DEPLOY_BAKUP_DIR/files.zip -d $ISERVER_UPLOAD_DIR
+  if [ -f "$ISERVER_DEPLOY_BAKUP_DIR/files.zip" ]; then
+    rm -rf $ISERVER_UPLOAD_DIR/*
+    unzip -oq $ISERVER_DEPLOY_BAKUP_DIR/files.zip -d $ISERVER_UPLOAD_DIR
   fi
   rm -rf $TOMCAT_HOME/webapps/*
   #还原应用和软连接关系
-  unzip	-oq	$ISERVER_DEPLOY_BAKUP_DIR/webapps.zip -d $TOMCAT_HOME/webapps
-  zcat $ISERVER_DEPLOY_BAKUP_DIR/sql.gz	| mysql	
+  unzip -oq $ISERVER_DEPLOY_BAKUP_DIR/webapps.zip -d $TOMCAT_HOME/webapps
+  zcat $ISERVER_DEPLOY_BAKUP_DIR/sql.gz | mysql 
   service tomcat restart
 }
 
 function installIserver(){
-	getIServerCode
-	compileIServer
-	backupIServer
-	deployIServer
+    getIServerCode
+    compileIServer
+    backupIServer
+    deployIServer
 }
 
 function getIclientCode(){
-  mkdir	-p $GLOBAL_SOURCECODE_DIR
+  mkdir -p $GLOBAL_SOURCECODE_DIR
   if [ ! -d $GLOBAL_SOURCECODE_DIR/$ICLIENT_PROJECT_NAME ]
   then
-	echo "cd $GLOBAL_SOURCECODE_DIR"
-	cd $GLOBAL_SOURCECODE_DIR
-	echo "git clone $ICLIENT_GIT_URL"
-	retry "git clone $ICLIENT_GIT_URL"
+    echo "cd $GLOBAL_SOURCECODE_DIR"
+    cd $GLOBAL_SOURCECODE_DIR
+    echo "git clone $ICLIENT_GIT_URL"
+    retry "git clone $ICLIENT_GIT_URL"
   else
-	echo "cd $GLOBAL_SOURCECODE_DIR/$ICLIENT_PROJECT_NAME"
-	cd $GLOBAL_SOURCECODE_DIR/$ICLIENT_PROJECT_NAME
-	echo "git pull"
-	retry "git pull"
+    echo "cd $GLOBAL_SOURCECODE_DIR/$ICLIENT_PROJECT_NAME"
+    cd $GLOBAL_SOURCECODE_DIR/$ICLIENT_PROJECT_NAME
+    echo "git pull"
+    retry "git pull"
   fi
 }
 
@@ -434,78 +434,78 @@ function compileIclinet(){
 }
 
 function deployIclient(){
-  \cp -av $GLOBAL_SOURCECODE_DIR/$ICLIENT_PROJECT_NAME/bin/$ICLIENT_PAKAGE_NAME	$ISERVER_UPLOAD_DIR/$ICLIENT_RELEASE_NAME
+  \cp -av $GLOBAL_SOURCECODE_DIR/$ICLIENT_PROJECT_NAME/bin/$ICLIENT_PAKAGE_NAME $ISERVER_UPLOAD_DIR/$ICLIENT_RELEASE_NAME
   \cp -av $GLOBAL_SOURCECODE_DIR/$ICLIENT_PROJECT_NAME/update.json $ISERVER_UPLOAD_DIR/
 }
 
 #提示输入Iclient必要配置
 function iclinetConfigPrompt(){
-	mkdir -p $ICLIENT_CONFIG_DIR
-	if [ ! -f "$ICLIENT_CONFIG_FILE" ];	then
-		echo ""	> $ICLIENT_CONFIG_FILE
-	else
-		source $ICLIENT_CONFIG_FILE
-	fi
+    mkdir -p $ICLIENT_CONFIG_DIR
+    if [ ! -f "$ICLIENT_CONFIG_FILE" ]; then
+        echo "" > $ICLIENT_CONFIG_FILE
+    else
+        source $ICLIENT_CONFIG_FILE
+    fi
 
-	if [ -z	"$ICLIENT_KEY_STORE_FILE" ]; then
-		prompt ICLIENT_KEY_STORE_FILE 'keystore file path' ''
-		echo "ICLIENT_KEY_STORE_FILE=$ICLIENT_KEY_STORE_FILE" >> $ICLIENT_CONFIG_FILE
-	fi
-	if [ -z	"$ICLIENT_KEY_STORE_PASSWORD" ]; then
-		prompt ICLIENT_KEY_STORE_PASSWORD 'keystore password' ''
-		echo "ICLIENT_KEY_STORE_PASSWORD=$ICLIENT_KEY_STORE_PASSWORD" >> $ICLIENT_CONFIG_FILE
-	fi
-	if [ -z	"$ICLIENT_KEY_ALIAS" ];	then
-		prompt ICLIENT_KEY_ALIAS 'keystore alias'	''
-		echo "ICLIENT_KEY_ALIAS=$ICLIENT_KEY_ALIAS"	>> $ICLIENT_CONFIG_FILE
-	fi
-	if [ -z	"$ICLIENT_KEY_ALIAS_PASSWORD" ]; then
-		prompt ICLIENT_KEY_ALIAS_PASSWORD 'key alias	password' ''
-		echo "ICLIENT_KEY_ALIAS_PASSWORD=$ICLIENT_KEY_ALIAS_PASSWORD" >> $ICLIENT_CONFIG_FILE
-	fi
+    if [ -z "$ICLIENT_KEY_STORE_FILE" ]; then
+        prompt ICLIENT_KEY_STORE_FILE 'keystore file path' ''
+        echo "ICLIENT_KEY_STORE_FILE=$ICLIENT_KEY_STORE_FILE" >> $ICLIENT_CONFIG_FILE
+    fi
+    if [ -z "$ICLIENT_KEY_STORE_PASSWORD" ]; then
+        prompt ICLIENT_KEY_STORE_PASSWORD 'keystore password' ''
+        echo "ICLIENT_KEY_STORE_PASSWORD=$ICLIENT_KEY_STORE_PASSWORD" >> $ICLIENT_CONFIG_FILE
+    fi
+    if [ -z "$ICLIENT_KEY_ALIAS" ]; then
+        prompt ICLIENT_KEY_ALIAS 'keystore alias'   ''
+        echo "ICLIENT_KEY_ALIAS=$ICLIENT_KEY_ALIAS" >> $ICLIENT_CONFIG_FILE
+    fi
+    if [ -z "$ICLIENT_KEY_ALIAS_PASSWORD" ]; then
+        prompt ICLIENT_KEY_ALIAS_PASSWORD 'key alias    password' ''
+        echo "ICLIENT_KEY_ALIAS_PASSWORD=$ICLIENT_KEY_ALIAS_PASSWORD" >> $ICLIENT_CONFIG_FILE
+    fi
 }
 
 function installIclient(){
-	getIclientCode
-	compileIclinet
-	deployIclient
+    getIclientCode
+    compileIclinet
+    deployIclient
 }
 
 #重设Swap分区(2G): setSwap
 function setSwap(){
-	grep -q	"/swap swap swap default 0 0"	/etc/fstab &&{
-		swapoff /swap
-		rm -rf /swap
-		echo "swapoff /swap"
-	}||{
-		echo '/swap swap swap default 0 0' >> /etc/fstab
-	}
-	dd if=/dev/zero of=/swap bs=1024 count=2097152
-	mkswap /swap 
-	swapon /swap
-	
+    grep -q "/swap swap swap default 0 0"   /etc/fstab &&{
+        swapoff /swap
+        rm -rf /swap
+        echo "swapoff /swap"
+    }||{
+        echo '/swap swap swap default 0 0' >> /etc/fstab
+    }
+    dd if=/dev/zero of=/swap bs=1024 count=2097152
+    mkswap /swap 
+    swapon /swap
+    
 }
 
 #数据同步
 function dataSync(){
-	prompt _remoetServerIP 'Remoet Server IP:' ''
-	prompt _mysqlUserName 'Mysql User Name:' ''
+    prompt _remoetServerIP 'Remoet Server IP:' ''
+    prompt _mysqlUserName 'Mysql User Name:' ''
 
-	mysqldump -h$_remoetServerIP -u$_mysqlUserName -p $ISERVER_DATABASE_NAME > /tmp/$ISERVER_DATABASE_NAME.sql
-	mysql -e "drop database  if exists $ISERVER_DATABASE_NAME;"
-	mysql -e "create database if not exists $ISERVER_DATABASE_NAME default charset utf8;"
-	mysql $ISERVER_DATABASE_NAME < /tmp/$ISERVER_DATABASE_NAME.sql
+    mysqldump -h$_remoetServerIP -u$_mysqlUserName -p $ISERVER_DATABASE_NAME > /tmp/$ISERVER_DATABASE_NAME.sql
+    mysql -e "drop database  if exists $ISERVER_DATABASE_NAME;"
+    mysql -e "create database if not exists $ISERVER_DATABASE_NAME default charset utf8;"
+    mysql $ISERVER_DATABASE_NAME < /tmp/$ISERVER_DATABASE_NAME.sql
 
-	rm -rf $ISERVER_UPLOAD_DIR/*
-	scp -r root@115.29.103.123:/home/data/files/* $ISERVER_UPLOAD_DIR 
+    rm -rf $ISERVER_UPLOAD_DIR/*
+    scp -r root@115.29.103.123:/home/data/files/* $ISERVER_UPLOAD_DIR 
 }
 
 function webmin(){
-	#/usr/libexec/webmin
-	retry "wget -P /tmp http://downloads.sourceforge.net/project/webadmin/webmin/1.700/webmin-1.700-1.noarch.rpm"
-	rpm -ivh /tmp/webmin-1.700-1.noarch.rpm
-	rm -rf /tmp/webmin-1.700-1.noarch.rpm
-	echo "now you can use http://localhost:10000/"
+    #/usr/libexec/webmin
+    retry "wget -P /tmp http://downloads.sourceforge.net/project/webadmin/webmin/1.700/webmin-1.700-1.noarch.rpm"
+    rpm -ivh /tmp/webmin-1.700-1.noarch.rpm
+    rm -rf /tmp/webmin-1.700-1.noarch.rpm
+    echo "now you can use http://localhost:10000/"
 }
 
 #阿里云监控
