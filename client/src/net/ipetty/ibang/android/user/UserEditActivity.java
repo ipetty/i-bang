@@ -63,6 +63,7 @@ public class UserEditActivity extends Activity {
 				userForm.setPhone(phone.getText().toString());
 				// userForm.setTelephone(telephone);
 				userForm.setSignature(signature.getText().toString());
+				userForm.setGender(user.getGender());
 				// userForm.setAddress(address);
 
 				// update user;
