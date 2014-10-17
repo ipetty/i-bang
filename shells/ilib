@@ -90,8 +90,13 @@ function tomcatConfigPrompt(){
 
 function installTomcat(){
 	installJpackageSource
-	retry "yum install tomcat tomcat-webapps tomcat-admin-webapps tomcat-native java-1.7.0-openjdk-devel -y"
+	retry "yum install tomcat tomcat-webapps tomcat-native java-1.7.0-openjdk-devel -y"
 	chkconfig tomcat on
+	rm -rf $TOMCAT_HOME/webapps/host-manager
+	rm -rf $TOMCAT_HOME/tomcat/webapps/manager
+	rm -rf $TOMCAT_HOME/tomcat/webapps/examples
+	rm -rf $TOMCAT_HOME/tomcat/webapps/sample
+
 }
 
 function installAnt(){
@@ -501,4 +506,11 @@ function webmin(){
 	rpm -ivh /tmp/webmin-1.700-1.noarch.rpm
 	rm -rf /tmp/webmin-1.700-1.noarch.rpm
 	echo "now you can use http://localhost:10000/"
+}
+
+#∞¢¿Ô‘∆º‡øÿ
+function aliyunMon(){
+  retry "wget -P /tmp http://update.aegis.aliyun.com/download/quartz_install.sh"
+  chmod +x /tmp/quartz_install.sh
+  .sh /tmp/quartz_install.sh
 }
