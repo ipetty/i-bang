@@ -462,10 +462,6 @@ function installIclient(){
 
 #重设Swap分区(2G): setSwap
 function setSwap(){
-	_swapSize=$1
-	if [ -z "$_swapSize" ]; then
-		echo "SwapSize was not given!" && exit 1
-	fi
 	grep -q	"/swap swap swap default 0 0"	/etc/fstab &&{
 		swapoff /swap
 		rm -rf /swap
