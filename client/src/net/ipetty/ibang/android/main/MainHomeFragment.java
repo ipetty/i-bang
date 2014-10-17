@@ -194,6 +194,9 @@ public class MainHomeFragment extends Fragment {
 			if (Constants.BROADCAST_INTENT_UPDATA_USER.equals(action)) {
 				initUser();
 			}
+			if (Constants.BROADCAST_INTENT_PUBLISH_SEEK.equals(action)) {
+				loadSeek(true);
+			}
 		}
 
 		private void init() {
