@@ -1,17 +1,36 @@
 
 #用户输入 变量 提示内容	默认值
 function prompt(){
-  variable=$1
-  prompt_text=$2
-  default_value=$3
-  if [ -z "$variable" ]; then
-	echo "Variable name	was	not	given!"	&& exit	1
+  _variable=$1
+  _prompt_text=$2
+  _default_value=$3
+  if [ -z "$_variable" ]; then
+	echo "Variable name was not given!" && exit 1
   fi
-  read -p "$prompt_text	[$default_value]: "	$variable
-  if [ -z "${!variable}" ];	then
-	eval "$variable=$default_value"
+  read -p "$_prompt_text	[$_default_value]: "	$_variable
+  if [ -z "${!_variable}" ];	then
+	eval "$_variable=$_default_value"
   fi
+}
 
+#执行失败重试3次 retry "curl wwww.google.com"
+function retry(){
+  _cmd=$1
+  _tryTimes=3
+  set +e
+  for (( i = 0; i < $_tryTimes ; i ++ ))
+  do
+    $_cmd
+    if [ "$?" -eq "0" ]; then
+      break
+      set -e
+    else
+      echo "Warn:\"$_cmd\"" failed try again...
+      sleep 3
+      continue
+    fi
+  done
+  set -e
 }
 
 function initGlobalDir(){
@@ -30,25 +49,22 @@ function linuxInit(){
 }
 
 function installJpackageSource(){
-	yum	install	jpackage-utils yum-priorities -y
-	set	+e
-	rpm	-ivh --force ftp://ftp.pbone.net/mirror/www.jpackage.org/jpackage/6.0/generic/free/RPMS/jpackage-release-6-3.jpp6.noarch.rpm
-	if [ "$?" -eq "1" ]; then
-	  rpm -ivh --force ftp://ftp.pbone.net/mirror/www.jpackage.org/jpackage/6.0/generic/free/RPMS/jpackage-release-6-3.jpp6.noarch.rpm
-	fi
-	set	-e
+	retry "yum install jpackage-utils yum-priorities -y"
+	retry "rpm -ivh --force ftp://ftp.pbone.net/mirror/www.jpackage.org/jpackage/6.0/generic/free/RPMS/jpackage-release-6-3.jpp6.noarch.rpm"
 	rpm	--import /etc/pki/rpm-gpg/RPM*
 	sed	-i '/gpgcheck=1/c\gpgcheck=0' /etc/yum.repos.d/jpackage.repo
 }
 
+#处理Tomcat安装前需人工输入的参数，变量输出到tomcatAdminUser,tomcatAdminPass
+function tomcatConfigPrompt(){
+	prompt tomcatAdminUser 'Tomcat Admin User' 'admin'
+	prompt tomcatAdminPass 'Tomcat Admin Password' 'admin'
+	echo "tomcatConfigPrompt"
+}
+
 function installTomcat(){
 	installJpackageSource
-	set	+e
-	yum	install	tomcat tomcat-webapps tomcat-admin-webapps tomcat-native java-1.7.0-openjdk-devel -y
-	if [ "$?" -eq "1" ]; then
-	  yum install tomcat tomcat-webapps	tomcat-admin-webapps tomcat-native java-1.7.0-openjdk-devel	-y
-	fi
-	set	-e
+	retry "yum install tomcat tomcat-webapps tomcat-admin-webapps tomcat-native java-1.7.0-openjdk-devel -y"
 	chkconfig tomcat on
 }
 
@@ -59,107 +75,55 @@ function installAnt(){
 }
 
 function installMaven(){
-	wget http://repos.fedorapeople.org/repos/dchen/apache-maven/epel-apache-maven.repo -O /etc/yum.repos.d/epel-apache-maven.repo
-	set	+e
-	yum	install	apache-maven  -y
-	if [ "$?" -eq "1" ]; then
-	  yum install apache-maven	-y
-	fi
-	set	-e
-	mvn	-version
+	retry "wget http://repos.fedorapeople.org/repos/dchen/apache-maven/epel-apache-maven.repo -O /etc/yum.repos.d/epel-apache-maven.repo"
+	retry "yum install apache-maven -y"
+	mvn -version
 }
 
 function installGvm(){
 	curl -s	get.gvmtool.net	| bash
-	sleep 1
-	curl -s	get.gvmtool.net	| bash
-	sleep 1
 	source "/root/.gvm/bin/gvm-init.sh"
 	gvm	version
 }
 
 function installMysql(){
-	set	+e
-	rpm	-ivh --force http://dev.mysql.com/get/mysql-community-release-el6-5.noarch.rpm
-	if [ "$?" -eq "1" ]; then
-	  rpm -ivh --force http://dev.mysql.com/get/mysql-community-release-el6-5.noarch.rpm
-	fi
-	set	-e
+	retry "rpm -ivh --force http://dev.mysql.com/get/mysql-community-release-el6-5.noarch.rpm"
 	rpm	--import /etc/pki/rpm-gpg/RPM*
-	set	+e
-	yum	install	mysql-community-server mysql-utilities mysql-utilities-extra -y
-	if [ "$?" -eq "1" ]; then
-	  yum install mysql-community-server mysql-utilities mysql-utilities-extra -y
-	fi
-	set	-e
+	retry "yum install mysql-community-server mysql-utilities mysql-utilities-extra -y"
 	chkconfig mysqld on
 }
 
 function installNginx(){
-	set	+e
-	rpm	-ivh --force http://nginx.org/packages/centos/6/noarch/RPMS/nginx-release-centos-6-0.el6.ngx.noarch.rpm
-	if [ "$?" -eq "1" ]; then
-	  rpm -ivh --force http://nginx.org/packages/centos/6/noarch/RPMS/nginx-release-centos-6-0.el6.ngx.noarch.rpm
-	fi
-	set	-e
+	retry "rpm -ivh --force http://nginx.org/packages/centos/6/noarch/RPMS/nginx-release-centos-6-0.el6.ngx.noarch.rpm"
 	rpm	--import /etc/pki/rpm-gpg/RPM*
-	set	+e
-	yum	install	nginx -y
-	if [ "$?" -eq "1" ]; then
-	  yum install nginx	-y
-	fi
-	set	-e
+	retry "yum install nginx -y"
 	chkconfig nginx	on
 }
 
 function installGoAccess(){
-	set	+e
-	rpm	-ivh --force http://mirrors.ustc.edu.cn/fedora/epel/6/x86_64/epel-release-6-8.noarch.rpm
-	if [ "$?" -eq "1" ]; then
-	  rpm -ivh --force http://mirrors.ustc.edu.cn/fedora/epel/6/x86_64/epel-release-6-8.noarch.rpm
-	fi
-	set	-e
+	retry "rpm -ivh --force http://mirrors.ustc.edu.cn/fedora/epel/6/x86_64/epel-release-6-8.noarch.rpm"
 	rpm	--import /etc/pki/rpm-gpg/RPM*
-	set	+e
-	yum	install	goaccess --enablerepo=epel	-y
-	if [ "$?" -eq "1" ]; then
-	  yum install goaccess --enablerepo=epel  -y
-	fi
-	set	-e
+	retry "yum install goaccess --enablerepo=epel -y"
+	goaccess --v
 }
 
 function installNmon(){
-	set	+e
-	rpm	-ivh --force http://pkgs.repoforge.org/rpmforge-release/rpmforge-release-0.5.3-1.el6.rf.x86_64.rpm
-	if [ "$?" -eq "1" ]; then
-	  rpm -ivh --force http://pkgs.repoforge.org/rpmforge-release/rpmforge-release-0.5.3-1.el6.rf.x86_64.rpm
-	fi
-	set	-e
+	retry "rpm -ivh --force http://pkgs.repoforge.org/rpmforge-release/rpmforge-release-0.5.3-1.el6.rf.x86_64.rpm"
 	rpm	--import /etc/pki/rpm-gpg/RPM*
-	set	+e
-	yum	install	nmon  --enablerepo=rpmforge-extras -y
-	if [ "$?" -eq "1" ]; then
-	  yum install nmon	--enablerepo=rpmforge-extras -y
-	fi
-	set	-e
+	retry "yum install nmon --enablerepo=rpmforge-extras -y"
 }
 
 function downloadAndroidSDK(){
 	mkdir -p $GLOBAL_DOWNLOAD_DIR
 	if [ ! -f "$GLOBAL_DOWNLOAD_DIR/adt-bundle-linux-x86_64-20140321.zip" ]; then
-		set	+e
-		wget -P	$GLOBAL_DOWNLOAD_DIR  "http://dl.google.com/android/adt/22.6.2/adt-bundle-linux-x86_64-20140321.zip"
-		if [ "$?" -eq "1" ]; then
-		  wget -P $GLOBAL_DOWNLOAD_DIR	"http://dl.google.com/android/adt/22.6.2/adt-bundle-linux-x86_64-20140321.zip"
-		fi
-		set	-e
+		retry "wget -P	$GLOBAL_DOWNLOAD_DIR  http://dl.google.com/android/adt/22.6.2/adt-bundle-linux-x86_64-20140321.zip"
 	fi
 }
 
 function installAndroidSDK(){
 	downloadAndroidSDK
 	#for centos6.5
-	yum	install	-y	compat-libstdc++-296.i686 compat-libstdc++-33.i686 zlib.i686 libstdc++.so.6	
+	retry "yum install -y compat-libstdc++-296.i686 compat-libstdc++-33.i686 zlib.i686 libstdc++.so.6"	
 	if [ ! -d "/opt/" ]; then
 		mkdir -p /opt
 	fi
@@ -222,9 +186,9 @@ function configTomcat(){
 	# 备份/还原
 	if [ ! -d $TOMCAT_CONFIG_BACKUP_DIR	]
 	then
-		\cp	-av	$TOMCAT_CONFIG_DIR $TOMCAT_CONFIG_BACKUP_DIR
+	    \cp -av $TOMCAT_CONFIG_DIR $TOMCAT_CONFIG_BACKUP_DIR
 	else
-	   \cp -av $TOMCAT_CONFIG_BACKUP_DIR/* $TOMCAT_CONFIG_DIR
+	    \cp -av $TOMCAT_CONFIG_BACKUP_DIR/* $TOMCAT_CONFIG_DIR
 	fi
 
 	sed	-i '/<Context>/c\<Context allowLinking="true">'	$TOMCAT_CONTEXT_FILE
@@ -312,12 +276,7 @@ function downloadProbe(){
 		#export	https_proxy="https://211.144.81.68:18000"
 		#export	http_proxy="http://173.201.95.24"
 		#export	https_proxy="https://173.201.95.24"
-		set	+e
-		wget -P	$GLOBAL_DOWNLOAD_DIR  "http://psi-probe.googlecode.com/files/probe-${PROBE_VER}.zip"
-		if [ "$?" -eq "1" ]; then
-		  rm -rf $GLOBAL_DOWNLOAD_DIR/probe-${PROBE_VER}.zip 
-		fi
-		set	-e
+		retry "wget -P $GLOBAL_DOWNLOAD_DIR http://psi-probe.googlecode.com/files/probe-${PROBE_VER}.zip"
 		export http_proxy=
 		export https_proxy=
 	fi
@@ -336,36 +295,38 @@ function installProbe(){
 ## 更新
 function getIServerCode() {
   mkdir	-p $GLOBAL_SOURCECODE_DIR
-  if [ ! -d	$GLOBAL_SOURCECODE_DIR/$IAPI_PROJECT_NAME ]
+  if [ ! -d $GLOBAL_SOURCECODE_DIR/$IAPI_PROJECT_NAME ]
   then
+	echo "cd $GLOBAL_SOURCECODE_DIR"
 	cd $GLOBAL_SOURCECODE_DIR
-	git	clone $IAPI_GIT_URL
+	echo "clone $IAPI_GIT_URL"
+	retry "git clone $IAPI_GIT_URL"
   else
+	echo "cd $GLOBAL_SOURCECODE_DIR/$IAPI_PROJECT_NAME"
 	cd $GLOBAL_SOURCECODE_DIR/$IAPI_PROJECT_NAME
-	git	pull
+	echo "pull $IAPI_GIT_URL"
+	retry "git pull"
   fi
-  if [ ! -d	$GLOBAL_SOURCECODE_DIR/$ISERVER_PROJECT_NAME ]
+  if [ ! -d $GLOBAL_SOURCECODE_DIR/$ISERVER_PROJECT_NAME ]
   then
+	echo "cd $GLOBAL_SOURCECODE_DIR"
 	cd $GLOBAL_SOURCECODE_DIR
-	git	clone $ISERVER_GIT_URL
+	echo "clone $ISERVER_GIT_URL"
+	retry "git clone $ISERVER_GIT_URL"
   else
+	echo "cd $GLOBAL_SOURCECODE_DIR/$ISERVER_PROJECT_NAME"
 	cd $GLOBAL_SOURCECODE_DIR/$ISERVER_PROJECT_NAME
-	git	pull
+	echo "pull $ISERVER_GIT_URL"
+	retry "git pull"
   fi
 }
 
 ## 编译
 function compileIServer(){
   cd $GLOBAL_SOURCECODE_DIR/$IAPI_PROJECT_NAME
-  mvn clean	install	-DskipTests=true 
+  retry "mvn clean install -DskipTests=true"
   cd $GLOBAL_SOURCECODE_DIR/$ISERVER_PROJECT_NAME
-  set +e
-  mvn clean	install	-DskipTests=true 
-  if [ "$?"	-eq	"1"	]; then
-	  echo "try	again..."
-	  mvn clean	install	-DskipTests=true 
-  fi
-  set -e 
+  retry "mvn clean install -DskipTests=true"
 }
 
 ## 部署
@@ -419,29 +380,33 @@ function installIserver(){
 
 function getIclientCode(){
   mkdir	-p $GLOBAL_SOURCECODE_DIR
-  if [ ! -d	$GLOBAL_SOURCECODE_DIR/$ICLIENT_PROJECT_NAME ]
+  if [ ! -d $GLOBAL_SOURCECODE_DIR/$ICLIENT_PROJECT_NAME ]
   then
+	echo "cd $GLOBAL_SOURCECODE_DIR"
 	cd $GLOBAL_SOURCECODE_DIR
-	git	clone $ICLIENT_GIT_URL
+	echo "git clone $ICLIENT_GIT_URL"
+	retry "git clone $ICLIENT_GIT_URL"
   else
+	echo "cd $GLOBAL_SOURCECODE_DIR/$ICLIENT_PROJECT_NAME"
 	cd $GLOBAL_SOURCECODE_DIR/$ICLIENT_PROJECT_NAME
-	git	pull
+	echo "git pull"
+	retry "git pull"
   fi
 }
 
 function compileIclinet(){
-  .	/etc/profile
-  ant -f $GLOBAL_SOURCECODE_DIR/$ICLIENT_PROJECT_NAME/build.xml	-Dkey.alias=$ICLIENT_KEY_ALIAS -Dkey.alias.password=$ICLIENT_KEY_ALIAS_PASSWORD	-Dkey.store.password=$ICLIENT_KEY_STORE_PASSWORD  -Dkey.store=$ICLIENT_KEY_STORE_FILE clean	release
+  . /etc/profile
+  ant -f $GLOBAL_SOURCECODE_DIR/$ICLIENT_PROJECT_NAME/build.xml -Dkey.alias=$ICLIENT_KEY_ALIAS -Dkey.alias.password=$ICLIENT_KEY_ALIAS_PASSWORD -Dkey.store.password=$ICLIENT_KEY_STORE_PASSWORD -Dkey.store=$ICLIENT_KEY_STORE_FILE clean release
   #ant -f $GLOBAL_SOURCECODE_DIR/$ICLIENT_PROJECT_NAME clean debug
 }
 
 function deployIclient(){
-  \cp -av $GLOBAL_SOURCECODE_DIR/$ICLIENT_PROJECT_NAME/bin/i-client-release.apk	$ISERVER_UPLOAD_DIR/$ICLIENT_RELEASE_NAME
+  \cp -av $GLOBAL_SOURCECODE_DIR/$ICLIENT_PROJECT_NAME/bin/$ICLIENT_PAKAGE_NAME	$ISERVER_UPLOAD_DIR/$ICLIENT_RELEASE_NAME
   \cp -av $GLOBAL_SOURCECODE_DIR/$ICLIENT_PROJECT_NAME/update.json $ISERVER_UPLOAD_DIR/
 }
 
-function installIclient(){
-	installAndroidSDK
+#提示输入Iclient必要配置
+function iclinetConfigPrompt(){
 	mkdir -p $ICLIENT_CONFIG_DIR
 	if [ ! -f "$ICLIENT_CONFIG_FILE" ];	then
 		echo ""	> $ICLIENT_CONFIG_FILE
@@ -450,21 +415,24 @@ function installIclient(){
 	fi
 
 	if [ -z	"$ICLIENT_KEY_STORE_FILE" ]; then
-		prompt ICLIENT_KEY_STORE_FILE 'keystore file	path' '/root/ibang.keystore'
+		prompt ICLIENT_KEY_STORE_FILE 'keystore file path' ''
 		echo "ICLIENT_KEY_STORE_FILE=$ICLIENT_KEY_STORE_FILE" >> $ICLIENT_CONFIG_FILE
 	fi
 	if [ -z	"$ICLIENT_KEY_STORE_PASSWORD" ]; then
-		prompt ICLIENT_KEY_STORE_PASSWORD 'keystore password' 'somepassword'
+		prompt ICLIENT_KEY_STORE_PASSWORD 'keystore password' ''
 		echo "ICLIENT_KEY_STORE_PASSWORD=$ICLIENT_KEY_STORE_PASSWORD" >> $ICLIENT_CONFIG_FILE
 	fi
 	if [ -z	"$ICLIENT_KEY_ALIAS" ];	then
-		prompt ICLIENT_KEY_ALIAS 'key alias'	'ibang.ks'
+		prompt ICLIENT_KEY_ALIAS 'keystore alias'	''
 		echo "ICLIENT_KEY_ALIAS=$ICLIENT_KEY_ALIAS"	>> $ICLIENT_CONFIG_FILE
 	fi
 	if [ -z	"$ICLIENT_KEY_ALIAS_PASSWORD" ]; then
-		prompt ICLIENT_KEY_ALIAS_PASSWORD 'key alias	password' 'somepassword'
+		prompt ICLIENT_KEY_ALIAS_PASSWORD 'key alias	password' ''
 		echo "ICLIENT_KEY_ALIAS_PASSWORD=$ICLIENT_KEY_ALIAS_PASSWORD" >> $ICLIENT_CONFIG_FILE
 	fi
+}
+
+function installIclient(){
 	getIclientCode
 	compileIclinet
 	deployIclient

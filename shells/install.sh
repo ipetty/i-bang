@@ -1,23 +1,22 @@
 #!/bin/sh
 #
 set	-e
-source ./ilib
 source ./config.conf
+source ./ilib
 cur_dir=$(cd "$(dirname	"$0")";	pwd)
 
 
 
-function usage()
-{
-   echo	"Usage:	$0 {init|all|tomcat|ant|maven|mysql|nginx|nmon|goAccess|androidSdk|iserver|iclient|revertIserver}"
+function usage(){
+   echo "usage: $0 {all|init|tomcat|ant|maven|mysql|nginx|nmon|goAccess|iserver|irevert|adt|iclient|}"
    RETVAL="2"
 }
 
 RETVAL="0"
 case "$1" in
 	all)
-		prompt tomcatAdminUser 'Tomcat Admin User' 'admin'
-		prompt tomcatAdminPass 'Tomcat Admin Password' 'admin'
+		tomcatConfigPrompt
+		iclinetConfigPrompt
 		linuxInit
 		installTomcat
 		installProbe
@@ -35,6 +34,7 @@ case "$1" in
 		service	nginx restart
 		service	ntpd restart
 		installIserver
+		installAndroidSDK
 		installIclient
 		echo "all OK"
 		;;
@@ -44,8 +44,7 @@ case "$1" in
 		echo "init OK"
 		;;
 	tomcat)
-		prompt tomcatAdminUser 'Tomcat Admin User' 'admin'
-		prompt tomcatAdminPass 'Tomcat Admin Password' 'admin'
+		tomcatConfigPrompt
 		installTomcat
 		installProbe
 		configTomcat $tomcatAdminUser $tomcatAdminPass
@@ -79,19 +78,20 @@ case "$1" in
 		installGoAccess
 		echo "goAccess OK"
 		;;
-	androidSdk)
-		installAndroidSDK
-		echo "revert OK"
-		;;
 	iserver)
 		installIserver
 		echo "iserver OK"
 		;;
-	revertIserver)
+	irevert)
 		rollbackIServer
-		echo "revertIserver	OK"
+		echo "revertIserver OK"
+		;;
+	adt)
+		installAndroidSDK
+		echo "adt OK"
 		;;
 	iclient)
+		iclinetConfigPrompt
 		installIclient
 		echo "iclinet OK"
 		;;
