@@ -41,18 +41,13 @@ public class ListOfferByUserIdTaskListener extends DefaultTaskListener<List<Offe
 	@Override
 	public void onSuccess(List<OfferVO> offers) {
 		Log.d(TAG, "list offers by user id success");
-		adapter.loadData(offers);
-		if (null != listView) {
-			listView.onRefreshComplete();
-		}
-
 		if (isRefresh) {
 			adapter.loadData(offers);
 		} else {
 			adapter.addData(offers);
 		}
 		listView.onRefreshComplete();
-		if (activity instanceof MySeekActivity) {
+		if (activity instanceof MyOfferActivity) {
 			((MyOfferActivity) activity).loadMoreForResult(offers);
 		}
 	}
