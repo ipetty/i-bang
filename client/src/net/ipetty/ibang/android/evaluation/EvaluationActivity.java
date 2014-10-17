@@ -43,6 +43,12 @@ public class EvaluationActivity extends Activity {
 			public void onClick(View v) {
 				// TODO 评价
 				EvaluationVO e = new EvaluationVO();
+				e.setDelegationId(delegationId);
+				e.setType(evaluatorType);
+				e.setEvaluatorId(evaluatorId);
+				e.setEvaluateTargetId(evaluateTargetId);
+				e.setPoint(point);
+				// new
 			}
 		});
 
