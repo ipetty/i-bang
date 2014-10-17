@@ -6,11 +6,14 @@ import java.util.Date;
 import net.ipetty.ibang.R;
 import net.ipetty.ibang.android.core.ActivityManager;
 import net.ipetty.ibang.android.core.Constants;
+import net.ipetty.ibang.android.core.DefaultTaskListener;
 import net.ipetty.ibang.android.core.ui.BackClickListener;
 import net.ipetty.ibang.android.core.util.AppUtils;
 import net.ipetty.ibang.android.core.util.DateUtils;
 import net.ipetty.ibang.android.core.util.JSONUtils;
 import net.ipetty.ibang.android.core.util.PrettyDateFormat;
+import net.ipetty.ibang.android.sdk.context.ApiContext;
+import net.ipetty.ibang.android.user.GetUserByIdSynchronously;
 import net.ipetty.ibang.android.user.UserInfoActivity;
 import net.ipetty.ibang.vo.OfferVO;
 import net.ipetty.ibang.vo.SeekVO;
@@ -57,6 +60,7 @@ public class OfferActivity extends Activity {
 	private UserVO seekUser;
 	private UserVO offerUser;
 	private UserVO user;
+	private Long offerId;
 
 	private DisplayImageOptions options = AppUtils.getNormalImageOptions();
 
@@ -67,9 +71,9 @@ public class OfferActivity extends Activity {
 		ActivityManager.getInstance().addActivity(this);
 		/* action bar */
 		ImageView btnBack = (ImageView) this.findViewById(R.id.action_bar_left_image);
+		btnBack.setOnClickListener(new BackClickListener(this));
 		TextView text = (TextView) this.findViewById(R.id.action_bar_title);
 		text.setText(this.getResources().getString(R.string.title_activity_offer));
-		btnBack.setOnClickListener(new BackClickListener(this));
 
 		seek_avatar = (ImageView) this.findViewById(R.id.avatar);
 		seek_content = (TextView) this.findViewById(R.id.content);
@@ -93,20 +97,37 @@ public class OfferActivity extends Activity {
 		delegation = (TextView) this.findViewById(R.id.delegation);
 		delegation_layout = this.findViewById(R.id.delegation_layout);
 
-		seekVO = new SeekVO();
-		seekUser = new UserVO();
-		bindUser(seekUser, seek_avatar, seek_nickname);
-		bindTime(seekVO.getCreatedOn(), seek_created_at);
-		seek_content.setText(seekVO.getContent());
-		seek_phone.setText(seekUser.getPhone());
-		if (seekVO.getClosedOn() != null) {
-			Calendar c = Calendar.getInstance();
-			c.setTime(seekVO.getClosedOn());
-			seek_closedOn.setText(DateUtils.toDateString(c.getTime()));
-		}
+		user = ApiContext.getInstance(OfferActivity.this).getCurrentUser();
 
-		offerVO = new OfferVO();
-		offerUser = new UserVO();
+		// 加载数据
+		loadData();
+	}
+
+	private void loadData() {
+		// 加载数据
+		offerId = this.getIntent().getExtras().getLong(Constants.INTENT_OFFER_ID);
+		String offerJSON = this.getIntent().getExtras().getString(Constants.INTENT_OFFER_JSON);
+		offerVO = JSONUtils.fromJSON(offerJSON, OfferVO.class);
+
+		new GetSeekByIdTask(OfferActivity.this).setListener(new DefaultTaskListener<SeekVO>(OfferActivity.this) {
+			@Override
+			public void onSuccess(SeekVO result) {
+				seekVO = result;
+
+				seekUser = GetUserByIdSynchronously.get(OfferActivity.this, seekVO.getSeekerId());
+				bindUser(seekUser, seek_avatar, seek_nickname);
+				bindTime(seekVO.getCreatedOn(), seek_created_at);
+				seek_content.setText(seekVO.getContent());
+				seek_phone.setText(seekUser.getPhone());
+				if (seekVO.getClosedOn() != null) {
+					Calendar c = Calendar.getInstance();
+					c.setTime(seekVO.getClosedOn());
+					seek_closedOn.setText(DateUtils.toDateString(c.getTime()));
+				}
+			}
+		}).execute(offerVO.getSeekId());
+
+		offerUser = user;
 		bindUser(offerUser, offer_avatar, offer_nickname);
 		bindTime(offerVO.getCreatedOn(), offer_created_at);
 		offer_content.setText(offerVO.getContent());
@@ -117,10 +138,18 @@ public class OfferActivity extends Activity {
 		offer_contact_layout.setVisibility(View.GONE);
 		offer_close_layout.setVisibility(View.GONE);
 
+		// TODO 可见性
+		// if
+		// (net.ipetty.ibang.vo.Constants.OFFER_STATUS_OFFERED.equals(offerVO.getStatus())
+		// ||
+		// net.ipetty.ibang.vo.Constants.OFFER_STATUS_DELEGATED.equals(offerVO.getStatus()))
+		// {
+		// offer_close_layout.setVisibility(View.VISIBLE);
+		// }
+
 		delegation.setText("接受应征");
 		delegation.setText("查看委托");
 		delegation.setOnClickListener(new OnClickListener() {
-
 			@Override
 			public void onClick(View v) {
 				// TODO 应征 或者 查看委托单
@@ -128,14 +157,11 @@ public class OfferActivity extends Activity {
 		});
 
 		offer_close.setOnClickListener(new OnClickListener() {
-
 			@Override
 			public void onClick(View v) {
 				// TODO 关闭应征
-
 			}
 		});
-
 	}
 
 	// TODO: 是否seek的创建者
@@ -168,4 +194,5 @@ public class OfferActivity extends Activity {
 			}
 		});
 	}
+
 }

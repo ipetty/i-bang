@@ -59,6 +59,9 @@ public class EvaluationService extends BaseService {
 		Delegation delegation = delegationService.getById(evaluation.getDelegationId());
 		Assert.notNull(delegation, "评价的委托单不存在");
 
+		Seek seek = seekService.getById(delegation.getSeekId());
+		Assert.notNull(seek, "找不到对应的求助单");
+
 		// 更新委托单状态
 		if (Constants.DELEGATE_STATUS_FINISHED.equals(delegation.getStatus())) {
 			if (Constants.EVALUATION_TYPE_SEEKER_TO_OFFERER.equals(evaluation.getType())) {
@@ -97,18 +100,27 @@ public class EvaluationService extends BaseService {
 		// 更新求助单状态
 		List<Delegation> delegations = delegationService.listBySeekId(delegation.getSeekId());
 		boolean seekFinished = true;
-		for (Delegation item : delegations) {
-			if (!Constants.DELEGATE_STATUS_BI_EVALUATED.equals(item.getStatus())
-					&& !Constants.DELEGATE_STATUS_CLOSED.equals(item.getStatus())) {
+		if (seek.getDelegateNumber() > delegations.size()) {
+			seekFinished = false;
+		} else {
+			int delegationNum = 0;
+			for (Delegation item : delegations) {
+				if (!Constants.DELEGATE_STATUS_BI_EVALUATED.equals(item.getStatus())
+						&& !Constants.DELEGATE_STATUS_CLOSED.equals(item.getStatus())) {
+					seekFinished = false;
+					break;
+				} else {
+					delegationNum++;
+				}
+			}
+			if (seek.getDelegateNumber() > delegationNum) {
 				seekFinished = false;
-				break;
 			}
 		}
 		if (seekFinished) {
 			seekService.finish(delegation.getSeekId());
 
 			// 保存系统消息
-			Seek seek = seekService.getById(delegation.getSeekId());
 			SystemMessage systemMessage = new SystemMessage(null, delegation.getSeekerId(),
 					Constants.SYS_MSG_TYPE_SEEK_FINISHED, "您的一个求助单已成功完成。", seek.getContent());
 			systemMessage.setSeekId(delegation.getSeekId());

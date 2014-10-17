@@ -5,7 +5,7 @@ import net.ipetty.ibang.android.core.Constants;
 import net.ipetty.ibang.android.core.ui.UnLoginView;
 import net.ipetty.ibang.android.core.util.AppUtils;
 import net.ipetty.ibang.android.sdk.context.ApiContext;
-import net.ipetty.ibang.android.seek.MyDelegationActivity;
+import net.ipetty.ibang.android.seek.MyOfferActivity;
 import net.ipetty.ibang.android.seek.MySeekActivity;
 import net.ipetty.ibang.android.setting.SettingActivity;
 import net.ipetty.ibang.android.user.UserProfileActivity;
@@ -110,7 +110,7 @@ public class MainMeFragment extends Fragment {
 		delegation_layout.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Intent intent = new Intent(getActivity(), MyDelegationActivity.class);
+				Intent intent = new Intent(getActivity(), MyOfferActivity.class);
 				startActivity(intent);
 			}
 		});

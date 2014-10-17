@@ -19,7 +19,6 @@ import net.ipetty.ibang.android.sdk.context.ApiContext;
 import net.ipetty.ibang.android.user.UserInfoActivity;
 import net.ipetty.ibang.vo.DelegationVO;
 import net.ipetty.ibang.vo.OfferVO;
-import net.ipetty.ibang.vo.SeekVO;
 import net.ipetty.ibang.vo.UserVO;
 
 import org.apache.commons.lang3.StringUtils;
@@ -34,6 +33,8 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -45,37 +46,51 @@ import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
-public class MyDelegationActivity extends Activity {
+public class MyOfferActivity extends Activity {
+
 	private MyPullToRefreshListView listView;
+	private OfferAdapter adapter;
+
 	private Integer pageNumber = 0;
 	private final Integer pageSize = 20;
 	private Long lastTimeMillis;
 	private Boolean hasMore = true;
 	private UserVO user;
 
-	private List<OfferVO> list = new ArrayList<OfferVO>();
+	private List<OfferVO> offerList = new ArrayList<OfferVO>();
 	private DisplayImageOptions options = AppUtils.getNormalImageOptions();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_my_delegation);
+		setContentView(R.layout.activity_my_offer);
 		ActivityManager.getInstance().addActivity(this);
 
-		user = ApiContext.getInstance(MyDelegationActivity.this).getCurrentUser();
+		user = ApiContext.getInstance(MyOfferActivity.this).getCurrentUser();
 		/* action bar */
 		ImageView btnBack = (ImageView) this.findViewById(R.id.action_bar_left_image);
+		btnBack.setOnClickListener(new BackClickListener(this));
 		TextView text = (TextView) this.findViewById(R.id.action_bar_title);
 		text.setText(R.string.title_activity_my_delegation);
-		btnBack.setOnClickListener(new BackClickListener(this));
 
 		listView = (MyPullToRefreshListView) this.findViewById(R.id.listView);
-		OfferAdapter adapter = new OfferAdapter();
+		adapter = new OfferAdapter();
 		listView.setAdapter(adapter);
+		listView.setOnItemClickListener(new OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+				Intent intent = new Intent(MyOfferActivity.this, OfferActivity.class);
+				intent.putExtra(Constants.INTENT_OFFER_ID, id);
+				intent.putExtra(Constants.INTENT_OFFER_JSON, JSONUtils.toJson(parent.getAdapter().getItem(position))
+						.toString());
+				startActivity(intent);
+			}
+		});
+
 		listView.setOnRefreshListener(new OnRefreshListener<ListView>() {
 			@Override
 			public void onRefresh(PullToRefreshBase<ListView> refreshView) {
-				String label = DateUtils.formatDateTime(MyDelegationActivity.this, getRefreshTime(),
+				String label = DateUtils.formatDateTime(MyOfferActivity.this, getRefreshTime(),
 						DateUtils.FORMAT_SHOW_TIME | DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_ABBREV_ALL);
 				refreshView.getLoadingLayoutProxy().setLastUpdatedLabel(label);
 				loadOffer(true);
@@ -91,6 +106,8 @@ public class MyDelegationActivity extends Activity {
 				}
 			}
 		});
+
+		loadOffer(true);
 	}
 
 	public void loadOffer(boolean isRefresh) {
@@ -99,10 +116,12 @@ public class MyDelegationActivity extends Activity {
 			pageNumber = 0;
 		}
 		// 加载数据
-
+		new ListOfferByUserIdTask(MyOfferActivity.this).setListener(
+				new ListOfferByUserIdTaskListener(MyOfferActivity.this, adapter, listView, isRefresh)).execute(
+				user.getId(), pageNumber++, pageSize);
 	}
 
-	public void loadMoreForResult(List<SeekVO> result) {
+	public void loadMoreForResult(List<OfferVO> result) {
 		// TODO Auto-generated method stub
 		if (result.size() < pageSize) {
 			hasMore = false;
@@ -115,37 +134,37 @@ public class MyDelegationActivity extends Activity {
 
 	// 获取刷新时间，若网络不可用则取最后一次刷新时间
 	private Long getRefreshTime() {
-		if (NetWorkUtils.isNetworkConnected(MyDelegationActivity.this)) {
+		if (NetWorkUtils.isNetworkConnected(MyOfferActivity.this)) {
 			this.lastTimeMillis = System.currentTimeMillis();
-			MyAppStateManager.setLastRefrsh4Home(MyDelegationActivity.this, this.lastTimeMillis);
+			MyAppStateManager.setLastRefrsh4Home(MyOfferActivity.this, this.lastTimeMillis);
 			return this.lastTimeMillis;
 		}
 
-		return MyAppStateManager.getLastRefrsh4Home(MyDelegationActivity.this);
+		return MyAppStateManager.getLastRefrsh4Home(MyOfferActivity.this);
 	}
 
 	public class OfferAdapter extends BaseAdapter implements OnScrollListener {
 
 		public void loadData(List<OfferVO> data) {
-			list.clear();
+			offerList.clear();
 			this.addData(data);
 		}
 
 		public void addData(List<OfferVO> data) {
-			list.addAll(data);
+			offerList.addAll(data);
 			this.notifyDataSetChanged();
 		}
 
 		@Override
 		public int getCount() {
 			// TODO Auto-generated method stub
-			return list.size();
+			return offerList.size();
 		}
 
 		@Override
 		public Object getItem(int position) {
 			// TODO Auto-generated method stub
-			return list.get(position);
+			return offerList.get(position);
 		}
 
 		@Override
@@ -173,7 +192,7 @@ public class MyDelegationActivity extends Activity {
 			// TODO Auto-generated method stub
 			View view;
 			if (convertView == null) {
-				view = LayoutInflater.from(MyDelegationActivity.this).inflate(R.layout.list_offer_item, null);
+				view = LayoutInflater.from(MyOfferActivity.this).inflate(R.layout.list_offer_item, null);
 				holder = new ViewHolder();
 				holder.layout = view.findViewById(R.id.layout);
 				holder.avator = (ImageView) view.findViewById(R.id.avatar);
@@ -203,8 +222,8 @@ public class MyDelegationActivity extends Activity {
 					DelegationVO delegation = new DelegationVO();
 					delegation.setSeekId(offer.getSeekId());
 					delegation.setOfferId(offer.getId());
-					new AcceptOfferTask(MyDelegationActivity.this).setListener(
-							new DefaultTaskListener<DelegationVO>(MyDelegationActivity.this) {
+					new AcceptOfferTask(MyOfferActivity.this).setListener(
+							new DefaultTaskListener<DelegationVO>(MyOfferActivity.this) {
 								@Override
 								public void onSuccess(DelegationVO result) {
 									// 接受应征后进行界面操作
@@ -228,7 +247,7 @@ public class MyDelegationActivity extends Activity {
 			holder.delegation_info_btn.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					Intent intent = new Intent(MyDelegationActivity.this, DelegationActivity.class);
+					Intent intent = new Intent(MyOfferActivity.this, DelegationActivity.class);
 					intent.putExtra(Constants.INTENT_OFFER_ID, offer.getId()); // 查看委托界面是通过offerId获取委托的
 					intent.putExtra(Constants.INTENT_OFFER_JSON, JSONUtils.toJson(offer).toString());
 					intent.putExtra(Constants.INTENT_SEEK_ID, offer.getSeekId());
@@ -264,7 +283,6 @@ public class MyDelegationActivity extends Activity {
 			// TODO Auto-generated method stub
 
 		}
-
 	}
 
 	private void bindTime(Date date, TextView time) {
@@ -280,7 +298,7 @@ public class MyDelegationActivity extends Activity {
 		avatar.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Intent intent = new Intent(MyDelegationActivity.this, UserInfoActivity.class);
+				Intent intent = new Intent(MyOfferActivity.this, UserInfoActivity.class);
 				intent.putExtra(Constants.INTENT_USER_ID, user.getId());
 				intent.putExtra(Constants.INTENT_USER_JSON, JSONUtils.toJson(user).toString());
 				startActivity(intent);
@@ -289,11 +307,12 @@ public class MyDelegationActivity extends Activity {
 		nickname.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Intent intent = new Intent(MyDelegationActivity.this, UserInfoActivity.class);
+				Intent intent = new Intent(MyOfferActivity.this, UserInfoActivity.class);
 				intent.putExtra(Constants.INTENT_USER_ID, user.getId());
 				intent.putExtra(Constants.INTENT_USER_JSON, JSONUtils.toJson(user).toString());
 				startActivity(intent);
 			}
 		});
 	}
+
 }

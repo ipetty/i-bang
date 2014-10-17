@@ -117,7 +117,7 @@
             android:label="@string/title_activity_delegation" >
         </activity>
         <activity
-            android:name="net.ipetty.ibang.android.seek.MyDelegationActivity"
+            android:name="net.ipetty.ibang.android.seek.MyOfferActivity"
             android:label="@string/title_activity_my_delegation" >
         </activity>
         <activity
