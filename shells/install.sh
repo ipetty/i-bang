@@ -5,7 +5,7 @@ source ./config.conf
 source ./ilib
 cur_dir=$(cd "$(dirname	"$0")";	pwd)
 function usage(){
-   echo "usage: $0 {all|init|tomcat|ant|maven|mysql|nginx|nmon|goAccess|iserver|irevert|adt|iclient|setSwap}"
+   echo "usage: $0 {all|init|tomcat|ant|maven|mysql|nginx|nmon|goAccess|iserver|irevert|adt|iclient|setSwap|dataSync}"
    RETVAL="2"
 }
 
@@ -97,6 +97,10 @@ case "$1" in
 	setSwap)
 		setSwap
 		echo "setSwap OK"
+		;;
+	dataSync)
+		dataSync
+		echo "dataSync OK"
 		;;
 	*)
 	  usage

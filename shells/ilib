@@ -466,9 +466,25 @@ function setSwap(){
 		swapoff /swap
 		rm -rf /swap
 		echo "swapoff /swap"
+	}||{
+		echo '/swap swap swap default 0 0' >> /etc/fstab
 	}
 	dd if=/dev/zero of=/swap bs=1024 count=2097152
 	mkswap /swap 
 	swapon /swap
-	echo '/swap swap swap default 0 0' >> /etc/fstab
+	
+}
+
+#数据同步
+function dataSync(){
+	prompt _remoetServerIP 'Remoet Server IP:' ''
+	prompt _mysqlUserName 'Mysql User Name:' ''
+
+	mysqldump -h$_remoetServerIP -u$_mysqlUserName -p $ISERVER_DATABASE_NAME > /tmp/$ISERVER_DATABASE_NAME.sql
+	mysql -e "drop database  if exists $ISERVER_DATABASE_NAME;"
+	mysql -e "create database if not exists $ISERVER_DATABASE_NAME default charset utf8;"
+	mysql $ISERVER_DATABASE_NAME < /tmp/$ISERVER_DATABASE_NAME.sql
+
+	rm -rf $ISERVER_UPLOAD_DIR/*
+	scp -r root@115.29.103.123:/home/data/files/* $ISERVER_UPLOAD_DIR 
 }
