@@ -195,7 +195,7 @@
         
         	
     </LinearLayout>
- 				<include layout="@layout/line_horizontal_divider" />
+ 		
  				<LinearLayout
      	     android:id="@+id/phone_layout"
         android:layout_width="fill_parent"
@@ -203,14 +203,16 @@
          android:paddingLeft="16dp"
          android:paddingRight="16dp"
         android:background="@drawable/list_color_item_bg_white"
-        android:gravity="center_vertical" >
+        android:gravity="center_vertical"
+          android:visibility="gone"  >
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="手机"
             android:textColor="@color/black_color"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+          />
 
         
        <TextView

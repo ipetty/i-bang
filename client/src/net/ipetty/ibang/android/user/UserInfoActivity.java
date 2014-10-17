@@ -5,7 +5,6 @@ import net.ipetty.ibang.android.core.ActivityManager;
 import net.ipetty.ibang.android.core.Constants;
 import net.ipetty.ibang.android.core.ui.BackClickListener;
 import net.ipetty.ibang.android.core.util.AppUtils;
-import net.ipetty.ibang.android.core.util.JSONUtils;
 import net.ipetty.ibang.android.sdk.context.ApiContext;
 import net.ipetty.ibang.vo.UserVO;
 
@@ -47,7 +46,6 @@ public class UserInfoActivity extends Activity {
 		user = ApiContext.getInstance(UserInfoActivity.this).getCurrentUser();
 
 		seekUserId = this.getIntent().getExtras().getInt(Constants.INTENT_USER_ID);
-		seekUserJSON = this.getIntent().getExtras().getString(Constants.INTENT_USER_JSON);
 
 		ImageView btnBack = (ImageView) this.findViewById(R.id.action_bar_left_image);
 		btnBack.setOnClickListener(new BackClickListener(this));
@@ -66,13 +64,13 @@ public class UserInfoActivity extends Activity {
 		jobView = (TextView) this.findViewById(R.id.job);
 
 		// 先从传递的参数进行加载
-		if (seekUserId == user.getId()) {
+		if (user != null && seekUserId == user.getId()) {
 			seekUser = user;
 		} else {
-			seekUser = JSONUtils.fromJSON(seekUserJSON, UserVO.class);
-			initUser();
-			loadUser();
+			seekUser = GetUserByIdSynchronously.get(UserInfoActivity.this, seekUserId);
 		}
+
+		initUser();
 
 	}
 
@@ -84,14 +82,14 @@ public class UserInfoActivity extends Activity {
 			avatar.setImageResource(R.drawable.default_avatar);
 		}
 		nickname.setText(seekUser.getNickname());
-		signature.setText(user.getSignature());
-		seekCount.setText(String.valueOf(user.getSeekCount()));
-		offerCount.setText(String.valueOf(user.getOfferCount()));
-		seekerTotalPoint.setText(String.valueOf(user.getSeekerTotalPoint()));
+		signature.setText(seekUser.getSignature());
+		seekCount.setText(String.valueOf(seekUser.getSeekCount()));
+		offerCount.setText(String.valueOf(seekUser.getOfferCount()));
+		seekerTotalPoint.setText(String.valueOf(seekUser.getSeekerTotalPoint()));
 
-		phoneView.setText(user.getPhone());
-		gender.setText(user.getGender());
-		jobView.setText(user.getJob());
+		// phoneView.setText(seekUser.getPhone());
+		gender.setText(seekUser.getGender());
+		jobView.setText(seekUser.getJob());
 
 	}
 

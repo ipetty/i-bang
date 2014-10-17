@@ -8,7 +8,6 @@ import uk.co.senab.photoview.PhotoViewAttacher;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -91,9 +90,9 @@ public class LargerImageActivity extends Activity {
 	protected void onDestroy() {
 		// TODO Auto-generated method stub
 		super.onDestroy();
-		BitmapDrawable bd = (BitmapDrawable) image.getDrawable();
-		bd.getBitmap().recycle();
-		image.setImageBitmap(null);
+		// BitmapDrawable bd = (BitmapDrawable) image.getDrawable();
+		// bd.getBitmap().recycle();
+		// image.setImageBitmap(null);
 
 	}
 }
