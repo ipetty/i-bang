@@ -7,7 +7,6 @@ import java.util.List;
 import net.ipetty.ibang.R;
 import net.ipetty.ibang.android.core.ActivityManager;
 import net.ipetty.ibang.android.core.Constants;
-import net.ipetty.ibang.android.core.DefaultTaskListener;
 import net.ipetty.ibang.android.core.MyAppStateManager;
 import net.ipetty.ibang.android.core.ui.BackClickListener;
 import net.ipetty.ibang.android.core.ui.MyPullToRefreshListView;
@@ -17,7 +16,6 @@ import net.ipetty.ibang.android.core.util.NetWorkUtils;
 import net.ipetty.ibang.android.core.util.PrettyDateFormat;
 import net.ipetty.ibang.android.sdk.context.ApiContext;
 import net.ipetty.ibang.android.user.UserInfoActivity;
-import net.ipetty.ibang.vo.DelegationVO;
 import net.ipetty.ibang.vo.OfferVO;
 import net.ipetty.ibang.vo.UserVO;
 
@@ -215,33 +213,8 @@ public class MyOfferActivity extends Activity {
 			holder.status.setText(offer.getStatus());
 			holder.status.setVisibility(View.VISIBLE);
 
-			// 接受应征按钮
-			holder.accept_button.setOnClickListener(new OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					DelegationVO delegation = new DelegationVO();
-					delegation.setSeekId(offer.getSeekId());
-					delegation.setOfferId(offer.getId());
-					new AcceptOfferTask(MyOfferActivity.this).setListener(
-							new DefaultTaskListener<DelegationVO>(MyOfferActivity.this) {
-								@Override
-								public void onSuccess(DelegationVO result) {
-									// 接受应征后进行界面操作
-									holder.accept_button.setVisibility(View.GONE);
-									holder.delegation_info_btn.setVisibility(View.VISIBLE); // 查看委托按钮
-									offer.setStatus(net.ipetty.ibang.vo.Constants.OFFER_STATUS_DELEGATED);
-								}
-							}).execute(delegation);
-				}
-			});
-
-			// 接受应征按钮可见性
-			if (net.ipetty.ibang.vo.Constants.OFFER_STATUS_OFFERED.equals(offer.getStatus())) {
-				holder.accept_button.setVisibility(View.VISIBLE);
-				holder.status.setVisibility(View.GONE);
-			} else {
-				holder.accept_button.setVisibility(View.GONE);
-			}
+			// 接受应征按钮可见性，我的应征列表怎么可能接受应征？
+			holder.accept_button.setVisibility(View.GONE);
 
 			// 查看委托按钮
 			holder.delegation_info_btn.setOnClickListener(new OnClickListener() {
@@ -250,9 +223,6 @@ public class MyOfferActivity extends Activity {
 					Intent intent = new Intent(MyOfferActivity.this, DelegationActivity.class);
 					intent.putExtra(Constants.INTENT_OFFER_ID, offer.getId()); // 查看委托界面是通过offerId获取委托的
 					intent.putExtra(Constants.INTENT_OFFER_JSON, JSONUtils.toJson(offer).toString());
-					intent.putExtra(Constants.INTENT_SEEK_ID, offer.getSeekId());
-					// TODO: FIX
-					// intent.putExtra(Constants.INTENT_SEEK_JSON, seekJSON);
 					startActivity(intent);
 				}
 			});

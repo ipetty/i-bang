@@ -8,6 +8,9 @@ import net.ipetty.ibang.android.sdk.context.ApiContext;
 import net.ipetty.ibang.android.user.UserEditActivity;
 import net.ipetty.ibang.vo.OfferVO;
 import net.ipetty.ibang.vo.UserVO;
+
+import org.apache.commons.lang3.StringUtils;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,6 +19,7 @@ import android.view.View.OnClickListener;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class PublishOfferActivity extends Activity {
 
@@ -53,6 +57,12 @@ public class PublishOfferActivity extends Activity {
 		button.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				if (StringUtils.isBlank(content.getText().toString())) {
+					Toast.makeText(PublishOfferActivity.this, "应征内容不能为空", Toast.LENGTH_SHORT).show();
+					content.requestFocus();
+					return;
+				}
+
 				OfferVO offer = new OfferVO();
 				offer.setContent(content.getText().toString());
 				offer.setSeekId(seekId);

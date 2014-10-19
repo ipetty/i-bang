@@ -18,6 +18,9 @@ import net.ipetty.ibang.android.user.UserEditActivity;
 import net.ipetty.ibang.vo.ImageVO;
 import net.ipetty.ibang.vo.SeekVO;
 import net.ipetty.ibang.vo.UserVO;
+
+import org.apache.commons.lang3.StringUtils;
+
 import android.app.Activity;
 import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.Dialog;
@@ -29,6 +32,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class PublishActivity extends Activity {
 
@@ -91,6 +95,12 @@ public class PublishActivity extends Activity {
 		button.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				if (StringUtils.isBlank(contentView.getText().toString())) {
+					Toast.makeText(PublishActivity.this, "求助内容不能为空", Toast.LENGTH_SHORT).show();
+					contentView.requestFocus();
+					return;
+				}
+
 				final SeekVO seek = new SeekVO();
 				seek.setSeekerId(user.getId());
 				seek.setCategoryL1(categoryL1);

@@ -15,7 +15,7 @@ import android.widget.TextView;
 
 public class EvaluationActivity extends Activity {
 
-	private Integer point = 0;
+	private Integer point = 10;
 	private Long delegationId;
 	private String evaluatorType;
 	private Integer evaluatorId;
