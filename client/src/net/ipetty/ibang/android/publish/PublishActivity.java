@@ -26,6 +26,7 @@ import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.DatePicker;
@@ -116,9 +117,10 @@ public class PublishActivity extends Activity {
 				int i = 0;
 				for (File file : files) {
 					filePaths[i++] = file.getAbsolutePath();
+					Log.i("----->", file.getAbsolutePath());
 				}
 				new UploadImagesTask(PublishActivity.this).setListener(
-						new DefaultTaskListener<List<ImageVO>>(PublishActivity.this) {
+						new DefaultTaskListener<List<ImageVO>>(PublishActivity.this, "正在发布求助...") {
 							@Override
 							public void onSuccess(List<ImageVO> images) {
 								// 上传图片完成后，发布求助单

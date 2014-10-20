@@ -53,17 +53,19 @@ public class MainMeFragment extends Fragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
+	}
+
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		isLogin = ApiContext.getInstance(MainMeFragment.this.getActivity()).isAuthorized();
 
 		IntentFilter filter = new IntentFilter();
 		filter.addAction(Constants.BROADCAST_INTENT_IS_LOGIN);
 		filter.addAction(Constants.BROADCAST_INTENT_UPDATA_USER);
 		this.getActivity().registerReceiver(broadcastreciver, filter);
-	}
-
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		return inflater.inflate(R.layout.main_fragment_me, container, false);
+
 	}
 
 	@Override
@@ -156,8 +158,8 @@ public class MainMeFragment extends Fragment {
 	}
 
 	@Override
-	public void onDestroy() {
-		super.onDestroy();
+	public void onDestroyView() {
+		super.onDestroyView();
 		this.getActivity().unregisterReceiver(broadcastreciver);
 	}
 
