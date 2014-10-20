@@ -95,7 +95,7 @@ public class ImageDaoImpl extends BaseJdbcDaoSupport implements ImageDao {
 	 * 获取
 	 */
 	@Override
-	@LoadFromCache(mapName = CacheConstants.CACHE_USER_ID_TO_SEEKER_INFO, key = "${id}")
+	@LoadFromCache(mapName = CacheConstants.CACHE_IMAGE_ID_TO_IMAGE, key = "${id}")
 	public Image getById(Long id) {
 		return super.queryUniqueEntity(GET_BY_ID_SQL, ROW_MAPPER, id);
 	}
