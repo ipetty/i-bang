@@ -367,9 +367,12 @@ function deployIServer(){
   mkdir -p $ISERVER_UPLOAD_DIR
   chown -R tomcat $ISERVER_UPLOAD_DIR
   chgrp -R tomcat $ISERVER_UPLOAD_DIR
-  mkdir -p /temp
-  chown -R tomcat /temp
-  chgrp -R tomcat /temp
+  chown -R tomcat $TOMCAT_HOME
+  chgrp -R tomcat $TOMCAT_HOME
+  
+  #mkdir -p /temp
+  #chown -R tomcat /temp
+  #chgrp -R tomcat /temp
   
   ln -sf $ISERVER_UPLOAD_DIR $TOMCAT_HOME/webapps/ROOT
   mysql -e "create database if not exists $ISERVER_DATABASE_NAME default charset utf8;"
@@ -400,6 +403,10 @@ function rollbackIServer(){
   rm -rf $TOMCAT_HOME/webapps/*
   #还原应用和软连接关系
   unzip -oq $ISERVER_DEPLOY_BAKUP_DIR/webapps.zip -d $TOMCAT_HOME/webapps
+  chown -R tomcat $ISERVER_UPLOAD_DIR
+  chgrp -R tomcat $ISERVER_UPLOAD_DIR
+  chown -R tomcat $TOMCAT_HOME
+  chgrp -R tomcat $TOMCAT_HOME
   zcat $ISERVER_DEPLOY_BAKUP_DIR/sql.gz | mysql 
   service tomcat restart
 }
