@@ -1,6 +1,7 @@
 package net.ipetty.ibang.android.publish;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -8,14 +9,12 @@ import java.util.List;
 import net.ipetty.ibang.R;
 import net.ipetty.ibang.android.core.ActivityManager;
 import net.ipetty.ibang.android.core.Constants;
-import net.ipetty.ibang.android.core.DefaultTaskListener;
 import net.ipetty.ibang.android.core.ui.BackClickListener;
 import net.ipetty.ibang.android.core.ui.UploadView;
 import net.ipetty.ibang.android.core.util.DateUtils;
 import net.ipetty.ibang.android.core.util.DialogUtils;
 import net.ipetty.ibang.android.sdk.context.ApiContext;
 import net.ipetty.ibang.android.user.UserEditActivity;
-import net.ipetty.ibang.vo.ImageVO;
 import net.ipetty.ibang.vo.SeekVO;
 import net.ipetty.ibang.vo.UserVO;
 
@@ -113,22 +112,15 @@ public class PublishActivity extends Activity {
 
 				// 上传图片文件
 				final List<File> files = uploadView.getFiles();
-				final String[] filePaths = new String[files.size()];
-				int i = 0;
+				final List<String> filePaths = new ArrayList<String>();
 				for (File file : files) {
-					filePaths[i++] = file.getAbsolutePath();
-					Log.i("----->", file.getAbsolutePath());
+					Log.d("----->", file.getAbsolutePath());
+					filePaths.add(file.getAbsolutePath());
 				}
-				new UploadImagesTask(PublishActivity.this).setListener(
-						new DefaultTaskListener<List<ImageVO>>(PublishActivity.this) {
-							@Override
-							public void onSuccess(List<ImageVO> images) {
-								// 上传图片完成后，发布求助单
-								seek.setImages(images);
-								new PublishSeekTask(PublishActivity.this).setListener(
-										new PublishSeekTaskListener(PublishActivity.this)).execute(seek);
-							}
-						}).execute(filePaths);
+
+				new PublishSeekTask(PublishActivity.this)
+						.setListener(new PublishSeekTaskListener(PublishActivity.this)).execute(
+								new SeekForm(seek, filePaths));
 			}
 		});
 	}
