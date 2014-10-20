@@ -516,3 +516,10 @@ function aliyunMon(){
   chmod +x /tmp/quartz_install.sh
   sh /tmp/quartz_install.sh
 }
+
+#´ø¿í²âÊÔ
+function installIperf(){
+    retry "rpm -ivh --force http://packages.sw.be/rpmforge-release/rpmforge-release-0.5.2-2.el6.rf.x86_64.rpm"
+    rpm --import /etc/pki/rpm-gpg/RPM*
+    yum install iperf -y
+}
