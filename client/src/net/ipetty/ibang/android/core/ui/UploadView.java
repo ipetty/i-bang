@@ -165,7 +165,8 @@ public class UploadView {
 					Toast.LENGTH_LONG).show();
 			return;
 		}
-		File file = new File(path);
+		File file = new File(PathUtils.getCarmerDir(), System.currentTimeMillis() + ".jpg");
+		ImageUtils.compressImage(path, file.getAbsolutePath());
 		pathList.add(file);
 		setImageView();
 	}

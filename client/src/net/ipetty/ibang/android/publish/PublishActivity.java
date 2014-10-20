@@ -120,7 +120,7 @@ public class PublishActivity extends Activity {
 					Log.i("----->", file.getAbsolutePath());
 				}
 				new UploadImagesTask(PublishActivity.this).setListener(
-						new DefaultTaskListener<List<ImageVO>>(PublishActivity.this, "正在发布求助...") {
+						new DefaultTaskListener<List<ImageVO>>(PublishActivity.this) {
 							@Override
 							public void onSuccess(List<ImageVO> images) {
 								// 上传图片完成后，发布求助单
