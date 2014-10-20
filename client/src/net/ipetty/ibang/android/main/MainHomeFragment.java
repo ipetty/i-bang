@@ -12,6 +12,7 @@ import net.ipetty.ibang.android.core.ui.UnLoginView;
 import net.ipetty.ibang.android.core.util.JSONUtils;
 import net.ipetty.ibang.android.core.util.NetWorkUtils;
 import net.ipetty.ibang.android.message.MessageActivity;
+import net.ipetty.ibang.android.seek.ListLatestAvaliableSeeksByCategoryTask;
 import net.ipetty.ibang.android.seek.ListLatestAvaliableSeeksTask;
 import net.ipetty.ibang.android.seek.ListLatestAvaliableSeeksTaskListener;
 import net.ipetty.ibang.android.seek.SeekActivity;
@@ -168,13 +169,24 @@ public class MainHomeFragment extends Fragment {
 	}
 
 	public void loadSeek(boolean isRefresh) {
-		// TODO Auto-generated method stub
 		if (isRefresh) {
 			pageNumber = 0;
 		}
 		// 加载数据
 		new ListLatestAvaliableSeeksTask(getActivity()).setListener(
 				new ListLatestAvaliableSeeksTaskListener(MainHomeFragment.this, adapter, listView, isRefresh)).execute(
+				net.ipetty.ibang.android.core.util.DateUtils.toDatetimeString(new Date(getRefreshTime())),
+				String.valueOf(pageNumber++), String.valueOf(pageSize));
+	}
+
+	public void loadSeekByCategory(boolean isRefresh) {
+		if (isRefresh) {
+			pageNumber = 0;
+		}
+		// 加载数据
+		new ListLatestAvaliableSeeksByCategoryTask(getActivity()).setListener(
+				new ListLatestAvaliableSeeksTaskListener(MainHomeFragment.this, adapter, listView, isRefresh)).execute(
+				category, subCategory,
 				net.ipetty.ibang.android.core.util.DateUtils.toDatetimeString(new Date(getRefreshTime())),
 				String.valueOf(pageNumber++), String.valueOf(pageSize));
 	}
@@ -228,6 +240,7 @@ public class MainHomeFragment extends Fragment {
 				subCategory = intent.getStringExtra(Constants.INTENT_SUB_CATEGORY);
 				setCategoryText(category, subCategory);
 
+				loadSeekByCategory(true);
 			}
 		}
 	}

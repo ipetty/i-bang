@@ -39,6 +39,17 @@ public interface SeekApi {
 			@Query("pageSize") int pageSize);
 
 	/**
+	 * 获取指定分类中最新的未关闭求助列表
+	 * 
+	 * @param pageNumber
+	 *            分页页码，从0开始
+	 */
+	@GET("/seeklist/latestbycategory")
+	public List<SeekVO> listLatestByCategory(@Query("categoryL1") String categoryL1,
+			@Query("categoryL2") String categoryL2, @Query("timeline") String timeline,
+			@Query("pageNumber") int pageNumber, @Query("pageSize") int pageSize);
+
+	/**
 	 * 获取指定用户的求助列表
 	 * 
 	 * @param pageNumber

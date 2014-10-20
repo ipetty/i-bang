@@ -32,6 +32,15 @@ public interface SeekDao {
 	public List<Long> listLatest(Date timeline, int pageNumber, int pageSize);
 
 	/**
+	 * 获取指定分类中最新的未关闭求助单ID列表
+	 * 
+	 * @param pageNumber
+	 *            分页页码，从0开始
+	 */
+	public List<Long> listLatestByCategory(String categoryL1, String categoryL2, Date timeline, int pageNumber,
+			int pageSize);
+
+	/**
 	 * 获取指定用户的求助单ID列表
 	 * 
 	 * @param pageNumber

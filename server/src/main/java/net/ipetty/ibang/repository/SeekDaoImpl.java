@@ -15,6 +15,7 @@ import net.ipetty.ibang.exception.BusinessException;
 import net.ipetty.ibang.model.Seek;
 import net.ipetty.ibang.vo.Constants;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
@@ -116,6 +117,30 @@ public class SeekDaoImpl extends BaseJdbcDaoSupport implements SeekDao {
 	public List<Long> listLatest(Date timeline, int pageNumber, int pageSize) {
 		return super.getJdbcTemplate().query(LIST_LATEST_SQL, LONG_ROW_MAPPER, timeline, Constants.SEEK_STATUS_CREATED,
 				Constants.SEEK_STATUS_OFFERED, pageNumber * pageSize, pageSize);
+	}
+
+	private static final String LIST_LATEST_BY_CATEGORYL1_SQL = "select id from seek where category_l1=? and created_on<=? and (status=? or status=?) order by created_on desc limit ?,?";
+	private static final String LIST_LATEST_BY_CATEGORYL2_SQL = "select id from seek where category_l1=? and category_l2=? and created_on<=? and (status=? or status=?) order by created_on desc limit ?,?";
+
+	/**
+	 * 获取指定分类中最新的未关闭求助单ID列表
+	 * 
+	 * @param pageNumber
+	 *            分页页码，从0开始
+	 */
+	@Override
+	public List<Long> listLatestByCategory(String categoryL1, String categoryL2, Date timeline, int pageNumber,
+			int pageSize) {
+		if (StringUtils.isBlank(categoryL1)) {
+			return listLatest(timeline, pageNumber, pageSize);
+		} else if (StringUtils.isBlank(categoryL2)) {
+			return super.getJdbcTemplate().query(LIST_LATEST_BY_CATEGORYL1_SQL, LONG_ROW_MAPPER, categoryL1, timeline,
+					Constants.SEEK_STATUS_CREATED, Constants.SEEK_STATUS_OFFERED, pageNumber * pageSize, pageSize);
+		} else {
+			return super.getJdbcTemplate().query(LIST_LATEST_BY_CATEGORYL2_SQL, LONG_ROW_MAPPER, categoryL1,
+					categoryL2, timeline, Constants.SEEK_STATUS_CREATED, Constants.SEEK_STATUS_OFFERED,
+					pageNumber * pageSize, pageSize);
+		}
 	}
 
 	private static final String LIST_BY_USER_ID_SQL = "select id from seek where seeker_id=? order by created_on desc limit ?,?";
