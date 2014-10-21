@@ -80,15 +80,24 @@
 <TextView
     android:id="@+id/seek_username"
     android:layout_width="wrap_content"
-    android:layout_height="32dp"
-    android:layout_alignParentBottom="true"
+    android:layout_height="wrap_content"
+    android:layout_alignTop="@+id/seek_avatar"
     android:layout_toRightOf="@+id/seek_avatar"
     android:ellipsize="end"
     android:gravity="left|center"
     android:singleLine="true"
-    android:text=""
+    android:text="zhangsan"
     android:textColor="@color/base_color"
-    android:textSize="20dp" />
+    android:textSize="18dp" />
+
+<TextView
+    android:id="@+id/seekerTitle"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignLeft="@+id/seek_username"
+    android:layout_alignParentBottom="true"
+    android:textSize="14dp" 
+    android:text="" />
 
 	</RelativeLayout>
  	 	        <RelativeLayout

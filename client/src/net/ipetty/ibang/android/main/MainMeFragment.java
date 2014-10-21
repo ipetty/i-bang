@@ -99,11 +99,29 @@ public class MainMeFragment extends Fragment {
 		offerCount = (TextView) getView().findViewById(R.id.offerCount);
 		seekerTotalPoint = (TextView) getView().findViewById(R.id.seekerTotalPoint);
 
+		View seekCount_layout = getView().findViewById(R.id.seekCount_layout);
+		seekCount_layout.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(getActivity(), MySeekActivity.class);
+				startActivity(intent);
+			}
+		});
+
 		seek_layout = getView().findViewById(R.id.seek_layout);
 		seek_layout.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent(getActivity(), MySeekActivity.class);
+				startActivity(intent);
+			}
+		});
+
+		View offerCount_layout = getView().findViewById(R.id.offerCount_layout);
+		offerCount_layout.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(getActivity(), MyOfferActivity.class);
 				startActivity(intent);
 			}
 		});

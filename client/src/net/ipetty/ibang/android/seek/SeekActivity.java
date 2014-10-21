@@ -62,6 +62,7 @@ public class SeekActivity extends Activity {
 	private ImageView seek_avatar;
 	private TextView number;
 	private TextView phone;
+	private TextView seekerTitle;
 
 	private List<ImageView> imageViews = new ArrayList<ImageView>(); // 滑动的图片
 	private int currentItem = 0;// 当前图片的索引号
@@ -120,6 +121,7 @@ public class SeekActivity extends Activity {
 		seek_username = (TextView) this.findViewById(R.id.seek_username);
 		seek_avatar = (ImageView) this.findViewById(R.id.seek_avatar);
 		number = (TextView) this.findViewById(R.id.number);
+		seekerTitle = (TextView) this.findViewById(R.id.seekerTitle);
 
 		contact_layout = this.findViewById(R.id.contact_layout);
 		contact_layout.setVisibility(View.GONE);
@@ -207,12 +209,14 @@ public class SeekActivity extends Activity {
 		bindUser(seekUser, seek_avatar, seek_username);
 		// 填充手机号
 		phone.setText(seekUser.getPhone());
+		seekerTitle.setText(seekUser.getSeekerTitle());
 	}
 
 	private void initContent() {
 		// TODO Auto-generated method stub
 		seek_avatar.setImageResource(R.drawable.default_avatar);
 		content.setText(seekVO.getContent());
+
 		if (seekVO.getClosedOn() != null) {
 			Calendar c = Calendar.getInstance();
 			c.setTime(seekVO.getClosedOn());
