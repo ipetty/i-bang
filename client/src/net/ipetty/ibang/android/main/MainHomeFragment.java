@@ -12,6 +12,7 @@ import net.ipetty.ibang.android.core.ui.UnLoginView;
 import net.ipetty.ibang.android.core.util.JSONUtils;
 import net.ipetty.ibang.android.core.util.NetWorkUtils;
 import net.ipetty.ibang.android.message.MessageActivity;
+import net.ipetty.ibang.android.search.SearchActivity;
 import net.ipetty.ibang.android.seek.ListLatestAvaliableSeeksByCategoryTask;
 import net.ipetty.ibang.android.seek.ListLatestAvaliableSeeksTask;
 import net.ipetty.ibang.android.seek.ListLatestAvaliableSeeksTaskListener;
@@ -99,7 +100,8 @@ public class MainHomeFragment extends Fragment {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-
+				Intent intent = new Intent(getActivity(), SearchActivity.class);
+				startActivity(intent);
 			}
 		});
 

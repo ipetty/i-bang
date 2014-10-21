@@ -72,6 +72,6 @@
     <string name="title_activity_user_info">用户信息</string>
     <string name="title_activity_evaluation">评价</string>
     <string name="un_login_setting">登录后，您的可以进行系统设置</string>
-    
+    <string name="title_activity_search">SearchActivity</string>
 
 </resources>

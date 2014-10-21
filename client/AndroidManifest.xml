@@ -132,6 +132,10 @@
             android:name="net.ipetty.ibang.android.evaluation.EvaluationActivity"
             android:label="@string/title_activity_evaluation" >
         </activity>
+        <activity
+            android:name="net.ipetty.ibang.android.search.SearchActivity"
+            android:label="@string/title_activity_search" >
+        </activity>
     </application>
 
 </manifest>
