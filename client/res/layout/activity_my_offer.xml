@@ -34,7 +34,7 @@
  	 	        android:gravity="center"
  	 	        android:background="@drawable/list_color_item_bg_white"
  	 	        android:layout_weight="1"
- 	 	        android:text="应征中" />
+ 	 	        android:text="帮助中" />
 <include layout="@layout/line_vertical_divider"/>
  	 	    <TextView
  	 	        android:id="@+id/textView1"

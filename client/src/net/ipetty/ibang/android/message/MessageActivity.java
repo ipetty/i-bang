@@ -46,13 +46,13 @@ public class MessageActivity extends Activity {
 	public List<SystemMessageVO> list = new ArrayList<SystemMessageVO>();
 	private DisplayImageOptions options = AppUtils.getNormalImageOptions();
 
-	public String SYS_MSG_TYPE_NEW_OFFER = "应征您的求助"; // 您的求助单有了新的应征
-	public String SYS_MSG_TYPE_NEW_DELEGATION = "接受了您的应征"; // 您的应征已被求助者接受
+	public String SYS_MSG_TYPE_NEW_OFFER = "帮助您的求助"; // 您的求助单有了新的帮助
+	public String SYS_MSG_TYPE_NEW_DELEGATION = "接受了您的帮助"; // 您的帮助已被求助者接受
 	public String SYS_MSG_TYPE_DELEGATION_FINISHED = "完成了委托"; // 您（求助者）的一个委托已被帮助者完成
 	public String SYS_MSG_TYPE_DELEGATION_CLOSED = "关闭的您的委托"; // 您（求助者）的一个委托已被帮助者关闭
 	public String SYS_MSG_TYPE_NEW_EVALUATION = "评价了您"; // 您收到了新的评价
 	public String SYS_MSG_TYPE_SEEK_FINISHED = "您的求助已完成"; // 您（求助者）的一个求助单已完成
-	public String SYS_MSG_TYPE_SEEK_CLOSED = "帮助已关闭"; // 您（帮助者）应征的一个求助单已被求助者关闭
+	public String SYS_MSG_TYPE_SEEK_CLOSED = "帮助已关闭"; // 您（帮助者）帮助的一个求助单已被求助者关闭
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

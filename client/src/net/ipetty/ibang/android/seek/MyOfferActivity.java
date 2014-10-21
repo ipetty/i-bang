@@ -213,7 +213,7 @@ public class MyOfferActivity extends Activity {
 			holder.status.setText(offer.getStatus());
 			holder.status.setVisibility(View.VISIBLE);
 
-			// 接受应征按钮可见性，我的应征列表怎么可能接受应征？
+			// 接受帮助按钮可见性，我的帮助列表怎么可能接受帮助？
 			holder.accept_button.setVisibility(View.GONE);
 
 			// 查看委托按钮

@@ -76,7 +76,7 @@
 			    android:layout_alignParentTop="true"
 			    android:background="@drawable/button_orange_shape"
 			    android:gravity="center"
-			    android:text="接受应征"
+			    android:text="接受帮助"
 			    android:textColor="@color/white_color"
 			    android:textSize="12sp" 
 			    android:visibility="gone"/>

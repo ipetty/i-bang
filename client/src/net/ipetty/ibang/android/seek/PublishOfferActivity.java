@@ -58,7 +58,7 @@ public class PublishOfferActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				if (StringUtils.isBlank(content.getText().toString())) {
-					Toast.makeText(PublishOfferActivity.this, "应征内容不能为空", Toast.LENGTH_SHORT).show();
+					Toast.makeText(PublishOfferActivity.this, "帮助内容不能为空", Toast.LENGTH_SHORT).show();
 					content.requestFocus();
 					return;
 				}

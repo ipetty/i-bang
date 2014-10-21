@@ -292,7 +292,7 @@
 			        android:singleLine="true"
 			        android:textColor="@color/gray_color"
 			        android:textSize="16dp" 
-			        android:text="我的应征"/>
+			        android:text="我的帮助"/>
 			    
 			     <ImageView
 			        android:id="@+id/into"

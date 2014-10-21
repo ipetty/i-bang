@@ -217,7 +217,7 @@
  	 	                android:layout_height="wrap_content"
  	 	                android:layout_gravity="center"
  	 	                android:layout_marginLeft="16dp"
- 	 	                android:text="联系方式(应征后可见)" />
+ 	 	                android:text="联系方式(帮助后可见)" />
  	 	        </LinearLayout>
 
  	 	        <include layout="@layout/line_horizontal_divider" />

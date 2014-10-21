@@ -19,13 +19,13 @@ public class PublishOfferTaskListener extends DefaultTaskListener<OfferVO> {
 	private String TAG = getClass().getSimpleName();
 
 	public PublishOfferTaskListener(Activity activity) {
-		super(activity, "正在发布应征...");
+		super(activity, "正在发布帮助...");
 	}
 
 	@Override
 	public void onSuccess(OfferVO offer) {
 		Log.d(TAG, "publish offer success");
-		Toast.makeText(activity, "发布应征成功！", Toast.LENGTH_SHORT).show();
+		Toast.makeText(activity, "发布帮助成功！", Toast.LENGTH_SHORT).show();
 
 		Intent intent = new Intent(Constants.BROADCAST_INTENT_PUBLISH_OFFER);
 		activity.sendBroadcast(intent);

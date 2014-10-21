@@ -147,14 +147,14 @@ public class OfferActivity extends Activity {
 			offer_contact_layout.setVisibility(View.VISIBLE);
 		}
 
-		// 接受应征/查看委托按钮
+		// 接受帮助/查看委托按钮
 		if (net.ipetty.ibang.vo.Constants.OFFER_STATUS_OFFERED.equals(offerVO.getStatus())) {
 			if (isSeekOwner()) {
-				delegation.setText("接受应征");
+				delegation.setText("接受帮助");
 				delegation.setOnClickListener(new OnClickListener() {
 					@Override
 					public void onClick(View v) {
-						// 接受应征
+						// 接受帮助
 						DelegationVO delegation = new DelegationVO();
 						delegation.setSeekId(seekVO.getId());
 						delegation.setOfferId(offerVO.getId());
@@ -162,7 +162,7 @@ public class OfferActivity extends Activity {
 								new DefaultTaskListener<DelegationVO>(OfferActivity.this) {
 									@Override
 									public void onSuccess(DelegationVO result) {
-										// 接受应征后进行界面操作
+										// 接受帮助后进行界面操作
 										changeDelegationButtonToShowDelegation();
 									}
 								}).execute(delegation);
@@ -174,7 +174,7 @@ public class OfferActivity extends Activity {
 			changeDelegationButtonToShowDelegation();
 		}
 
-		// 关闭应征按钮
+		// 关闭帮助按钮
 		offer_close.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -182,13 +182,13 @@ public class OfferActivity extends Activity {
 						new DefaultTaskListener<Boolean>(OfferActivity.this) {
 							@Override
 							public void onSuccess(Boolean result) {
-								// 关闭应征后的界面操作
+								// 关闭帮助后的界面操作
 								offer_close_layout.setVisibility(View.GONE);
 							}
 						}).execute(offerId);
 			}
 		});
-		// 关闭应征按钮可见性
+		// 关闭帮助按钮可见性
 		if (isOfferOwner()
 				&& (net.ipetty.ibang.vo.Constants.OFFER_STATUS_OFFERED.equals(offerVO.getStatus()) || net.ipetty.ibang.vo.Constants.OFFER_STATUS_DELEGATED
 						.equals(offerVO.getStatus()))) {
@@ -220,7 +220,7 @@ public class OfferActivity extends Activity {
 		return user != null && seeker != null && user.getId().equals(seeker.getId());
 	}
 
-	// 当前用户是否为当前应征单的应征者
+	// 当前用户是否为当前帮助单的帮助者
 	private boolean isOfferOwner() {
 		return user != null && offerer != null && user.getId().equals(offerer.getId());
 	}

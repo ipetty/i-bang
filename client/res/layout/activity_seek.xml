@@ -147,7 +147,7 @@
  	 	                android:layout_alignBaseline="@+id/number"
  	 	                android:layout_alignBottom="@+id/number"
  	 	                android:layout_toLeftOf="@+id/number"
- 	 	                android:text="应征人数"
+ 	 	                android:text="帮助人数"
  	 	                android:textColor="@color/gray_color"
  	 	                android:textSize="14dp" />
 
@@ -238,7 +238,7 @@
 				        android:background="@drawable/button_orange_shape"
 				        android:textColor="@color/white_color"
 				        android:textSize="24sp"
-				        android:text="我要应征" />
+				        android:text="我要帮助" />
 									<include layout="@layout/line_space" />
  	 	         </LinearLayout>
  	
@@ -254,7 +254,7 @@
  	 	                 android:layout_width="wrap_content"
  	 	                 android:layout_height="20dp"
  	 	                 android:layout_margin="8dp"
- 	 	                 android:text="已应征的人员"
+ 	 	                 android:text="已帮助的人员"
  	 	                 android:textSize="12sp" />
 
 					<include layout="@layout/line_horizontal_divider" />
@@ -281,7 +281,7 @@
  	 	                 android:layout_width="wrap_content"
  	 	                 android:layout_height="20dp"
  	 	                 android:layout_margin="8dp"
- 	 	                 android:text="应征的人员"
+ 	 	                 android:text="帮助的人员"
  	 	                 android:textSize="12sp" />
 
 					<include layout="@layout/line_horizontal_divider" />

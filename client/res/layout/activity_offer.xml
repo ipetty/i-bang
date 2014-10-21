@@ -382,7 +382,7 @@
 				        android:background="@drawable/button_orange_shape"
 				        android:textColor="@color/white_color"
 				        android:textSize="24sp"
-				        android:text="接受应征" />
+				        android:text="接受帮助" />
  	 	         </LinearLayout>
  	 	         
  	 	        <LinearLayout
@@ -401,7 +401,7 @@
 				        android:background="@drawable/button_orange_shape"
 				        android:textColor="@color/white_color"
 				        android:textSize="24sp"
-				        android:text="关闭应征" />
+				        android:text="关闭帮助" />
  	 	         </LinearLayout>
  	 	    </LinearLayout>
  	 	</ScrollView>

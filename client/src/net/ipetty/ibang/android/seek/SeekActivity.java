@@ -386,7 +386,7 @@ public class SeekActivity extends Activity {
 							offerListView.addView(view);
 						}
 
-						// 显示(应征数/委托总数)；
+						// 显示(帮助数/委托总数)；
 						number.setText(delegationNum + "/" + offerNum);
 					}
 				}).execute(seekId);
@@ -405,7 +405,7 @@ public class SeekActivity extends Activity {
 		holder.totalPoint = (TextView) view.findViewById(R.id.totalPoint);
 		holder.delegation_info_btn = (TextView) view.findViewById(R.id.delegation_info_btn);
 
-		// 如果已应征过，则应征按钮不可见（不能重复应征），求助者联系方式可见
+		// 如果已帮助过，则帮助按钮不可见（不能重复帮助），求助者联系方式可见
 		if (user != null && offer.getOffererId().equals(user.getId())) {
 			offerBtn_layout.setVisibility(View.GONE);
 			contact_layout.setVisibility(View.VISIBLE);
@@ -414,7 +414,7 @@ public class SeekActivity extends Activity {
 		holder.status.setText(offer.getStatus());
 		holder.status.setVisibility(View.VISIBLE);
 
-		// 接受应征按钮
+		// 接受帮助按钮
 		holder.accept_button.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -425,7 +425,7 @@ public class SeekActivity extends Activity {
 						new DefaultTaskListener<DelegationVO>(SeekActivity.this) {
 							@Override
 							public void onSuccess(DelegationVO result) {
-								// 接受应征后进行界面操作
+								// 接受帮助后进行界面操作
 								holder.accept_button.setVisibility(View.GONE);
 								holder.delegation_info_btn.setVisibility(View.VISIBLE); // 查看委托按钮
 								offer.setStatus(net.ipetty.ibang.vo.Constants.OFFER_STATUS_DELEGATED);
@@ -433,7 +433,7 @@ public class SeekActivity extends Activity {
 						}).execute(delegation);
 			}
 		});
-		// 接受应征按钮可见性
+		// 接受帮助按钮可见性
 		if (isLogin && isSeekOwner() && net.ipetty.ibang.vo.Constants.OFFER_STATUS_OFFERED.equals(offer.getStatus())) {
 			holder.accept_button.setVisibility(View.VISIBLE);
 			holder.status.setVisibility(View.GONE);
