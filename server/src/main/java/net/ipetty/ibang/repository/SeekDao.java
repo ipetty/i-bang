@@ -41,6 +41,14 @@ public interface SeekDao {
 			int pageSize);
 
 	/**
+	 * 根据关键字搜索最新的未关闭求助单ID列表
+	 * 
+	 * @param pageNumber
+	 *            分页页码，从0开始
+	 */
+	public List<Long> listLatestByKeyword(String keyword, Date timeline, int pageNumber, int pageSize);
+
+	/**
 	 * 获取指定用户的求助单ID列表
 	 * 
 	 * @param pageNumber

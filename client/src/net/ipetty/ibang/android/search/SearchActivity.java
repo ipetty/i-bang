@@ -11,7 +11,7 @@ import net.ipetty.ibang.android.core.ui.MyPullToRefreshListView;
 import net.ipetty.ibang.android.core.util.JSONUtils;
 import net.ipetty.ibang.android.core.util.NetWorkUtils;
 import net.ipetty.ibang.android.main.SeekAdapter;
-import net.ipetty.ibang.android.seek.ListLatestAvaliableSeeksTask;
+import net.ipetty.ibang.android.seek.ListLatestAvaliableSeeksByKeywordTask;
 import net.ipetty.ibang.android.seek.ListLatestAvaliableSeeksTaskListener;
 import net.ipetty.ibang.android.seek.SeekActivity;
 import net.ipetty.ibang.vo.SeekVO;
@@ -60,7 +60,6 @@ public class SearchActivity extends Activity {
 		adapter = new SeekAdapter(this);
 		listView.setAdapter(adapter);
 		listView.setOnItemClickListener(new OnItemClickListener() {
-
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				// TODO Auto-generated method stub
@@ -83,7 +82,6 @@ public class SearchActivity extends Activity {
 		});
 
 		search.addTextChangedListener(new TextWatcher() {
-
 			@Override
 			public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 				// TODO Auto-generated method stub
@@ -123,7 +121,6 @@ public class SearchActivity extends Activity {
 	private OnClickListener searchOnClickListener = new OnClickListener() {
 		@Override
 		public void onClick(View v) {
-			// TODO Auto-generated method stub
 			key = search.getText().toString();
 			adapter.loadData(new ArrayList<SeekVO>());
 			loadSeek(true);
@@ -136,9 +133,9 @@ public class SearchActivity extends Activity {
 			pageNumber = 0;
 		}
 		// 加载数据
-		new ListLatestAvaliableSeeksTask(SearchActivity.this).setListener(
+		new ListLatestAvaliableSeeksByKeywordTask(SearchActivity.this).setListener(
 				new ListLatestAvaliableSeeksTaskListener(SearchActivity.this, adapter, listView, isRefresh)).execute(
-				net.ipetty.ibang.android.core.util.DateUtils.toDatetimeString(new Date(getRefreshTime())),
+				key, net.ipetty.ibang.android.core.util.DateUtils.toDatetimeString(new Date(getRefreshTime())),
 				String.valueOf(pageNumber++), String.valueOf(pageSize));
 	}
 
@@ -151,4 +148,5 @@ public class SearchActivity extends Activity {
 
 		return MyAppStateManager.getLastRefrsh4Home(this);
 	}
+
 }

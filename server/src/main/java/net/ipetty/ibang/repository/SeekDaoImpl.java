@@ -143,6 +143,25 @@ public class SeekDaoImpl extends BaseJdbcDaoSupport implements SeekDao {
 		}
 	}
 
+	private static final String LIST_LATEST_BY_KEYWORD_SQL = "select id from seek where created_on<=? and (status=? or status=?) and (content like ? or requirement like ? or reward like ? or additional_reward like ?) order by created_on desc limit ?,?";
+
+	/**
+	 * 根据关键字搜索最新的未关闭求助单ID列表
+	 * 
+	 * @param pageNumber
+	 *            分页页码，从0开始
+	 */
+	@Override
+	public List<Long> listLatestByKeyword(String keyword, Date timeline, int pageNumber, int pageSize) {
+		if (StringUtils.isEmpty(keyword)) {
+			return listLatest(timeline, pageNumber, pageSize);
+		}
+		String likeStatement = "%" + keyword + "%";
+		return super.getJdbcTemplate().query(LIST_LATEST_BY_KEYWORD_SQL, LONG_ROW_MAPPER, timeline,
+				Constants.SEEK_STATUS_CREATED, Constants.SEEK_STATUS_OFFERED, likeStatement, likeStatement,
+				likeStatement, likeStatement, pageNumber * pageSize, pageSize);
+	}
+
 	private static final String LIST_BY_USER_ID_SQL = "select id from seek where seeker_id=? order by created_on desc limit ?,?";
 
 	/**

@@ -130,6 +130,21 @@ public class SeekService extends BaseService {
 	}
 
 	/**
+	 * 根据关键字搜索最新的未关闭求助列表
+	 * 
+	 * @param pageNumber
+	 *            分页页码，从0开始
+	 */
+	public List<Seek> listLatestByKeyword(String keyword, Date timeline, int pageNumber, int pageSize) {
+		List<Long> seekIds = seekDao.listLatestByKeyword(keyword, timeline, pageNumber, pageSize);
+		List<Seek> seeks = new ArrayList<Seek>();
+		for (Long seekId : seekIds) {
+			seeks.add(this.getById(seekId));
+		}
+		return seeks;
+	}
+
+	/**
 	 * 获取指定用户的求助列表
 	 * 
 	 * @param pageNumber

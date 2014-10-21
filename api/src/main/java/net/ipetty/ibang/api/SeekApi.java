@@ -50,6 +50,16 @@ public interface SeekApi {
 			@Query("pageNumber") int pageNumber, @Query("pageSize") int pageSize);
 
 	/**
+	 * 根据关键字搜索最新的未关闭求助列表
+	 * 
+	 * @param pageNumber
+	 *            分页页码，从0开始
+	 */
+	@GET("/seeklist/latestbykeyword")
+	public List<SeekVO> listLatestByKeyword(@Query("keyword") String keyword, @Query("timeline") String timeline,
+			@Query("pageNumber") int pageNumber, @Query("pageSize") int pageSize);
+
+	/**
 	 * 获取指定用户的求助列表
 	 * 
 	 * @param pageNumber

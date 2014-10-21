@@ -92,6 +92,19 @@ public class SeekController extends BaseController {
 	}
 
 	/**
+	 * 根据关键字搜索最新的未关闭求助列表
+	 * 
+	 * @param pageNumber
+	 *            分页页码，从0开始
+	 */
+	@RequestMapping(value = "/seeklist/latestbykeyword", method = RequestMethod.GET)
+	public List<SeekVO> listLatestByKeyword(String keyword, String timeline, int pageNumber, int pageSize) {
+		Date date = StringUtils.isBlank(timeline) ? new Date() : DateUtils.fromDatetimeString(timeline);
+		List<Seek> seeks = seekService.listLatestByKeyword(keyword, date, pageNumber, pageSize);
+		return Seek.listToVoList(seeks);
+	}
+
+	/**
 	 * 获取指定用户的求助列表
 	 * 
 	 * @param pageNumber
