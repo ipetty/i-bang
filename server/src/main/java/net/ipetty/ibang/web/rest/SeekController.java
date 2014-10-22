@@ -101,7 +101,8 @@ public class SeekController extends BaseController {
 	public List<SeekVO> listLatestByCityOrCategory(String city, String district, String categoryL1, String categoryL2,
 			String timeline, int pageNumber, int pageSize) {
 		Date date = StringUtils.isBlank(timeline) ? new Date() : DateUtils.fromDatetimeString(timeline);
-		List<Seek> seeks = seekService.listLatestByCategory(categoryL1, categoryL2, date, pageNumber, pageSize);
+		List<Seek> seeks = seekService.listLatestByCityOrCategory(city, district, categoryL1, categoryL2, date,
+				pageNumber, pageSize);
 		return Seek.listToVoList(seeks);
 	}
 

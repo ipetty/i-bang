@@ -161,7 +161,7 @@ public class MainHomeFragment extends Fragment {
 						getRefreshTime(), DateUtils.FORMAT_SHOW_TIME | DateUtils.FORMAT_SHOW_DATE
 								| DateUtils.FORMAT_ABBREV_ALL);
 				refreshView.getLoadingLayoutProxy().setLastUpdatedLabel(label);
-				loadSeek(true);
+				loadSeekByCityOrCategory(true);
 			}
 		});
 
@@ -169,15 +169,15 @@ public class MainHomeFragment extends Fragment {
 			@Override
 			public void onLastItemVisible() {
 				if (hasMore) {
-					loadSeek(false);
+					loadSeekByCityOrCategory(false);
 				}
 			}
 		});
 
-		loadSeek(true);
+		loadSeekByCityOrCategory(true);
 	}
 
-	public void loadSeek(boolean isRefresh) {
+	private void loadSeek(boolean isRefresh) {
 		if (isRefresh) {
 			pageNumber = 0;
 		}
@@ -215,7 +215,7 @@ public class MainHomeFragment extends Fragment {
 				initUser();
 			}
 			if (Constants.BROADCAST_INTENT_PUBLISH_SEEK.equals(action)) {
-				loadSeek(true);
+				loadSeekByCityOrCategory(true);
 			}
 		}
 

@@ -126,6 +126,7 @@ public class UserServiceTest extends BaseServiceTest {
 		userService.changePassword(user.getId(), TEST_PASSWORD, updatedPassword);
 		user = userService.getById(user.getId());
 		Assert.assertEquals(SaltEncoder.encode(updatedPassword, user.getSalt()), user.getPassword());
+		userService.changePassword(user.getId(), updatedPassword, TEST_PASSWORD);
 	}
 
 	@Test

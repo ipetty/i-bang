@@ -137,7 +137,8 @@ public class SeekService extends BaseService {
 	 */
 	public List<Seek> listLatestByCityOrCategory(String city, String district, String categoryL1, String categoryL2,
 			Date timeline, int pageNumber, int pageSize) {
-		List<Long> seekIds = seekDao.listLatestByCategory(categoryL1, categoryL2, timeline, pageNumber, pageSize);
+		List<Long> seekIds = seekDao.listLatestByCityOrCategory(city, district, categoryL1, categoryL2, timeline,
+				pageNumber, pageSize);
 		List<Seek> seeks = new ArrayList<Seek>();
 		for (Long seekId : seekIds) {
 			seeks.add(this.getById(seekId));
