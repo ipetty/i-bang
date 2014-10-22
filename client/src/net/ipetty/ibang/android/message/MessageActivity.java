@@ -5,13 +5,18 @@ import java.util.List;
 
 import net.ipetty.ibang.R;
 import net.ipetty.ibang.android.core.Constants;
+import net.ipetty.ibang.android.core.MyAppStateManager;
 import net.ipetty.ibang.android.core.ui.BackClickListener;
+import net.ipetty.ibang.android.core.ui.MyPullToRefreshListView;
 import net.ipetty.ibang.android.core.ui.UnLoginView;
 import net.ipetty.ibang.android.core.util.AppUtils;
+import net.ipetty.ibang.android.core.util.NetWorkUtils;
 import net.ipetty.ibang.android.core.util.PrettyDateFormat;
+import net.ipetty.ibang.android.sdk.context.ApiContext;
 import net.ipetty.ibang.android.seek.DelegationActivity;
 import net.ipetty.ibang.android.seek.OfferActivity;
 import net.ipetty.ibang.android.seek.SeekActivity;
+import net.ipetty.ibang.android.user.GetUserByIdSynchronously;
 import net.ipetty.ibang.vo.SystemMessageVO;
 import net.ipetty.ibang.vo.UserVO;
 
@@ -23,6 +28,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,16 +41,25 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.handmark.pulltorefresh.library.PullToRefreshBase;
+import com.handmark.pulltorefresh.library.PullToRefreshBase.OnLastItemVisibleListener;
+import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 public class MessageActivity extends Activity {
-	private boolean isLogin = true;
+
+	private boolean isLogin = false;
 	public UnLoginView unLoginView;
-	public ListView listView;
+	public MyPullToRefreshListView listView;
 	public MessageAdapter adapter;
 	public List<SystemMessageVO> list = new ArrayList<SystemMessageVO>();
 	private DisplayImageOptions options = AppUtils.getNormalImageOptions();
+
+	private Integer pageNumber = 0;
+	private final Integer pageSize = 20;
+	private Long lastTimeMillis;
+	private Boolean hasMore = true;
 
 	public String SYS_MSG_TYPE_NEW_OFFER = "帮助您的求助"; // 您的求助单有了新的帮助
 	public String SYS_MSG_TYPE_NEW_DELEGATION = "接受了您的帮助"; // 您的帮助已被求助者接受
@@ -66,49 +81,67 @@ public class MessageActivity extends Activity {
 
 		/* action bar */
 		ImageView btnBack = (ImageView) this.findViewById(R.id.action_bar_left_image);
+		btnBack.setOnClickListener(new BackClickListener(this));
 		TextView text = (TextView) this.findViewById(R.id.action_bar_title);
 		text.setText(R.string.title_activity_message);
-		btnBack.setOnClickListener(new BackClickListener(this));
+
+		isLogin = ApiContext.getInstance(MessageActivity.this).isAuthorized();
 
 		unLoginView = new UnLoginView(this, null, R.string.un_login_message);
 
-		listView = (ListView) this.findViewById(R.id.listView);
+		listView = (MyPullToRefreshListView) this.findViewById(R.id.listView);
 		adapter = new MessageAdapter();
 		listView.setAdapter(adapter);
-
 		listView.setOnItemClickListener(new OnItemClickListener() {
-
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				// TODO Auto-generated method stub
-				SystemMessageVO msg = (SystemMessageVO) adapter.getItem(position);
+				SystemMessageVO msg = (SystemMessageVO) parent.getAdapter().getItem(position);
 				String type = msg.getType();
 				Intent intent = new Intent();
 				if (net.ipetty.ibang.vo.Constants.SYS_MSG_TYPE_NEW_OFFER.equals(type)) {
 					intent = new Intent(MessageActivity.this, OfferActivity.class);
-					intent.putExtra(Constants.INTENT_OFFER_ID, msg.getOfferId());
-				} else if (net.ipetty.ibang.vo.Constants.SYS_MSG_TYPE_NEW_DELEGATION.equals(type)) {
-					intent = new Intent(MessageActivity.this, DelegationActivity.class);
-					intent.putExtra(Constants.INTENT_DELEGATION_ID, msg.getDelegationId());
-				} else if (net.ipetty.ibang.vo.Constants.SYS_MSG_TYPE_DELEGATION_FINISHED.equals(type)) {
-					intent = new Intent(MessageActivity.this, DelegationActivity.class);
-					intent.putExtra(Constants.INTENT_DELEGATION_ID, msg.getDelegationId());
-				} else if (net.ipetty.ibang.vo.Constants.SYS_MSG_TYPE_DELEGATION_CLOSED.equals(type)) {
-					intent = new Intent(MessageActivity.this, DelegationActivity.class);
-					intent.putExtra(Constants.INTENT_DELEGATION_ID, msg.getDelegationId());
-				} else if (net.ipetty.ibang.vo.Constants.SYS_MSG_TYPE_NEW_EVALUATION.equals(type)) {
-					intent = new Intent(MessageActivity.this, DelegationActivity.class);
-					intent.putExtra(Constants.INTENT_DELEGATION_ID, msg.getDelegationId());
-				} else if (net.ipetty.ibang.vo.Constants.SYS_MSG_TYPE_SEEK_FINISHED.equals(type)) {
-					intent = new Intent(MessageActivity.this, SeekActivity.class);
 					intent.putExtra(Constants.INTENT_SEEK_ID, msg.getSeekId());
-				} else if (net.ipetty.ibang.vo.Constants.SYS_MSG_TYPE_SEEK_CLOSED.equals(type)) {
+					intent.putExtra(Constants.INTENT_OFFER_ID, msg.getOfferId());
+				} else if (net.ipetty.ibang.vo.Constants.SYS_MSG_TYPE_NEW_DELEGATION.equals(type)
+						|| net.ipetty.ibang.vo.Constants.SYS_MSG_TYPE_DELEGATION_FINISHED.equals(type)
+						|| net.ipetty.ibang.vo.Constants.SYS_MSG_TYPE_DELEGATION_CLOSED.equals(type)
+						|| net.ipetty.ibang.vo.Constants.SYS_MSG_TYPE_NEW_EVALUATION.equals(type)) {
+					intent = new Intent(MessageActivity.this, DelegationActivity.class);
+					intent.putExtra(Constants.INTENT_SEEK_ID, msg.getSeekId());
+					intent.putExtra(Constants.INTENT_OFFER_ID, msg.getOfferId());
+					intent.putExtra(Constants.INTENT_DELEGATION_ID, msg.getDelegationId());
+				} else if (net.ipetty.ibang.vo.Constants.SYS_MSG_TYPE_SEEK_FINISHED.equals(type)
+						|| net.ipetty.ibang.vo.Constants.SYS_MSG_TYPE_SEEK_CLOSED.equals(type)) {
 					intent = new Intent(MessageActivity.this, SeekActivity.class);
 					intent.putExtra(Constants.INTENT_SEEK_ID, msg.getSeekId());
 				}
 				startActivity(intent);
+				if (!msg.isRead()) {
+					new ReadSystemMessageTask(MessageActivity.this).setListener(
+							new ReadSystemMessageTaskListener(MessageActivity.this)).execute(msg.getId());
+				}
 			}
+		});
 
+		// listView.hideMoreView();
+		listView.setOnRefreshListener(new OnRefreshListener<ListView>() {
+			@Override
+			public void onRefresh(PullToRefreshBase<ListView> refreshView) {
+				String label = DateUtils.formatDateTime(MessageActivity.this, getRefreshTime(),
+						DateUtils.FORMAT_SHOW_TIME | DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_ABBREV_ALL);
+				refreshView.getLoadingLayoutProxy().setLastUpdatedLabel(label);
+
+				loadSystemMessage(true);
+			}
+		});
+
+		listView.setOnLastItemVisibleListener(new OnLastItemVisibleListener() {
+			@Override
+			public void onLastItemVisible() {
+				if (hasMore) {
+					loadSystemMessage(false);
+				}
+			}
 		});
 
 		if (isLogin) {
@@ -117,32 +150,63 @@ public class MessageActivity extends Activity {
 	}
 
 	private void init() {
-		// TODO Auto-generated method stub
 		unLoginView.hide();
+		loadSystemMessage(true);
+	}
 
+	public void loadSystemMessage(boolean isRefresh) {
+		if (isRefresh) {
+			pageNumber = 0;
+		}
+		// 加载数据
+
+		new ListSystemMessageByUserIdTask(MessageActivity.this).setListener(
+				new ListSystemMessageByUserIdTaskListener(MessageActivity.this, adapter, listView, isRefresh)).execute(
+				ApiContext.getInstance(MessageActivity.this).getCurrentUserId(), pageNumber++, pageSize);
+	}
+
+	// 获取刷新时间，若网络不可用则取最后一次刷新时间
+	private Long getRefreshTime() {
+		if (NetWorkUtils.isNetworkConnected(MessageActivity.this)) {
+			this.lastTimeMillis = System.currentTimeMillis();
+			MyAppStateManager.setLastRefrsh4Home(MessageActivity.this, this.lastTimeMillis);
+			return this.lastTimeMillis;
+		}
+
+		return MyAppStateManager.getLastRefrsh4Home(MessageActivity.this);
+	}
+
+	public void loadMoreForResult(List<SystemMessageVO> result) {
+		if (result.size() < pageSize) {
+			hasMore = false;
+			listView.hideMoreView();
+		} else {
+			hasMore = true;
+			listView.showMoreView();
+		}
 	}
 
 	private BroadcastReceiver broadcastreciver = new BroadcastReceiver() {
-
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			// TODO Auto-generated method stub
 			String action = intent.getAction();
-
 			if (Constants.BROADCAST_INTENT_IS_LOGIN.equals(action)) {
 				init();
 			}
-
 		}
 	};
 
-	public void loadDate(List<SystemMessageVO> list) {
-		list.clear();
-		list.addAll(list);
-		adapter.notifyDataSetChanged();
-	}
-
 	public class MessageAdapter extends BaseAdapter implements OnScrollListener {
+		public void loadData(List<SystemMessageVO> data) {
+			list.clear();
+			this.addData(data);
+		}
+
+		public void addData(List<SystemMessageVO> data) {
+			list.addAll(data);
+			this.notifyDataSetChanged();
+		}
+
 		@Override
 		public int getCount() {
 			return list.size();
@@ -186,29 +250,12 @@ public class MessageActivity extends Activity {
 				holder = (ViewHolder) view.getTag();
 			}
 			SystemMessageVO msg = (SystemMessageVO) this.getItem(position);
-			String type = msg.getType();
-			String creatAt = new PrettyDateFormat("@", "yyyy-MM-dd HH:mm:dd").format(msg.getCreatedOn());
-			holder.timestamp.setText(creatAt);
-
-			if (net.ipetty.ibang.vo.Constants.SYS_MSG_TYPE_NEW_OFFER.equals(type)) {
-				holder.message.setText(SYS_MSG_TYPE_NEW_OFFER);
-			} else if (net.ipetty.ibang.vo.Constants.SYS_MSG_TYPE_NEW_DELEGATION.equals(type)) {
-				holder.message.setText(SYS_MSG_TYPE_NEW_OFFER);
-			} else if (net.ipetty.ibang.vo.Constants.SYS_MSG_TYPE_DELEGATION_FINISHED.equals(type)) {
-				holder.message.setText(SYS_MSG_TYPE_DELEGATION_FINISHED);
-			} else if (net.ipetty.ibang.vo.Constants.SYS_MSG_TYPE_DELEGATION_CLOSED.equals(type)) {
-				holder.message.setText(SYS_MSG_TYPE_DELEGATION_CLOSED);
-			} else if (net.ipetty.ibang.vo.Constants.SYS_MSG_TYPE_NEW_EVALUATION.equals(type)) {
-				holder.message.setText(SYS_MSG_TYPE_NEW_EVALUATION);
-			} else if (net.ipetty.ibang.vo.Constants.SYS_MSG_TYPE_SEEK_FINISHED.equals(type)) {
-				holder.message.setText(SYS_MSG_TYPE_SEEK_FINISHED);
-			} else if (net.ipetty.ibang.vo.Constants.SYS_MSG_TYPE_SEEK_CLOSED.equals(type)) {
-				holder.message.setText(SYS_MSG_TYPE_SEEK_CLOSED);
-			}
+			holder.message.setText(msg.getTitle());
+			holder.timestamp.setText(new PrettyDateFormat("@", "yyyy-MM-dd HH:mm:dd").format(msg.getCreatedOn()));
 
 			// 异步加载来源用户
 			int userId = msg.getFromUserId();
-			final UserVO user = new UserVO();
+			final UserVO user = GetUserByIdSynchronously.get(MessageActivity.this, userId);
 			holder.nickname.setText(user.getNickname());
 			if (StringUtils.isNotEmpty(user.getAvatar())) {
 				ImageLoader.getInstance().displayImage(Constants.FILE_SERVER_BASE + user.getAvatar(), holder.avatar,
@@ -232,8 +279,8 @@ public class MessageActivity extends Activity {
 
 	@Override
 	public void onDestroy() {
-		// TODO Auto-generated method stub
 		super.onDestroy();
 		this.unregisterReceiver(broadcastreciver);
 	}
+
 }

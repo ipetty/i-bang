@@ -131,28 +131,27 @@ public class DelegationActivity extends Activity {
 		currentUser = ApiContext.getInstance(this).getCurrentUser();
 
 		offerId = this.getIntent().getExtras().getLong(Constants.INTENT_OFFER_ID);
-		String offerJSON = this.getIntent().getExtras().getString(Constants.INTENT_OFFER_JSON);
-		offerVO = JSONUtils.fromJSON(offerJSON, OfferVO.class);
 		seekId = this.getIntent().getExtras().getLong(Constants.INTENT_SEEK_ID);
-		String seekJSON = this.getIntent().getExtras().getString(Constants.INTENT_SEEK_JSON);
 
-		if (seekId == null || seekId == 0L || StringUtils.isBlank(seekJSON)) {
-			// 没有传递seekId或SeekJSON
-			seekId = offerVO.getSeekId();
-			new GetSeekByIdTask(DelegationActivity.this).setListener(
-					new DefaultTaskListener<SeekVO>(DelegationActivity.this) {
-						@Override
-						public void onSuccess(SeekVO result) {
-							seekVO = result;
-							seeker = GetUserByIdSynchronously.get(DelegationActivity.this, seekVO.getSeekerId());
-							loadData();
-						}
-					}).execute(seekId);
-		} else {
-			seekVO = JSONUtils.fromJSON(seekJSON, SeekVO.class);
-			seeker = GetUserByIdSynchronously.get(DelegationActivity.this, seekVO.getSeekerId());
-			loadData();
-		}
+		new GetOfferByIdTask(DelegationActivity.this).setListener(
+				new DefaultTaskListener<OfferVO>(DelegationActivity.this) {
+					@Override
+					public void onSuccess(OfferVO result) {
+						offerVO = result;
+						seekId = offerVO.getSeekId();
+
+						new GetSeekByIdTask(DelegationActivity.this).setListener(
+								new DefaultTaskListener<SeekVO>(DelegationActivity.this) {
+									@Override
+									public void onSuccess(SeekVO result) {
+										seekVO = result;
+										seeker = GetUserByIdSynchronously.get(DelegationActivity.this,
+												seekVO.getSeekerId());
+										loadData();
+									}
+								}).execute(seekId);
+					}
+				}).execute(offerId);
 	}
 
 	private void loadData() {

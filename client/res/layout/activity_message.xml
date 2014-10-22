@@ -9,29 +9,28 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".MessageActivity" >
 
- 	 	<include
+    <include
         android:id="@+id/include"
         layout="@layout/action_bar_simple_back" />
- 	 	
- 	 	  <FrameLayout
-            android:id="@+id/fragment_unlogin"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" 
-            >
-		
-            <include layout="@layout/common_unlogin" />
-        </FrameLayout>
-        
- 	 	   <FrameLayout
-            android:id="@+id/fragment_view"
+
+    <FrameLayout
+        android:id="@+id/fragment_unlogin"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <include layout="@layout/common_unlogin" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/fragment_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <net.ipetty.ibang.android.core.ui.MyPullToRefreshListView
+            android:id="@+id/listView"
             android:layout_width="match_parent"
             android:layout_height="match_parent" >
+        </net.ipetty.ibang.android.core.ui.MyPullToRefreshListView>
+    </FrameLayout>
 
- 	 	       <ListView
- 	 	           android:id="@+id/listView"
- 	 	           android:layout_width="match_parent"
- 	 	           android:layout_height="match_parent" >
- 	 	       </ListView>
- 	 	       
-            </FrameLayout>
 </LinearLayout>
