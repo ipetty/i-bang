@@ -134,8 +134,16 @@
         </activity>
         <activity
             android:name="net.ipetty.ibang.android.search.SearchActivity"
-            android:label="@string/title_activity_search" 
-             android:windowSoftInputMode="stateVisible" >
+            android:label="@string/title_activity_search"
+            android:windowSoftInputMode="stateVisible" >
+        </activity>
+        <activity
+            android:name="net.ipetty.ibang.android.city.ProvinceActivity"
+            android:label="@string/title_activity_province" >
+        </activity>
+        <activity
+            android:name="net.ipetty.ibang.android.city.DistrictActivity"
+            android:label="@string/title_activity_district" >
         </activity>
     </application>
 

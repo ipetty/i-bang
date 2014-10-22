@@ -29,7 +29,7 @@
                     android:layout_height="wrap_content"
                     android:background="@null"
                     android:drawableRight="@drawable/ic_arrow_down"
-                    android:paddingLeft="2dp"
+                    android:paddingLeft="4dp"
                     android:paddingRight="2dp"
                     android:text="苏州"
                     android:textColor="@color/base_color"

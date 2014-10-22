@@ -36,6 +36,11 @@ public class Constants {
 	public static final String INTENT_EVALUATOR_ID = "INTENT_EVALUATOR_ID";
 	public static final String INTENT_EVALUATE_TARGET_ID = "INTENT_EVALUATE_TARGET_ID";
 
+	public static final String INTENT_LOCATION_PROVINCE = "INTENT_LOCATION_PROVINCE";
+	public static final String INTENT_LOCATION_CITY = "INTENT_LOCATION_CITY";
+	public static final String INTENT_LOCATION_DISTRICT = "INTENT_LOCATION_DISTRICT";
+	public static final String INTENT_LOCATION_TYPE = "INTENT_LOCATION_TYPE";
+
 	public final static float COMPRESS_IMAGE_MAX_WIDTH = 960f;
 	public final static float COMPRESS_IMAGE_MAX_HEIGHT = 1280f;
 	public final static float COMPRESS_IMAGE_MIN_WIDTH = 64f;

@@ -2,11 +2,9 @@ package net.ipetty.ibang.android.city;
 
 import net.ipetty.ibang.R;
 import net.ipetty.ibang.android.core.ActivityManager;
-import net.ipetty.ibang.android.core.Constants;
 import net.ipetty.ibang.android.core.ui.BackClickListener;
-import net.ipetty.ibang.util.Locations;
+import net.ipetty.ibang.vo.UserVO;
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,48 +18,33 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-public class CityActivity extends Activity {
+public class DistrictActivity extends Activity {
 	private ListView listView;
-	private String[] citys = {};
-
-	private String province;
-	private String city;
-	private String district;
-	private String type;
+	private String[] citys = { "苏州" };
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_city);
+		setContentView(R.layout.activity_district);
 		ActivityManager.getInstance().addActivity(this);
-
-		type = this.getIntent().getExtras().getString(Constants.INTENT_LOCATION_TYPE);
-		province = this.getIntent().getExtras().getString(Constants.INTENT_LOCATION_PROVINCE);
 
 		ImageView btnBack = (ImageView) this.findViewById(R.id.action_bar_left_image);
 		btnBack.setOnClickListener(new BackClickListener(this));
-		((TextView) this.findViewById(R.id.action_bar_title)).setText(province);
-
-		citys = Locations.listCities(province);
-
+		((TextView) this.findViewById(R.id.action_bar_title)).setText(R.string.title_activity_city);
 		listView = (ListView) this.findViewById(R.id.listView);
 		listView.setAdapter(new CityAdapter());
 		listView.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				city = (String) parent.getAdapter().getItem(position);
-				if (Constants.INTENT_LOCATION_CITY.equals(type)) {
-					Intent intent = new Intent();
-					intent.putExtra(Constants.INTENT_LOCATION_PROVINCE, province);
-					intent.putExtra(Constants.INTENT_LOCATION_CITY, city);
-					setResult(RESULT_OK, intent);
-					finish();
-				} else {
 
-				}
-
+				finish();
 			}
 		});
+
+		UserVO t = new UserVO();
+		t.getCity();
+		t.getProvince();
+		t.getDistrict();
 	}
 
 	public class CityAdapter extends BaseAdapter implements OnScrollListener {
@@ -94,7 +77,7 @@ public class CityActivity extends Activity {
 		public View getView(int position, View convertView, ViewGroup parent) {
 			View view;
 			if (convertView == null) {
-				LayoutInflater inflater = LayoutInflater.from(CityActivity.this);
+				LayoutInflater inflater = LayoutInflater.from(DistrictActivity.this);
 				view = inflater.inflate(R.layout.list_sub_category_item, null);
 				holder = new ViewHolder();
 				holder.name = (TextView) view.findViewById(R.id.name);

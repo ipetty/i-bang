@@ -4,7 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import net.ipetty.ibang.R;
-import net.ipetty.ibang.android.city.CityActivity;
+import net.ipetty.ibang.android.city.ProvinceActivity;
 import net.ipetty.ibang.android.core.Constants;
 import net.ipetty.ibang.android.core.MyAppStateManager;
 import net.ipetty.ibang.android.core.ui.MyPullToRefreshListView;
@@ -49,7 +49,7 @@ public class MainHomeFragment extends Fragment {
 
 	private boolean isLogin = false;
 	public UnLoginView unLoginView;
-	private TextView city;
+	private TextView cityView;
 	private TextView search;
 	private ImageView msg;
 	private String category = "";
@@ -62,6 +62,10 @@ public class MainHomeFragment extends Fragment {
 	private final Integer pageSize = 20;
 	private Long lastTimeMillis;
 	private Boolean hasMore = true;
+
+	private String province;
+	private String city;
+	private String district;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -83,15 +87,21 @@ public class MainHomeFragment extends Fragment {
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 
-		city = (TextView) this.getView().findViewById(R.id.city);
+		// TODO: getCity form localstore;
+		// province;
+		// city;
+		// 如果是空首先跳出 城市选择
+
+		cityView = (TextView) this.getView().findViewById(R.id.city);
 		search = (TextView) this.getView().findViewById(R.id.search);
 		msg = (ImageView) this.getView().findViewById(R.id.msg);
 
-		city.setOnClickListener(new OnClickListener() {
+		cityView.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				Intent intent = new Intent(getActivity(), CityActivity.class);
+				Intent intent = new Intent(getActivity(), ProvinceActivity.class);
+				intent.putExtra(Constants.INTENT_LOCATION_TYPE, Constants.INTENT_LOCATION_CITY);
 				startActivityForResult(intent, Constants.REQUEST_CODE_CITY);
 			}
 		});
@@ -243,6 +253,17 @@ public class MainHomeFragment extends Fragment {
 				setCategoryText(category, subCategory);
 
 				loadSeekByCategory(true);
+			}
+		}
+		if (requestCode == Constants.REQUEST_CODE_CITY) {
+			if (resultCode == FragmentActivity.RESULT_OK) {
+				Intent intent = data;
+				province = data.getExtras().getString(Constants.INTENT_LOCATION_PROVINCE);
+				city = data.getExtras().getString(Constants.INTENT_LOCATION_CITY);
+				cityView.setText(city);
+				// TODO:
+				// saveTOLocalStore;
+				// loadSeekByCategoryAndCity(true);
 			}
 		}
 	}
