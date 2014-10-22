@@ -6,6 +6,7 @@ import net.ipetty.ibang.android.core.DefaultTaskListener;
 import net.ipetty.ibang.android.core.ui.MyPullToRefreshListView;
 import net.ipetty.ibang.android.main.MainHomeFragment;
 import net.ipetty.ibang.android.main.SeekAdapter;
+import net.ipetty.ibang.android.search.SearchActivity;
 import net.ipetty.ibang.vo.SeekVO;
 import android.app.Activity;
 import android.support.v4.app.Fragment;
@@ -71,6 +72,10 @@ public class ListLatestAvaliableSeeksTaskListener extends DefaultTaskListener<Li
 		listView.onRefreshComplete();
 		if (fragment instanceof MainHomeFragment) {
 			((MainHomeFragment) fragment).loadMoreForResult(seeks);
+		}
+
+		if (activity instanceof SearchActivity) {
+			((SearchActivity) activity).loadMoreForResult(seeks);
 		}
 
 	}

@@ -47,7 +47,7 @@
                 android:text=""
                 android:hint="查找需要帮助的信息"
                 android:textColor="@color/gray_color"
-                android:textSize="14sp" >
+                android:textSize="14sp">
 				   <requestFocus />
             </EditText>
 

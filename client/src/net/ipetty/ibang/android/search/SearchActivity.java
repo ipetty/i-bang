@@ -2,6 +2,7 @@ package net.ipetty.ibang.android.search;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import net.ipetty.ibang.R;
 import net.ipetty.ibang.android.core.Constants;
@@ -116,6 +117,7 @@ public class SearchActivity extends Activity {
 		});
 
 		search_del.setVisibility(View.INVISIBLE);
+
 	}
 
 	private OnClickListener searchOnClickListener = new OnClickListener() {
@@ -147,6 +149,17 @@ public class SearchActivity extends Activity {
 		}
 
 		return MyAppStateManager.getLastRefrsh4Home(this);
+	}
+
+	public void loadMoreForResult(List<SeekVO> result) {
+		// TODO Auto-generated method stub
+		if (result.size() < pageSize) {
+			hasMore = false;
+			listView.hideMoreView();
+		} else {
+			hasMore = true;
+			listView.showMoreView();
+		}
 	}
 
 }

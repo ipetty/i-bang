@@ -134,7 +134,8 @@
         </activity>
         <activity
             android:name="net.ipetty.ibang.android.search.SearchActivity"
-            android:label="@string/title_activity_search" >
+            android:label="@string/title_activity_search" 
+             android:windowSoftInputMode="stateVisible" >
         </activity>
     </application>
 
