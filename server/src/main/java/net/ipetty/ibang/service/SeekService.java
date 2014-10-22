@@ -130,6 +130,22 @@ public class SeekService extends BaseService {
 	}
 
 	/**
+	 * 获取所在城市指定分类中最新的未关闭求助列表
+	 * 
+	 * @param pageNumber
+	 *            分页页码，从0开始
+	 */
+	public List<Seek> listLatestByCityOrCategory(String city, String district, String categoryL1, String categoryL2,
+			Date timeline, int pageNumber, int pageSize) {
+		List<Long> seekIds = seekDao.listLatestByCategory(categoryL1, categoryL2, timeline, pageNumber, pageSize);
+		List<Seek> seeks = new ArrayList<Seek>();
+		for (Long seekId : seekIds) {
+			seeks.add(this.getById(seekId));
+		}
+		return seeks;
+	}
+
+	/**
 	 * 根据关键字搜索最新的未关闭求助列表
 	 * 
 	 * @param pageNumber

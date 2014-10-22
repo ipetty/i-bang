@@ -143,6 +143,66 @@ public class SeekDaoImpl extends BaseJdbcDaoSupport implements SeekDao {
 		}
 	}
 
+	private static final String FRAGMENT_SELECT_WHERE = "select s.id from seek s left join users u on s.seeker_id=u.id where ";
+	private static final String FRAGMENT_BY_CITY = " u.city=?";
+	private static final String FRAGMENT_BY_DISTRICT = " and u.district=?";
+	private static final String FRAGMENT_BY_CATEGORYL1 = " and s.category_l1=?";
+	private static final String FRAGMENT_BY_CATEGORYL2 = " and s.category_l2=?";
+	private static final String FRAGMENT_OTHERS = " and s.created_on<=? and (s.status=? or s.status=?) order by s.created_on desc limit ?,?";
+
+	private static final String LIST_LATEST_BY_CITY_SQL = FRAGMENT_SELECT_WHERE + FRAGMENT_BY_CITY + FRAGMENT_OTHERS;
+	private static final String LIST_LATEST_BY_CITY_AND_CATEGORYL1_SQL = FRAGMENT_SELECT_WHERE + FRAGMENT_BY_CITY
+			+ FRAGMENT_BY_CATEGORYL1 + FRAGMENT_OTHERS;
+	private static final String LIST_LATEST_BY_CITY_AND_CATEGORYL2_SQL = FRAGMENT_SELECT_WHERE + FRAGMENT_BY_CITY
+			+ FRAGMENT_BY_CATEGORYL2 + FRAGMENT_OTHERS;
+	private static final String LIST_LATEST_BY_DISTRICT_SQL = FRAGMENT_SELECT_WHERE + FRAGMENT_BY_CITY
+			+ FRAGMENT_BY_DISTRICT + FRAGMENT_OTHERS;
+	private static final String LIST_LATEST_BY_DISTRICT_AND_CATEGORYL1_SQL = FRAGMENT_SELECT_WHERE + FRAGMENT_BY_CITY
+			+ FRAGMENT_BY_DISTRICT + FRAGMENT_BY_CATEGORYL1 + FRAGMENT_OTHERS;
+	private static final String LIST_LATEST_BY_DISTRICT_AND_CATEGORYL2_SQL = FRAGMENT_SELECT_WHERE + FRAGMENT_BY_CITY
+			+ FRAGMENT_BY_DISTRICT + FRAGMENT_BY_CATEGORYL2 + FRAGMENT_OTHERS;
+
+	/**
+	 * 获取所在城市指定分类中最新的未关闭求助ID列表
+	 * 
+	 * @param pageNumber
+	 *            分页页码，从0开始
+	 */
+	@Override
+	public List<Long> listLatestByCityOrCategory(String city, String district, String categoryL1, String categoryL2,
+			Date timeline, int pageNumber, int pageSize) {
+		if (StringUtils.isBlank(city)) {
+			return listLatestByCategory(categoryL1, categoryL2, timeline, pageNumber, pageSize);
+		} else if (StringUtils.isBlank(district)) {
+			if (StringUtils.isBlank(categoryL1)) {
+				return super.getJdbcTemplate().query(LIST_LATEST_BY_CITY_SQL, LONG_ROW_MAPPER, city, timeline,
+						Constants.SEEK_STATUS_CREATED, Constants.SEEK_STATUS_OFFERED, pageNumber * pageSize, pageSize);
+			} else if (StringUtils.isBlank(categoryL2)) {
+				return super.getJdbcTemplate().query(LIST_LATEST_BY_CITY_AND_CATEGORYL1_SQL, LONG_ROW_MAPPER, city,
+						categoryL1, timeline, Constants.SEEK_STATUS_CREATED, Constants.SEEK_STATUS_OFFERED,
+						pageNumber * pageSize, pageSize);
+			} else {
+				return super.getJdbcTemplate().query(LIST_LATEST_BY_CITY_AND_CATEGORYL2_SQL, LONG_ROW_MAPPER, city,
+						categoryL1, categoryL2, timeline, Constants.SEEK_STATUS_CREATED, Constants.SEEK_STATUS_OFFERED,
+						pageNumber * pageSize, pageSize);
+			}
+		} else {
+			if (StringUtils.isBlank(categoryL1)) {
+				return super.getJdbcTemplate().query(LIST_LATEST_BY_DISTRICT_SQL, LONG_ROW_MAPPER, city, district,
+						timeline, Constants.SEEK_STATUS_CREATED, Constants.SEEK_STATUS_OFFERED, pageNumber * pageSize,
+						pageSize);
+			} else if (StringUtils.isBlank(categoryL2)) {
+				return super.getJdbcTemplate().query(LIST_LATEST_BY_DISTRICT_AND_CATEGORYL1_SQL, LONG_ROW_MAPPER, city,
+						district, categoryL1, timeline, Constants.SEEK_STATUS_CREATED, Constants.SEEK_STATUS_OFFERED,
+						pageNumber * pageSize, pageSize);
+			} else {
+				return super.getJdbcTemplate().query(LIST_LATEST_BY_DISTRICT_AND_CATEGORYL2_SQL, LONG_ROW_MAPPER, city,
+						district, categoryL1, categoryL2, timeline, Constants.SEEK_STATUS_CREATED,
+						Constants.SEEK_STATUS_OFFERED, pageNumber * pageSize, pageSize);
+			}
+		}
+	}
+
 	private static final String LIST_LATEST_BY_KEYWORD_SQL = "select id from seek where created_on<=? and (status=? or status=?) and (content like ? or requirement like ? or reward like ? or additional_reward like ?) order by created_on desc limit ?,?";
 
 	/**

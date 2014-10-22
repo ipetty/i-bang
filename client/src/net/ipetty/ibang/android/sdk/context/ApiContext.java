@@ -28,6 +28,10 @@ public class ApiContext {
 	private static UserVO CURRENT_USER; // 当前用户VO
 	private static String PLATFORM_NAME; // 第三方帐号登录时的第三方平台名称
 
+	private static String LOCATION_PROVINCE; // 用户上次选定的地理位置
+	private static String LOCATION_CITY;
+	private static String LOCATION_DISTRICT;
+
 	private static final String SP_DEVICE_UUID = "sp_device_uuid";
 	private static final String SP_USER_TOKEN = "sp_user_token";
 	private static final String SP_REFRESH_TOKEN = "sp_refresh_token";
@@ -35,6 +39,10 @@ public class ApiContext {
 	private static final String SP_CURRENT_USER_ID = "sp_current_user_id";
 	private static final String SP_CURRENT_USER = "sp_current_user";
 	private static final String SP_PLATFORM_NAME = "sp_platform_name";
+
+	private static final String SP_LOCATION_PROVINCE = "sp_location_province";
+	private static final String SP_LOCATION_CITY = "sp_location_city";
+	private static final String SP_LOCATION_DISTRICT = "sp_location_district";
 
 	private static Context context;
 	private static ApiContext instance;
@@ -205,6 +213,60 @@ public class ApiContext {
 	public synchronized void setPlatformName(String platformName) {
 		PLATFORM_NAME = platformName;
 		SharedPreferencesUtils.setString(context, SP_PLATFORM_NAME, platformName);
+	}
+
+	/**
+	 * 获取用户上次选定的地理位置
+	 */
+	public synchronized String getLocationProvince() {
+		if (LOCATION_PROVINCE == null) {
+			LOCATION_PROVINCE = SharedPreferencesUtils.getString(context, SP_LOCATION_PROVINCE);
+		}
+		return LOCATION_PROVINCE;
+	}
+
+	/**
+	 * 设置用户上次选定的地理位置
+	 */
+	public synchronized void setLocationProvince(String locationProvince) {
+		LOCATION_PROVINCE = locationProvince;
+		SharedPreferencesUtils.setString(context, SP_LOCATION_PROVINCE, locationProvince);
+	}
+
+	/**
+	 * 获取用户上次选定的地理位置
+	 */
+	public synchronized String getLocationCity() {
+		if (LOCATION_CITY == null) {
+			LOCATION_CITY = SharedPreferencesUtils.getString(context, SP_LOCATION_CITY);
+		}
+		return LOCATION_CITY;
+	}
+
+	/**
+	 * 设置用户上次选定的地理位置
+	 */
+	public synchronized void setLocationCity(String locationCity) {
+		LOCATION_CITY = locationCity;
+		SharedPreferencesUtils.setString(context, SP_LOCATION_CITY, locationCity);
+	}
+
+	/**
+	 * 获取用户上次选定的地理位置
+	 */
+	public synchronized String getLocationDistrict() {
+		if (LOCATION_DISTRICT == null) {
+			LOCATION_DISTRICT = SharedPreferencesUtils.getString(context, SP_LOCATION_DISTRICT);
+		}
+		return LOCATION_DISTRICT;
+	}
+
+	/**
+	 * 设置用户上次选定的地理位置
+	 */
+	public synchronized void setLocationDistrict(String locationDistrict) {
+		LOCATION_DISTRICT = locationDistrict;
+		SharedPreferencesUtils.setString(context, SP_LOCATION_DISTRICT, locationDistrict);
 	}
 
 }

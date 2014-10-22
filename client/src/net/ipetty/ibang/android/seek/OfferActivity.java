@@ -105,12 +105,18 @@ public class OfferActivity extends Activity {
 			@Override
 			public void onSuccess(OfferVO result) {
 				offerVO = result;
+				offerer = GetUserByIdSynchronously.get(OfferActivity.this, offerVO.getOffererId());
+				bindUser(offerer, offer_avatar, offer_nickname);
+				bindTime(offerVO.getCreatedOn(), offer_created_at);
+				offer_content.setText(offerVO.getContent());
+				offer_totalPoint.setText("积分" + String.valueOf(offerer.getSeekerTotalPoint()));
+				offer_phone.setText(offerer.getPhone());
+
 				new GetSeekByIdTask(OfferActivity.this).setListener(
 						new DefaultTaskListener<SeekVO>(OfferActivity.this) {
 							@Override
 							public void onSuccess(SeekVO result) {
 								seekVO = result;
-
 								seeker = GetUserByIdSynchronously.get(OfferActivity.this, seekVO.getSeekerId());
 								bindUser(seeker, seek_avatar, seek_nickname);
 								bindTime(seekVO.getCreatedOn(), seek_created_at);
@@ -131,13 +137,6 @@ public class OfferActivity extends Activity {
 	}
 
 	private void loadData() {
-		offerer = user;
-		bindUser(offerer, offer_avatar, offer_nickname);
-		bindTime(offerVO.getCreatedOn(), offer_created_at);
-		offer_content.setText(offerVO.getContent());
-		offer_totalPoint.setText("积分" + String.valueOf(offerer.getSeekerTotalPoint()));
-		offer_phone.setText(offerer.getPhone());
-
 		seek_contact_layout.setVisibility(View.GONE);
 		offer_contact_layout.setVisibility(View.GONE);
 		offer_close_layout.setVisibility(View.GONE);

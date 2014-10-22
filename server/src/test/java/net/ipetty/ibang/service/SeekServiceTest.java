@@ -61,6 +61,20 @@ public class SeekServiceTest extends BaseServiceTest {
 		seekService.close(seek.getId());
 		seeks = seekService.listLatest(new Date(), 0, 20);
 		Assert.assertEquals(0, seeks.size());
+
+		seekService.listLatestByCategory(null, null, new Date(), 0, 20);
+		seekService.listLatestByCategory("categoryL1", null, new Date(), 0, 20);
+		seekService.listLatestByCategory("categoryL1", "categoryL2", new Date(), 0, 20);
+
+		seekService.listLatestByCityOrCategory(null, null, null, null, new Date(), 0, 20);
+		seekService.listLatestByCityOrCategory(null, null, "categoryL1", null, new Date(), 0, 20);
+		seekService.listLatestByCityOrCategory(null, null, "categoryL1", "categoryL2", new Date(), 0, 20);
+		seekService.listLatestByCityOrCategory("city", null, null, null, new Date(), 0, 20);
+		seekService.listLatestByCityOrCategory("city", null, "categoryL1", null, new Date(), 0, 20);
+		seekService.listLatestByCityOrCategory("city", null, "categoryL1", "categoryL2", new Date(), 0, 20);
+		seekService.listLatestByCityOrCategory("city", "district", null, null, new Date(), 0, 20);
+		seekService.listLatestByCityOrCategory("city", "district", "categoryL1", null, new Date(), 0, 20);
+		seekService.listLatestByCityOrCategory("city", "district", "categoryL1", "categoryL2", new Date(), 0, 20);
 	}
 
 }

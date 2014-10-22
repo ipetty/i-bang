@@ -12,8 +12,9 @@ import net.ipetty.ibang.android.core.ui.UnLoginView;
 import net.ipetty.ibang.android.core.util.JSONUtils;
 import net.ipetty.ibang.android.core.util.NetWorkUtils;
 import net.ipetty.ibang.android.message.MessageActivity;
+import net.ipetty.ibang.android.sdk.context.ApiContext;
 import net.ipetty.ibang.android.search.SearchActivity;
-import net.ipetty.ibang.android.seek.ListLatestAvaliableSeeksByCategoryTask;
+import net.ipetty.ibang.android.seek.ListLatestAvaliableSeeksByCityOrCategoryTask;
 import net.ipetty.ibang.android.seek.ListLatestAvaliableSeeksTask;
 import net.ipetty.ibang.android.seek.ListLatestAvaliableSeeksTaskListener;
 import net.ipetty.ibang.android.seek.SeekActivity;
@@ -87,19 +88,22 @@ public class MainHomeFragment extends Fragment {
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 
-		// TODO: getCity form localstore;
-		// province;
-		// city;
-		// 如果是空首先跳出 城市选择
+		// get city from local store;
+		// TODO 如果是空首先跳出 城市选择
+		province = ApiContext.getInstance(getActivity()).getLocationProvince();
+		city = ApiContext.getInstance(getActivity()).getLocationCity();
+		district = ApiContext.getInstance(getActivity()).getLocationDistrict();
 
 		cityView = (TextView) this.getView().findViewById(R.id.city);
 		search = (TextView) this.getView().findViewById(R.id.search);
 		msg = (ImageView) this.getView().findViewById(R.id.msg);
 
+		if (StringUtils.isNotBlank(city)) {
+			cityView.setText(city);
+		}
 		cityView.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
 				Intent intent = new Intent(getActivity(), ProvinceActivity.class);
 				intent.putExtra(Constants.INTENT_LOCATION_TYPE, Constants.INTENT_LOCATION_CITY);
 				startActivityForResult(intent, Constants.REQUEST_CODE_CITY);
@@ -109,7 +113,6 @@ public class MainHomeFragment extends Fragment {
 		search.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
 				Intent intent = new Intent(getActivity(), SearchActivity.class);
 				startActivity(intent);
 			}
@@ -118,7 +121,6 @@ public class MainHomeFragment extends Fragment {
 		msg.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
 				msg.setImageResource(R.drawable.action_bar_msg);
 				Intent intent = new Intent(getActivity(), MessageActivity.class);
 				startActivity(intent);
@@ -129,13 +131,11 @@ public class MainHomeFragment extends Fragment {
 		type.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
 				Intent intent = new Intent();
 				intent.setClass(getActivity(), TypeActivity.class);
 				intent.putExtra(Constants.INTENT_CATEGORY, category);
 				intent.putExtra(Constants.INTENT_SUB_CATEGORY, subCategory);
 				startActivityForResult(intent, Constants.REQUEST_CODE_CATEGORY);
-
 			}
 		});
 
@@ -163,13 +163,11 @@ public class MainHomeFragment extends Fragment {
 				refreshView.getLoadingLayoutProxy().setLastUpdatedLabel(label);
 				loadSeek(true);
 			}
-
 		});
 
 		listView.setOnLastItemVisibleListener(new OnLastItemVisibleListener() {
 			@Override
 			public void onLastItemVisible() {
-				// TODO Auto-generated method stub
 				if (hasMore) {
 					loadSeek(false);
 				}
@@ -177,7 +175,6 @@ public class MainHomeFragment extends Fragment {
 		});
 
 		loadSeek(true);
-
 	}
 
 	public void loadSeek(boolean isRefresh) {
@@ -191,14 +188,14 @@ public class MainHomeFragment extends Fragment {
 				String.valueOf(pageNumber++), String.valueOf(pageSize));
 	}
 
-	public void loadSeekByCategory(boolean isRefresh) {
+	public void loadSeekByCityOrCategory(boolean isRefresh) {
 		if (isRefresh) {
 			pageNumber = 0;
 		}
 		// 加载数据
-		new ListLatestAvaliableSeeksByCategoryTask(getActivity()).setListener(
+		new ListLatestAvaliableSeeksByCityOrCategoryTask(getActivity()).setListener(
 				new ListLatestAvaliableSeeksTaskListener(MainHomeFragment.this, adapter, listView, isRefresh)).execute(
-				category, subCategory,
+				city, district, category, subCategory,
 				net.ipetty.ibang.android.core.util.DateUtils.toDatetimeString(new Date(getRefreshTime())),
 				String.valueOf(pageNumber++), String.valueOf(pageSize));
 	}
@@ -206,7 +203,6 @@ public class MainHomeFragment extends Fragment {
 	private BroadcastReceiver broadcastreciver = new BroadcastReceiver() {
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			// TODO Auto-generated method stub
 			String action = intent.getAction();
 			if (Constants.BROADCAST_INTENT_IS_LOGIN.equals(action)) {
 				isLogin = true;
@@ -224,25 +220,21 @@ public class MainHomeFragment extends Fragment {
 		}
 
 		private void init() {
-			// TODO Auto-generated method stub
 			adapter.notifyDataSetChanged();
 
 		}
 
 		private void initUser() {
-			// TODO Auto-generated method stub
 			adapter.notifyDataSetChanged();
 		}
 
 		private void setNewMessage() {
-			// TODO Auto-generated method stub
 			msg.setImageResource(R.drawable.action_bar_msg_new);
 		}
 	};
 
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-		// TODO Auto-generated method stub
 		super.onActivityResult(requestCode, resultCode, data);
 
 		if (requestCode == Constants.REQUEST_CODE_CATEGORY) {
@@ -252,18 +244,22 @@ public class MainHomeFragment extends Fragment {
 				subCategory = intent.getStringExtra(Constants.INTENT_SUB_CATEGORY);
 				setCategoryText(category, subCategory);
 
-				loadSeekByCategory(true);
+				loadSeekByCityOrCategory(true);
 			}
 		}
 		if (requestCode == Constants.REQUEST_CODE_CITY) {
 			if (resultCode == FragmentActivity.RESULT_OK) {
 				Intent intent = data;
-				province = data.getExtras().getString(Constants.INTENT_LOCATION_PROVINCE);
-				city = data.getExtras().getString(Constants.INTENT_LOCATION_CITY);
+				province = intent.getStringExtra(Constants.INTENT_LOCATION_PROVINCE);
+				city = intent.getStringExtra(Constants.INTENT_LOCATION_CITY);
+				district = intent.getStringExtra(Constants.INTENT_LOCATION_DISTRICT);
 				cityView.setText(city);
-				// TODO:
 				// saveTOLocalStore;
-				// loadSeekByCategoryAndCity(true);
+				ApiContext.getInstance(getActivity()).setLocationProvince(province);
+				ApiContext.getInstance(getActivity()).setLocationCity(city);
+				ApiContext.getInstance(getActivity()).setLocationDistrict(district);
+
+				loadSeekByCityOrCategory(true);
 			}
 		}
 	}

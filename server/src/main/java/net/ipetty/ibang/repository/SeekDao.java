@@ -41,6 +41,15 @@ public interface SeekDao {
 			int pageSize);
 
 	/**
+	 * 获取所在城市指定分类中最新的未关闭求助ID列表
+	 * 
+	 * @param pageNumber
+	 *            分页页码，从0开始
+	 */
+	public List<Long> listLatestByCityOrCategory(String city, String district, String categoryL1, String categoryL2,
+			Date timeline, int pageNumber, int pageSize);
+
+	/**
 	 * 根据关键字搜索最新的未关闭求助单ID列表
 	 * 
 	 * @param pageNumber
