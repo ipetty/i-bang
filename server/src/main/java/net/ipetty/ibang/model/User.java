@@ -31,6 +31,9 @@ public class User extends AbstractEntity {
 	private String telephone; // 联系电话
 	private String avatar; // 头像
 	private String signature; // 个性签名
+	private String province; // 省
+	private String city; // 市
+	private String district; // 区/县
 	private String address; // 所在地
 	private Date createdOn; // 注册时间
 
@@ -181,6 +184,30 @@ public class User extends AbstractEntity {
 
 	public void setSignature(String signature) {
 		this.signature = signature;
+	}
+
+	public String getProvince() {
+		return province;
+	}
+
+	public void setProvince(String province) {
+		this.province = province;
+	}
+
+	public String getCity() {
+		return city;
+	}
+
+	public void setCity(String city) {
+		this.city = city;
+	}
+
+	public String getDistrict() {
+		return district;
+	}
+
+	public void setDistrict(String district) {
+		this.district = district;
 	}
 
 	public String getAddress() {

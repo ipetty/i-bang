@@ -23,6 +23,9 @@ public interface CacheConstants {
 	public static final String CACHE_USER_ID_TO_OFFERER_INFO = "cacheUserId2OffererInfo";
 	public static final String CACHE_USER_ID_TO_OFFER_RANGE = "cacheUserId2OfferRange";
 
+	/* location */
+	public static final String CACHE_LOCATION_ID_TO_LOCATION = "cacheLocationId2Location";
+
 	/* seek */
 	public static final String CACHE_SEEK_ID_TO_SEEK = "cacheSeekId2Seek";
 	/* offer */

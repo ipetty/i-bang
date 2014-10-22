@@ -1,18 +1,25 @@
-package net.ipetty.ibang.vo;
+package net.ipetty.ibang.model;
+
+import net.ipetty.ibang.vo.LocationVO;
+
+import org.springframework.beans.BeanUtils;
 
 /**
  * 位置
  * 
  * @author luocanfeng
- * @date 2014年10月21日
+ * @date 2014年10月22日
  */
-public class LocationVO extends BaseVO {
+public class Location extends AbstractEntity {
 
 	/** serialVersionUID */
-	private static final long serialVersionUID = 4141971986258154740L;
+	private static final long serialVersionUID = 7945748751830556247L;
+
+	private Long id;
 
 	private Double longitude; // 经度
 	private Double latitude; // 纬度
+	private String geoHash; // GEO哈希值
 	private String coorType; // 坐标系类型
 	private Float radius; // 定位精度半径，单位是米
 	private String province; // 省
@@ -23,11 +30,11 @@ public class LocationVO extends BaseVO {
 	private String address; // 地点文本信息
 	private boolean silent = true; // true为默默收集，界面不展现；false为用户指定，界面展现。
 
-	public LocationVO() {
+	public Location() {
 		super();
 	}
 
-	public LocationVO(Double longitude, Double latitude, String coorType, Float radius, String province, String city,
+	public Location(Double longitude, Double latitude, String coorType, Float radius, String province, String city,
 			String district, String address, boolean silent) {
 		super();
 		this.longitude = longitude;
@@ -41,7 +48,22 @@ public class LocationVO extends BaseVO {
 		this.silent = silent;
 	}
 
-	public LocationVO(Double longitude, Double latitude, String coorType, Float radius, String province, String city,
+	public Location(Double longitude, Double latitude, String geoHash, String coorType, Float radius, String province,
+			String city, String district, String address, boolean silent) {
+		super();
+		this.longitude = longitude;
+		this.latitude = latitude;
+		this.geoHash = geoHash;
+		this.coorType = coorType;
+		this.radius = radius;
+		this.province = province;
+		this.city = city;
+		this.district = district;
+		this.address = address;
+		this.silent = silent;
+	}
+
+	public Location(Double longitude, Double latitude, String coorType, Float radius, String province, String city,
 			String district, String street, String streetNumber, String address, boolean silent) {
 		super();
 		this.longitude = longitude;
@@ -55,6 +77,43 @@ public class LocationVO extends BaseVO {
 		this.streetNumber = streetNumber;
 		this.address = address;
 		this.silent = silent;
+	}
+
+	public Location(Double longitude, Double latitude, String geoHash, String coorType, Float radius, String province,
+			String city, String district, String street, String streetNumber, String address, boolean silent) {
+		super();
+		this.longitude = longitude;
+		this.latitude = latitude;
+		this.geoHash = geoHash;
+		this.coorType = coorType;
+		this.radius = radius;
+		this.province = province;
+		this.city = city;
+		this.district = district;
+		this.street = street;
+		this.streetNumber = streetNumber;
+		this.address = address;
+		this.silent = silent;
+	}
+
+	public LocationVO toVO() {
+		LocationVO vo = new LocationVO();
+		BeanUtils.copyProperties(this, vo);
+		return vo;
+	}
+
+	public static Location fromVO(LocationVO vo) {
+		Location location = new Location();
+		BeanUtils.copyProperties(vo, location);
+		return location;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public Double getLongitude() {
@@ -71,6 +130,14 @@ public class LocationVO extends BaseVO {
 
 	public void setLatitude(Double latitude) {
 		this.latitude = latitude;
+	}
+
+	public String getGeoHash() {
+		return geoHash;
+	}
+
+	public void setGeoHash(String geoHash) {
+		this.geoHash = geoHash;
 	}
 
 	public String getCoorType() {
