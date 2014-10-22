@@ -2,9 +2,11 @@ package net.ipetty.ibang.android.city;
 
 import net.ipetty.ibang.R;
 import net.ipetty.ibang.android.core.ActivityManager;
+import net.ipetty.ibang.android.core.Constants;
 import net.ipetty.ibang.android.core.ui.BackClickListener;
-import net.ipetty.ibang.vo.UserVO;
+import net.ipetty.ibang.util.Locations;
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,7 +22,11 @@ import android.widget.TextView;
 
 public class DistrictActivity extends Activity {
 	private ListView listView;
-	private String[] citys = { "苏州" };
+	private String province;
+	private String city;
+	private String district;
+
+	private String[] districts;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -28,23 +34,28 @@ public class DistrictActivity extends Activity {
 		setContentView(R.layout.activity_district);
 		ActivityManager.getInstance().addActivity(this);
 
+		province = this.getIntent().getExtras().getString(Constants.INTENT_LOCATION_PROVINCE);
+		city = this.getIntent().getExtras().getString(Constants.INTENT_LOCATION_CITY);
+		districts = Locations.listDistricts(city);
+
 		ImageView btnBack = (ImageView) this.findViewById(R.id.action_bar_left_image);
 		btnBack.setOnClickListener(new BackClickListener(this));
-		((TextView) this.findViewById(R.id.action_bar_title)).setText(R.string.title_activity_city);
+		((TextView) this.findViewById(R.id.action_bar_title)).setText(city);
 		listView = (ListView) this.findViewById(R.id.listView);
 		listView.setAdapter(new CityAdapter());
 		listView.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
+				district = (String) parent.getAdapter().getItem(position);
+				Intent intent = new Intent();
+				intent.putExtra(Constants.INTENT_LOCATION_PROVINCE, province);
+				intent.putExtra(Constants.INTENT_LOCATION_CITY, city);
+				intent.putExtra(Constants.INTENT_LOCATION_DISTRICT, district);
+				setResult(RESULT_OK, intent);
 				finish();
 			}
 		});
 
-		UserVO t = new UserVO();
-		t.getCity();
-		t.getProvince();
-		t.getDistrict();
 	}
 
 	public class CityAdapter extends BaseAdapter implements OnScrollListener {
@@ -52,13 +63,13 @@ public class DistrictActivity extends Activity {
 		@Override
 		public int getCount() {
 			// TODO Auto-generated method stub
-			return citys.length;
+			return districts.length;
 		}
 
 		@Override
 		public Object getItem(int position) {
 			// TODO Auto-generated method stub
-			return citys[position];
+			return districts[position];
 		}
 
 		@Override

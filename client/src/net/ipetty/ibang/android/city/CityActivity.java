@@ -8,6 +8,7 @@ import net.ipetty.ibang.util.Locations;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -57,11 +58,27 @@ public class CityActivity extends Activity {
 					setResult(RESULT_OK, intent);
 					finish();
 				} else {
-
+					Intent intent = new Intent(CityActivity.this, DistrictActivity.class);
+					intent.putExtra(Constants.INTENT_LOCATION_PROVINCE, province);
+					intent.putExtra(Constants.INTENT_LOCATION_CITY, city);
+					startActivityForResult(intent, Constants.REQUEST_CODE_CITY);
 				}
 
 			}
 		});
+	}
+
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		// TODO Auto-generated method stub
+		super.onActivityResult(requestCode, resultCode, data);
+		if (requestCode == Constants.REQUEST_CODE_CITY) {
+			if (resultCode == FragmentActivity.RESULT_OK) {
+				Intent intent = data;
+				setResult(RESULT_OK, intent);
+				finish();
+			}
+		}
 	}
 
 	public class CityAdapter extends BaseAdapter implements OnScrollListener {

@@ -38,6 +38,10 @@ public class UserInfoActivity extends Activity {
 	private TextView gender;
 	private String genderValue; // 性别传值
 
+	private TextView provinceView;
+	private TextView cityView;
+	private TextView districtView;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -62,6 +66,10 @@ public class UserInfoActivity extends Activity {
 		phoneView = (TextView) this.findViewById(R.id.phone);
 		gender = (TextView) this.findViewById(R.id.gender);
 		jobView = (TextView) this.findViewById(R.id.job);
+
+		provinceView = (TextView) this.findViewById(R.id.province);
+		cityView = (TextView) this.findViewById(R.id.city);
+		districtView = (TextView) this.findViewById(R.id.district);
 
 		// 先从传递的参数进行加载
 		if (user != null && seekUserId == user.getId()) {
@@ -90,6 +98,10 @@ public class UserInfoActivity extends Activity {
 		// phoneView.setText(seekUser.getPhone());
 		gender.setText(seekUser.getGender());
 		jobView.setText(seekUser.getJob());
+
+		provinceView.setText(user.getProvince());
+		cityView.setText(user.getCity());
+		districtView.setText(user.getDistrict());
 
 	}
 

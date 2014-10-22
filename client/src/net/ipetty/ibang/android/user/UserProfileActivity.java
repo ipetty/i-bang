@@ -4,7 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 
 import net.ipetty.ibang.R;
-import net.ipetty.ibang.android.city.CityActivity;
+import net.ipetty.ibang.android.city.ProvinceActivity;
 import net.ipetty.ibang.android.core.ActivityManager;
 import net.ipetty.ibang.android.core.Constants;
 import net.ipetty.ibang.android.core.ui.BackClickListener;
@@ -46,6 +46,10 @@ public class UserProfileActivity extends Activity {
 	private TextView signatureView;
 	private TextView jobView;
 
+	private TextView provinceView;
+	private TextView cityView;
+	private TextView districtView;
+
 	private ArrayList<ModDialogItem> genderItems;
 	private Dialog genderDialog;
 	private TextView gender;
@@ -83,7 +87,7 @@ public class UserProfileActivity extends Activity {
 		View gender_layout = this.findViewById(R.id.gender_layout);
 		View signature_layout = this.findViewById(R.id.signature_layout);
 		View job_layout = this.findViewById(R.id.job_layout);
-		View city_layout = this.findViewById(R.id.city);
+		View city_layout = this.findViewById(R.id.city_layout);
 
 		// 头像
 		avatar = (ImageView) this.findViewById(R.id.avatar);
@@ -92,6 +96,9 @@ public class UserProfileActivity extends Activity {
 		gender = (TextView) this.findViewById(R.id.gender);
 		jobView = (TextView) this.findViewById(R.id.job);
 		signatureView = (TextView) this.findViewById(R.id.signature);
+		provinceView = (TextView) this.findViewById(R.id.province);
+		cityView = (TextView) this.findViewById(R.id.city);
+		districtView = (TextView) this.findViewById(R.id.district);
 
 		avatar.setOnClickListener(changeAvatarClick);
 		nickname_layout.setOnClickListener(new EditOnClickListener(Constants.INTENT_USER_EDIT_TYPE_NICKNAME));
@@ -119,8 +126,9 @@ public class UserProfileActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				Intent intent = new Intent(UserProfileActivity.this, CityActivity.class);
-				startActivity(intent);
+				Intent intent = new Intent(UserProfileActivity.this, ProvinceActivity.class);
+				intent.putExtra(Constants.INTENT_LOCATION_TYPE, Constants.INTENT_LOCATION_DISTRICT);
+				startActivityForResult(intent, Constants.REQUEST_CODE_CITY);
 			}
 		});
 	}
@@ -145,6 +153,10 @@ public class UserProfileActivity extends Activity {
 			userForm.setTelephone(user.getTelephone());
 			userForm.setSignature(user.getSignature());
 			userForm.setAddress(user.getAddress());
+			userForm.setCity(user.getCity());
+			userForm.setProvince(user.getProvince());
+			userForm.setDistrict(user.getDistrict());
+
 			new UpdateProfileTask(UserProfileActivity.this).setListener(
 					new UpdateProfileTaskListener(UserProfileActivity.this)).execute(userForm);
 		}
@@ -246,6 +258,39 @@ public class UserProfileActivity extends Activity {
 			user = ApiContext.getInstance(UserProfileActivity.this).getCurrentUser();
 			initTextUser(user);
 		}
+
+		if (requestCode == Constants.REQUEST_CODE_CITY) {
+			if (resultCode == RESULT_OK) {
+
+				String province = data.getExtras().getString(Constants.INTENT_LOCATION_PROVINCE);
+				String city = data.getExtras().getString(Constants.INTENT_LOCATION_CITY);
+				String district = data.getExtras().getString(Constants.INTENT_LOCATION_DISTRICT);
+				user.setProvince(province);
+				user.setCity(city);
+				user.setDistrict(district);
+
+				user = ApiContext.getInstance(UserProfileActivity.this).getCurrentUser();
+				UserFormVO userForm = new UserFormVO();
+				userForm.setId(user.getId());
+				userForm.setNickname(user.getNickname());
+				userForm.setGender(user.getGender());
+				userForm.setJob(user.getJob());
+				userForm.setPhone(user.getPhone());
+				userForm.setTelephone(user.getTelephone());
+				userForm.setSignature(user.getSignature());
+				userForm.setAddress(user.getAddress());
+				userForm.setCity(user.getCity());
+				userForm.setProvince(user.getProvince());
+				userForm.setDistrict(user.getDistrict());
+
+				provinceView.setText(user.getProvince());
+				cityView.setText(user.getCity());
+				districtView.setText(user.getDistrict());
+
+				new UpdateProfileTask(UserProfileActivity.this).setListener(
+						new UpdateProfileTaskListener(UserProfileActivity.this)).execute(userForm);
+			}
+		}
 	}
 
 	private void initTextUser(UserVO user) {
@@ -253,6 +298,10 @@ public class UserProfileActivity extends Activity {
 		phoneView.setText(user.getPhone());
 		signatureView.setText(user.getSignature());
 		jobView.setText(user.getJob());
+
+		provinceView.setText(user.getProvince());
+		cityView.setText(user.getCity());
+		districtView.setText(user.getDistrict());
 	}
 
 	public void updateAvatar(final String filePath) {
