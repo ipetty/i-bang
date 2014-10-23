@@ -44,9 +44,26 @@ public class OffererInfoService extends BaseService {
 		if (offererInfo != null) {
 			offererInfo.setOfferRange(offerRangeDao.getByUserId(userId));
 		} else {
-			offererInfo = new OffererInfo(userId, 0, 0, null, offerRangeDao.getByUserId(userId));
+			offererInfo = new OffererInfo(userId, 0, 0, this.getTitle(0), offerRangeDao.getByUserId(userId));
 		}
 		return offererInfo;
+	}
+
+	/**
+	 * 根据总积分获取相应头衔
+	 */
+	public String getTitle(int totalPoint) {
+		if (totalPoint >= 50000) {
+			return "国家级大好人";
+		} else if (totalPoint >= 10000) {
+			return "省级大好人";
+		} else if (totalPoint >= 3000) {
+			return "市级大好人";
+		} else if (totalPoint >= 1000) {
+			return "区级大好人";
+		} else {
+			return "大好人";
+		}
 	}
 
 }

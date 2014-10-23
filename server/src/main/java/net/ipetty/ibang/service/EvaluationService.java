@@ -8,7 +8,9 @@ import javax.annotation.Resource;
 import net.ipetty.ibang.exception.BusinessException;
 import net.ipetty.ibang.model.Delegation;
 import net.ipetty.ibang.model.Evaluation;
+import net.ipetty.ibang.model.OffererInfo;
 import net.ipetty.ibang.model.Seek;
+import net.ipetty.ibang.model.SeekerInfo;
 import net.ipetty.ibang.model.SystemMessage;
 import net.ipetty.ibang.model.User;
 import net.ipetty.ibang.repository.EvaluationDao;
@@ -42,6 +44,12 @@ public class EvaluationService extends BaseService {
 
 	@Resource
 	private UserService userService;
+
+	@Resource
+	private SeekerInfoService seekerInfoService;
+
+	@Resource
+	private OffererInfoService offererInfoService;
 
 	@Resource
 	private SystemMessageService systemMessageService;
@@ -94,8 +102,25 @@ public class EvaluationService extends BaseService {
 			throw new BusinessException("委托单状态异常，不能评价");
 		}
 
-		// 保持评价
+		// 保存评价
 		evaluationDao.save(evaluation);
+
+		// 更新积分与头衔
+		if (evaluation.getPoint() != 0) {
+			if (Constants.EVALUATION_TYPE_SEEKER_TO_OFFERER.equals(evaluation.getType())) {
+				OffererInfo offererInfo = offererInfoService.getByUserId(evaluation.getEvaluateTargetId());
+				offererInfo.setOfferCount(offererInfo.getOfferCount() + 1);
+				offererInfo.setTotalPoint(offererInfo.getTotalPoint() + evaluation.getPoint());
+				offererInfo.setTitle(offererInfoService.getTitle(offererInfo.getTotalPoint()));
+				offererInfoService.saveOrUpdate(offererInfo);
+			} else if (Constants.EVALUATION_TYPE_OFFERER_TO_SEEKER.equals(evaluation.getType())) {
+				SeekerInfo seekerInfo = seekerInfoService.getByUserId(evaluation.getEvaluateTargetId());
+				seekerInfo.setSeekCount(seekerInfo.getSeekCount() + 1);
+				seekerInfo.setTotalPoint(seekerInfo.getTotalPoint() + evaluation.getPoint());
+				seekerInfo.setTitle(seekerInfoService.getTitle(seekerInfo.getTotalPoint()));
+				seekerInfoService.saveOrUpdate(seekerInfo);
+			}
+		}
 
 		// 更新求助单状态
 		List<Delegation> delegations = delegationService.listBySeekId(delegation.getSeekId());
