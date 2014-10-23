@@ -5,6 +5,7 @@ import net.ipetty.ibang.android.sdk.factory.IbangApi;
 import net.ipetty.ibang.api.SystemMessageApi;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 
 /**
  * 定时读取系统消息的线程
@@ -14,24 +15,29 @@ import android.content.Intent;
  */
 public class RequestSystemMessageThread implements Runnable {
 
-	private static final int interval = 60 * 1000; // 定时间隔时间为60秒，单位毫秒
+	private String TAG = getClass().getSimpleName();
+
+	private static final int interval = 300 * 1000; // 定时间隔时间为60秒，单位毫秒
 
 	private Context context;
 	private Integer userId;
 
 	private static RequestSystemMessageThread instance = null;
 	private static Thread thread = null;
+	private static boolean flag = true;
 
 	public static void start(Context context, Integer userId) {
 		if (instance == null) {
 			instance = new RequestSystemMessageThread(context, userId);
 			thread = new Thread(instance);
+			flag = true;
 			thread.start();
 		}
 	}
 
 	public static void stop() {
-		thread.interrupt();
+		flag = false;
+		// thread.interrupt();
 		thread = null;
 		instance = null;
 	}
@@ -44,10 +50,11 @@ public class RequestSystemMessageThread implements Runnable {
 
 	@Override
 	public void run() {
-		while (true) {
+		while (flag) {
 			try {
 				if (context != null && userId != null) {
 					int num = IbangApi.init(context).create(SystemMessageApi.class).getUnreadNumberByUserId(userId);
+					Log.d(TAG, "获取通知消息，未读数=" + num);
 					if (num > 0) {
 						Intent intent = new Intent(Constants.BROADCAST_INTENT_NEW_MESSAGE);
 						context.sendBroadcast(intent);
