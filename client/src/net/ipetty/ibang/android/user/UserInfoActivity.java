@@ -41,6 +41,7 @@ public class UserInfoActivity extends Activity {
 	private TextView provinceView;
 	private TextView cityView;
 	private TextView districtView;
+	private TextView seekerTitleView;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +72,8 @@ public class UserInfoActivity extends Activity {
 		cityView = (TextView) this.findViewById(R.id.city);
 		districtView = (TextView) this.findViewById(R.id.district);
 
+		seekerTitleView = (TextView) this.findViewById(R.id.seekerTitle);
+
 		// 先从传递的参数进行加载
 		if (user != null && seekUserId == user.getId()) {
 			seekUser = user;
@@ -94,6 +97,7 @@ public class UserInfoActivity extends Activity {
 		seekCount.setText(String.valueOf(seekUser.getSeekCount()));
 		offerCount.setText(String.valueOf(seekUser.getOfferCount()));
 		seekerTotalPoint.setText(String.valueOf(seekUser.getSeekerTotalPoint()));
+		seekerTitleView.setText(seekUser.getSeekerTitle());
 
 		// phoneView.setText(seekUser.getPhone());
 		gender.setText(seekUser.getGender());

@@ -10,6 +10,7 @@ import net.ipetty.ibang.R;
 import net.ipetty.ibang.android.core.ActivityManager;
 import net.ipetty.ibang.android.core.Constants;
 import net.ipetty.ibang.android.core.ui.BackClickListener;
+import net.ipetty.ibang.android.core.ui.ModDialogItem;
 import net.ipetty.ibang.android.core.ui.UploadView;
 import net.ipetty.ibang.android.core.util.DateUtils;
 import net.ipetty.ibang.android.core.util.DialogUtils;
@@ -25,7 +26,6 @@ import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.DatePicker;
@@ -45,10 +45,15 @@ public class PublishActivity extends Activity {
 	private UserVO user;
 	private EditText delegateNumberView;
 	private TextView button;
+	private EditText additionalRewardView;
+	private EditText serviceDateView;
 
 	private UploadView uploadView;
 
 	private Dialog exipireDateDialog;
+	private Dialog serviceDateDialog;
+
+	private ArrayList<ModDialogItem> serviceDateItems;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +71,8 @@ public class PublishActivity extends Activity {
 		// 界面元素绑定
 		contentView = (EditText) this.findViewById(R.id.content);
 		delegateNumberView = (EditText) this.findViewById(R.id.num);
+		additionalRewardView = (EditText) this.findViewById(R.id.additionalReward);
+		serviceDateView = (EditText) this.findViewById(R.id.serviceDate);
 
 		// 事件初始化
 		exipireDateView = (EditText) this.findViewById(R.id.exipireDate);
@@ -90,6 +97,21 @@ public class PublishActivity extends Activity {
 		initFileUpload();
 		initUserInfo();
 
+		serviceDateItems = new ArrayList<ModDialogItem>();
+		serviceDateItems.add(new ModDialogItem(null, "不限", "不限", serviceDateClick));
+		serviceDateItems.add(new ModDialogItem(null, "工作日", "工作日", serviceDateClick));
+		serviceDateItems.add(new ModDialogItem(null, "双休日", "双休日", serviceDateClick));
+		serviceDateItems.add(new ModDialogItem(null, "指定日期", "指定日期", selectServiceDateClick));
+
+		serviceDateView.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				serviceDateDialog = DialogUtils.modPopupDialog(PublishActivity.this, serviceDateItems,
+						serviceDateDialog);
+			}
+		});
+
 		// 发布
 		button = (TextView) this.findViewById(R.id.button);
 		button.setOnClickListener(new OnClickListener() {
@@ -107,14 +129,16 @@ public class PublishActivity extends Activity {
 				seek.setCategoryL2(categoryL2);
 				seek.setContent(contentView.getText().toString());
 				seek.setDelegateNumber(Integer.valueOf(delegateNumberView.getText().toString()));
+				seek.setAdditionalReward(additionalRewardView.getText().toString());
 				String exipireDateStr = exipireDateView.getText().toString();
+				// TODO: 增加 serviceDate；
+
 				seek.setExipireDate(DateUtils.fromDateString(exipireDateStr));
 
 				// 上传图片文件
 				final List<File> files = uploadView.getFiles();
 				final List<String> filePaths = new ArrayList<String>();
 				for (File file : files) {
-					Log.d("----->", file.getAbsolutePath());
 					filePaths.add(file.getAbsolutePath());
 				}
 
@@ -125,10 +149,44 @@ public class PublishActivity extends Activity {
 		});
 	}
 
+	private OnClickListener selectServiceDateClick = new OnClickListener() {
+		@Override
+		public void onClick(View v) {
+			// TODO Auto-generated method stub
+			serviceDateDialog.cancel();
+			Calendar c = Calendar.getInstance();
+			c.setTime(new Date());
+			String str = DateUtils.toDateString(c.getTime());
+			serviceDateDialog = DialogUtils.datePopupDialog(PublishActivity.this, serviceDateDialogClick, str,
+					serviceDateDialog);
+		}
+	};
+
+	private OnClickListener serviceDateClick = new OnClickListener() {
+		@Override
+		public void onClick(View view) {
+			String label = ((TextView) view.findViewById(R.id.text)).getText().toString();
+			String value = ((TextView) view.findViewById(R.id.value)).getText().toString();
+			serviceDateView.setText(label);
+			serviceDateDialog.cancel();
+		}
+	};
+	private OnDateSetListener serviceDateDialogClick = new OnDateSetListener() {
+		@Override
+		public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+			Calendar c = Calendar.getInstance();
+			c.set(year, monthOfYear, dayOfMonth);
+			String str = DateUtils.toDateString(c.getTime());
+			serviceDateView.setText(str);
+			serviceDateDialog.cancel();
+		}
+	};
+
 	private void initUserInfo() {
 		user = ApiContext.getInstance(PublishActivity.this).getCurrentUser();
 		nicknameView.setText(user.getNickname());
 		phoneView.setText(user.getPhone());
+
 	}
 
 	private class EditOnClickListener implements OnClickListener {

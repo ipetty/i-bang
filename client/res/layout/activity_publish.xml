@@ -49,6 +49,86 @@
  	 	            </EditText>
  	 	        </LinearLayout>
 
+ 	 	         <include layout="@layout/line_horizontal_divider" />
+<LinearLayout
+ 	 	            android:layout_width="fill_parent"
+ 	 	            android:layout_height="wrap_content"
+ 	 	            android:minHeight="46dp"
+ 	 	            android:background="@drawable/list_color_item_bg_white"
+ 	 	            android:gravity="center_vertical" >
+
+ 	 	            <TextView
+ 	 	                android:layout_width="wrap_content"
+ 	 	                android:layout_height="wrap_content"
+ 	 	             
+ 	 	                android:layout_marginLeft="16dp"
+ 	 	                android:text="附加说明"
+ 	 	                android:textColor="@color/black_color"
+ 	 	                android:textSize="16sp" />
+			<LinearLayout
+			            android:layout_width="0dp"
+			            android:layout_height="wrap_content"
+			            android:layout_marginLeft="16dp"
+			             android:layout_marginRight="16dp"
+			            android:layout_weight="1"
+			            android:gravity="center"
+			            android:orientation="vertical" >
+			
+			 		<EditText
+ 	 	                android:id="@+id/additionalReward"
+ 	 	                android:layout_width="wrap_content"
+ 	 	                android:layout_height="wrap_content"
+ 	 	                android:layout_gravity="right"
+ 	 	                android:background="@null"
+ 	 	                android:gravity="left"
+ 	 	                android:singleLine="false"
+ 	 	                android:text=""
+ 	 	                android:hint="提供工具、食宿、报酬等"
+ 	 	                android:textColor="@color/gray_color"
+ 	 	                android:textColorHint="@color/gray_color"
+ 	 	                android:textSize="16sp"
+ 	 	                android:windowSoftInputMode="stateHidden" />
+			
+			        </LinearLayout>
+ 	 	           
+ 	 	        </LinearLayout>
+ 	 	        
+ <include layout="@layout/line_horizontal_divider" />
+<LinearLayout
+ 	 	            android:layout_width="fill_parent"
+ 	 	            android:layout_height="wrap_content"
+ 	 	               android:minHeight="46dp"
+ 	 	            android:background="@drawable/list_color_item_bg_white"
+ 	 	            android:gravity="center_vertical" >
+
+ 	 	            <TextView
+ 	 	                android:layout_width="wrap_content"
+ 	 	                android:layout_height="wrap_content"
+ 	 	             
+ 	 	                android:layout_marginLeft="16dp"
+ 	 	                android:text="时间要求"
+ 	 	                android:textColor="@color/black_color"
+ 	 	                android:textSize="16sp" />
+
+ 	 	            <EditText
+ 	 	                android:id="@+id/serviceDate"
+ 	 	                android:layout_width="0.0dip"
+ 	 	                android:layout_height="wrap_content"
+ 	 	                android:layout_marginLeft="16dp"
+ 	 	                android:layout_marginRight="16dp"
+ 	 	                android:layout_weight="1.0"
+ 	 	                android:background="@null"
+ 	 	                android:focusable="false"
+ 	 	                android:gravity="right|center_vertical"
+ 	 	                android:text="不限"
+ 	 	                android:hint=""
+ 	 	                android:textColor="@color/gray_color"
+ 	 	                android:textColorHint="@color/gray_color"
+ 	 	                android:textSize="16sp"
+ 	 	                android:windowSoftInputMode="stateHidden" />
+ 	 	        </LinearLayout>
+ 	 	        <include layout="@layout/line_horizontal_divider" />
+ 	 	        <include layout="@layout/line_space" />
  	 	        <include layout="@layout/line_horizontal_divider" />
 
  	 	        <LinearLayout
@@ -89,6 +169,17 @@
  					     android:textColorHint="@color/gray_color"
  					     android:textSize="16sp"
  					     android:windowSoftInputMode="stateHidden" />
+
+ 					 <TextView
+ 					     android:layout_width="wrap_content"
+ 					     android:layout_height="wrap_content"
+ 					     android:layout_alignBaseline="@+id/num"
+ 					     android:layout_alignBottom="@+id/num"
+ 					     android:layout_alignParentLeft="true"
+ 					     android:layout_marginLeft="4dp"
+ 					     android:text="(0为不限制)"
+ 					     android:textColor="@color/gray_color"
+ 					     android:textSize="12sp" />
 
  	 	            </RelativeLayout>
 
