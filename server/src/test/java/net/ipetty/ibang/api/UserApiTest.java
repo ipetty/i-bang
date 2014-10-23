@@ -120,6 +120,8 @@ public class UserApiTest extends BaseApiTest {
 		userApi.login(TEST_ACCOUNT_USERNAME, TEST_ACCOUNT_PASSWORD);
 
 		Assert.assertTrue(userApi.changePassword(TEST_ACCOUNT_PASSWORD, "666666"));
+
+		userApi.login(TEST_ACCOUNT_USERNAME, "666666");
 		Assert.assertTrue(userApi.changePassword("666666", TEST_ACCOUNT_PASSWORD));
 		logger.debug("change password success.");
 	}

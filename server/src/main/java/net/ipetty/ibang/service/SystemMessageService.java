@@ -69,4 +69,11 @@ public class SystemMessageService extends BaseService {
 		return systemMessages;
 	}
 
+	/**
+	 * 获取指定用户的未读系统消息数
+	 */
+	public int getUnreadNumberByUserId(Integer userId) {
+		return systemMessageDao.getUnreadNumberByUserId(userId);
+	}
+
 }

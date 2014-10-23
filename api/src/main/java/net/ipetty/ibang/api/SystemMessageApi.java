@@ -41,4 +41,10 @@ public interface SystemMessageApi {
 	public List<SystemMessageVO> listUnreadByUserId(@Query("userId") Integer userId,
 			@Query("pageNumber") int pageNumber, @Query("pageSize") int pageSize);
 
+	/**
+	 * 获取指定用户的未读系统消息数
+	 */
+	@GET("/sysmsgnum/unread")
+	public int getUnreadNumberByUserId(@Query("userId") Integer userId);
+
 }

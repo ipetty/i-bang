@@ -48,6 +48,8 @@ public class SystemMessageServiceTest extends BaseServiceTest {
 
 		systemMessages = systemMessageService.listByUserId(user.getId(), 0, 20);
 		Assert.assertTrue(systemMessages.size() > 0);
+
+		systemMessageService.getUnreadNumberByUserId(user.getId());
 	}
 
 }

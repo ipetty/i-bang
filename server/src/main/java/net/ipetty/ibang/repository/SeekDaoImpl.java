@@ -32,8 +32,9 @@ public class SeekDaoImpl extends BaseJdbcDaoSupport implements SeekDao {
 		@Override
 		public Seek mapRow(ResultSet rs, int rowNum) throws SQLException {
 			// id, sn, seeker_id, contact_info_visible, category_l1,
-			// category_l2, content, requirement, delegate_number, reward,
-			// additional_reward, created_on, expire_date, closed_on, status
+			// category_l2, title, content, requirement, delegate_number,
+			// reward, additional_reward, service_date, created_on, expire_date,
+			// closed_on, status
 			Seek seek = new Seek();
 			seek.setId(rs.getLong("id"));
 			seek.setSn(rs.getString("sn"));
@@ -41,11 +42,13 @@ public class SeekDaoImpl extends BaseJdbcDaoSupport implements SeekDao {
 			seek.setContactInfoVisible(rs.getBoolean("contact_info_visible"));
 			seek.setCategoryL1(rs.getString("category_l1"));
 			seek.setCategoryL2(rs.getString("category_l2"));
+			seek.setTitle(rs.getString("title"));
 			seek.setContent(rs.getString("content"));
 			seek.setRequirement(rs.getString("requirement"));
 			seek.setDelegateNumber(rs.getInt("delegate_number"));
 			seek.setReward(rs.getString("reward"));
 			seek.setAdditionalReward(rs.getString("additional_reward"));
+			seek.setServiceDate(rs.getString("service_date"));
 			seek.setCreatedOn(rs.getTimestamp("created_on"));
 			seek.setExipireDate(rs.getDate("expire_date"));
 			seek.setClosedOn(rs.getTimestamp("closed_on"));
@@ -55,8 +58,8 @@ public class SeekDaoImpl extends BaseJdbcDaoSupport implements SeekDao {
 	};
 
 	private static final String SAVE_SQL = "insert into seek(sn, seeker_id, contact_info_visible, category_l1, category_l2,"
-			+ " content, requirement, delegate_number, reward, additional_reward, expire_date, status)"
-			+ " values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+			+ " title, content, requirement, delegate_number, reward, additional_reward, service_date, expire_date, status)"
+			+ " values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
 	/**
 	 * 保存
@@ -72,14 +75,16 @@ public class SeekDaoImpl extends BaseJdbcDaoSupport implements SeekDao {
 			statement.setBoolean(3, seek.isContactInfoVisible());
 			statement.setString(4, seek.getCategoryL1());
 			statement.setString(5, seek.getCategoryL2());
-			statement.setString(6, seek.getContent());
-			statement.setString(7, seek.getRequirement());
-			statement.setInt(8, seek.getDelegateNumber());
-			statement.setString(9, seek.getReward());
-			statement.setString(10, seek.getAdditionalReward());
-			statement.setDate(11, seek.getExipireDate() != null ? new java.sql.Date(seek.getExipireDate().getTime())
+			statement.setString(6, seek.getTitle());
+			statement.setString(7, seek.getContent());
+			statement.setString(8, seek.getRequirement());
+			statement.setInt(9, seek.getDelegateNumber());
+			statement.setString(10, seek.getReward());
+			statement.setString(11, seek.getAdditionalReward());
+			statement.setString(12, seek.getServiceDate());
+			statement.setDate(13, seek.getExipireDate() != null ? new java.sql.Date(seek.getExipireDate().getTime())
 					: null);
-			statement.setString(12, seek.getStatus());
+			statement.setString(14, seek.getStatus());
 
 			statement.execute();
 			ResultSet rs = statement.getGeneratedKeys();
@@ -203,7 +208,7 @@ public class SeekDaoImpl extends BaseJdbcDaoSupport implements SeekDao {
 		}
 	}
 
-	private static final String LIST_LATEST_BY_KEYWORD_SQL = "select id from seek where created_on<=? and (status=? or status=?) and (content like ? or requirement like ? or reward like ? or additional_reward like ?) order by created_on desc limit ?,?";
+	private static final String LIST_LATEST_BY_KEYWORD_SQL = "select id from seek where created_on<=? and (status=? or status=?) and (title like ? or content like ? or requirement like ? or reward like ? or additional_reward like ?) order by created_on desc limit ?,?";
 
 	/**
 	 * 根据关键字搜索最新的未关闭求助单ID列表
@@ -219,7 +224,7 @@ public class SeekDaoImpl extends BaseJdbcDaoSupport implements SeekDao {
 		String likeStatement = "%" + keyword + "%";
 		return super.getJdbcTemplate().query(LIST_LATEST_BY_KEYWORD_SQL, LONG_ROW_MAPPER, timeline,
 				Constants.SEEK_STATUS_CREATED, Constants.SEEK_STATUS_OFFERED, likeStatement, likeStatement,
-				likeStatement, likeStatement, pageNumber * pageSize, pageSize);
+				likeStatement, likeStatement, likeStatement, pageNumber * pageSize, pageSize);
 	}
 
 	private static final String LIST_BY_USER_ID_SQL = "select id from seek where seeker_id=? order by created_on desc limit ?,?";

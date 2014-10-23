@@ -1,5 +1,6 @@
 package net.ipetty.ibang.android.sdk;
 
+import net.ipetty.ibang.android.message.RequestSystemMessageThread;
 import net.ipetty.ibang.android.sdk.context.ApiContext;
 import net.ipetty.ibang.android.sdk.factory.IbangApi;
 import net.ipetty.ibang.api.UserApi;
@@ -35,6 +36,9 @@ public class UserApiImpl implements UserApi {
 		ApiContext.getInstance(context).setAuthorized(true);
 		ApiContext.getInstance(context).setCurrentUser(result.getUserVo());
 		ApiContext.getInstance(context).setCurrentUserId(result.getUserVo().getId());
+
+		RequestSystemMessageThread.start(context, result.getUserVo().getId());
+
 		return result;
 	}
 
@@ -47,6 +51,8 @@ public class UserApiImpl implements UserApi {
 			ApiContext.getInstance(context).setAuthorized(true);
 			ApiContext.getInstance(context).setCurrentUser(result.getUserVo());
 			ApiContext.getInstance(context).setCurrentUserId(result.getUserVo().getId());
+
+			RequestSystemMessageThread.start(context, result.getUserVo().getId());
 		} else {
 			ApiContext.getInstance(context).setUserToken(null);
 			ApiContext.getInstance(context).setRefreshToken(null);
@@ -65,6 +71,9 @@ public class UserApiImpl implements UserApi {
 			ApiContext.getInstance(context).setAuthorized(false);
 			ApiContext.getInstance(context).setCurrentUser(null);
 			ApiContext.getInstance(context).setCurrentUserId(null);
+
+			RequestSystemMessageThread.stop();
+
 			return true;
 		}
 		return false;
@@ -78,6 +87,9 @@ public class UserApiImpl implements UserApi {
 		ApiContext.getInstance(context).setAuthorized(true);
 		ApiContext.getInstance(context).setCurrentUser(result.getUserVo());
 		ApiContext.getInstance(context).setCurrentUserId(result.getUserVo().getId());
+
+		RequestSystemMessageThread.start(context, result.getUserVo().getId());
+
 		return result;
 	}
 

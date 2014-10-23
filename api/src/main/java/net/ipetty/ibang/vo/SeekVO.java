@@ -21,12 +21,14 @@ public class SeekVO extends BaseVO {
 	private boolean contactInfoVisible; // 是否公开求助者联系信息，默认隐藏
 	private String categoryL1; // 一级分类
 	private String categoryL2; // 二级分类
+	private String title; // 求助标题
 	private String content; // 求助内容
 	private List<ImageVO> images = new ArrayList<ImageVO>(); // 图片
 	private String requirement; // 要求
 	private int delegateNumber; // 委托数量
 	private String reward; // 奖励
 	private String additionalReward; // 附加奖励
+	private String serviceDate; // 服务时间
 	private Date createdOn; // 求助创建时间
 	private Date exipireDate; // 求助有效日期
 	private Date closedOn; // 关闭时间
@@ -84,6 +86,14 @@ public class SeekVO extends BaseVO {
 		this.categoryL2 = categoryL2;
 	}
 
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
 	public String getContent() {
 		return content;
 	}
@@ -130,6 +140,14 @@ public class SeekVO extends BaseVO {
 
 	public void setAdditionalReward(String additionalReward) {
 		this.additionalReward = additionalReward;
+	}
+
+	public String getServiceDate() {
+		return serviceDate;
+	}
+
+	public void setServiceDate(String serviceDate) {
+		this.serviceDate = serviceDate;
 	}
 
 	public Date getCreatedOn() {

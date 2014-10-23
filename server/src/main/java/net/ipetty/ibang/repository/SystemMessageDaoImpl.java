@@ -127,4 +127,14 @@ public class SystemMessageDaoImpl extends BaseJdbcDaoSupport implements SystemMe
 				pageNumber * pageSize, pageSize);
 	}
 
+	private static final String GET_UNREAD_NUM_BY_USER_ID_SQL = "select count(id) from system_message where receiver_id=? and !is_read";
+
+	/**
+	 * 获取指定用户的未读系统消息数
+	 */
+	@Override
+	public int getUnreadNumberByUserId(Integer userId) {
+		return super.getJdbcTemplate().queryForObject(GET_UNREAD_NUM_BY_USER_ID_SQL, INTEGER_ROW_MAPPER, userId);
+	}
+
 }

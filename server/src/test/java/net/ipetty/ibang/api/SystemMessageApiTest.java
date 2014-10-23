@@ -34,6 +34,8 @@ public class SystemMessageApiTest extends BaseApiTest {
 
 		systemMessages = systemMessageApi.listByUserId(user.getId(), 0, 20);
 		Assert.assertTrue(systemMessages.size() >= 0);
+
+		systemMessageApi.getUnreadNumberByUserId(user.getId());
 	}
 
 }

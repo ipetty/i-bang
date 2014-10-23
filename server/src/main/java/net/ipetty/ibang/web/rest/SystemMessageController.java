@@ -64,4 +64,13 @@ public class SystemMessageController extends BaseController {
 		return SystemMessage.listToVoList(systemMessages);
 	}
 
+	/**
+	 * 获取指定用户的未读系统消息数
+	 */
+	@RequestMapping(value = "/sysmsgnum/unread", method = RequestMethod.GET)
+	public int getUnreadNumberByUserId(Integer userId) {
+		Assert.notNull(userId, "用户ID不能为空");
+		return systemMessageService.getUnreadNumberByUserId(userId);
+	}
+
 }

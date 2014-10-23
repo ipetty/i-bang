@@ -37,4 +37,9 @@ public interface SystemMessageDao {
 	 */
 	public List<Long> listUnreadByUserId(Integer userId, int pageNumber, int pageSize);
 
+	/**
+	 * 获取指定用户的未读系统消息数
+	 */
+	public int getUnreadNumberByUserId(Integer userId);
+
 }
