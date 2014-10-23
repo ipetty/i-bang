@@ -109,13 +109,11 @@ public class EvaluationService extends BaseService {
 		if (evaluation.getPoint() != 0) {
 			if (Constants.EVALUATION_TYPE_SEEKER_TO_OFFERER.equals(evaluation.getType())) {
 				OffererInfo offererInfo = offererInfoService.getByUserId(evaluation.getEvaluateTargetId());
-				offererInfo.setOfferCount(offererInfo.getOfferCount() + 1);
 				offererInfo.setTotalPoint(offererInfo.getTotalPoint() + evaluation.getPoint());
 				offererInfo.setTitle(offererInfoService.getTitle(offererInfo.getTotalPoint()));
 				offererInfoService.saveOrUpdate(offererInfo);
 			} else if (Constants.EVALUATION_TYPE_OFFERER_TO_SEEKER.equals(evaluation.getType())) {
 				SeekerInfo seekerInfo = seekerInfoService.getByUserId(evaluation.getEvaluateTargetId());
-				seekerInfo.setSeekCount(seekerInfo.getSeekCount() + 1);
 				seekerInfo.setTotalPoint(seekerInfo.getTotalPoint() + evaluation.getPoint());
 				seekerInfo.setTitle(seekerInfoService.getTitle(seekerInfo.getTotalPoint()));
 				seekerInfoService.saveOrUpdate(seekerInfo);
