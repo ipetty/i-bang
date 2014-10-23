@@ -63,6 +63,8 @@ public class SeekActivity extends Activity {
 	private TextView number;
 	private TextView phone;
 	private TextView seekerTitle;
+	private TextView additionalReward;
+	private TextView serviceDate;
 
 	private List<ImageView> imageViews = new ArrayList<ImageView>(); // 滑动的图片
 	private int currentItem = 0;// 当前图片的索引号
@@ -80,6 +82,7 @@ public class SeekActivity extends Activity {
 	private View closeBtn_layout;
 	private View contact_layout;
 	private View login_layout;
+	private View additionalReward_layout;
 
 	List<DelegationVO> delegationList = new ArrayList<DelegationVO>();
 	List<OfferVO> offerList = new ArrayList<OfferVO>();
@@ -122,6 +125,8 @@ public class SeekActivity extends Activity {
 		seek_avatar = (ImageView) this.findViewById(R.id.seek_avatar);
 		number = (TextView) this.findViewById(R.id.number);
 		seekerTitle = (TextView) this.findViewById(R.id.seekerTitle);
+		additionalReward = (TextView) this.findViewById(R.id.additionalReward);
+		serviceDate = (TextView) this.findViewById(R.id.serviceDate);
 
 		contact_layout = this.findViewById(R.id.contact_layout);
 		contact_layout.setVisibility(View.GONE);
@@ -133,6 +138,7 @@ public class SeekActivity extends Activity {
 		closeBtn_layout = this.findViewById(R.id.closeBtn_layout);
 		closeBtn_layout.setVisibility(View.GONE);
 		login_layout = this.findViewById(R.id.login_layout);
+		additionalReward_layout = this.findViewById(R.id.additionalReward_layout);
 
 		// 事件绑定
 		offerBtn.setOnClickListener(new OnClickListener() {
@@ -217,12 +223,29 @@ public class SeekActivity extends Activity {
 		seek_avatar.setImageResource(R.drawable.default_avatar);
 		content.setText(seekVO.getContent());
 
-		if (seekVO.getClosedOn() != null) {
+		if (seekVO.getExipireDate() != null) {
 			Calendar c = Calendar.getInstance();
-			c.setTime(seekVO.getClosedOn());
-			closedOn.setText(DateUtils.toDateString(c.getTime()));
+			c.setTime(seekVO.getExipireDate());
+			String str = DateUtils.toDateString(c.getTime());
+			if (Constants.MAX_EXIPIREDATE.equals(str)) {
+				str = Constants.MAX_EXIPIREDATE_CONDITION;
+			}
+			closedOn.setText(str);
 		}
 		bindTime(seekVO.getCreatedOn(), seek_created_at);
+
+		String str = seekVO.getAdditionalReward();
+		additionalReward.setText(str);
+		if (!StringUtils.isNotEmpty(str)) {
+			additionalReward_layout.setVisibility(View.GONE);
+		} else {
+			additionalReward_layout.setVisibility(View.VISIBLE);
+		}
+		String serviceDateStr = seekVO.getServiceDate();
+		if (Constants.MAX_EXIPIREDATE.equals(serviceDateStr)) {
+			serviceDateStr = Constants.MAX_EXIPIREDATE_CONDITION;
+		}
+		serviceDate.setText(serviceDateStr);
 	}
 
 	private void initViewLayout() {

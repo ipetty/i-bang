@@ -27,7 +27,8 @@
  	 	        <FrameLayout
  	 	            android:id="@+id/imageView_layout"
  	 	             android:layout_width="fill_parent"
-       				 android:layout_height="200dp" >
+       				 android:layout_height="200dp" 
+       			>
 			        <android.support.v4.view.ViewPager
 			            android:id="@+id/vp"
 			            android:layout_width="fill_parent"
@@ -162,6 +163,120 @@
 
  	 	        </RelativeLayout>
  	 	        <include layout="@layout/line_horizontal_divider" />
+
+ 	 	        <LinearLayout
+ 	 	            android:id="@+id/additionalReward_layout"
+ 	 	            android:layout_width="fill_parent"
+ 	 	            android:layout_height="wrap_content"
+ 	 	            android:background="@drawable/list_color_item_bg_white"
+ 	 	            android:gravity="center_vertical"
+ 	 	            android:orientation="vertical" 
+ 	 	            android:visibility="gone">
+
+			<LinearLayout
+			    android:layout_width="match_parent"
+			    android:layout_height="wrap_content"
+			    android:minHeight="46dp"
+			    android:gravity="left"
+			  
+			    android:orientation="horizontal" >
+			
+			 		<TextView
+ 	 	                android:id="@+id/additionalReward"
+ 	 	                android:layout_width="wrap_content"
+ 	 	                android:layout_height="wrap_content"
+ 	 	                android:layout_gravity="left"
+ 	 	                android:background="@null"
+ 	 	                android:gravity="left"
+ 	 	                android:singleLine="false"
+ 	 	                android:text=""
+ 	 	                android:padding="8dp"
+ 	 	                android:textColor="@color/gray_color"
+ 	 	                android:textColorHint="@color/gray_color"
+ 	 	                android:textSize="16sp"
+ 	 	                android:windowSoftInputMode="stateHidden" />
+			
+			        </LinearLayout>
+ 	 	            <include layout="@layout/line_horizontal_divider" />
+ 	 	        </LinearLayout>
+ 	 	        
+
+<LinearLayout
+ 	 	            android:layout_width="fill_parent"
+ 	 	            android:layout_height="wrap_content"
+ 	 	               android:minHeight="46dp"
+ 	 	            android:background="@drawable/list_color_item_bg_white"
+ 	 	            android:gravity="center_vertical" >
+
+ 	 	            <TextView
+ 	 	                android:layout_width="wrap_content"
+ 	 	                android:layout_height="wrap_content"
+ 	 	             
+ 	 	                android:layout_marginLeft="8dp"
+ 	 	                android:text="时间要求"
+ 	 	                android:textColor="@color/black_color"
+ 	 	                android:textSize="16sp" />
+
+ 	 	            <TextView
+ 	 	                android:id="@+id/serviceDate"
+ 	 	                android:layout_width="0.0dip"
+ 	 	                android:layout_height="wrap_content"
+ 	 	                android:layout_marginLeft="16dp"
+ 	 	                android:layout_marginRight="16dp"
+ 	 	                android:layout_weight="1.0"
+ 	 	                android:background="@null"
+ 	 	                android:focusable="false"
+ 	 	                android:gravity="right|center_vertical"
+ 	 	                android:text="不限"
+ 	 	                android:hint=""
+ 	 	                android:textColor="@color/gray_color"
+ 	 	                android:textColorHint="@color/gray_color"
+ 	 	                android:textSize="16sp"
+ 	 	                android:windowSoftInputMode="stateHidden" />
+ 	 	        </LinearLayout>
+ 	 	        <include layout="@layout/line_horizontal_divider" />
+ 	 	        
+ 	 	           <LinearLayout
+ 	 	             android:layout_width="match_parent"
+ 	 	             android:layout_height="wrap_content"
+ 	 	             android:orientation="vertical"
+ 	 	             android:id="@+id/contact_layout"
+ 	 	            >
+
+ 	 	             <LinearLayout
+ 	 	                 android:layout_width="fill_parent"
+ 	 	                 android:layout_height="46dp"
+ 	 	                 android:background="@drawable/list_color_item_bg_white"
+ 	 	                 android:gravity="center_vertical" >
+
+ 	 	                 <TextView
+ 	 	                     android:layout_width="wrap_content"
+ 	 	                     android:layout_height="wrap_content"
+ 	 	                     android:layout_marginLeft="8dp"
+ 	 	                     android:text="手机"
+ 	 	                     android:textColor="@color/black_color"
+ 	 	                     android:textSize="16sp" 
+ 	 	                     android:visibility="gone"/>
+
+ 	 	                 <TextView
+ 	 	                     android:id="@+id/phone"
+ 	 	                     android:layout_width="0.0dip"
+ 	 	                     android:layout_height="wrap_content"
+ 	 	                     android:layout_marginLeft="16dp"
+ 	 	                     android:layout_marginRight="16dp"
+ 	 	                     android:layout_weight="1.0"
+ 	 	                     android:background="@null"
+ 	 	                     android:focusable="false"
+ 	 	                     android:gravity="right|center_vertical"
+ 	 	                     android:singleLine="true"
+ 	 	                     android:textColor="@color/gray_color"
+ 	 	                     android:textColorHint="@color/gray_color"
+ 	 	                     android:textSize="16sp"
+ 	 	                     android:windowSoftInputMode="stateHidden" />
+ 	 	             </LinearLayout>
+
+ 	 	             <include layout="@layout/line_horizontal_divider" />
+ 	 	         </LinearLayout>
  	 	         <include layout="@layout/line_space" />
 
  	 	           <LinearLayout
@@ -186,49 +301,7 @@
  	 	         </LinearLayout>
  	 	         
  	 	           
- 	 	         <LinearLayout
- 	 	             android:layout_width="match_parent"
- 	 	             android:layout_height="wrap_content"
- 	 	             android:orientation="vertical"
- 	 	             android:id="@+id/contact_layout"
- 	 	             android:visibility="gone">
-
- 	 	             <include layout="@layout/line_horizontal_divider" />
-
- 	 	             <LinearLayout
- 	 	                 android:layout_width="fill_parent"
- 	 	                 android:layout_height="46dp"
- 	 	                 android:background="@drawable/list_color_item_bg_white"
- 	 	                 android:gravity="center_vertical" >
-
- 	 	                 <TextView
- 	 	                     android:layout_width="wrap_content"
- 	 	                     android:layout_height="wrap_content"
- 	 	                     android:layout_marginLeft="16dp"
- 	 	                     android:text="手机"
- 	 	                     android:textColor="@color/black_color"
- 	 	                     android:textSize="16sp" />
-
- 	 	                 <TextView
- 	 	                     android:id="@+id/phone"
- 	 	                     android:layout_width="0.0dip"
- 	 	                     android:layout_height="wrap_content"
- 	 	                     android:layout_marginLeft="16dp"
- 	 	                     android:layout_marginRight="16dp"
- 	 	                     android:layout_weight="1.0"
- 	 	                     android:background="@null"
- 	 	                     android:focusable="false"
- 	 	                     android:gravity="right|center_vertical"
- 	 	                     android:singleLine="true"
- 	 	                     android:textColor="@color/gray_color"
- 	 	                     android:textColorHint="@color/gray_color"
- 	 	                     android:textSize="16sp"
- 	 	                     android:windowSoftInputMode="stateHidden" />
- 	 	             </LinearLayout>
-
- 	 	             <include layout="@layout/line_horizontal_divider" />
-					<include layout="@layout/line_space" />
- 	 	         </LinearLayout>
+ 	 	      
 
  	 	         <LinearLayout
  	 	             android:id="@+id/offerBtn_layout"
