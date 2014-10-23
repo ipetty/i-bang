@@ -54,6 +54,7 @@ public class PublishActivity extends Activity {
 	private Dialog serviceDateDialog;
 
 	private ArrayList<ModDialogItem> serviceDateItems;
+	private ArrayList<ModDialogItem> exipireDateItems;;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -74,20 +75,44 @@ public class PublishActivity extends Activity {
 		additionalRewardView = (EditText) this.findViewById(R.id.additionalReward);
 		serviceDateView = (EditText) this.findViewById(R.id.serviceDate);
 
+		exipireDateItems = new ArrayList<ModDialogItem>();
+		exipireDateItems.add(new ModDialogItem(null, Constants.MAX_EXIPIREDATE_CONDITION,
+				Constants.MAX_EXIPIREDATE_CONDITION, new OnClickListener() {
+					@Override
+					public void onClick(View view) {
+						String label = ((TextView) view.findViewById(R.id.text)).getText().toString();
+						String value = ((TextView) view.findViewById(R.id.value)).getText().toString();
+						exipireDateView.setText(label);
+						exipireDateDialog.cancel();
+					}
+				}));
+		exipireDateItems.add(new ModDialogItem(null, "指定日期", "指定日期", new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				exipireDateDialog.cancel();
+				String str = exipireDateView.getText().toString();
+				if (Constants.MAX_EXIPIREDATE_CONDITION.equals(str)) {
+					Calendar c = Calendar.getInstance();
+					c.setTime(new Date());
+					// c.add(Calendar.MONTH, 3);
+					str = DateUtils.toDateString(c.getTime());
+				}
+				// TODO Auto-generated method stub
+				exipireDateDialog = DialogUtils.datePopupDialog(PublishActivity.this, exipireDateClick, str,
+						exipireDateDialog);
+			}
+		}));
 		// 事件初始化
 		exipireDateView = (EditText) this.findViewById(R.id.exipireDate);
 		exipireDateView.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				exipireDateDialog = DialogUtils.datePopupDialog(PublishActivity.this, exipireDateClick, exipireDateView
-						.getText().toString(), exipireDateDialog);
+				exipireDateDialog = DialogUtils.modPopupDialog(PublishActivity.this, exipireDateItems,
+						exipireDateDialog);
 			}
 		});
-		Calendar c = Calendar.getInstance();
-		c.setTime(new Date());
-		c.add(Calendar.MONTH, 3);
-		String str = DateUtils.toDateString(c.getTime());
-		exipireDateView.setText(str);
+
+		exipireDateView.setText(Constants.MAX_EXIPIREDATE_CONDITION);
 
 		nicknameView = (TextView) this.findViewById(R.id.nickname);
 		phoneView = (TextView) this.findViewById(R.id.phone);
@@ -128,11 +153,19 @@ public class PublishActivity extends Activity {
 				seek.setCategoryL1(categoryL1);
 				seek.setCategoryL2(categoryL2);
 				seek.setContent(contentView.getText().toString());
-				seek.setDelegateNumber(Integer.valueOf(delegateNumberView.getText().toString()));
-				seek.setAdditionalReward(additionalRewardView.getText().toString());
-				String exipireDateStr = exipireDateView.getText().toString();
-				// TODO: 增加 serviceDate；
 
+				int num = Integer.valueOf(delegateNumberView.getText().toString());
+				if (Constants.MAX_DELEGATION_CONDITION == num) {
+					num = Constants.MAX_DELEGATION;
+				}
+				seek.setDelegateNumber(num);
+				seek.setAdditionalReward(additionalRewardView.getText().toString());
+
+				String exipireDateStr = exipireDateView.getText().toString();
+				if (Constants.MAX_EXIPIREDATE_CONDITION.equals(exipireDateStr)) {
+					exipireDateStr = Constants.MAX_EXIPIREDATE;
+				}
+				seek.setServiceDate(serviceDateView.getText().toString());
 				seek.setExipireDate(DateUtils.fromDateString(exipireDateStr));
 
 				// 上传图片文件

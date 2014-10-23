@@ -12,6 +12,11 @@ public class Constants {
 	// public static final String API_SERVER_BASE =
 	// "http://172.16.80.132:8080/api";
 
+	public static final int MAX_DELEGATION = 999; // 不限制委托默认最大数
+	public static final int MAX_DELEGATION_CONDITION = 0; // 不限制委托的条件
+	public static final String MAX_EXIPIREDATE = "2037-12-31"; // 不限制时间默认最大数
+	public static final String MAX_EXIPIREDATE_CONDITION = "不限"; // 不限制时间的条件
+
 	public static final String BROADCAST_INTENT_IS_LOGIN = "BROADCAST_INTENT_IS_LOGIN";
 	public static final String BROADCAST_INTENT_UPDATA_USER = "BROADCAST_INTENT_UPDATA_USER";
 	public static final String BROADCAST_INTENT_NEW_MESSAGE = "BROADCAST_INTENT_NEW_MESSAGE";
