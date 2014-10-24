@@ -34,8 +34,8 @@ public class SystemMessageDaoImpl extends BaseJdbcDaoSupport implements SystemMe
 			// delegation_id, evaluation_id, title, content, is_read, created_on
 			SystemMessage systemMessage = new SystemMessage();
 			systemMessage.setId(rs.getLong("id"));
-			systemMessage.setFromUserId(rs.getInt("from_user_id"));
-			systemMessage.setReceiverId(rs.getInt("receiver_id"));
+			systemMessage.setFromUserId(JdbcDaoUtils.getInteger(rs, "from_user_id"));
+			systemMessage.setReceiverId(JdbcDaoUtils.getInteger(rs, "receiver_id"));
 			systemMessage.setType(rs.getString("type"));
 			systemMessage.setSeekId(JdbcDaoUtils.getLong(rs, "seek_id"));
 			systemMessage.setOfferId(JdbcDaoUtils.getLong(rs, "offer_id"));

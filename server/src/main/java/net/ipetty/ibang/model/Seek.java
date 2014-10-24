@@ -34,6 +34,7 @@ public class Seek extends AbstractEntity {
 	private String reward; // 奖励
 	private String additionalReward; // 附加奖励
 	private String serviceDate; // 服务时间
+	private Long locationId; // 地理位置
 	private Date createdOn; // 求助创建时间
 	private Date exipireDate; // 求助有效日期
 	private Date closedOn; // 关闭时间
@@ -179,6 +180,14 @@ public class Seek extends AbstractEntity {
 
 	public void setServiceDate(String serviceDate) {
 		this.serviceDate = serviceDate;
+	}
+
+	public Long getLocationId() {
+		return locationId;
+	}
+
+	public void setLocationId(Long locationId) {
+		this.locationId = locationId;
 	}
 
 	public Date getCreatedOn() {

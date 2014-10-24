@@ -13,6 +13,7 @@ import net.ipetty.ibang.cache.annotation.LoadFromCache;
 import net.ipetty.ibang.cache.annotation.UpdateToCache;
 import net.ipetty.ibang.exception.BusinessException;
 import net.ipetty.ibang.model.Seek;
+import net.ipetty.ibang.util.JdbcDaoUtils;
 import net.ipetty.ibang.vo.Constants;
 
 import org.apache.commons.lang3.StringUtils;
@@ -33,8 +34,8 @@ public class SeekDaoImpl extends BaseJdbcDaoSupport implements SeekDao {
 		public Seek mapRow(ResultSet rs, int rowNum) throws SQLException {
 			// id, sn, seeker_id, contact_info_visible, category_l1,
 			// category_l2, title, content, requirement, delegate_number,
-			// reward, additional_reward, service_date, created_on, expire_date,
-			// closed_on, status
+			// reward, additional_reward, service_date, location_id, created_on,
+			// expire_date, closed_on, status
 			Seek seek = new Seek();
 			seek.setId(rs.getLong("id"));
 			seek.setSn(rs.getString("sn"));
@@ -49,6 +50,7 @@ public class SeekDaoImpl extends BaseJdbcDaoSupport implements SeekDao {
 			seek.setReward(rs.getString("reward"));
 			seek.setAdditionalReward(rs.getString("additional_reward"));
 			seek.setServiceDate(rs.getString("service_date"));
+			seek.setLocationId(JdbcDaoUtils.getLong(rs, "location_id"));
 			seek.setCreatedOn(rs.getTimestamp("created_on"));
 			seek.setExipireDate(rs.getDate("expire_date"));
 			seek.setClosedOn(rs.getTimestamp("closed_on"));
@@ -58,8 +60,8 @@ public class SeekDaoImpl extends BaseJdbcDaoSupport implements SeekDao {
 	};
 
 	private static final String SAVE_SQL = "insert into seek(sn, seeker_id, contact_info_visible, category_l1, category_l2,"
-			+ " title, content, requirement, delegate_number, reward, additional_reward, service_date, expire_date, status)"
-			+ " values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+			+ " title, content, requirement, delegate_number, reward, additional_reward, service_date, location_id, expire_date, status)"
+			+ " values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
 	/**
 	 * 保存
@@ -82,9 +84,10 @@ public class SeekDaoImpl extends BaseJdbcDaoSupport implements SeekDao {
 			statement.setString(10, seek.getReward());
 			statement.setString(11, seek.getAdditionalReward());
 			statement.setString(12, seek.getServiceDate());
-			statement.setDate(13, seek.getExipireDate() != null ? new java.sql.Date(seek.getExipireDate().getTime())
+			JdbcDaoUtils.setLong(statement, 13, seek.getLocationId());
+			statement.setDate(14, seek.getExipireDate() != null ? new java.sql.Date(seek.getExipireDate().getTime())
 					: null);
-			statement.setString(14, seek.getStatus());
+			statement.setString(15, seek.getStatus());
 
 			statement.execute();
 			ResultSet rs = statement.getGeneratedKeys();
