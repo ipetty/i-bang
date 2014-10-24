@@ -1,0 +1,38 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+              android:paddingBottom="@dimen/activity_vertical_margin"
+              android:paddingLeft="@dimen/activity_horizontal_margin"
+              android:paddingRight="@dimen/activity_horizontal_margin"
+              android:paddingTop="@dimen/activity_vertical_margin"
+              tools:context=".MyOfferActivity" >
+
+        <include
+                android:id="@+id/include"
+                layout="@layout/action_bar_simple_back" />
+
+        <include layout="@layout/line_horizontal_divider"/>
+        <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:background="@drawable/list_color_item_bg_white"
+                android:gravity="center_vertical" >
+
+                <TextView
+                        android:id="@+id/textView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dp"
+                        android:text=""
+                        android:textColor="@color/black_color"
+                        android:textSize="16sp" />
+        </LinearLayout>
+
+        <net.ipetty.ibang.android.core.ui.MyPullToRefreshListView
+                android:id="@+id/listView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" >
+        </net.ipetty.ibang.android.core.ui.MyPullToRefreshListView>
+</LinearLayout>
