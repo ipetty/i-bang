@@ -49,6 +49,7 @@ public class UserProfileActivity extends Activity {
 	private TextView provinceView;
 	private TextView cityView;
 	private TextView districtView;
+	private TextView categoryView;
 
 	private ArrayList<ModDialogItem> genderItems;
 	private Dialog genderDialog;
@@ -88,6 +89,7 @@ public class UserProfileActivity extends Activity {
 		View signature_layout = this.findViewById(R.id.signature_layout);
 		View job_layout = this.findViewById(R.id.job_layout);
 		View city_layout = this.findViewById(R.id.city_layout);
+		View category_layout = this.findViewById(R.id.category_layout);
 
 		// 头像
 		avatar = (ImageView) this.findViewById(R.id.avatar);
@@ -99,6 +101,7 @@ public class UserProfileActivity extends Activity {
 		provinceView = (TextView) this.findViewById(R.id.province);
 		cityView = (TextView) this.findViewById(R.id.city);
 		districtView = (TextView) this.findViewById(R.id.district);
+		categoryView = (TextView) this.findViewById(R.id.category);
 
 		avatar.setOnClickListener(changeAvatarClick);
 		nickname_layout.setOnClickListener(new EditOnClickListener(Constants.INTENT_USER_EDIT_TYPE_NICKNAME));

@@ -100,6 +100,10 @@ public class MainHomeFragment extends Fragment {
 
 		if (StringUtils.isNotBlank(city)) {
 			cityView.setText(city);
+		} else {
+			Intent intent = new Intent(getActivity(), ProvinceActivity.class);
+			intent.putExtra(Constants.INTENT_LOCATION_TYPE, Constants.INTENT_LOCATION_CITY);
+			startActivityForResult(intent, Constants.REQUEST_CODE_CITY);
 		}
 		cityView.setOnClickListener(new OnClickListener() {
 			@Override
