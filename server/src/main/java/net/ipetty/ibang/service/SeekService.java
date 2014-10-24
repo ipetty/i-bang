@@ -194,7 +194,7 @@ public class SeekService extends BaseService {
 		List<Offer> offers = offerService.listBySeekId(seekId);
 		for (Offer offer : offers) {
 			// 保存系统消息
-			SystemMessage systemMessage = new SystemMessage(null, offer.getOffererId(),
+			SystemMessage systemMessage = new SystemMessage(seek.getSeekerId(), offer.getOffererId(),
 					Constants.SYS_MSG_TYPE_SEEK_CLOSED, "您曾应征的一个求助单已被求助者关闭。", seek.getContent());
 			systemMessage.setSeekId(seekId);
 			systemMessage.setOfferId(offer.getId());

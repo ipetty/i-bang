@@ -254,14 +254,16 @@ public class MessageActivity extends Activity {
 			holder.timestamp.setText(new PrettyDateFormat("@", "yyyy-MM-dd HH:mm:dd").format(msg.getCreatedOn()));
 
 			// 异步加载来源用户
-			int userId = msg.getFromUserId();
-			final UserVO user = GetUserByIdSynchronously.get(MessageActivity.this, userId);
-			holder.nickname.setText(user.getNickname());
-			if (StringUtils.isNotEmpty(user.getAvatar())) {
-				ImageLoader.getInstance().displayImage(Constants.FILE_SERVER_BASE + user.getAvatar(), holder.avatar,
-						options);
-			} else {
-				holder.avatar.setImageResource(R.drawable.default_avatar);
+			Integer fromUserId = msg.getFromUserId();
+			if (fromUserId != null) {
+				final UserVO user = GetUserByIdSynchronously.get(MessageActivity.this, fromUserId);
+				holder.nickname.setText(user.getNickname());
+				if (StringUtils.isNotEmpty(user.getAvatar())) {
+					ImageLoader.getInstance().displayImage(Constants.FILE_SERVER_BASE + user.getAvatar(),
+							holder.avatar, options);
+				} else {
+					holder.avatar.setImageResource(R.drawable.default_avatar);
+				}
 			}
 			return view;
 		}
