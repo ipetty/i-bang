@@ -17,7 +17,7 @@ public class RequestSystemMessageThread implements Runnable {
 
 	private String TAG = getClass().getSimpleName();
 
-	private static final int interval = 300 * 1000; // 定时间隔时间为60秒，单位毫秒
+	private static final int interval = 300 * 1000; // 定时间隔时间为5分钟，单位毫秒
 
 	private Context context;
 	private Integer userId;

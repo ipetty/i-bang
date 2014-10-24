@@ -31,8 +31,8 @@ public class UserDaoImpl extends BaseJdbcDaoSupport implements UserDao {
 		@Override
 		public User mapRow(ResultSet rs, int rowNum) throws SQLException {
 			// id, username, email, password, salt, nickname, gender, job,
-			// phone, telephone, avatar, signature, province, city, district,
-			// address, created_on, version
+			// phone, telephone, avatar, signature, speciality, preference,
+			// province, city, district, address, created_on, version
 			User user = new User();
 			user.setId(rs.getInt("id"));
 			user.setUsername(rs.getString("username"));
@@ -46,6 +46,8 @@ public class UserDaoImpl extends BaseJdbcDaoSupport implements UserDao {
 			user.setTelephone(rs.getString("telephone"));
 			user.setAvatar(rs.getString("avatar"));
 			user.setSignature(rs.getString("signature"));
+			user.setSpeciality(rs.getString("speciality"));
+			user.setPreference(rs.getString("preference"));
 			user.setProvince(rs.getString("province"));
 			user.setCity(rs.getString("city"));
 			user.setDistrict(rs.getString("district"));
@@ -55,7 +57,7 @@ public class UserDaoImpl extends BaseJdbcDaoSupport implements UserDao {
 		}
 	};
 
-	private static final String SAVE_SQL = "insert into users(username, email, password, salt, nickname, gender, job, phone, telephone, avatar, signature, province, city, district, address, created_on) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+	private static final String SAVE_SQL = "insert into users(username, email, password, salt, nickname, gender, job, phone, telephone, avatar, signature, speciality, preference, province, city, district, address, created_on) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
 	/**
 	 * 保存用户帐号
@@ -77,11 +79,13 @@ public class UserDaoImpl extends BaseJdbcDaoSupport implements UserDao {
 			statement.setString(9, user.getTelephone());
 			statement.setString(10, user.getAvatar());
 			statement.setString(11, user.getSignature());
-			statement.setString(12, user.getProvince());
-			statement.setString(13, user.getCity());
-			statement.setString(14, user.getDistrict());
-			statement.setString(15, user.getAddress());
-			statement.setTimestamp(16, new Timestamp(user.getCreatedOn().getTime()));
+			statement.setString(12, user.getSpeciality());
+			statement.setString(13, user.getPreference());
+			statement.setString(14, user.getProvince());
+			statement.setString(15, user.getCity());
+			statement.setString(16, user.getDistrict());
+			statement.setString(17, user.getAddress());
+			statement.setTimestamp(18, new Timestamp(user.getCreatedOn().getTime()));
 
 			statement.execute();
 			ResultSet rs = statement.getGeneratedKeys();
@@ -140,7 +144,7 @@ public class UserDaoImpl extends BaseJdbcDaoSupport implements UserDao {
 		return super.queryUniqueEntity(GET_USERID_BY_LOGIN_NAME_SQL, INTEGER_ROW_MAPPER, loginName, loginName);
 	}
 
-	private static final String UPDATE_USER_SQL = "update users set nickname=?, gender=?, job=?, phone=?, telephone=?, avatar=?, signature=?, province=?, city=?, district=?, address=?, version=version+1 where id=?";
+	private static final String UPDATE_USER_SQL = "update users set nickname=?, gender=?, job=?, phone=?, telephone=?, avatar=?, signature=?, speciality=?, preference=?, province=?, city=?, district=?, address=?, version=version+1 where id=?";
 
 	/**
 	 * 更新用户帐号信息
@@ -153,8 +157,9 @@ public class UserDaoImpl extends BaseJdbcDaoSupport implements UserDao {
 			@UpdateToCache(mapName = CacheConstants.CACHE_LOGIN_NAME_TO_USER_ID, key = "${user.email}") })
 	public void update(User user) {
 		super.getJdbcTemplate().update(UPDATE_USER_SQL, user.getNickname(), user.getGender(), user.getJob(),
-				user.getPhone(), user.getTelephone(), user.getAvatar(), user.getSignature(), user.getProvince(),
-				user.getCity(), user.getDistrict(), user.getAddress(), user.getId());
+				user.getPhone(), user.getTelephone(), user.getAvatar(), user.getSignature(), user.getSpeciality(),
+				user.getPreference(), user.getProvince(), user.getCity(), user.getDistrict(), user.getAddress(),
+				user.getId());
 		logger.debug("updated {}", user);
 	}
 
