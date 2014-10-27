@@ -134,6 +134,15 @@ public class UserProfileActivity extends Activity {
 				startActivityForResult(intent, Constants.REQUEST_CODE_CITY);
 			}
 		});
+
+		category_layout.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent intent = new Intent(UserProfileActivity.this, SelectUserCategoryActivity.class);
+				startActivityForResult(intent, Constants.REQUEST_CODE_CATEGORY);
+			}
+		});
 	}
 
 	private OnClickListener genderClick = new OnClickListener() {
