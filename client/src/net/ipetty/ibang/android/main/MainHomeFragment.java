@@ -80,6 +80,13 @@ public class MainHomeFragment extends Fragment {
 	}
 
 	@Override
+	public void onDestroy() {
+		// TODO Auto-generated method stub
+		super.onDestroy();
+		this.getActivity().unregisterReceiver(broadcastreciver);
+	}
+
+	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		return inflater.inflate(R.layout.main_fragment_home, container, false);
 	}
