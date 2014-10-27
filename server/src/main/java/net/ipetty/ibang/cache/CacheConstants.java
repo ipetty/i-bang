@@ -38,6 +38,7 @@ public interface CacheConstants {
 	/* image */
 	public static final String CACHE_IMAGE_ID_TO_IMAGE = "cacheImageId2Image";
 	public static final String CACHE_SEEK_ID_TO_IMAGE_IDS = "cacheSeekId2ImageIds";
+	public static final String CACHE_EVALUATION_ID_TO_IMAGE_IDS = "cacheEvaluationId2ImageIds";
 
 	/* system message */
 	public static final String CACHE_SYS_MSG_ID_TO_SYS_MSG = "cacheSysMsgId2SysMsg";

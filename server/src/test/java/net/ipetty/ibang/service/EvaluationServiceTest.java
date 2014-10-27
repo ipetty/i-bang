@@ -99,6 +99,10 @@ public class EvaluationServiceTest extends BaseServiceTest {
 		evaluation.setEvaluatorId(user.getId());
 		evaluation.setEvaluateTargetId(offerer.getId());
 		evaluation.setPoint(10);
+		images = new ArrayList<Image>();
+		images.add(new Image(null, null, "small_url", "original_url"));
+		images.add(new Image(null, null, "small_url2", "original_url2"));
+		evaluation.setImages(images);
 		evaluationService.evaluate(evaluation);
 		Assert.assertNotNull(evaluation.getId());
 		delegation = delegationService.getById(delegation.getId());

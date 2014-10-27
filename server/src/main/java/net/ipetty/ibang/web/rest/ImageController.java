@@ -73,4 +73,14 @@ public class ImageController extends BaseController {
 		return Image.listToVoList(imageService.listBySeekId(seekId));
 	}
 
+	/**
+	 * 获取指定评价的图片列表
+	 */
+	@RequestMapping(value = "/imagelist/byevaluation", method = RequestMethod.GET)
+	public List<ImageVO> listByEvaluationId(Long evaluationId) {
+		Assert.notNull(evaluationId, "评价ID不能为空");
+
+		return Image.listToVoList(imageService.listByEvaluationId(evaluationId));
+	}
+
 }

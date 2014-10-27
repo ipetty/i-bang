@@ -37,4 +37,10 @@ public interface ImageApi {
 	@GET("/imagelist/byseek")
 	public List<ImageVO> listBySeekId(@Query("seekId") Long seekId);
 
+	/**
+	 * 获取指定评价的图片列表
+	 */
+	@GET("/imagelist/byevaluation")
+	public List<ImageVO> listByEvaluationId(@Query("evaluationId") Long evaluationId);
+
 }

@@ -1,6 +1,8 @@
 package net.ipetty.ibang.vo;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 评价
@@ -20,6 +22,7 @@ public class EvaluationVO extends BaseVO {
 	private Integer evaluateTargetId; // 评价对象人
 	private int point; // 评分
 	private String content; // 评价内容
+	private List<ImageVO> images = new ArrayList<ImageVO>(); // 图片
 	private Date createdOn; // 评价日期
 
 	public EvaluationVO() {
@@ -80,6 +83,14 @@ public class EvaluationVO extends BaseVO {
 
 	public void setContent(String content) {
 		this.content = content;
+	}
+
+	public List<ImageVO> getImages() {
+		return images;
+	}
+
+	public void setImages(List<ImageVO> images) {
+		this.images = images;
 	}
 
 	public Date getCreatedOn() {

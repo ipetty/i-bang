@@ -23,6 +23,11 @@ public interface ImageDao {
 	public void saveImageToSeek(Long seekId, List<Long> imageIds);
 
 	/**
+	 * 将图片与评价相关联
+	 */
+	public void saveImageToEvaluation(Long evaluationId, List<Long> imageIds);
+
+	/**
 	 * 获取
 	 */
 	public Image getById(Long id);
@@ -31,5 +36,10 @@ public interface ImageDao {
 	 * 获取指定求助单的图片ID列表
 	 */
 	public List<Long> listBySeekId(Long seekId);
+
+	/**
+	 * 获取指定评价的图片ID列表
+	 */
+	public List<Long> listByEvaluationId(Long evaluationId);
 
 }

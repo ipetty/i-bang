@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import net.ipetty.ibang.vo.EvaluationVO;
+import net.ipetty.ibang.vo.ImageVO;
 
 import org.springframework.beans.BeanUtils;
 
@@ -26,6 +27,7 @@ public class Evaluation extends AbstractEntity {
 	private Integer evaluateTargetId; // 评价对象人
 	private int point; // 评分
 	private String content; // 评价内容
+	private List<Image> images = new ArrayList<Image>(); // 图片
 	private Date createdOn; // 评价日期
 
 	public Evaluation() {
@@ -34,13 +36,19 @@ public class Evaluation extends AbstractEntity {
 
 	public EvaluationVO toVO() {
 		EvaluationVO vo = new EvaluationVO();
-		BeanUtils.copyProperties(this, vo);
+		BeanUtils.copyProperties(this, vo, "images");
+		for (Image image : images) {
+			vo.getImages().add(image.toVO());
+		}
 		return vo;
 	}
 
 	public static Evaluation fromVO(EvaluationVO vo) {
 		Evaluation entity = new Evaluation();
-		BeanUtils.copyProperties(vo, entity);
+		BeanUtils.copyProperties(vo, entity, "images");
+		for (ImageVO image : vo.getImages()) {
+			entity.getImages().add(Image.fromVO(image));
+		}
 		return entity;
 	}
 
@@ -106,6 +114,14 @@ public class Evaluation extends AbstractEntity {
 
 	public void setContent(String content) {
 		this.content = content;
+	}
+
+	public List<Image> getImages() {
+		return images;
+	}
+
+	public void setImages(List<Image> images) {
+		this.images = images;
 	}
 
 	public Date getCreatedOn() {

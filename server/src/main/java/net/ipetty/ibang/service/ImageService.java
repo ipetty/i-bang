@@ -48,6 +48,13 @@ public class ImageService extends BaseService {
 	}
 
 	/**
+	 * 将图片与评价相关联
+	 */
+	public void saveImageToEvaluation(Long evaluationId, List<Long> imageIds) {
+		imageDao.saveImageToEvaluation(evaluationId, imageIds);
+	}
+
+	/**
 	 * 获取
 	 */
 	public Image getById(Long id) {
@@ -61,7 +68,19 @@ public class ImageService extends BaseService {
 		List<Long> imageIds = imageDao.listBySeekId(seekId);
 		List<Image> images = new ArrayList<Image>();
 		for (Long imageId : imageIds) {
-			images.add(imageDao.getById(imageId));
+			images.add(getById(imageId));
+		}
+		return images;
+	}
+
+	/**
+	 * 获取指定评价的图片列表
+	 */
+	public List<Image> listByEvaluationId(Long evaluationId) {
+		List<Long> imageIds = imageDao.listByEvaluationId(evaluationId);
+		List<Image> images = new ArrayList<Image>();
+		for (Long imageId : imageIds) {
+			images.add(getById(imageId));
 		}
 		return images;
 	}

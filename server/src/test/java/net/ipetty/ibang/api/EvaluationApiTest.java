@@ -98,6 +98,10 @@ public class EvaluationApiTest extends BaseApiTest {
 		evaluation.setEvaluatorId(seeker.getId());
 		evaluation.setEvaluateTargetId(offerer.getId());
 		evaluation.setPoint(10);
+		images = new ArrayList<ImageVO>();
+		images.add(new ImageVO(null, null, "small_url", "original_url"));
+		images.add(new ImageVO(null, null, "small_url2", "original_url2"));
+		evaluation.setImages(images);
 		evaluation = evaluationApi.evaluate(evaluation);
 		Assert.assertNotNull(evaluation.getId());
 		delegation = delegationApi.getById(delegation.getId());

@@ -12,6 +12,7 @@ import net.ipetty.ibang.cache.annotation.LoadFromCache;
 import net.ipetty.ibang.cache.annotation.UpdateToCache;
 import net.ipetty.ibang.exception.BusinessException;
 import net.ipetty.ibang.model.Image;
+import net.ipetty.ibang.util.JdbcDaoUtils;
 
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.RowMapper;
@@ -66,7 +67,7 @@ public class ImageDaoImpl extends BaseJdbcDaoSupport implements ImageDao {
 		}
 	}
 
-	private static final String UPDATE_SQL = "update image set seek_id=?, idx=? where id=?";
+	private static final String UPDATE_SQL = "update image set seek_id=?, evaluation_id=?, idx=? where id=?";
 
 	/**
 	 * 将图片与求助单相关联
@@ -78,8 +79,31 @@ public class ImageDaoImpl extends BaseJdbcDaoSupport implements ImageDao {
 			@Override
 			public void setValues(PreparedStatement ps, int i) throws SQLException {
 				ps.setLong(1, seekId);
-				ps.setInt(2, i);
-				ps.setLong(3, imageIds.get(i));
+				JdbcDaoUtils.setInteger(ps, 2, null);
+				JdbcDaoUtils.setInteger(ps, 3, i);
+				ps.setLong(4, imageIds.get(i));
+			}
+
+			@Override
+			public int getBatchSize() {
+				return imageIds.size();
+			}
+		});
+	}
+
+	/**
+	 * 将图片与评价相关联
+	 */
+	@Override
+	@UpdateToCache(mapName = CacheConstants.CACHE_EVALUATION_ID_TO_IMAGE_IDS, key = "${evaluationId}")
+	public void saveImageToEvaluation(final Long evaluationId, final List<Long> imageIds) {
+		super.getJdbcTemplate().batchUpdate(UPDATE_SQL, new BatchPreparedStatementSetter() {
+			@Override
+			public void setValues(PreparedStatement ps, int i) throws SQLException {
+				JdbcDaoUtils.setInteger(ps, 1, null);
+				ps.setLong(2, evaluationId);
+				JdbcDaoUtils.setInteger(ps, 3, i);
+				ps.setLong(4, imageIds.get(i));
 			}
 
 			@Override
@@ -108,6 +132,16 @@ public class ImageDaoImpl extends BaseJdbcDaoSupport implements ImageDao {
 	@LoadFromCache(mapName = CacheConstants.CACHE_SEEK_ID_TO_IMAGE_IDS, key = "${seekId}")
 	public List<Long> listBySeekId(Long seekId) {
 		return super.getJdbcTemplate().query(LIST_BY_SEEK_ID_SQL, LONG_ROW_MAPPER, seekId);
+	}
+
+	private static final String LIST_BY_EVALUATION_ID_SQL = "select id from image where evaluation_id=? order by idx";
+
+	/**
+	 * 获取指定评价的图片ID列表
+	 */
+	@LoadFromCache(mapName = CacheConstants.CACHE_EVALUATION_ID_TO_IMAGE_IDS, key = "${evaluationId}")
+	public List<Long> listByEvaluationId(Long evaluationId) {
+		return super.getJdbcTemplate().query(LIST_BY_EVALUATION_ID_SQL, LONG_ROW_MAPPER, evaluationId);
 	}
 
 }

@@ -8,6 +8,7 @@ import javax.annotation.Resource;
 import net.ipetty.ibang.exception.BusinessException;
 import net.ipetty.ibang.model.Delegation;
 import net.ipetty.ibang.model.Evaluation;
+import net.ipetty.ibang.model.Image;
 import net.ipetty.ibang.model.OffererInfo;
 import net.ipetty.ibang.model.Seek;
 import net.ipetty.ibang.model.SeekerInfo;
@@ -35,6 +36,9 @@ public class EvaluationService extends BaseService {
 
 	@Resource
 	private SeekService seekService;
+
+	@Resource
+	private ImageService imageService;
 
 	@Resource
 	private OfferService offerService;
@@ -102,8 +106,18 @@ public class EvaluationService extends BaseService {
 			throw new BusinessException("委托单状态异常，不能评价");
 		}
 
+		// 评价中的图片信息
+		List<Long> imageIds = new ArrayList<Long>();
+		for (Image image : evaluation.getImages()) {
+			imageService.save(image);
+			imageIds.add(image.getId());
+		}
+
 		// 保存评价
 		evaluationDao.save(evaluation);
+
+		// 将图片与评价相关联
+		imageService.saveImageToSeek(seek.getId(), imageIds);
 
 		// 更新积分与头衔
 		if (evaluation.getPoint() != 0) {
@@ -166,7 +180,18 @@ public class EvaluationService extends BaseService {
 	 * 获取评价
 	 */
 	public Evaluation getById(Long id) {
-		return evaluationDao.getById(id);
+		Assert.notNull(id, "评价ID不能为空");
+
+		Evaluation evaluation = evaluationDao.getById(id);
+		if (evaluation == null) {
+			throw new BusinessException("指定ID（" + id + "）的评价不存在");
+		}
+
+		// 评价中的图片信息
+		List<Image> images = imageService.listByEvaluationId(id);
+		evaluation.setImages(images);
+
+		return evaluation;
 	}
 
 	/**
