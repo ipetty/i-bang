@@ -38,7 +38,7 @@ public class BaiduApiFactory {
         public static void init(Context ctx) {
                 context = ctx;
                 restAdapter = new RestAdapter.Builder().setEndpoint("http://api.map.baidu.com/")
-                        .setConverter(new GsonConverter(gson)).setLogLevel(RestAdapter.LogLevel.FULL)
+                        .setConverter(new GsonConverter(gson))//.setLogLevel(RestAdapter.LogLevel.FULL)
                         .setErrorHandler(errorHandler).build();
                 baiduApi = restAdapter.create(BaiduApi.class);
         }

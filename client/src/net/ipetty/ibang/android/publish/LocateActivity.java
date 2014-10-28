@@ -15,10 +15,17 @@ import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
 import com.baidu.mapapi.map.BaiduMap;
+import com.baidu.mapapi.map.BaiduMap.OnMapStatusChangeListener;
+import com.baidu.mapapi.map.BitmapDescriptor;
+import com.baidu.mapapi.map.BitmapDescriptorFactory;
+import com.baidu.mapapi.map.MapStatus;
 import com.baidu.mapapi.map.MapStatusUpdate;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
+import com.baidu.mapapi.map.Marker;
+import com.baidu.mapapi.map.MarkerOptions;
 import com.baidu.mapapi.map.MyLocationData;
+import com.baidu.mapapi.map.OverlayOptions;
 import com.baidu.mapapi.model.LatLng;
 import net.ipetty.ibang.R;
 import net.ipetty.ibang.android.core.ActivityManager;
@@ -39,10 +46,11 @@ public class LocateActivity extends Activity {
         private MapView mMapView;
         private BaiduMap mBaiduMap;
         boolean isFirstLoc = true;// 是否首次定位
+        private Marker mMarkerA;
 
         @Override
         public void onCreate(Bundle savedInstanceState) {
-                Log.i(TAG, "onCreate");
+                Log.d(TAG, "onCreate");
                 super.onCreate(savedInstanceState);
                 setContentView(R.layout.activity_locate);
                 ActivityManager.getInstance().addActivity(this);
@@ -55,12 +63,14 @@ public class LocateActivity extends Activity {
                 mBaiduMap = mMapView.getMap();
                 // 开启定位图层
                 mBaiduMap.setMyLocationEnabled(true);
+                mBaiduMap.setOnMapStatusChangeListener(new OnMapStateChange());
                 // 定位初始化
                 mLocationClient = ((MyApplication) getApplication()).mLocationClient;
-                mLocationClient.registerLocationListener(new MyLocationListener());    //注册监听函数
+                //位置监听函数
+                mLocationClient.registerLocationListener(new MyLocationListener());
                 mLocationClient.start();
                 showDialog();
-                Log.i(TAG, "onCreate OK");
+                Log.d(TAG, "onCreate OK");
         }
 
         @Override
@@ -77,7 +87,7 @@ public class LocateActivity extends Activity {
 
         @Override
         protected void onStop() {
-                Log.i(TAG, "onStop");
+                Log.d(TAG, "onStop");
                 //关闭定位组件
                 mLocationClient.stop();
                 // 关闭定位图层
@@ -101,6 +111,39 @@ public class LocateActivity extends Activity {
                 this.progressDialog.dismiss();
         }
 
+        //地图状态变化
+        private class OnMapStateChange implements OnMapStatusChangeListener {
+
+                public void onMapStatusChangeStart(MapStatus ms) {
+                        Log.d(TAG, "onMapStatusChangeStart");
+                }
+
+                public void onMapStatusChange(MapStatus ms) {
+                        Log.d(TAG, "onMapStatusChange");
+                        //地图中心点经纬度
+                        //ms.target
+                        // Log.d(TAG, String.valueOf(ms.target.longitude) + "," + String.valueOf(ms.target.latitude));
+                }
+
+                public void onMapStatusChangeFinish(MapStatus ms) {
+                        Log.d(TAG, "onMapStatusChangeFinish");
+                        MapStatusUpdate u = MapStatusUpdateFactory.zoomTo(16);
+                        mBaiduMap.animateMapStatus(u);
+
+                        BitmapDescriptor bd = BitmapDescriptorFactory
+                                .fromResource(R.drawable.icon_gcoding);
+                        if (mMarkerA == null) {
+                                OverlayOptions ooA = new MarkerOptions().position(ms.target).icon(bd)
+                                        .zIndex(9).draggable(true);
+                                mMarkerA = (Marker) (mBaiduMap.addOverlay(ooA));
+                        } else {
+                                mMarkerA.setPosition(ms.target);
+                        }
+
+                        Toast.makeText(LocateActivity.this, "当前位置:" + ms.target.longitude + "," + ms.target.latitude, Toast.LENGTH_LONG).show();
+                }
+        }
+
         /**
          * 实现实位回调监听
          */
@@ -108,11 +151,11 @@ public class LocateActivity extends Activity {
 
                 @Override
                 public void onReceiveLocation(final BDLocation location) {
-                        Log.i(TAG, "onReceiveLocation");
+                        Log.d(TAG, "onReceiveLocation");
                         dismissDialog();
                         if (location == null || StringUtils.isBlank(location.getCity())) {
                                 Toast.makeText(LocateActivity.this, "定位失败，请返回再次重试", Toast.LENGTH_LONG).show();
-                                Log.i(TAG, "定位失败");
+                                Log.d(TAG, "定位失败");
                                 return;
                         }
                         MyLocationData locData = new MyLocationData.Builder()
@@ -155,7 +198,7 @@ public class LocateActivity extends Activity {
                         sb.append(location.getStreetNumber());
                         sb.append("\n详细地址 : ");
                         sb.append(location.getAddrStr());
-                        Log.i(TAG, sb.toString());
+                        Log.d(TAG, sb.toString());
                 }
 
         }
