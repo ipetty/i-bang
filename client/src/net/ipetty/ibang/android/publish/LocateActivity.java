@@ -6,24 +6,24 @@
 package net.ipetty.ibang.android.publish;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AbsListView;
-import android.widget.AdapterView;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.TextView;
+import android.widget.Toast;
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
+import com.baidu.mapapi.map.BaiduMap;
+import com.baidu.mapapi.map.MapStatusUpdate;
+import com.baidu.mapapi.map.MapStatusUpdateFactory;
+import com.baidu.mapapi.map.MapView;
+import com.baidu.mapapi.map.MyLocationData;
+import com.baidu.mapapi.model.LatLng;
 import net.ipetty.ibang.R;
 import net.ipetty.ibang.android.core.ActivityManager;
 import net.ipetty.ibang.android.core.MyApplication;
 import net.ipetty.ibang.android.core.ui.BackClickListener;
-import net.ipetty.ibang.android.core.ui.MyPullToRefreshListView;
 import org.apache.commons.lang3.StringUtils;
 
 /**
@@ -33,9 +33,12 @@ import org.apache.commons.lang3.StringUtils;
 public class LocateActivity extends Activity {
 
         private String TAG = getClass().getSimpleName();
+        private ProgressDialog progressDialog;
+        //定位相关
         private LocationClient mLocationClient;
-        private MyPullToRefreshListView listView;
-        private TextView textView;
+        private MapView mMapView;
+        private BaiduMap mBaiduMap;
+        boolean isFirstLoc = true;// 是否首次定位
 
         @Override
         public void onCreate(Bundle savedInstanceState) {
@@ -46,29 +49,56 @@ public class LocateActivity extends Activity {
                 /* action bar */
                 ImageView btnBack = (ImageView) this.findViewById(R.id.action_bar_left_image);
                 btnBack.setOnClickListener(new BackClickListener(this));
-                textView = (TextView) this.findViewById(R.id.textView);
-                listView = (MyPullToRefreshListView) this.findViewById(R.id.listView);
-                listView.setAdapter(new PoiAdapter());
-                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                        @Override
-                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                                TextView tv = (TextView) view;
 
-                                //finish();
-                        }
-                });
-
+                // 地图初始化
+                mMapView = (MapView) findViewById(R.id.bmapView);
+                mBaiduMap = mMapView.getMap();
+                // 开启定位图层
+                mBaiduMap.setMyLocationEnabled(true);
+                // 定位初始化
                 mLocationClient = ((MyApplication) getApplication()).mLocationClient;
                 mLocationClient.registerLocationListener(new MyLocationListener());    //注册监听函数
                 mLocationClient.start();
+                showDialog();
                 Log.i(TAG, "onCreate OK");
+        }
+
+        @Override
+        protected void onPause() {
+                mMapView.onPause();
+                super.onPause();
+        }
+
+        @Override
+        protected void onResume() {
+                mMapView.onResume();
+                super.onResume();
         }
 
         @Override
         protected void onStop() {
                 Log.i(TAG, "onStop");
+                //关闭定位组件
                 mLocationClient.stop();
+                // 关闭定位图层
+                mBaiduMap.setMyLocationEnabled(false);
+                mMapView.onDestroy();
+                mMapView = null;
                 super.onStop();
+        }
+
+        private void showDialog() {
+                if (this.progressDialog == null) {
+                        this.progressDialog = new ProgressDialog(this);
+                }
+                this.progressDialog.setIndeterminate(true);
+                this.progressDialog.setCancelable(false);
+                this.progressDialog.setMessage("正在确定您的位置");
+                this.progressDialog.show();
+        }
+
+        private void dismissDialog() {
+                this.progressDialog.dismiss();
         }
 
         /**
@@ -79,13 +109,24 @@ public class LocateActivity extends Activity {
                 @Override
                 public void onReceiveLocation(final BDLocation location) {
                         Log.i(TAG, "onReceiveLocation");
-                        if (location == null) {
+                        dismissDialog();
+                        if (location == null || StringUtils.isBlank(location.getCity())) {
+                                Toast.makeText(LocateActivity.this, "定位失败，请返回再次重试", Toast.LENGTH_LONG).show();
+                                Log.i(TAG, "定位失败");
                                 return;
                         }
-                        if (location == null || StringUtils.isBlank(location.getCity())) {//定位失败
-                                Log.i(TAG, "定位失败");
-                        } else {
-
+                        MyLocationData locData = new MyLocationData.Builder()
+                                .accuracy(location.getRadius())
+                                // 此处设置开发者获取到的方向信息，顺时针0-360
+                                .direction(100).latitude(location.getLatitude())
+                                .longitude(location.getLongitude()).build();
+                        mBaiduMap.setMyLocationData(locData);
+                        if (isFirstLoc) {
+                                isFirstLoc = false;
+                                LatLng ll = new LatLng(location.getLatitude(),
+                                        location.getLongitude());
+                                MapStatusUpdate u = MapStatusUpdateFactory.newLatLng(ll);
+                                mBaiduMap.animateMapStatus(u);
                         }
 
                         //Receive Location
@@ -114,64 +155,9 @@ public class LocateActivity extends Activity {
                         sb.append(location.getStreetNumber());
                         sb.append("\n详细地址 : ");
                         sb.append(location.getAddrStr());
-                        textView.setText(textView.getText() + sb.toString());
                         Log.i(TAG, sb.toString());
                 }
 
-        }
-
-        public class PoiAdapter extends BaseAdapter implements AbsListView.OnScrollListener {
-
-                @Override
-                public int getCount() {
-                        return 10;
-                }
-
-                @Override
-                public Object getItem(int position) {
-                        return position;
-                }
-
-                @Override
-                public long getItemId(int position) {
-                        return 0;
-                }
-
-                private class ViewHolder {
-
-                        public TextView name;
-                }
-
-                public ViewHolder holder;
-
-                @Override
-                public View getView(int position, View convertView, ViewGroup parent) {
-                        View view;
-                        if (convertView == null) {
-                                LayoutInflater inflater = LayoutInflater.from(LocateActivity.this);
-                                view = inflater.inflate(R.layout.list_poi_item, null);
-                                holder = new ViewHolder();
-                                holder.name = (TextView) view.findViewById(R.id.name);
-                                convertView = view;
-                                convertView.setTag(holder);
-                        } else {
-                                view = convertView;
-                                holder = (ViewHolder) view.getTag();
-                        }
-                        String cat = String.valueOf(position); //this.getItem(position);
-                        holder.name.setText(cat);
-                        return view;
-                }
-
-                @Override
-                public void onScrollStateChanged(AbsListView view, int scrollState) {
-                        // TODO Auto-generated method stub
-                }
-
-                @Override
-                public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-                        // TODO Auto-generated method stub
-                }
         }
 
 }
