@@ -1,4 +1,4 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -14,85 +14,212 @@
         android:id="@+id/include"
         layout="@layout/action_bar_simple_back" />
 
-    <TextView
-        android:id="@+id/textView1"
-        android:layout_width="wrap_content"
-        android:layout_height="42dp"
-        android:gravity="center"
-        android:padding="8dp"
-        android:text="请您进行评价" />
-
-    <include layout="@layout/line_horizontal_divider" />
-
-    <LinearLayout
+    <ScrollView
+        android:id="@+id/scrollView1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical" >
-    </LinearLayout>
+        android:layout_above="@+id/evaluation_layout"
+        android:layout_below="@+id/include" >
 
-    <RadioGroup
-        android:id="@+id/radioGroup"
-         android:padding="8dp"
-         android:background="@color/white_color"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
 
-        <RadioButton
-            android:id="@+id/radio0"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:checked="true"
-            android:text="10分 感动天" />
+			<LinearLayout
+ 	 	            android:layout_width="match_parent"
+ 	 	            android:layout_height="120dp"
+ 	 	            android:background="@color/white_color"
+ 	 	            android:padding="8dp" >
 
-        <RadioButton
-            android:id="@+id/radio1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="  7分 感动地" />
+ 	 	            <EditText
+ 	 	                android:id="@+id/content"
+ 	 	                android:layout_width="0dp"
+ 	 	                android:layout_height="match_parent"
+ 	 	                android:layout_weight="1"
+ 	 	                android:background="@null"
+ 	 	                android:ems="10"
+ 	 	                android:gravity="center_vertical|top"
+ 	 	                android:hint="请输入评价的内容"
+ 	 	                android:inputType="textMultiLine"
+ 	 	                android:scrollbarStyle="insideInset"
+ 	 	                android:scrollbars="vertical"
+ 	 	                android:textColor="@color/gray_color"
+ 	 	                android:textSize="16sp" >
 
-        <RadioButton
-            android:id="@+id/radio2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="  4分 感动中国" />
-      
-      <RadioButton
-            android:id="@+id/radio3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="  2分 雷锋" />
-      
-      <RadioButton
-            android:id="@+id/radio4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="  1分 热心人" />
-      
-            <RadioButton
-            android:id="@+id/radio5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="  0分 无帮助" />
-    </RadioGroup>
-<include layout="@layout/line_horizontal_divider" />
-<include layout="@layout/line_space" />
+ 	 	                <requestFocus />
+ 	 	            </EditText>
+ 	 	        </LinearLayout>
+
+            <include layout="@layout/line_horizontal_divider" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
+            </LinearLayout>
+
+            <RadioGroup
+                android:id="@+id/radioGroup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white_color"
+                android:padding="8dp" 
+              >
+                    <RadioButton
+                        android:id="@+id/radio0"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:checked="true"
+                        android:textSize="14sp"
+                        android:text="10 感动天" />
+
+                    <RadioButton
+                        android:id="@+id/radio1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                          android:layout_weight="1"
+                         android:textSize="14sp"
+                        android:text="7 感动地" />
+
+                    <RadioButton
+                        android:id="@+id/radio2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                          android:layout_weight="1"
+                         android:textSize="14sp"
+                        android:text="4 感动中国" />
+
+   
+
+                    <RadioButton
+                        android:id="@+id/radio3"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                          android:layout_weight="1"
+                          android:textSize="14sp"
+                        android:text="2 雷锋" />
+
+                    <RadioButton
+                        android:id="@+id/radio4"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                          android:layout_weight="1"
+                          android:textSize="14sp"
+                        android:text="1 热心人" />
+
+                    <RadioButton
+                        android:id="@+id/radio5"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                          android:layout_weight="1"
+                          android:textSize="14sp"
+                        android:text="0 无帮助" />
+
+            </RadioGroup>
+
+            <include layout="@layout/line_horizontal_divider" />
+
+            <include layout="@layout/line_space" />
+             <include layout="@layout/line_horizontal_divider" />
 <LinearLayout
- 	 	             android:id="@+id/evaluation_layout"
- 	 	             android:layout_width="match_parent"
- 	 	             android:layout_height="match_parent"
- 	 	             android:orientation="vertical" >
-									<TextView
-				        android:id="@+id/evaluation"
-				        android:layout_width="match_parent"
-				        android:layout_height="46dp"
-				        android:layout_marginLeft="24dp"
-				        android:layout_marginRight="24dp"
-				        android:gravity="center"
-				        android:layout_below="@+id/login_linearLayout"
-				        android:background="@drawable/button_orange_shape"
-				        android:textColor="@color/white_color"
-				        android:textSize="24sp"
-				        android:text="评价" />
-									<include layout="@layout/line_space"/>
- 	 	         </LinearLayout>
+ 	 	            android:layout_width="match_parent"
+ 	 	            android:layout_height="wrap_content"
+ 	 	            android:background="@color/white_color"
+ 	 	            android:orientation="vertical"
+ 	 	            android:padding="16dp" >
+
+ 	 	            <LinearLayout
+ 	 	                android:layout_width="match_parent"
+ 	 	                android:layout_height="wrap_content" >
+
+ 	 	                <RelativeLayout
+ 	 	                    android:layout_width="wrap_content"
+ 	 	                    android:layout_height="match_parent"
+ 	 	                    android:layout_weight="1" >
+
+ 	 	                    <ImageView
+ 	 	                        android:id="@+id/upload1"
+ 	 	                        android:layout_width="62dp"
+ 	 	                        android:layout_height="62dp"
+ 	 	                        android:layout_alignParentTop="true"
+ 	 	                        android:layout_centerHorizontal="true"
+ 	 	                        android:scaleType="centerCrop"
+ 	 	                        android:src="@drawable/default_image_add" />
+ 	 	                </RelativeLayout>
+
+ 	 	                <RelativeLayout
+ 	 	                    android:layout_width="wrap_content"
+ 	 	                    android:layout_height="match_parent"
+ 	 	                    android:layout_weight="1" >
+
+ 	 	                    <ImageView
+ 	 	                        android:id="@+id/upload2"
+ 	 	                        android:layout_width="62dp"
+ 	 	                        android:layout_height="62dp"
+ 	 	                        android:layout_alignParentTop="true"
+ 	 	                        android:layout_centerHorizontal="true"
+ 	 	                        android:scaleType="centerCrop"
+ 	 	                        android:src="@drawable/default_image_add" />
+ 	 	                </RelativeLayout>
+
+ 	 	                <RelativeLayout
+ 	 	                    android:layout_width="wrap_content"
+ 	 	                    android:layout_height="match_parent"
+ 	 	                    android:layout_weight="1" >
+
+ 	 	                    <ImageView
+ 	 	                        android:id="@+id/upload3"
+ 	 	                        android:layout_width="62dp"
+ 	 	                        android:layout_height="62dp"
+ 	 	                        android:layout_alignParentTop="true"
+ 	 	                        android:layout_centerHorizontal="true"
+ 	 	                        android:scaleType="centerCrop"
+ 	 	                        android:src="@drawable/default_image_add" />
+ 	 	                </RelativeLayout>
+
+ 	 	                <RelativeLayout
+ 	 	                    android:layout_width="wrap_content"
+ 	 	                    android:layout_height="match_parent"
+ 	 	                    android:layout_weight="1" >
+
+ 	 	                    <ImageView
+ 	 	                        android:id="@+id/upload4"
+ 	 	                        android:layout_width="62dp"
+ 	 	                        android:layout_height="62dp"
+ 	 	                        android:layout_alignParentTop="true"
+ 	 	                        android:layout_centerHorizontal="true"
+ 	 	                        android:scaleType="centerCrop"
+ 	 	                        android:src="@drawable/default_image_add" />
+ 	 	                </RelativeLayout>
+ 	 	            </LinearLayout>
+ 	 	        </LinearLayout>
+ 	 	         <include layout="@layout/line_horizontal_divider" />
+ 	 	         <include layout="@layout/line_space" />
+        </LinearLayout>
+    </ScrollView>
+
+<LinearLayout
+    android:id="@+id/evaluation_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="12dp"
+    android:layout_alignParentBottom="true"
+    android:layout_alignParentLeft="true"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/evaluation"
+        android:layout_width="match_parent"
+        android:layout_height="46dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
+        android:background="@drawable/button_orange_shape"
+        android:gravity="center"
+        android:text="评价"
+        android:textColor="@color/white_color"
+        android:textSize="24sp" />
 </LinearLayout>
+
+</RelativeLayout>
