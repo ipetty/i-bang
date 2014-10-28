@@ -177,6 +177,17 @@ public class SeekService extends BaseService {
 	}
 
 	/**
+	 * 根据id列表获取求助列表
+	 */
+	public List<Seek> listByIds(List<Long> seekIds) {
+		List<Seek> seeks = new ArrayList<Seek>();
+		for (Long seekId : seekIds) {
+			seeks.add(this.getById(seekId));
+		}
+		return seeks;
+	}
+
+	/**
 	 * 求助已结束（在所有委托都已关闭或成为双方已评价的状态则由业务自动调用此方法）
 	 */
 	public void finish(Long seekId) {

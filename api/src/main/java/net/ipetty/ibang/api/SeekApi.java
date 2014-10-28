@@ -81,6 +81,12 @@ public interface SeekApi {
 			@Query("pageSize") int pageSize);
 
 	/**
+	 * 根据id列表获取求助列表
+	 */
+	@GET("/seeklist/byids")
+	public List<SeekVO> listByIds(@Query("seekIds") Long... seekIds);
+
+	/**
 	 * 关闭求助
 	 */
 	@POST("/seek/close")

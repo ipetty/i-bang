@@ -49,10 +49,13 @@ public class SeekApiTest extends BaseApiTest {
 		Assert.assertNotNull(seek.getId());
 		Assert.assertEquals(Constants.SEEK_STATUS_CREATED, seek.getStatus());
 
+		List<SeekVO> seeks = seekApi.listByIds(seek.getId());
+		Assert.assertEquals(1, seeks.size());
+
 		seek = seekApi.getById(seek.getId());
 		Assert.assertEquals(2, seek.getImages().size());
 
-		List<SeekVO> seeks = seekApi.listLatest(DateUtils.toDatetimeString(new Date()), 0, 20);
+		seeks = seekApi.listLatest(DateUtils.toDatetimeString(new Date()), 0, 20);
 		Assert.assertEquals(1, seeks.size());
 
 		seeks = seekApi.listByUserId(user.getId(), 0, 20);

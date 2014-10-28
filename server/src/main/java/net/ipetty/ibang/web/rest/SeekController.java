@@ -1,5 +1,6 @@
 package net.ipetty.ibang.web.rest;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -130,6 +131,17 @@ public class SeekController extends BaseController {
 		Assert.notNull(userId, "用户ID不能为空");
 
 		List<Seek> seeks = seekService.listByUserId(userId, pageNumber, pageSize);
+		return Seek.listToVoList(seeks);
+	}
+
+	/**
+	 * 根据id列表获取求助列表
+	 */
+	@RequestMapping(value = "/seeklist/byids", method = RequestMethod.GET)
+	public List<SeekVO> listByIds(Long... seekIds) {
+		Assert.notNull(seekIds, "ID列表不能为空");
+
+		List<Seek> seeks = seekService.listByIds(Arrays.asList(seekIds));
 		return Seek.listToVoList(seeks);
 	}
 
