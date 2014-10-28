@@ -3,6 +3,7 @@ package net.ipetty.ibang.android.user;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import net.ipetty.ibang.R;
 import net.ipetty.ibang.android.core.ui.BackClickListener;
@@ -24,11 +25,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class SelectUserCategoryActivity extends Activity {
+
 	private String[] l1Categories = SeekCategoryUtils.listL1Categories();
 	private String[] l2Categories = null;
 
-	private List<SeekCategory> checkList = new ArrayList<SeekCategory>(0);
-	private HashMap<SeekCategory, CheckBox> map = new HashMap<SeekCategory, CheckBox>();
+	private List<SeekCategory> selectedOfferRange = new ArrayList<SeekCategory>(0);
+	private Map<SeekCategory, CheckBox> mapCategory2CheckBox = new HashMap<SeekCategory, CheckBox>();
+	private Map<CheckBox, SeekCategory> mapCheckBox2Category = new HashMap<CheckBox, SeekCategory>();
 
 	private UserVO user;
 
@@ -46,52 +49,50 @@ public class SelectUserCategoryActivity extends Activity {
 		TextView btn = (TextView) this.findViewById(R.id.button);
 
 		user = ApiContext.getInstance(this).getCurrentUser();
+		selectedOfferRange = user.getOfferRange();
 
-		checkList = user.getOfferRange();
-
+		// 初始化分类选项界面
 		for (String l1 : l1Categories) {
 			layout.addView(getL1View(l1));
 			addSubView(layout, l1);
 		}
 
-		setCheckList();
+		// 初始化用户已选择选项
+		initSelectedOfferRangeView();
 
+		// 保存按钮
 		btn.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				getCheckList();
-				if (checkList.size() == 0) {
+				getSelectedOfferRange();
+				if (selectedOfferRange.size() == 0) {
 					Toast.makeText(SelectUserCategoryActivity.this, "请选择特长", Toast.LENGTH_SHORT).show();
 				} else {
 					// TODO:save操作
 
 				}
 			}
-
 		});
-
 	}
 
-	private void setCheckList() {
-		// TODO Auto-generated method stub
-		for (SeekCategory key : map.keySet()) {
-			for (SeekCategory cat : checkList) {
-				if (cat.getCategoryL1().equals(key.getCategoryL1()) && cat.getCategoryL2().equals(key.getCategoryL2())) {
-					CheckBox cb = map.get(key);
-					cb.setChecked(true);
-				}
-			}
+	/**
+	 * 初始化用户已选择选项
+	 */
+	private void initSelectedOfferRangeView() {
+		for (SeekCategory category : selectedOfferRange) {
+			CheckBox checkbox = mapCategory2CheckBox.get(category);
+			checkbox.setChecked(true);
 		}
 	}
 
-	private void getCheckList() {
-		// TODO Auto-generated method stub
-		checkList.clear();
-		for (SeekCategory key : map.keySet()) {
-			CheckBox cb = map.get(key);
-			if (cb.isChecked()) {
-				checkList.add(key);
+	/**
+	 * 获取到界面上用户选择的选项
+	 */
+	private void getSelectedOfferRange() {
+		selectedOfferRange.clear();
+		for (CheckBox checkbox : mapCheckBox2Category.keySet()) {
+			if (checkbox.isChecked()) {
+				selectedOfferRange.add(mapCheckBox2Category.get(checkbox));
 			}
 		}
 	}
@@ -105,8 +106,11 @@ public class SelectUserCategoryActivity extends Activity {
 		return tv;
 	}
 
-	private void addSubView(LinearLayout layout, String text) {
-		l2Categories = SeekCategoryUtils.listL2Categories(text);
+	/**
+	 * 为一级选项添加二级选项列表
+	 */
+	private void addSubView(LinearLayout layout, String l1CategoryLabel) {
+		l2Categories = SeekCategoryUtils.listL2Categories(l1CategoryLabel);
 		int i = 0;
 		while (i < l2Categories.length) {
 			LinearLayout ly = (LinearLayout) LayoutInflater.from(this)
@@ -114,32 +118,22 @@ public class SelectUserCategoryActivity extends Activity {
 			CheckBox cb1 = (CheckBox) ly.findViewById(R.id.checkBox1);
 			CheckBox cb2 = (CheckBox) ly.findViewById(R.id.checkBox2);
 			CheckBox cb3 = (CheckBox) ly.findViewById(R.id.checkBox3);
-
-			if (i < l2Categories.length) {
-				String str1 = l2Categories[i++];
-				cb1.setText(str1);
-				map.put(new SeekCategory(text, str1), cb1);
-
-			} else {
-				cb1.setVisibility(View.INVISIBLE);
-			}
-			if (i < l2Categories.length) {
-				String str2 = l2Categories[i++];
-				cb2.setText(str2);
-				map.put(new SeekCategory(text, str2), cb2);
-			} else {
-				cb2.setVisibility(View.INVISIBLE);
-			}
-			if (i < l2Categories.length) {
-				String str3 = l2Categories[i++];
-				cb3.setText(str3);
-				map.put(new SeekCategory(text, str3), cb3);
-			} else {
-				cb3.setVisibility(View.INVISIBLE);
-			}
+			this.bindCategoryToCheckBox(l1CategoryLabel, l2Categories, cb1, i++);
+			this.bindCategoryToCheckBox(l1CategoryLabel, l2Categories, cb2, i++);
+			this.bindCategoryToCheckBox(l1CategoryLabel, l2Categories, cb3, i++);
 			layout.addView(ly);
 		}
+	}
 
+	private void bindCategoryToCheckBox(String l1Category, String[] l2Categories, CheckBox checkbox, int idx) {
+		if (idx < l2Categories.length) {
+			checkbox.setText(l2Categories[idx]);
+			SeekCategory category = new SeekCategory(l1Category, l2Categories[idx]);
+			mapCategory2CheckBox.put(category, checkbox);
+			mapCheckBox2Category.put(checkbox, category);
+		} else {
+			checkbox.setVisibility(View.INVISIBLE);
+		}
 	}
 
 }

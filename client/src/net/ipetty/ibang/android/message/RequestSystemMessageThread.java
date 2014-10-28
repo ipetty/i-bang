@@ -50,10 +50,11 @@ public class RequestSystemMessageThread implements Runnable {
 
 	@Override
 	public void run() {
+		SystemMessageApi systemMessageApi = IbangApi.init(context).create(SystemMessageApi.class);
 		while (flag) {
 			try {
 				if (context != null && userId != null) {
-					int num = IbangApi.init(context).create(SystemMessageApi.class).getUnreadNumberByUserId(userId);
+					int num = systemMessageApi.getUnreadNumberByUserId(userId);
 					Log.d(TAG, "获取通知消息，未读数=" + num);
 					if (num > 0) {
 						Intent intent = new Intent(Constants.BROADCAST_INTENT_NEW_MESSAGE);

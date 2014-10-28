@@ -134,7 +134,9 @@ public class SystemMessageDaoImpl extends BaseJdbcDaoSupport implements SystemMe
 	 */
 	@Override
 	public int getUnreadNumberByUserId(Integer userId) {
-		return super.getJdbcTemplate().queryForObject(GET_UNREAD_NUM_BY_USER_ID_SQL, INTEGER_ROW_MAPPER, userId);
+		Integer result = super.getJdbcTemplate().queryForObject(GET_UNREAD_NUM_BY_USER_ID_SQL, INTEGER_ROW_MAPPER,
+				userId);
+		return result == null ? 0 : result;
 	}
 
 }
