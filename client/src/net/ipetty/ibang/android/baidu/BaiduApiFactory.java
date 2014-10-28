@@ -5,7 +5,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import java.util.Date;
 import net.ipetty.ibang.android.baidu.iface.BaiduApi;
-import net.ipetty.ibang.android.core.Constants;
 import net.ipetty.ibang.android.sdk.exception.ApiExceptionHandler;
 import net.ipetty.ibang.android.sdk.util.DateTypeAdapter;
 import retrofit.ErrorHandler;
@@ -38,8 +37,8 @@ public class BaiduApiFactory {
 
         public static void init(Context ctx) {
                 context = ctx;
-                restAdapter = new RestAdapter.Builder().setEndpoint(Constants.API_SERVER_BASE)
-                        .setConverter(new GsonConverter(gson))
+                restAdapter = new RestAdapter.Builder().setEndpoint("http://api.map.baidu.com/")
+                        .setConverter(new GsonConverter(gson)).setLogLevel(RestAdapter.LogLevel.FULL)
                         .setErrorHandler(errorHandler).build();
                 baiduApi = restAdapter.create(BaiduApi.class);
         }

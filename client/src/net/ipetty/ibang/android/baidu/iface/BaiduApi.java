@@ -1,8 +1,6 @@
 package net.ipetty.ibang.android.baidu.iface;
 
-import net.ipetty.ibang.android.baidu.vo.CreatePoiVo;
 import net.ipetty.ibang.android.baidu.vo.RetVO;
-import retrofit.http.Body;
 import retrofit.http.Field;
 import retrofit.http.FormUrlEncoded;
 import retrofit.http.POST;
@@ -15,8 +13,10 @@ import retrofit.http.POST;
 public interface BaiduApi {
 
         @FormUrlEncoded
-        @POST("geodata/v3/poi/create")
-        public RetVO createPoi(@Body CreatePoiVo createPoiVo);
+        @POST("/geodata/v3/poi/create")
+        public RetVO createPoi(@Field("ak") String ak, @Field("geotable_id") String geotable_id, @Field("coord_type") Integer coord_type,
+                @Field("longitude") Double longitude, @Field("latitude") Double latitude, @Field("title") String title, @Field("tags") String tags,
+                @Field("bid") String bid);
 
         @FormUrlEncoded
         @POST("/geodata/v3/poi/delete")

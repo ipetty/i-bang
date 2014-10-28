@@ -11,23 +11,9 @@ package net.ipetty.ibang.android.baidu.vo;
  */
 public class RetVO {
 
-        private Long id;
+        private String id;
         private Integer status;
         private String message;
-
-        /**
-         * @return the id
-         */
-        public Long getId() {
-                return id;
-        }
-
-        /**
-         * @param id the id to set
-         */
-        public void setId(Long id) {
-                this.id = id;
-        }
 
         /**
          * @return the status
@@ -55,6 +41,20 @@ public class RetVO {
          */
         public void setMessage(String message) {
                 this.message = message;
+        }
+
+        /**
+         * @return the id
+         */
+        public String getId() {
+                return id;
+        }
+
+        /**
+         * @param id the id to set
+         */
+        public void setId(String id) {
+                this.id = id;
         }
 
 }
