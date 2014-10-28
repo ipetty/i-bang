@@ -9,6 +9,7 @@ import net.ipetty.ibang.android.core.ActivityManager;
 import net.ipetty.ibang.android.core.Constants;
 import net.ipetty.ibang.android.core.DefaultTaskListener;
 import net.ipetty.ibang.android.core.ui.BackClickListener;
+import net.ipetty.ibang.android.core.util.AnimUtils;
 import net.ipetty.ibang.android.core.util.AppUtils;
 import net.ipetty.ibang.android.core.util.DateUtils;
 import net.ipetty.ibang.android.core.util.JSONUtils;
@@ -20,6 +21,7 @@ import net.ipetty.ibang.android.user.GetUserByIdSynchronously;
 import net.ipetty.ibang.android.user.UserInfoActivity;
 import net.ipetty.ibang.vo.DelegationVO;
 import net.ipetty.ibang.vo.EvaluationVO;
+import net.ipetty.ibang.vo.ImageVO;
 import net.ipetty.ibang.vo.OfferVO;
 import net.ipetty.ibang.vo.SeekVO;
 import net.ipetty.ibang.vo.UserVO;
@@ -36,6 +38,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
+import android.widget.ImageView.ScaleType;
+import android.widget.LinearLayout;
+import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -55,6 +60,8 @@ public class DelegationActivity extends Activity {
 	// private View seek_contact_layout;
 	private View seek_evaluation_layout;
 	private TextView seek_evaluation;
+	private TextView seek_evaluation_content;
+	private LinearLayout seek_evaluation_image_layout;
 
 	private ImageView delegation_avatar;
 	private TextView delegation_nickname;
@@ -68,6 +75,8 @@ public class DelegationActivity extends Activity {
 	private View close_delegation_btn_layout;
 	private View delegation_evaluation_layout;
 	private TextView delegation_evaluation;
+	private TextView delegation_evaluation_content;
+	private LinearLayout delegation_evaluation_image_layout;
 
 	private View evaluation_layout;
 	private TextView evaluation;
@@ -108,6 +117,8 @@ public class DelegationActivity extends Activity {
 		// seek_contact_layout = this.findViewById(R.id.contact_layout);
 		seek_evaluation_layout = this.findViewById(R.id.seek_evaluation_layout);// 评分布局，对方评分后显示
 		seek_evaluation = (TextView) this.findViewById(R.id.seek_evaluation);
+		seek_evaluation_content = (TextView) this.findViewById(R.id.seek_evaluation_content);
+		seek_evaluation_image_layout = (LinearLayout) this.findViewById(R.id.seek_evaluation_image_layout);
 
 		delegation_avatar = (ImageView) this.findViewById(R.id.delegation_avatar);
 		delegation_nickname = (TextView) this.findViewById(R.id.delegation_nickname);
@@ -123,6 +134,8 @@ public class DelegationActivity extends Activity {
 
 		delegation_evaluation_layout = this.findViewById(R.id.delegation_evaluation_layout);// 评分布局，对方评分后显示
 		delegation_evaluation = (TextView) this.findViewById(R.id.delegation_evaluation);
+		delegation_evaluation_content = (TextView) this.findViewById(R.id.delegation_evaluation_content);
+		delegation_evaluation_image_layout = (LinearLayout) this.findViewById(R.id.delegation_evaluation_image_layout);
 
 		evaluation_layout = this.findViewById(R.id.evaluation_layout); // 评价按钮根据权限显示不同的评价
 		evaluation = (TextView) this.findViewById(R.id.evaluation);
@@ -200,16 +213,47 @@ public class DelegationActivity extends Activity {
 														// 求助者对此次委托的评分信息
 														delegation_evaluation.setText(String.valueOf(evaluation
 																.getPoint()));
+														if (StringUtils.isNoneEmpty(evaluation.getContent())) {
+															delegation_evaluation_content.setText(evaluation
+																	.getContent());
+															delegation_evaluation_content.setVisibility(View.VISIBLE);
+														} else {
+															delegation_evaluation_content.setVisibility(View.GONE);
+														}
+														if (evaluation.getImages().size() > 0) {
+															delegation_evaluation_image_layout
+																	.setVisibility(View.VISIBLE);
+															initImage(delegation_evaluation_image_layout,
+																	evaluation.getImages());
+														} else {
+															delegation_evaluation_image_layout.setVisibility(View.GONE);
+														}
+
 														delegation_evaluation_layout.setVisibility(View.VISIBLE);
 													} else if (net.ipetty.ibang.vo.Constants.EVALUATION_TYPE_OFFERER_TO_SEEKER
 															.equals(evaluation.getType())) {
 														// 帮助者对此次委托的评分信息
 														seek_evaluation.setText(String.valueOf(evaluation.getPoint()));
+														if (StringUtils.isNoneEmpty(evaluation.getContent())) {
+															seek_evaluation_content.setText(evaluation.getContent());
+															seek_evaluation_content.setVisibility(View.VISIBLE);
+														} else {
+															seek_evaluation_content.setVisibility(View.GONE);
+														}
+														if (evaluation.getImages().size() > 0) {
+															seek_evaluation_image_layout.setVisibility(View.VISIBLE);
+															initImage(seek_evaluation_image_layout,
+																	evaluation.getImages());
+														} else {
+															seek_evaluation_image_layout.setVisibility(View.GONE);
+														}
+
 														seek_evaluation_layout.setVisibility(View.VISIBLE);
 													}
 												}
 											}
 										}
+
 									}).execute(delegationId);
 						} else {
 							seek_evaluation_layout.setVisibility(View.GONE);
@@ -315,6 +359,49 @@ public class DelegationActivity extends Activity {
 						}
 					}
 				}).execute(offerId);
+	}
+
+	private void initImage(LinearLayout layout, List<ImageVO> images) {
+		// TODO Auto-generated method stub
+		for (ImageVO image : images) {
+			LayoutParams ly = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
+			ly.width = AnimUtils.dip2px(this, 62);
+			ly.height = AnimUtils.dip2px(this, 62);
+			ly.rightMargin = AnimUtils.dip2px(this, 10);
+			ImageView imageView = new ImageView(this);
+			imageView.setScaleType(ScaleType.CENTER_CROP);
+			layout.addView(imageView, ly);
+			String url = image.getSmallUrl();
+			if (StringUtils.isNotEmpty(url)) {
+				ImageLoader.getInstance().displayImage(Constants.FILE_SERVER_BASE + url, imageView, options);
+			} else {
+				imageView.setImageResource(R.drawable.default_seek_images);
+			}
+			imageView.setOnClickListener(new ImageOnClickListener(image));
+		}
+
+	}
+
+	public class ImageOnClickListener implements OnClickListener {
+		private ImageVO imageVO;
+
+		public ImageOnClickListener(ImageVO imageVO) {
+			this.imageVO = imageVO;
+		}
+
+		@Override
+		public void onClick(View v) {
+			// TODO Auto-generated method stub
+			// 展示大图
+			if (StringUtils.isNotEmpty(this.imageVO.getSmallUrl())) {
+				Intent intent = new Intent(DelegationActivity.this, LargerImageActivity.class);
+				intent.putExtra(Constants.INTENT_IMAGE_ORIGINAL_KEY,
+						Constants.FILE_SERVER_BASE + this.imageVO.getOriginalUrl());
+				intent.putExtra(Constants.INTENT_IMAGE_SAMILL_KEY,
+						Constants.FILE_SERVER_BASE + this.imageVO.getSmallUrl());
+				startActivity(intent);
+			}
+		}
 	}
 
 	// 当前用户是否为当前求助的求助者
