@@ -22,5 +22,4 @@ public class ReadSystemMessageTaskListener extends DefaultTaskListener<Boolean> 
 	public void onSuccess(Boolean result) {
 		Log.d(TAG, "read system message success");
 	}
-
 }

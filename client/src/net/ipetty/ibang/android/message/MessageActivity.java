@@ -5,6 +5,7 @@ import java.util.List;
 
 import net.ipetty.ibang.R;
 import net.ipetty.ibang.android.core.Constants;
+import net.ipetty.ibang.android.core.DefaultTaskListener;
 import net.ipetty.ibang.android.core.MyAppStateManager;
 import net.ipetty.ibang.android.core.ui.BackClickListener;
 import net.ipetty.ibang.android.core.ui.MyPullToRefreshListView;
@@ -116,9 +117,17 @@ public class MessageActivity extends Activity {
 					intent.putExtra(Constants.INTENT_SEEK_ID, msg.getSeekId());
 				}
 				startActivity(intent);
+
 				if (!msg.isRead()) {
+					final long tId = msg.getId();
 					new ReadSystemMessageTask(MessageActivity.this).setListener(
-							new ReadSystemMessageTaskListener(MessageActivity.this)).execute(msg.getId());
+							new DefaultTaskListener<Boolean>(MessageActivity.this) {
+								@Override
+								public void onSuccess(Boolean result) {
+									// TODO Auto-generated method stub
+									((MessageActivity) activity).changeToRead(tId);
+								}
+							}).execute(msg.getId());
 				}
 			}
 		});
@@ -147,6 +156,10 @@ public class MessageActivity extends Activity {
 		if (isLogin) {
 			init();
 		}
+	}
+
+	public void changeToRead(Long id) {
+		adapter.changeToRead(id);
 	}
 
 	private void init() {
@@ -197,6 +210,15 @@ public class MessageActivity extends Activity {
 	};
 
 	public class MessageAdapter extends BaseAdapter implements OnScrollListener {
+		public void changeToRead(Long id) {
+			for (SystemMessageVO msg : list) {
+				if (msg.getId() == id) {
+					msg.isRead();
+					this.notifyDataSetChanged();
+				}
+			}
+		}
+
 		public void loadData(List<SystemMessageVO> data) {
 			list.clear();
 			this.addData(data);
@@ -223,6 +245,7 @@ public class MessageActivity extends Activity {
 		}
 
 		private class ViewHolder {
+			public View item;
 			public TextView nickname;
 			public ImageView avatar;
 			public TextView message;
@@ -238,6 +261,7 @@ public class MessageActivity extends Activity {
 				LayoutInflater inflater = LayoutInflater.from(MessageActivity.this);
 				view = inflater.inflate(R.layout.list_message_item, null);
 				holder = new ViewHolder();
+				holder.item = view.findViewById(R.id.item);
 				holder.nickname = (TextView) view.findViewById(R.id.nickname);
 				holder.avatar = (ImageView) view.findViewById(R.id.avatar);
 				holder.message = (TextView) view.findViewById(R.id.message);
@@ -252,6 +276,12 @@ public class MessageActivity extends Activity {
 			SystemMessageVO msg = (SystemMessageVO) this.getItem(position);
 			holder.message.setText(msg.getTitle());
 			holder.timestamp.setText(new PrettyDateFormat("@", "yyyy-MM-dd HH:mm:dd").format(msg.getCreatedOn()));
+
+			if (msg.isRead()) {
+				holder.item.setBackgroundResource(R.drawable.list_color_item_bg_white);
+			} else {
+				holder.item.setBackgroundResource(R.color.news_item_bg_news);
+			}
 
 			// 异步加载来源用户
 			Integer fromUserId = msg.getFromUserId();

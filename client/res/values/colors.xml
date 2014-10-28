@@ -22,5 +22,7 @@
       <color name="yellow_bg_color">#FFFAF6</color>
       <color name="category_bg_color">#F5F5F5</color>
       
+           <color name="news_item_bg_news">#FFF2F2</color>
+     <color name="news_item_bg_default">#FFFFFF</color>
      
 </resources>
