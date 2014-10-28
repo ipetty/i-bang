@@ -158,7 +158,7 @@ public class EvaluationService extends BaseService {
 			seekService.finish(delegation.getSeekId());
 
 			// 保存系统消息
-			SystemMessage systemMessage = new SystemMessage(null, delegation.getSeekerId(),
+			SystemMessage systemMessage = new SystemMessage(delegation.getSeekerId(), delegation.getSeekerId(),
 					Constants.SYS_MSG_TYPE_SEEK_FINISHED, "您的一个求助单已成功完成。", seek.getContent());
 			systemMessage.setSeekId(delegation.getSeekId());
 			systemMessageService.save(systemMessage);
