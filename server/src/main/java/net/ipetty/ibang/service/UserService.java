@@ -1,6 +1,7 @@
 package net.ipetty.ibang.service;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.annotation.Resource;
 
@@ -15,6 +16,7 @@ import net.ipetty.ibang.repository.UserDao;
 import net.ipetty.ibang.repository.UserRefreshTokenDao;
 import net.ipetty.ibang.util.ImageUtils;
 import net.ipetty.ibang.util.SaltEncoder;
+import net.ipetty.ibang.vo.SeekCategory;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
@@ -232,6 +234,18 @@ public class UserService extends BaseService {
 		user.setAvatar(original.getAvatar());
 		userDao.update(user);
 		return this.getById(user.getId());
+	}
+
+	/**
+	 * 修改用户帮助范围
+	 */
+	public void updateOfferRange(Integer userId, List<SeekCategory> offerRange) {
+		Assert.notNull(userId, "用户ID不能为空");
+		Assert.notNull(offerRange, "帮助范围不能为空");
+
+		OffererInfo offererInfo = offererInfoService.getByUserId(userId);
+		offererInfo.setOfferRange(offerRange);
+		offererInfoService.saveOrUpdate(offererInfo);
 	}
 
 	/**

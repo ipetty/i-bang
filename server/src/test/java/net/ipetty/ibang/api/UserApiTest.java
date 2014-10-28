@@ -1,10 +1,15 @@
 package net.ipetty.ibang.api;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import net.ipetty.ibang.api.exception.ApiException;
 import net.ipetty.ibang.api.factory.IbangApi;
 import net.ipetty.ibang.vo.LoginResultVO;
 import net.ipetty.ibang.vo.RegisterVO;
+import net.ipetty.ibang.vo.SeekCategory;
 import net.ipetty.ibang.vo.UserFormVO;
+import net.ipetty.ibang.vo.UserOfferRange;
 import net.ipetty.ibang.vo.UserVO;
 
 import org.junit.Assert;
@@ -178,6 +183,15 @@ public class UserApiTest extends BaseApiTest {
 		userFormVO.setAddress(user.getAddress());
 		user = userApi.update(userFormVO);
 		Assert.assertNotNull(user.getJob());
+	}
+
+	@Test
+	public void testUpdateOfferRange() {
+		LoginResultVO result = userApi.login(TEST_ACCOUNT_USERNAME, TEST_ACCOUNT_PASSWORD);
+		List<SeekCategory> offerRange = new ArrayList<SeekCategory>();
+		offerRange.add(new SeekCategory("家政服务", "保洁"));
+		UserVO user = userApi.updateOfferRange(new UserOfferRange(result.getUserVo().getId(), offerRange));
+		logger.debug("updated offer range = {}", user);
 	}
 
 }

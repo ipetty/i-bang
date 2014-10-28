@@ -7,6 +7,7 @@ import net.ipetty.ibang.api.UserApi;
 import net.ipetty.ibang.vo.LoginResultVO;
 import net.ipetty.ibang.vo.RegisterVO;
 import net.ipetty.ibang.vo.UserFormVO;
+import net.ipetty.ibang.vo.UserOfferRange;
 import net.ipetty.ibang.vo.UserVO;
 import retrofit.mime.TypedFile;
 import android.content.Context;
@@ -123,6 +124,13 @@ public class UserApiImpl implements UserApi {
 	@Override
 	public UserVO update(UserFormVO userFormVo) {
 		UserVO user = userApi.update(userFormVo);
+		ApiContext.getInstance(context).setCurrentUser(user);
+		return user;
+	}
+
+	@Override
+	public UserVO updateOfferRange(UserOfferRange userOfferRange) {
+		UserVO user = userApi.updateOfferRange(userOfferRange);
 		ApiContext.getInstance(context).setCurrentUser(user);
 		return user;
 	}

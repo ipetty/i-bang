@@ -1,10 +1,14 @@
 package net.ipetty.ibang.service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import net.ipetty.ibang.exception.BusinessException;
 import net.ipetty.ibang.model.User;
 import net.ipetty.ibang.util.SaltEncoder;
+import net.ipetty.ibang.vo.SeekCategory;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -137,6 +141,14 @@ public class UserServiceTest extends BaseServiceTest {
 		userService.updateProfile(user);
 		user = userService.getById(user.getId());
 		Assert.assertEquals(udpatedNickname, user.getNickname());
+	}
+
+	@Test
+	public void testUpdateOfferRange() {
+		User user = userService.getByUsername(TEST_ACCOUNT_USERNAME);
+		List<SeekCategory> offerRange = new ArrayList<SeekCategory>();
+		offerRange.add(new SeekCategory("家政服务", "保洁"));
+		userService.updateOfferRange(user.getId(), offerRange);
 	}
 
 }

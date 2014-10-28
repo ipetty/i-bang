@@ -17,6 +17,7 @@ import net.ipetty.ibang.util.UUIDUtils;
 import net.ipetty.ibang.vo.LoginResultVO;
 import net.ipetty.ibang.vo.RegisterVO;
 import net.ipetty.ibang.vo.UserFormVO;
+import net.ipetty.ibang.vo.UserOfferRange;
 import net.ipetty.ibang.vo.UserVO;
 import net.ipetty.ibang.web.rest.exception.RestException;
 
@@ -254,6 +255,24 @@ public class UserController extends BaseController {
 		Assert.isTrue(userFormVo.getId().equals(currentUser.getId()), "只能修改自己的个人信息");
 
 		return userService.updateProfile(User.fromUserFormVO(userFormVo)).toVO();
+	}
+
+	/**
+	 * 修改用户帮助范围
+	 */
+	@RequestMapping(value = "/user/updateOfferRange", method = RequestMethod.POST)
+	public UserVO updateOfferRange(@RequestBody UserOfferRange userOfferRange) {
+		Assert.notNull(userOfferRange, "帮助范围不能为空");
+		Assert.notNull(userOfferRange.getUserId(), "用户ID不能为空");
+		Assert.notNull(userOfferRange.getOfferRange(), "帮助范围不能为空");
+
+		User user = userService.getById(userOfferRange.getUserId());
+		if (user == null) {
+			throw new RestException("用户不存在");
+		}
+
+		userService.updateOfferRange(userOfferRange.getUserId(), userOfferRange.getOfferRange());
+		return userService.getById(userOfferRange.getUserId()).toVO();
 	}
 
 }

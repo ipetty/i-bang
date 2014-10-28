@@ -3,6 +3,7 @@ package net.ipetty.ibang.api;
 import net.ipetty.ibang.vo.LoginResultVO;
 import net.ipetty.ibang.vo.RegisterVO;
 import net.ipetty.ibang.vo.UserFormVO;
+import net.ipetty.ibang.vo.UserOfferRange;
 import net.ipetty.ibang.vo.UserVO;
 import retrofit.http.Body;
 import retrofit.http.Field;
@@ -86,5 +87,11 @@ public interface UserApi {
 	 */
 	@POST("/user/update")
 	public UserVO update(@Body UserFormVO userFormVo);
+
+	/**
+	 * 修改用户帮助范围
+	 */
+	@POST("/user/updateOfferRange")
+	public UserVO updateOfferRange(@Body UserOfferRange userOfferRange);
 
 }

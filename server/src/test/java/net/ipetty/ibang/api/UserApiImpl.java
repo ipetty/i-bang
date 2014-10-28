@@ -5,7 +5,9 @@ import net.ipetty.ibang.api.factory.IbangApi;
 import net.ipetty.ibang.vo.LoginResultVO;
 import net.ipetty.ibang.vo.RegisterVO;
 import net.ipetty.ibang.vo.UserFormVO;
+import net.ipetty.ibang.vo.UserOfferRange;
 import net.ipetty.ibang.vo.UserVO;
+import retrofit.http.Body;
 import retrofit.mime.TypedFile;
 
 /**
@@ -81,6 +83,11 @@ public class UserApiImpl implements UserApi {
 	@Override
 	public UserVO update(UserFormVO userFormVo) {
 		return userApi.update(userFormVo);
+	}
+
+	@Override
+	public UserVO updateOfferRange(@Body UserOfferRange userOfferRange) {
+		return userApi.updateOfferRange(userOfferRange);
 	}
 
 }

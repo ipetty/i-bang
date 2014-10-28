@@ -11,9 +11,11 @@ import net.ipetty.ibang.android.core.util.AnimUtils;
 import net.ipetty.ibang.android.sdk.context.ApiContext;
 import net.ipetty.ibang.util.SeekCategoryUtils;
 import net.ipetty.ibang.vo.SeekCategory;
+import net.ipetty.ibang.vo.UserOfferRange;
 import net.ipetty.ibang.vo.UserVO;
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,6 +27,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class SelectUserCategoryActivity extends Activity {
+
+	private final String TAG = getClass().getSimpleName();
 
 	private String[] l1Categories = SeekCategoryUtils.listL1Categories();
 	private String[] l2Categories = null;
@@ -68,8 +72,10 @@ public class SelectUserCategoryActivity extends Activity {
 				if (selectedOfferRange.size() == 0) {
 					Toast.makeText(SelectUserCategoryActivity.this, "请选择特长", Toast.LENGTH_SHORT).show();
 				} else {
-					// TODO:save操作
-
+					// 保存选项
+					new UpdateOfferRangeTask(SelectUserCategoryActivity.this).setListener(
+							new UpdateOfferRangeTaskListener(SelectUserCategoryActivity.this)).execute(
+							new UserOfferRange(user.getId(), selectedOfferRange));
 				}
 			}
 		});
@@ -80,8 +86,11 @@ public class SelectUserCategoryActivity extends Activity {
 	 */
 	private void initSelectedOfferRangeView() {
 		for (SeekCategory category : selectedOfferRange) {
+			Log.d(TAG, "pre checked category: " + category.toString());
 			CheckBox checkbox = mapCategory2CheckBox.get(category);
-			checkbox.setChecked(true);
+			if (checkbox != null) {
+				checkbox.setChecked(true);
+			}
 		}
 	}
 
@@ -92,6 +101,7 @@ public class SelectUserCategoryActivity extends Activity {
 		selectedOfferRange.clear();
 		for (CheckBox checkbox : mapCheckBox2Category.keySet()) {
 			if (checkbox.isChecked()) {
+				Log.d(TAG, "user selected category: " + mapCheckBox2Category.get(checkbox).toString());
 				selectedOfferRange.add(mapCheckBox2Category.get(checkbox));
 			}
 		}
@@ -130,6 +140,7 @@ public class SelectUserCategoryActivity extends Activity {
 			checkbox.setText(l2Categories[idx]);
 			SeekCategory category = new SeekCategory(l1Category, l2Categories[idx]);
 			mapCategory2CheckBox.put(category, checkbox);
+			Log.d(TAG, "init category: " + category.toString());
 			mapCheckBox2Category.put(checkbox, category);
 		} else {
 			checkbox.setVisibility(View.INVISIBLE);
