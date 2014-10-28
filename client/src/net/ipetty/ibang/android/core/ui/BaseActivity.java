@@ -8,7 +8,6 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
-import cn.sharesdk.framework.ShareSDK;
 
 public class BaseActivity extends Activity {
 
@@ -40,7 +39,7 @@ public class BaseActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		this.savedInstanceState = savedInstanceState;
 		super.onCreate(savedInstanceState);
-		ShareSDK.initSDK(this);
+		// ShareSDK.initSDK(this);
 		errorHandler = new ErrorHandler(this);
 		isViewReady = false;
 		ActivityManager.getInstance().addActivity(this);
