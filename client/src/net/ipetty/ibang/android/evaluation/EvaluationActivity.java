@@ -53,7 +53,6 @@ public class EvaluationActivity extends Activity {
 		evaluation.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				// TODO:上传图片
 				final List<File> files = uploadView.getFiles();
 				final List<String> filePaths = new ArrayList<String>();
 				for (File file : files) {
@@ -69,7 +68,8 @@ public class EvaluationActivity extends Activity {
 				e.setEvaluateTargetId(evaluateTargetId);
 				e.setPoint(point);
 				new EvaluateTask(EvaluationActivity.this)
-						.setListener(new EvaluateTaskListener(EvaluationActivity.this)).execute(e);
+						.setListener(new EvaluateTaskListener(EvaluationActivity.this)).execute(
+								new EvaluationForm(e, filePaths));
 			}
 		});
 
