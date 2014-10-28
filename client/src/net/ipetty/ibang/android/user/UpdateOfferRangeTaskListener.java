@@ -28,7 +28,7 @@ public class UpdateOfferRangeTaskListener extends DefaultTaskListener<UserVO> {
 		// 通知用户更新
 		Intent intent = new Intent(Constants.BROADCAST_INTENT_UPDATA_USER);
 		activity.sendBroadcast(intent);
-
+		activity.setResult(Activity.RESULT_OK, intent);
 		activity.finish();
 	}
 

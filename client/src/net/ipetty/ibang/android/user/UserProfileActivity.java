@@ -14,6 +14,7 @@ import net.ipetty.ibang.android.core.util.DeviceUtils;
 import net.ipetty.ibang.android.core.util.DialogUtils;
 import net.ipetty.ibang.android.core.util.PathUtils;
 import net.ipetty.ibang.android.sdk.context.ApiContext;
+import net.ipetty.ibang.vo.SeekCategory;
 import net.ipetty.ibang.vo.UserFormVO;
 import net.ipetty.ibang.vo.UserVO;
 
@@ -27,6 +28,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.FragmentActivity;
+import android.text.Html;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
@@ -50,6 +52,7 @@ public class UserProfileActivity extends Activity {
 	private TextView cityView;
 	private TextView districtView;
 	private TextView categoryView;
+	private TextView seekerTitleView;
 
 	private ArrayList<ModDialogItem> genderItems;
 	private Dialog genderDialog;
@@ -102,6 +105,7 @@ public class UserProfileActivity extends Activity {
 		cityView = (TextView) this.findViewById(R.id.city);
 		districtView = (TextView) this.findViewById(R.id.district);
 		categoryView = (TextView) this.findViewById(R.id.category);
+		seekerTitleView = (TextView) this.findViewById(R.id.seekerTitle);
 
 		avatar.setOnClickListener(changeAvatarClick);
 		nickname_layout.setOnClickListener(new EditOnClickListener(Constants.INTENT_USER_EDIT_TYPE_NICKNAME));
@@ -265,7 +269,7 @@ public class UserProfileActivity extends Activity {
 			updateAvatar(picture.getAbsolutePath());
 		}
 
-		if (requestCode == Constants.REQUEST_CODE_USER_EDIT) {
+		if (requestCode == Constants.REQUEST_CODE_USER_EDIT || requestCode == Constants.REQUEST_CODE_CATEGORY) {
 			// 从上下文重新获取用户信息
 			user = ApiContext.getInstance(UserProfileActivity.this).getCurrentUser();
 			initTextUser(user);
@@ -314,6 +318,18 @@ public class UserProfileActivity extends Activity {
 		provinceView.setText(user.getProvince());
 		cityView.setText(user.getCity());
 		districtView.setText(user.getDistrict());
+		seekerTitleView.setText(user.getSeekerTitle());
+
+		StringBuffer str = new StringBuffer();
+		for (SeekCategory category : user.getOfferRange()) {
+			String l1 = category.getCategoryL1();
+			String l2 = category.getCategoryL2();
+			str.append("<br>");
+			str.append(l1 + "-" + l2);
+		}
+
+		categoryView.setText(Html.fromHtml(str.toString().substring(4)));
+
 	}
 
 	public void updateAvatar(final String filePath) {

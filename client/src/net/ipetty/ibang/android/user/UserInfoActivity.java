@@ -6,12 +6,14 @@ import net.ipetty.ibang.android.core.Constants;
 import net.ipetty.ibang.android.core.ui.BackClickListener;
 import net.ipetty.ibang.android.core.util.AppUtils;
 import net.ipetty.ibang.android.sdk.context.ApiContext;
+import net.ipetty.ibang.vo.SeekCategory;
 import net.ipetty.ibang.vo.UserVO;
 
 import org.apache.commons.lang3.StringUtils;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.text.Html;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -42,6 +44,7 @@ public class UserInfoActivity extends Activity {
 	private TextView cityView;
 	private TextView districtView;
 	private TextView seekerTitleView;
+	private TextView categoryView;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +74,7 @@ public class UserInfoActivity extends Activity {
 		provinceView = (TextView) this.findViewById(R.id.province);
 		cityView = (TextView) this.findViewById(R.id.city);
 		districtView = (TextView) this.findViewById(R.id.district);
+		categoryView = (TextView) this.findViewById(R.id.category);
 
 		seekerTitleView = (TextView) this.findViewById(R.id.seekerTitle);
 
@@ -107,6 +111,15 @@ public class UserInfoActivity extends Activity {
 		cityView.setText(user.getCity());
 		districtView.setText(user.getDistrict());
 
+		StringBuffer str = new StringBuffer();
+		for (SeekCategory category : user.getOfferRange()) {
+			String l1 = category.getCategoryL1();
+			String l2 = category.getCategoryL2();
+			str.append("<br>");
+			str.append(l1 + "-" + l2);
+		}
+
+		categoryView.setText(Html.fromHtml(str.toString().substring(4)));
 	}
 
 	private void loadUser() {
