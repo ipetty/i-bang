@@ -254,8 +254,7 @@ public class MainHomeFragment extends Fragment {
 				Intent intent = data;
 				category = intent.getStringExtra(Constants.INTENT_CATEGORY);
 				subCategory = intent.getStringExtra(Constants.INTENT_SUB_CATEGORY);
-
-				if (subCategory == TypeActivity.CATEGORY_MY_STRING) {
+				if (TypeActivity.CATEGORY_MY_STRING.equals(subCategory)) {
 					// TODO:加载我的特长
 					Log.i("-------->", subCategory);
 				} else {
