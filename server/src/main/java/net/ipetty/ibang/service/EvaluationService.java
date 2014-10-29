@@ -201,7 +201,7 @@ public class EvaluationService extends BaseService {
 		List<Long> evaluationIds = evaluationDao.listByDelegationId(delegationId);
 		List<Evaluation> evaluations = new ArrayList<Evaluation>();
 		for (Long evaluationId : evaluationIds) {
-			evaluations.add(evaluationDao.getById(evaluationId));
+			evaluations.add(this.getById(evaluationId));
 		}
 		return evaluations;
 	}
@@ -216,7 +216,7 @@ public class EvaluationService extends BaseService {
 		List<Long> evaluationIds = evaluationDao.listByEvaluatorId(userId, pageNumber, pageSize);
 		List<Evaluation> evaluations = new ArrayList<Evaluation>();
 		for (Long evaluationId : evaluationIds) {
-			evaluations.add(evaluationDao.getById(evaluationId));
+			evaluations.add(this.getById(evaluationId));
 		}
 		return evaluations;
 	}
@@ -231,7 +231,7 @@ public class EvaluationService extends BaseService {
 		List<Long> evaluationIds = evaluationDao.listByEvaluateTargetId(userId, pageNumber, pageSize);
 		List<Evaluation> evaluations = new ArrayList<Evaluation>();
 		for (Long evaluationId : evaluationIds) {
-			evaluations.add(evaluationDao.getById(evaluationId));
+			evaluations.add(this.getById(evaluationId));
 		}
 		return evaluations;
 	}
