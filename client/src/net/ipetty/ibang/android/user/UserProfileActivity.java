@@ -328,7 +328,11 @@ public class UserProfileActivity extends Activity {
 			str.append(l1 + "-" + l2);
 		}
 
-		categoryView.setText(Html.fromHtml(str.toString().substring(4)));
+		String cat = str.toString();
+		if (cat.length() > 0) {
+			cat = cat.substring(4);
+		}
+		categoryView.setText(Html.fromHtml(cat));
 
 	}
 
