@@ -26,6 +26,7 @@ import android.widget.TextView;
 
 public class TypeActivity extends Activity {
 	public static String CATEGORY_ALL_STRING = "全部";
+	public static String CATEGORY_MY_STRING = "我的特长";
 	private ArrayList<String> categoryL1 = new ArrayList<String>();
 
 	private String category = CATEGORY_ALL_STRING;
@@ -112,6 +113,7 @@ public class TypeActivity extends Activity {
 		ArrayList<String> categoryL2 = new ArrayList<String>();
 		categoryL2.add(CATEGORY_ALL_STRING);
 		if (str == CATEGORY_ALL_STRING) {
+			categoryL2.add(CATEGORY_MY_STRING);
 			return categoryL2;
 		} else {
 			categoryL2.addAll(1, Arrays.asList(SeekCategoryUtils.listL2Categories(str)));

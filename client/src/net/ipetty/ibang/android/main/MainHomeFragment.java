@@ -31,6 +31,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.text.format.DateUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -253,9 +254,15 @@ public class MainHomeFragment extends Fragment {
 				Intent intent = data;
 				category = intent.getStringExtra(Constants.INTENT_CATEGORY);
 				subCategory = intent.getStringExtra(Constants.INTENT_SUB_CATEGORY);
+
+				if (subCategory == TypeActivity.CATEGORY_MY_STRING) {
+					// TODO:加载我的特长
+					Log.i("-------->", subCategory);
+				} else {
+					loadSeekByCityOrCategory(true);
+				}
 				setCategoryText(category, subCategory);
 
-				loadSeekByCityOrCategory(true);
 			}
 		}
 		if (requestCode == Constants.REQUEST_CODE_CITY) {
