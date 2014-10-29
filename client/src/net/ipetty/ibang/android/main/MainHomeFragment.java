@@ -19,7 +19,11 @@ import net.ipetty.ibang.android.seek.ListLatestAvaliableSeeksByCityOrCategoryTas
 import net.ipetty.ibang.android.seek.ListLatestAvaliableSeeksTaskListener;
 import net.ipetty.ibang.android.seek.SeekActivity;
 import net.ipetty.ibang.android.type.TypeActivity;
+import net.ipetty.ibang.android.user.UpdateProfileTask;
+import net.ipetty.ibang.android.user.UpdateProfileTaskListener;
 import net.ipetty.ibang.vo.SeekVO;
+import net.ipetty.ibang.vo.UserFormVO;
+import net.ipetty.ibang.vo.UserVO;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -287,6 +291,30 @@ public class MainHomeFragment extends Fragment {
 				ApiContext.getInstance(getActivity()).setLocationProvince(province);
 				ApiContext.getInstance(getActivity()).setLocationCity(city);
 				ApiContext.getInstance(getActivity()).setLocationDistrict(district);
+
+				UserVO user = ApiContext.getInstance(getActivity()).getCurrentUser();
+				if (user != null) {
+					user.setProvince(province);
+					user.setCity(city);
+					user.setDistrict(district);
+
+					UserFormVO userForm = new UserFormVO();
+					userForm.setId(user.getId());
+					userForm.setNickname(user.getNickname());
+					userForm.setGender(user.getGender());
+					userForm.setJob(user.getJob());
+					userForm.setPhone(user.getPhone());
+					userForm.setTelephone(user.getTelephone());
+					userForm.setSignature(user.getSignature());
+					userForm.setAddress(user.getAddress());
+					userForm.setCity(user.getCity());
+					userForm.setProvince(user.getProvince());
+					userForm.setDistrict(user.getDistrict());
+
+					// 更新用户所在地区
+					new UpdateProfileTask(getActivity()).setListener(new UpdateProfileTaskListener(getActivity()))
+							.execute(userForm);
+				}
 
 				loadSeekByCityOrCategory(true);
 			}
