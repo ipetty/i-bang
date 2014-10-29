@@ -117,7 +117,7 @@ public class EvaluationService extends BaseService {
 		evaluationDao.save(evaluation);
 
 		// 将图片与评价相关联
-		imageService.saveImageToSeek(seek.getId(), imageIds);
+		imageService.saveImageToEvaluation(evaluation.getId(), imageIds);
 
 		// 更新积分与头衔
 		if (evaluation.getPoint() != 0) {
