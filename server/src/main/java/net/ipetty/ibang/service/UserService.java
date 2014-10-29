@@ -7,6 +7,8 @@ import javax.annotation.Resource;
 import net.ipetty.ibang.context.SpringContextHelper;
 import net.ipetty.ibang.exception.BusinessException;
 import net.ipetty.ibang.model.Image;
+import net.ipetty.ibang.model.OffererInfo;
+import net.ipetty.ibang.model.SeekerInfo;
 import net.ipetty.ibang.model.User;
 import net.ipetty.ibang.model.UserRefreshToken;
 import net.ipetty.ibang.repository.UserDao;
@@ -98,6 +100,12 @@ public class UserService extends BaseService {
 
 		// persist user
 		userDao.save(user);
+
+		// 保存用户相应积分信息
+		user.setSeekerInfo(new SeekerInfo(user.getId(), 0, 0, seekerInfoService.getTitle(0)));
+		user.setOffererInfo(new OffererInfo(user.getId(), 0, 0, offererInfoService.getTitle(0)));
+		seekerInfoService.saveOrUpdate(user.getSeekerInfo());
+		offererInfoService.saveOrUpdate(user.getOffererInfo());
 	}
 
 	private void checkUniqueForRegister(String fieldValue, String fieldLabel) throws BusinessException {
