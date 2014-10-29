@@ -63,11 +63,15 @@ public class DelegationActivity extends Activity {
 	private TextView seek_evaluation;
 	private TextView seek_evaluation_content;
 	private LinearLayout seek_evaluation_image_layout;
+	private TextView seek_seekerTitle;
+	private TextView seek_additionalReward;
+	private TextView seek_serviceDate;
+	private View seek_additionalReward_layout;
 
 	private ImageView delegation_avatar;
 	private TextView delegation_nickname;
 	private TextView delegation_created_on;
-	private TextView offer_content;
+	private TextView delegation_content;
 	private TextView delegation_phone;
 	// private View delegation_contact_layout;
 	private TextView finish_delegation_btn;
@@ -78,6 +82,7 @@ public class DelegationActivity extends Activity {
 	private TextView delegation_evaluation;
 	private TextView delegation_evaluation_content;
 	private LinearLayout delegation_evaluation_image_layout;
+	private TextView delegation_totalPoint;
 
 	private View evaluation_layout;
 	private TextView evaluation;
@@ -120,11 +125,15 @@ public class DelegationActivity extends Activity {
 		seek_evaluation = (TextView) this.findViewById(R.id.seek_evaluation);
 		seek_evaluation_content = (TextView) this.findViewById(R.id.seek_evaluation_content);
 		seek_evaluation_image_layout = (LinearLayout) this.findViewById(R.id.seek_evaluation_image_layout);
+		seek_seekerTitle = (TextView) this.findViewById(R.id.seekerTitle);
+		seek_additionalReward = (TextView) this.findViewById(R.id.additionalReward);
+		seek_serviceDate = (TextView) this.findViewById(R.id.serviceDate);
+		seek_additionalReward_layout = this.findViewById(R.id.additionalReward_layout);
 
 		delegation_avatar = (ImageView) this.findViewById(R.id.delegation_avatar);
 		delegation_nickname = (TextView) this.findViewById(R.id.delegation_nickname);
 		delegation_created_on = (TextView) this.findViewById(R.id.delegation_created_at);
-		offer_content = (TextView) this.findViewById(R.id.offer_content);
+		delegation_content = (TextView) this.findViewById(R.id.delegation_content);
 		delegation_phone = (TextView) this.findViewById(R.id.delegation_phone);
 		// delegation_contact_layout =
 		// this.findViewById(R.id.delegation_contact_layout);
@@ -137,6 +146,7 @@ public class DelegationActivity extends Activity {
 		delegation_evaluation = (TextView) this.findViewById(R.id.delegation_evaluation);
 		delegation_evaluation_content = (TextView) this.findViewById(R.id.delegation_evaluation_content);
 		delegation_evaluation_image_layout = (LinearLayout) this.findViewById(R.id.delegation_evaluation_image_layout);
+		delegation_totalPoint = (TextView) this.findViewById(R.id.delegation_totalPoint);
 
 		evaluation_layout = this.findViewById(R.id.evaluation_layout); // 评价按钮根据权限显示不同的评价
 		evaluation = (TextView) this.findViewById(R.id.evaluation);
@@ -174,7 +184,26 @@ public class DelegationActivity extends Activity {
 		bindTime(seekVO.getCreatedOn(), seek_created_at);
 		seek_content.setText(seekVO.getContent());
 		seek_phone.setText(seeker.getPhone());
+		seek_seekerTitle.setText("等级:" + seeker.getSeekerTitle());
+		String str = seekVO.getAdditionalReward();
+		seek_additionalReward.setText("附加说明:" + str);
 
+		if (!StringUtils.isNotEmpty(str)) {
+			seek_additionalReward_layout.setVisibility(View.GONE);
+		} else {
+			seek_additionalReward_layout.setVisibility(View.VISIBLE);
+		}
+		String serviceDateStr = seekVO.getServiceDate();
+		if (Constants.MAX_EXIPIREDATE.equals(serviceDateStr)) {
+			serviceDateStr = Constants.MAX_EXIPIREDATE_CONDITION;
+		}
+		seek_serviceDate.setText(serviceDateStr);
+
+		if (seekVO.getClosedOn() != null) {
+			Calendar c = Calendar.getInstance();
+			c.setTime(seekVO.getClosedOn());
+			seek_closedOn.setText(DateUtils.toDateString(c.getTime()));
+		}
 		if (seekVO.getClosedOn() != null) {
 			Calendar c = Calendar.getInstance();
 			c.setTime(seekVO.getClosedOn());
@@ -311,8 +340,9 @@ public class DelegationActivity extends Activity {
 						// 求助/委托信息
 						bindUser(offerer, delegation_avatar, delegation_nickname);
 						bindTime(delegationVO.getCreatedOn(), delegation_created_on);
-						offer_content.setText(offerVO.getContent());
+						delegation_content.setText(offerVO.getContent());
 						delegation_phone.setText(offerer.getPhone());
+						delegation_totalPoint.setText("等级:" + offerer.getSeekerTitle());
 
 						// 完成委托按钮
 						finish_delegation_btn.setOnClickListener(new OnClickListener() {
@@ -366,7 +396,6 @@ public class DelegationActivity extends Activity {
 
 	private void initImage(LinearLayout layout, List<ImageVO> images) {
 		// TODO Auto-generated method stub
-		Log.i("xxxx-->", "initImage");
 		for (ImageVO image : images) {
 
 			LayoutParams ly = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
