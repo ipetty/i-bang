@@ -27,6 +27,12 @@ import com.baidu.mapapi.map.MarkerOptions;
 import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.map.OverlayOptions;
 import com.baidu.mapapi.model.LatLng;
+import com.baidu.mapapi.search.core.SearchResult;
+import com.baidu.mapapi.search.geocode.GeoCodeResult;
+import com.baidu.mapapi.search.geocode.GeoCoder;
+import com.baidu.mapapi.search.geocode.OnGetGeoCoderResultListener;
+import com.baidu.mapapi.search.geocode.ReverseGeoCodeOption;
+import com.baidu.mapapi.search.geocode.ReverseGeoCodeResult;
 import net.ipetty.ibang.R;
 import net.ipetty.ibang.android.core.ActivityManager;
 import net.ipetty.ibang.android.core.MyApplication;
@@ -45,8 +51,9 @@ public class LocateActivity extends Activity {
         private LocationClient mLocationClient;
         private MapView mMapView;
         private BaiduMap mBaiduMap;
-        boolean isFirstLoc = true;// 是否首次定位
+        private boolean isFirstLoc = true;// 是否首次定位
         private Marker mMarkerA;
+        private GeoCoder mSearch = null; // 搜索模块，也可去掉地图模块独立使用
 
         @Override
         public void onCreate(Bundle savedInstanceState) {
@@ -61,6 +68,9 @@ public class LocateActivity extends Activity {
                 // 地图初始化
                 mMapView = (MapView) findViewById(R.id.bmapView);
                 mBaiduMap = mMapView.getMap();
+                //设置地图缩放
+                MapStatusUpdate u2 = MapStatusUpdateFactory.zoomTo(16);
+                mBaiduMap.animateMapStatus(u2);
                 // 开启定位图层
                 mBaiduMap.setMyLocationEnabled(true);
                 mBaiduMap.setOnMapStatusChangeListener(new OnMapStateChange());
@@ -69,6 +79,9 @@ public class LocateActivity extends Activity {
                 //位置监听函数
                 mLocationClient.registerLocationListener(new MyLocationListener());
                 mLocationClient.start();
+                // 初始化搜索模块，注册事件监听
+                mSearch = GeoCoder.newInstance();
+                mSearch.setOnGetGeoCodeResultListener(new MyGeoCoderResultListener());
                 showDialog();
                 Log.d(TAG, "onCreate OK");
         }
@@ -102,13 +115,32 @@ public class LocateActivity extends Activity {
                         this.progressDialog = new ProgressDialog(this);
                 }
                 this.progressDialog.setIndeterminate(true);
-                this.progressDialog.setCancelable(false);
+                this.progressDialog.setCancelable(true);
                 this.progressDialog.setMessage("正在确定您的位置");
                 this.progressDialog.show();
         }
 
         private void dismissDialog() {
                 this.progressDialog.dismiss();
+        }
+
+        //Geo查询
+        private class MyGeoCoderResultListener implements OnGetGeoCoderResultListener {
+
+                public void onGetGeoCodeResult(GeoCodeResult gcr) {
+
+                }
+
+                public void onGetReverseGeoCodeResult(ReverseGeoCodeResult result) {
+                        if (result == null || result.error != SearchResult.ERRORNO.NO_ERROR) {
+                                Toast.makeText(LocateActivity.this, "抱歉，未能找到结果", Toast.LENGTH_LONG)
+                                        .show();
+                                return;
+                        }
+                        Toast.makeText(LocateActivity.this, result.getAddress(),
+                                Toast.LENGTH_LONG).show();
+                }
+
         }
 
         //地图状态变化
@@ -120,27 +152,23 @@ public class LocateActivity extends Activity {
 
                 public void onMapStatusChange(MapStatus ms) {
                         Log.d(TAG, "onMapStatusChange");
-                        //地图中心点经纬度
-                        //ms.target
-                        // Log.d(TAG, String.valueOf(ms.target.longitude) + "," + String.valueOf(ms.target.latitude));
-                }
-
-                public void onMapStatusChangeFinish(MapStatus ms) {
-                        Log.d(TAG, "onMapStatusChangeFinish");
-                        MapStatusUpdate u = MapStatusUpdateFactory.zoomTo(16);
-                        mBaiduMap.animateMapStatus(u);
-
+                        //在地图中间增加Markerm BaiduMap.getMapStatus().target
                         BitmapDescriptor bd = BitmapDescriptorFactory
                                 .fromResource(R.drawable.icon_gcoding);
                         if (mMarkerA == null) {
                                 OverlayOptions ooA = new MarkerOptions().position(ms.target).icon(bd)
-                                        .zIndex(9).draggable(true);
+                                        .zIndex(9).draggable(false);
                                 mMarkerA = (Marker) (mBaiduMap.addOverlay(ooA));
                         } else {
                                 mMarkerA.setPosition(ms.target);
                         }
+                }
 
-                        Toast.makeText(LocateActivity.this, "当前位置:" + ms.target.longitude + "," + ms.target.latitude, Toast.LENGTH_LONG).show();
+                public void onMapStatusChangeFinish(MapStatus ms) {
+                        Log.d(TAG, "onMapStatusChangeFinish");
+                        // 反Geo搜索
+                        mSearch.reverseGeoCode(new ReverseGeoCodeOption()
+                                .location(ms.target));
                 }
         }
 
@@ -158,6 +186,7 @@ public class LocateActivity extends Activity {
                                 Log.d(TAG, "定位失败");
                                 return;
                         }
+                        //设置当前位置
                         MyLocationData locData = new MyLocationData.Builder()
                                 .accuracy(location.getRadius())
                                 // 此处设置开发者获取到的方向信息，顺时针0-360
