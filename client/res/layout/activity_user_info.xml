@@ -66,14 +66,15 @@
 			         <TextView
 			             android:id="@+id/nickname"
 			             android:layout_width="wrap_content"
-			             android:layout_height="28dp"
+			             android:layout_height="match_parent"
 			             android:layout_alignParentLeft="true"
 			             android:layout_centerVertical="true"
 			             android:ellipsize="end"
 			             android:gravity="left|center"
 			             android:singleLine="true"
-			             android:textColor="@color/black_color"
-			             android:textSize="24dp" />
+			             android:textColor="@color/base_color"
+			             android:textSize="18dp" 
+			             android:text=""/>
 
 			     </RelativeLayout>
 

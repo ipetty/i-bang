@@ -52,9 +52,14 @@ public class OfferActivity extends Activity {
 	private TextView offer_totalPoint;
 	private TextView offer_close;
 	private View offer_close_layout;
+	private TextView offer_status;
+	private TextView seek_seekerTitle;
 
 	private View delegation_layout;
 	private TextView delegation;
+	private TextView seek_additionalReward;
+	private TextView seek_serviceDate;
+	private View seek_additionalReward_layout;
 
 	private SeekVO seekVO;
 	private OfferVO offerVO;
@@ -83,6 +88,10 @@ public class OfferActivity extends Activity {
 		seek_closedOn = (TextView) this.findViewById(R.id.closedOn);
 		seek_phone = (TextView) this.findViewById(R.id.phone);
 		seek_contact_layout = this.findViewById(R.id.contact_layout);
+		seek_seekerTitle = (TextView) this.findViewById(R.id.seekerTitle);
+		seek_additionalReward = (TextView) this.findViewById(R.id.additionalReward);
+		seek_serviceDate = (TextView) this.findViewById(R.id.serviceDate);
+		seek_additionalReward_layout = this.findViewById(R.id.additionalReward_layout);
 
 		offer_avatar = (ImageView) this.findViewById(R.id.offer_avatar);
 		offer_content = (TextView) this.findViewById(R.id.offer_content);
@@ -91,6 +100,7 @@ public class OfferActivity extends Activity {
 		offer_phone = (TextView) this.findViewById(R.id.offer_phone);
 		offer_contact_layout = this.findViewById(R.id.offer_contact_layout);
 		offer_totalPoint = (TextView) this.findViewById(R.id.offer_totalPoint);
+		offer_status = (TextView) this.findViewById(R.id.offer_status);
 
 		offer_close = (TextView) this.findViewById(R.id.offer_close);
 		offer_close_layout = this.findViewById(R.id.offer_close_layout);
@@ -109,8 +119,9 @@ public class OfferActivity extends Activity {
 				bindUser(offerer, offer_avatar, offer_nickname);
 				bindTime(offerVO.getCreatedOn(), offer_created_at);
 				offer_content.setText(offerVO.getContent());
-				offer_totalPoint.setText("积分" + String.valueOf(offerer.getSeekerTotalPoint()));
+				offer_totalPoint.setText("等级:" + String.valueOf(offerer.getSeekerTitle()));
 				offer_phone.setText(offerer.getPhone());
+				offer_status.setText(offerVO.getStatus());
 
 				new GetSeekByIdTask(OfferActivity.this).setListener(
 						new DefaultTaskListener<SeekVO>(OfferActivity.this) {
@@ -122,6 +133,21 @@ public class OfferActivity extends Activity {
 								bindTime(seekVO.getCreatedOn(), seek_created_at);
 								seek_content.setText(seekVO.getContent());
 								seek_phone.setText(seeker.getPhone());
+								seek_seekerTitle.setText("等级:" + seeker.getSeekerTitle());
+
+								String str = seekVO.getAdditionalReward();
+								seek_additionalReward.setText("附加说明:" + str);
+								if (!StringUtils.isNotEmpty(str)) {
+									seek_additionalReward_layout.setVisibility(View.GONE);
+								} else {
+									seek_additionalReward_layout.setVisibility(View.VISIBLE);
+								}
+								String serviceDateStr = seekVO.getServiceDate();
+								if (Constants.MAX_EXIPIREDATE.equals(serviceDateStr)) {
+									serviceDateStr = Constants.MAX_EXIPIREDATE_CONDITION;
+								}
+								seek_serviceDate.setText(serviceDateStr);
+
 								if (seekVO.getClosedOn() != null) {
 									Calendar c = Calendar.getInstance();
 									c.setTime(seekVO.getClosedOn());

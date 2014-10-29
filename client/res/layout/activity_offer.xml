@@ -24,56 +24,59 @@
  	 	        android:layout_height="match_parent"
  	 	        android:orientation="vertical" >
 
- 	 	        <ImageSwitcher
- 	 	            android:id="@+id/imageSwitcher"
- 	 	            android:layout_width="fill_parent"
- 	 	            android:layout_height="200dp"
- 	 	            android:background="@color/white_color"
- 	 	            android:visibility="gone" >
- 	 	        </ImageSwitcher>
+ 	 	   
  	 	        
-<RelativeLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:gravity="left"
-    android:orientation="horizontal"
-	android:paddingTop="8dp" 
-	android:paddingLeft="8dp"
-	android:paddingRight="8dp"
-    android:background="@drawable/list_color_item_bg_white" >
-
-			    <ImageView
-			        android:id="@+id/avatar"
-			        android:layout_width="40dp"
-			        android:layout_height="40dp"
-			        android:layout_marginRight="11.0dip"
-			        android:layout_alignParentBottom="true"
-			        android:layout_alignParentLeft="true"
-			        android:scaleType="fitXY"
-			        android:src="@drawable/default_avatar" />
-
-			    <TextView
-			        android:id="@+id/nickname"
-			        android:layout_width="wrap_content"
-			        android:layout_height="32dp"
-			        android:layout_toRightOf="@+id/avatar"
-			        android:ellipsize="end"
-			        android:gravity="left|center"
-			        android:singleLine="true"
-			        android:text="张三"
-			        android:textColor="@color/base_color"
-			        android:textSize="20dp" />
-<TextView
-				        android:id="@+id/created_at"
-				        android:layout_width="wrap_content"
-				        android:layout_height="wrap_content"
-				        android:layout_alignParentRight="true"
-				        android:layout_centerVertical="true"
-				        android:gravity="center"
-				        android:textSize="12sp" 
-				        android:textColor="@color/gray_color"
-				        android:text="2分钟前"/>
-	</RelativeLayout>
+			<RelativeLayout
+			    android:layout_width="match_parent"
+			    android:layout_height="wrap_content"
+			    android:gravity="left"
+			    android:orientation="horizontal"
+				android:paddingTop="8dp" 
+				android:paddingLeft="8dp"
+				android:paddingRight="8dp"
+			    android:background="@drawable/list_color_item_bg_white" >
+			
+						    <ImageView
+						        android:id="@+id/avatar"
+						        android:layout_width="40dp"
+						        android:layout_height="40dp"
+						        android:layout_alignParentBottom="true"
+						        android:layout_marginRight="11.0dip"
+						        android:layout_alignParentLeft="true"
+						        android:scaleType="fitXY"
+						        android:src="@drawable/default_avatar" />
+			
+			<TextView
+			    android:id="@+id/nickname"
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:layout_alignTop="@+id/avatar"
+			    android:layout_toRightOf="@+id/avatar"
+			    android:ellipsize="end"
+			    android:gravity="left|center"
+			    android:singleLine="true"
+			    android:textColor="@color/base_color"
+			    android:textSize="18dp" />
+			
+			<TextView
+			    android:id="@+id/seekerTitle"
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:layout_alignLeft="@+id/nickname"
+			    android:layout_alignParentBottom="true"
+			    android:textSize="14dp" />
+			
+			<TextView
+			    android:id="@+id/created_at"
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:layout_alignParentRight="true"
+			    android:layout_alignTop="@+id/nickname"
+			    android:gravity="center"
+			    android:textColor="@color/gray_color"
+			    android:textSize="12sp" />
+			
+				</RelativeLayout>
  	 	        <RelativeLayout
  	 	            android:layout_width="match_parent"
  	 	            android:layout_height="wrap_content"
@@ -86,34 +89,42 @@
  	 	                android:layout_height="wrap_content"
  	 	                android:layout_alignParentLeft="true"
  	 	                android:layout_alignParentTop="true"
- 	 	                android:text="我测试是"
  	 	                android:color="@color/black_color" 
  	 	                android:textSize="16dp" />
-
- 	 	            <TextView
- 	 	                android:id="@+id/textView"
- 	 	                android:layout_width="wrap_content"
- 	 	                android:layout_height="wrap_content"
- 	 	                android:layout_alignLeft="@+id/content"
- 	 	                android:layout_marginTop="8dp"
- 	 	                 android:layout_below="@+id/content"
- 	 	                android:text="截止日期"
- 	 	                android:textSize="14dp"
- 	 	                android:textColor="@color/gray_color" />
-
- 	 	            <TextView
- 	 	                android:id="@+id/closedOn"
- 	 	                android:layout_width="wrap_content"
- 	 	                android:layout_height="wrap_content"
- 	 	                android:layout_alignBaseline="@+id/textView"
- 	 	                android:layout_alignBottom="@+id/textView"
- 	 	                android:layout_toRightOf="@+id/textView"
- 	 	                android:text="2014-12-12"
- 	 	                android:textSize="14dp"
- 	 	                android:textColor="@color/gray_color" />
-
  	 	        </RelativeLayout>
- 	 	        
+ 	 	       <LinearLayout
+ 	 	            android:id="@+id/additionalReward_layout"
+ 	 	            android:layout_width="fill_parent"
+ 	 	            android:layout_height="wrap_content"
+ 	 	            android:background="@drawable/list_color_item_bg_white"
+ 	 	            android:gravity="center_vertical"
+ 	 	            android:orientation="vertical" 
+ 	 	           >
+
+			<LinearLayout
+			    android:layout_width="match_parent"
+			    android:layout_height="wrap_content"
+			    android:gravity="left"
+			    android:orientation="horizontal" >
+			
+			 		<TextView
+ 	 	                android:id="@+id/additionalReward"
+ 	 	                android:layout_width="wrap_content"
+ 	 	                android:layout_height="wrap_content"
+ 	 	                android:layout_gravity="center_vertical"
+ 	 	                android:background="@null"
+ 	 	                android:gravity="left"
+ 	 	                android:singleLine="false"
+ 	 	                android:paddingLeft="8dp"
+ 	 	                android:paddingRight="8dp"
+ 	 	                android:paddingBottom="8dp"
+ 	 	                android:textColor="@color/gray_color"
+ 	 	                android:textSize="14sp"
+ 	 	                android:windowSoftInputMode="stateHidden" />
+			
+			        </LinearLayout>
+ 	 	          
+ 	 	        </LinearLayout> 
  	 	        <LinearLayout
  	 	             android:layout_width="match_parent"
  	 	             android:layout_height="wrap_content"
@@ -131,7 +142,7 @@
  	 	                 <TextView
  	 	                     android:layout_width="wrap_content"
  	 	                     android:layout_height="wrap_content"
- 	 	                     android:layout_marginLeft="16dp"
+ 	 	                     android:layout_marginLeft="8dp"
  	 	                     android:text="手机"
  	 	                     android:textColor="@color/black_color"
  	 	                     android:textSize="16sp" />
@@ -156,6 +167,75 @@
 
  	 	      
  	 	         </LinearLayout>
+ 	 	          <include layout="@layout/line_horizontal_divider" />
+ 	 	         <LinearLayout
+ 	 	            android:layout_width="fill_parent"
+ 	 	            android:layout_height="wrap_content"
+ 	 	               android:minHeight="46dp"
+ 	 	            android:background="@drawable/list_color_item_bg_white"
+ 	 	            android:gravity="center_vertical" >
+
+ 	 	            <TextView
+ 	 	                android:layout_width="wrap_content"
+ 	 	                android:layout_height="wrap_content"
+ 	 	             
+ 	 	                android:layout_marginLeft="8dp"
+ 	 	                android:text="时间要求"
+ 	 	                android:textColor="@color/black_color"
+ 	 	                android:textSize="16sp" />
+
+ 	 	            <TextView
+ 	 	                android:id="@+id/serviceDate"
+ 	 	                android:layout_width="0.0dip"
+ 	 	                android:layout_height="wrap_content"
+ 	 	                android:layout_marginLeft="16dp"
+ 	 	                android:layout_marginRight="16dp"
+ 	 	                android:layout_weight="1.0"
+ 	 	                android:background="@null"
+ 	 	                android:focusable="false"
+ 	 	                android:gravity="right|center_vertical"
+ 	 	                android:text="不限"
+ 	 	                android:hint=""
+ 	 	                android:textColor="@color/gray_color"
+ 	 	                android:textColorHint="@color/gray_color"
+ 	 	                android:textSize="16sp"
+ 	 	                android:windowSoftInputMode="stateHidden" />
+ 	 	        </LinearLayout>
+ 	 	        <include layout="@layout/line_horizontal_divider" />
+ 	 	        <LinearLayout
+ 	 	            android:layout_width="fill_parent"
+ 	 	            android:layout_height="wrap_content"
+ 	 	               android:minHeight="46dp"
+ 	 	            android:background="@drawable/list_color_item_bg_white"
+ 	 	            android:gravity="center_vertical" >
+
+ 	 	            <TextView
+ 	 	                android:layout_width="wrap_content"
+ 	 	                android:layout_height="wrap_content"
+ 	 	             
+ 	 	                android:layout_marginLeft="8dp"
+ 	 	                android:text="截止日期"
+ 	 	                android:textColor="@color/black_color"
+ 	 	                android:textSize="16sp" />
+
+ 	 	            <TextView
+ 	 	                android:id="@+id/closedOn"
+ 	 	                android:layout_width="0.0dip"
+ 	 	                android:layout_height="wrap_content"
+ 	 	                android:layout_marginLeft="16dp"
+ 	 	                android:layout_marginRight="16dp"
+ 	 	                android:layout_weight="1.0"
+ 	 	                android:background="@null"
+ 	 	                android:focusable="false"
+ 	 	                android:gravity="right|center_vertical"
+ 	 	                android:text="不限"
+ 	 	                android:hint=""
+ 	 	                android:textColor="@color/gray_color"
+ 	 	                android:textColorHint="@color/gray_color"
+ 	 	                android:textSize="16sp"
+ 	 	                android:windowSoftInputMode="stateHidden" />
+ 	 	        </LinearLayout>
+ 	 	        
  	 	        <include layout="@layout/line_horizontal_divider" />
  	 	         <include layout="@layout/line_space" />
 
@@ -238,88 +318,100 @@
 					<include layout="@layout/line_space" />
  	 	         </LinearLayout>
 
+ 	 	         
+ 	 	         
  	 	         <LinearLayout
  	 	             android:id="@+id/offer_layout"
  	 	             android:layout_width="match_parent"
  	 	             android:layout_height="wrap_content"
  	 	             android:orientation="vertical" >
 					<include layout="@layout/line_horizontal_divider"/>
- 	 	             <LinearLayout
- 	 	                 android:layout_width="fill_parent"
- 	 	                 android:layout_height="wrap_content"
- 	 	                 android:orientation="horizontal"
- 	 	                 android:paddingBottom="13.0dip"
- 	 	                 android:paddingLeft="10.0dip"
- 	 	                 android:paddingRight="14.0dip"
- 	 	                 android:background="@color/white_color"
- 	 	                 android:paddingTop="13dp" >
+					
+					<LinearLayout android:orientation="horizontal"     android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+   android:paddingLeft="10.0dip"
+   android:paddingBottom="13.0dip" 
+    android:paddingRight="14.0dip"
+    android:paddingTop="13dp"
+     android:background="@color/white_color">
+    <ImageView
+        android:id="@+id/offer_avatar"
+        android:scaleType="centerCrop"
+        android:layout_width="40.0dip" 
+  		android:layout_height="40.0dip"
+  		android:layout_marginRight="11.0dip"
+        android:src="@drawable/default_avatar"/>
+    
+    <LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content">
 
- 	 	                 <ImageView
- 	 	                     android:id="@+id/offer_avatar"
- 	 	                     android:layout_width="40.0dip"
- 	 	                     android:layout_height="40.0dip"
- 	 	                     android:layout_marginRight="11.0dip"
- 	 	                     android:scaleType="centerCrop"
- 	 	                     android:src="@drawable/default_avatar" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center" >
 
- 	 	                 <LinearLayout
- 	 	                     android:layout_width="fill_parent"
- 	 	                     android:layout_height="wrap_content"
- 	 	                     android:orientation="vertical" >
+				    <TextView
+				        android:id="@+id/offer_created_at"
+				        android:layout_width="wrap_content"
+				        android:layout_height="wrap_content"
+				        android:layout_alignParentRight="true"
+				        android:layout_alignParentTop="true"
+				        android:gravity="center"
+				        android:text=""
+				        android:textColor="@color/gray_color"
+				        android:textSize="12sp" />
 
- 	 	                     <RelativeLayout
- 	 	                         android:layout_width="match_parent"
- 	 	                         android:layout_height="wrap_content"
- 	 	                         android:gravity="center" >
+				    <TextView
+				        android:id="@+id/offer_nickname"
+				        android:layout_width="wrap_content"
+				        android:layout_height="wrap_content"
+				        android:layout_alignParentLeft="true"
+				        android:layout_alignParentTop="true"
+				        android:ellipsize="end"
+				        android:singleLine="true"
+				        android:text=""
+				        android:textColor="@color/base_color"
+				        android:textSize="16sp"
+				        android:textStyle="bold" />
 
- 	 	                         <TextView
- 	 	                             android:id="@+id/offer_nickname"
- 	 	                             android:layout_width="wrap_content"
- 	 	                             android:layout_height="wrap_content"
- 	 	                             android:layout_alignParentLeft="true"
- 	 	                             android:layout_centerVertical="true"
- 	 	                             android:ellipsize="end"
- 	 	                             android:singleLine="true"
- 	 	                             android:text="张先生"
- 	 	                             android:textColor="@color/base_color"
- 	 	                             android:textSize="16sp"
- 	 	                             android:textStyle="bold" />
+        </RelativeLayout>
 
- 	 	                         <TextView
- 	 	                             android:id="@+id/offer_created_at"
- 	 	                             android:layout_width="wrap_content"
- 	 	                             android:layout_height="wrap_content"
- 	 	                             android:layout_alignParentRight="true"
- 	 	                             android:layout_centerVertical="true"
- 	 	                             android:gravity="center"
- 	 	                             android:text="2分钟前"
- 	 	                             android:textColor="@color/gray_color"
- 	 	                             android:textSize="12sp" />
- 	 	                     </RelativeLayout>
+        <TextView 
+            android:id="@+id/offer_content" 
+            android:layout_width="fill_parent" 
+            android:layout_height="wrap_content" 
+            android:layout_marginTop="2.0dip" 
+            android:layout_marginBottom="2.0dip" 
+            android:textColor="@android:color/black"
+            android:textSize="14sp"
+            android:text=""/>
 
- 	 	                     <TextView
- 	 	                         android:id="@+id/offer_content"
- 	 	                         android:layout_width="fill_parent"
- 	 	                         android:layout_height="wrap_content"
- 	 	                         android:layout_marginTop="6.0dip"
- 	 	                         android:text="我可以提供给您需要的帮助提"
- 	 	                         android:textColor="@android:color/black"
- 	 	                         android:textSize="14sp" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+			<TextView
+			    android:id="@+id/offer_totalPoint"
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:layout_alignParentLeft="true"
+			    android:text=""
+			    android:textColor="@color/gray_color"
+			    android:textSize="12sp" />
 
- 	 	                     <RelativeLayout
- 	 	                         android:layout_width="match_parent"
- 	 	                         android:layout_height="wrap_content" >
+			<TextView
+			    android:id="@+id/offer_status"
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:layout_alignParentRight="true"
+			    android:layout_alignParentTop="true"
+			    android:gravity="center"
+			    android:text="状态"
+			    android:textColor="@color/gray_color"
+			    android:textSize="12sp" />
 
- 	 	                         <TextView
- 	 	                             android:id="@+id/offer_totalPoint"
- 	 	                             android:layout_width="wrap_content"
- 	 	                             android:layout_height="wrap_content"
- 	 	                             android:layout_alignParentLeft="true"
- 	 	                             android:text="积分1000"
- 	 	                             android:textSize="12sp" />
- 	 	                     </RelativeLayout>
- 	 	                 </LinearLayout>
- 	 	             </LinearLayout>
+        </RelativeLayout>
+        
+    </LinearLayout>
+     </LinearLayout>
  	 	             <LinearLayout
  	 	             android:layout_width="match_parent"
  	 	             android:layout_height="wrap_content"
@@ -337,7 +429,7 @@
  	 	                 <TextView
  	 	                     android:layout_width="wrap_content"
  	 	                     android:layout_height="wrap_content"
- 	 	                     android:layout_marginLeft="16dp"
+ 	 	                     android:layout_marginLeft="8dp"
  	 	                     android:text="手机"
  	 	                     android:textColor="@color/black_color"
  	 	                     android:textSize="16sp" />
