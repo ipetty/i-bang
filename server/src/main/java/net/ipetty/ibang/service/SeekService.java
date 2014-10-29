@@ -12,10 +12,13 @@ import net.ipetty.ibang.model.Offer;
 import net.ipetty.ibang.model.Seek;
 import net.ipetty.ibang.model.SeekerInfo;
 import net.ipetty.ibang.model.SystemMessage;
+import net.ipetty.ibang.model.User;
 import net.ipetty.ibang.repository.SeekDao;
 import net.ipetty.ibang.util.UUIDUtils;
 import net.ipetty.ibang.vo.Constants;
+import net.ipetty.ibang.vo.SeekCategory;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
@@ -139,6 +142,36 @@ public class SeekService extends BaseService {
 			Date timeline, int pageNumber, int pageSize) {
 		List<Long> seekIds = seekDao.listLatestByCityOrCategory(city, district, categoryL1, categoryL2, timeline,
 				pageNumber, pageSize);
+		List<Seek> seeks = new ArrayList<Seek>();
+		for (Long seekId : seekIds) {
+			seeks.add(this.getById(seekId));
+		}
+		return seeks;
+	}
+
+	/**
+	 * 获取所在城市指定用户帮忙范围内的最新未关闭求助列表
+	 * 
+	 * @param pageNumber
+	 *            分页页码，从0开始
+	 */
+	public List<Seek> listLatestByCityAndOfferRange(String city, String district, Integer userId, Date timeline,
+			int pageNumber, int pageSize) {
+		if (userId == null) {
+			return this.listLatestByCityOrCategory(city, district, null, null, timeline, pageNumber, pageSize);
+		}
+
+		User user = userService.getById(userId);
+		if (user == null) {
+			return this.listLatestByCityOrCategory(city, district, null, null, timeline, pageNumber, pageSize);
+		}
+		List<SeekCategory> offerRange = user.getOffererInfo().getOfferRange();
+		if (CollectionUtils.isEmpty(offerRange)) {
+			return this.listLatestByCityOrCategory(city, district, null, null, timeline, pageNumber, pageSize);
+		}
+
+		List<Long> seekIds = seekDao.listLatestByCityAndOfferRange(city, district, offerRange, timeline, pageNumber,
+				pageSize);
 		List<Seek> seeks = new ArrayList<Seek>();
 		for (Long seekId : seekIds) {
 			seeks.add(this.getById(seekId));

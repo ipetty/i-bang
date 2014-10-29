@@ -108,6 +108,21 @@ public class SeekController extends BaseController {
 	}
 
 	/**
+	 * 获取所在城市指定用户帮忙范围内的最新未关闭求助列表
+	 * 
+	 * @param pageNumber
+	 *            分页页码，从0开始
+	 */
+	@RequestMapping(value = "/seeklist/latestbycityAndOfferRange", method = RequestMethod.GET)
+	public List<SeekVO> listLatestByCityAndOfferRange(String city, String district, Integer userId, String timeline,
+			int pageNumber, int pageSize) {
+		Date date = StringUtils.isBlank(timeline) ? new Date() : DateUtils.fromDatetimeString(timeline);
+		List<Seek> seeks = seekService
+				.listLatestByCityAndOfferRange(city, district, userId, date, pageNumber, pageSize);
+		return Seek.listToVoList(seeks);
+	}
+
+	/**
 	 * 根据关键字搜索最新的未关闭求助列表
 	 * 
 	 * @param pageNumber

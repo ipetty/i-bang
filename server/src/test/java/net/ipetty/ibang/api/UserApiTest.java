@@ -190,6 +190,7 @@ public class UserApiTest extends BaseApiTest {
 		LoginResultVO result = userApi.login(TEST_ACCOUNT_USERNAME, TEST_ACCOUNT_PASSWORD);
 		List<SeekCategory> offerRange = new ArrayList<SeekCategory>();
 		offerRange.add(new SeekCategory("家政服务", "保洁"));
+		offerRange.add(new SeekCategory("IT服务", "电脑软件"));
 		UserVO user = userApi.updateOfferRange(new UserOfferRange(result.getUserVo().getId(), offerRange));
 		logger.debug("updated offer range = {}", user);
 	}

@@ -117,7 +117,7 @@ public class EvaluationService extends BaseService {
 		evaluationDao.save(evaluation);
 
 		// 将图片与评价相关联
-		imageService.saveImageToSeek(seek.getId(), imageIds);
+		imageService.saveImageToEvaluation(evaluation.getId(), imageIds);
 
 		// 更新积分与头衔
 		if (evaluation.getPoint() != 0) {
@@ -201,7 +201,7 @@ public class EvaluationService extends BaseService {
 		List<Long> evaluationIds = evaluationDao.listByDelegationId(delegationId);
 		List<Evaluation> evaluations = new ArrayList<Evaluation>();
 		for (Long evaluationId : evaluationIds) {
-			evaluations.add(evaluationDao.getById(evaluationId));
+			evaluations.add(this.getById(evaluationId));
 		}
 		return evaluations;
 	}
@@ -216,7 +216,7 @@ public class EvaluationService extends BaseService {
 		List<Long> evaluationIds = evaluationDao.listByEvaluatorId(userId, pageNumber, pageSize);
 		List<Evaluation> evaluations = new ArrayList<Evaluation>();
 		for (Long evaluationId : evaluationIds) {
-			evaluations.add(evaluationDao.getById(evaluationId));
+			evaluations.add(this.getById(evaluationId));
 		}
 		return evaluations;
 	}
@@ -231,7 +231,7 @@ public class EvaluationService extends BaseService {
 		List<Long> evaluationIds = evaluationDao.listByEvaluateTargetId(userId, pageNumber, pageSize);
 		List<Evaluation> evaluations = new ArrayList<Evaluation>();
 		for (Long evaluationId : evaluationIds) {
-			evaluations.add(evaluationDao.getById(evaluationId));
+			evaluations.add(this.getById(evaluationId));
 		}
 		return evaluations;
 	}
