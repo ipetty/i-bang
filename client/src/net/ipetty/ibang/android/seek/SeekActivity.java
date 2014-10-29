@@ -91,18 +91,14 @@ public class SeekActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_seek);
+
 		ActivityManager.getInstance().addActivity(this);
+
 		IntentFilter filter = new IntentFilter();
 		filter.addAction(Constants.BROADCAST_INTENT_IS_LOGIN);
 		filter.addAction(Constants.BROADCAST_INTENT_UPDATA_USER);
 		filter.addAction(Constants.BROADCAST_INTENT_PUBLISH_OFFER);
 		this.registerReceiver(broadcastreciver, filter);
-
-		isLogin = ApiContext.getInstance(this).isAuthorized();
-		user = ApiContext.getInstance(this).getCurrentUser();
-
-		seekId = this.getIntent().getExtras().getLong(Constants.INTENT_SEEK_ID);
-		seekJSON = this.getIntent().getExtras().getString(Constants.INTENT_SEEK_JSON);
 
 		/* action bar */
 		ImageView btnBack = (ImageView) this.findViewById(R.id.action_bar_left_image);
@@ -110,8 +106,13 @@ public class SeekActivity extends Activity {
 		TextView text = (TextView) this.findViewById(R.id.action_bar_title);
 		text.setText(this.getResources().getString(R.string.title_activity_seek));
 
+		isLogin = ApiContext.getInstance(this).isAuthorized();
+		user = ApiContext.getInstance(this).getCurrentUser();
+
+		seekId = this.getIntent().getExtras().getLong(Constants.INTENT_SEEK_ID);
+		seekJSON = this.getIntent().getExtras().getString(Constants.INTENT_SEEK_JSON);
+
 		// 界面元素绑定
-		// image
 		imageView = this.findViewById(R.id.imageView_layout);
 		viewPager = (ViewPager) findViewById(R.id.vp);
 		imageViewText = (TextView) this.findViewById(R.id.imageView_text);
@@ -171,24 +172,46 @@ public class SeekActivity extends Activity {
 		// 加载数据
 		if (seekJSON != null) {
 			seekVO = JSONUtils.fromJSON(seekJSON, SeekVO.class);
+			preLoad();
 		}
+		loadSeekFromService();
+	}
 
-		// 加载求助单
+	private void loadSeekFromService() {
+		// TODO Auto-generated method stub
 		new GetSeekByIdTask(SeekActivity.this).setListener(new DefaultTaskListener<SeekVO>(SeekActivity.this) {
 			@Override
 			public void onSuccess(SeekVO result) {
+				// TODO Auto-generated method stub
 				seekVO = result;
-				// 可以本地加载
-				initImageView();
-				initContent();
+				preLoad();
 				init();
 			}
 		}).execute(seekId);
 	}
 
+	private void loadSeekUserFromService() {
+		if (isSeekOwner()) {
+			seekUser = user;
+		} else {
+			seekUser = GetUserByIdSynchronously.get(SeekActivity.this, seekVO.getSeekerId());
+		}
+	}
+
+	private void preLoad() {
+		// TODO Auto-generated method stub
+		initImageView();
+		initContent();
+	}
+
+	private void reInit() {
+		isLogin = ApiContext.getInstance(this).isAuthorized();
+		user = ApiContext.getInstance(this).getCurrentUser();
+		init();
+	}
+
 	// 登录后需要重新加载视图
 	private void init() {
-		isLogin = ApiContext.getInstance(this).isAuthorized();
 		initUser();
 		// 数据重新加载后显示
 		initViewLayout();
@@ -197,25 +220,15 @@ public class SeekActivity extends Activity {
 
 	// 重新加载当前的用户及相关视图
 	private void initUser() {
-		user = ApiContext.getInstance(this).getCurrentUser();
-		initSeekUser();
-	}
-
-	private void initSeekUser() {
-		if (isSeekOwner()) {
-			seekUser = user;
-			initSeekUserLayout();
-		} else {
-			seekUser = GetUserByIdSynchronously.get(SeekActivity.this, seekVO.getSeekerId());
-			initSeekUserLayout();
-		}
+		loadSeekUserFromService();
+		initSeekUserLayout();
 	}
 
 	private void initSeekUserLayout() {
 		bindUser(seekUser, seek_avatar, seek_username);
 		// 填充手机号
 		phone.setText(seekUser.getPhone());
-		seekerTitle.setText(seekUser.getSeekerTitle());
+		seekerTitle.setText("等级:" + seekUser.getSeekerTitle());
 	}
 
 	private void initContent() {
@@ -235,7 +248,7 @@ public class SeekActivity extends Activity {
 		bindTime(seekVO.getCreatedOn(), seek_created_at);
 
 		String str = seekVO.getAdditionalReward();
-		additionalReward.setText(str);
+		additionalReward.setText("附加说明:" + str);
 		if (!StringUtils.isNotEmpty(str)) {
 			additionalReward_layout.setVisibility(View.GONE);
 		} else {
@@ -249,6 +262,7 @@ public class SeekActivity extends Activity {
 	}
 
 	private void initViewLayout() {
+
 		// TODO Auto-generated method stub
 		String status = seekVO.getStatus();
 
@@ -497,7 +511,7 @@ public class SeekActivity extends Activity {
 		int userId = offer.getOffererId();
 		UserVO user = GetUserByIdSynchronously.get(SeekActivity.this, userId);
 		bindUser(user, holder.avator, holder.nickname);
-		holder.totalPoint.setText("积分" + String.valueOf(user.getSeekerTotalPoint()));
+		holder.totalPoint.setText("等级:" + String.valueOf(user.getSeekerTitle()));
 		return view;
 	}
 
@@ -536,14 +550,14 @@ public class SeekActivity extends Activity {
 		public void onReceive(Context context, Intent intent) {
 			String action = intent.getAction();
 			if (Constants.BROADCAST_INTENT_IS_LOGIN.equals(action)) {
-				init();
+				reInit();
 				// TODO 需要重新刷新界面组件状态
 			}
 			if (Constants.BROADCAST_INTENT_UPDATA_USER.equals(action)) {
 				initUser();
 			}
 			if (Constants.BROADCAST_INTENT_PUBLISH_OFFER.equals(action)) {
-				init();
+				reInit();
 			}
 		}
 	};

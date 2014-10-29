@@ -28,6 +28,7 @@
  	 	            android:id="@+id/imageView_layout"
  	 	             android:layout_width="fill_parent"
        				 android:layout_height="200dp" 
+       				 android:visibility="gone"
        			>
 			        <android.support.v4.view.ViewPager
 			            android:id="@+id/vp"
@@ -67,16 +68,6 @@
 			        android:layout_alignParentLeft="true"
 			        android:scaleType="fitXY"
 			        android:src="@drawable/default_avatar" />
-<TextView
-				        android:id="@+id/seek_created_at"
-				        android:layout_width="wrap_content"
-				        android:layout_height="wrap_content"
-				        android:layout_alignParentRight="true"
-				        android:layout_centerVertical="true"
-				        android:gravity="center"
-				        android:textSize="12sp" 
-				        android:textColor="@color/gray_color"
-				        android:text=""/>
 
 <TextView
     android:id="@+id/seek_username"
@@ -87,7 +78,6 @@
     android:ellipsize="end"
     android:gravity="left|center"
     android:singleLine="true"
-    android:text="zhangsan"
     android:textColor="@color/base_color"
     android:textSize="18dp" />
 
@@ -97,8 +87,17 @@
     android:layout_height="wrap_content"
     android:layout_alignLeft="@+id/seek_username"
     android:layout_alignParentBottom="true"
-    android:textSize="14dp" 
-    android:text="" />
+    android:textSize="14dp" />
+
+<TextView
+    android:id="@+id/seek_created_at"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignParentRight="true"
+    android:layout_alignTop="@+id/seek_username"
+    android:gravity="center"
+    android:textColor="@color/gray_color"
+    android:textSize="12sp" />
 
 	</RelativeLayout>
  	 	        <RelativeLayout
@@ -113,56 +112,14 @@
  	 	                android:layout_height="wrap_content"
  	 	                android:layout_alignParentLeft="true"
  	 	                android:layout_alignParentTop="true"
- 	 	               android:text=""
  	 	                android:color="@color/black_color" 
  	 	                android:textSize="16dp" />
 
- 	 	            <TextView
- 	 	                android:id="@+id/textView"
- 	 	                android:layout_width="wrap_content"
- 	 	                android:layout_height="wrap_content"
- 	 	                android:layout_alignLeft="@+id/content"
- 	 	                android:layout_marginTop="8dp"
- 	 	                 android:layout_below="@+id/content"
- 	 	                android:text="截止日期"
- 	 	                android:textSize="14dp"
- 	 	                android:textColor="@color/gray_color" />
-
- 	 	            <TextView
- 	 	                android:id="@+id/closedOn"
- 	 	                android:layout_width="wrap_content"
- 	 	                android:layout_height="wrap_content"
- 	 	                android:layout_alignBaseline="@+id/textView"
- 	 	                android:layout_alignBottom="@+id/textView"
- 	 	                android:layout_toRightOf="@+id/textView"
- 	 	                android:text=""
- 	 	                android:textSize="14dp"
- 	 	                android:textColor="@color/gray_color" />
-
- 	 	            <TextView
- 	 	                android:id="@+id/number"
- 	 	                android:layout_width="wrap_content"
- 	 	                android:layout_height="wrap_content"
- 	 	                android:layout_alignBaseline="@+id/closedOn"
- 	 	                android:layout_alignBottom="@+id/closedOn"
- 	 	                android:layout_alignParentRight="true"
- 	 	                android:text=""
- 	 	                android:textColor="@color/gray_color"
- 	 	                android:textSize="14dp" />
-
- 	 	            <TextView
- 	 	                android:id="@+id/TextView01"
- 	 	                android:layout_width="wrap_content"
- 	 	                android:layout_height="wrap_content"
- 	 	                android:layout_alignBaseline="@+id/number"
- 	 	                android:layout_alignBottom="@+id/number"
- 	 	                android:layout_toLeftOf="@+id/number"
- 	 	                android:text="帮助人数"
- 	 	                android:textColor="@color/gray_color"
- 	 	                android:textSize="14dp" />
+ 	 	         
+ 	 
 
  	 	        </RelativeLayout>
- 	 	        <include layout="@layout/line_horizontal_divider" />
+ 	 	       
 
  	 	        <LinearLayout
  	 	            android:id="@+id/additionalReward_layout"
@@ -171,35 +128,73 @@
  	 	            android:background="@drawable/list_color_item_bg_white"
  	 	            android:gravity="center_vertical"
  	 	            android:orientation="vertical" 
- 	 	            android:visibility="gone">
+ 	 	           >
 
 			<LinearLayout
 			    android:layout_width="match_parent"
 			    android:layout_height="wrap_content"
-			    android:minHeight="46dp"
 			    android:gravity="left"
-			  
 			    android:orientation="horizontal" >
 			
 			 		<TextView
  	 	                android:id="@+id/additionalReward"
  	 	                android:layout_width="wrap_content"
  	 	                android:layout_height="wrap_content"
- 	 	                android:layout_gravity="left"
+ 	 	                android:layout_gravity="center_vertical"
  	 	                android:background="@null"
  	 	                android:gravity="left"
  	 	                android:singleLine="false"
- 	 	                android:text=""
- 	 	                android:padding="8dp"
+ 	 	                android:paddingLeft="8dp"
+ 	 	                android:paddingRight="8dp"
+ 	 	                android:paddingBottom="8dp"
  	 	                android:textColor="@color/gray_color"
- 	 	                android:textColorHint="@color/gray_color"
- 	 	                android:textSize="16sp"
+ 	 	                android:textSize="14sp"
  	 	                android:windowSoftInputMode="stateHidden" />
 			
 			        </LinearLayout>
+ 	 	          
+ 	 	        </LinearLayout>
+  				<include layout="@layout/line_horizontal_divider" />
+ 	 	        <LinearLayout
+ 	 	            android:id="@+id/contact_layout"
+ 	 	            android:layout_width="match_parent"
+ 	 	            android:layout_height="wrap_content"
+ 	 	            android:orientation="vertical" 
+ 	 	            android:visibility="gone">
+
+ 	 	            <LinearLayout
+ 	 	                android:layout_width="fill_parent"
+ 	 	                android:layout_height="46dp"
+ 	 	                android:background="@drawable/list_color_item_bg_white"
+ 	 	                android:gravity="center_vertical" >
+
+ 	 	                <TextView
+ 	 	                    android:layout_width="wrap_content"
+ 	 	                    android:layout_height="wrap_content"
+ 	 	                    android:layout_marginLeft="8dp"
+ 	 	                    android:text="手机"
+ 	 	                    android:textColor="@color/black_color"
+ 	 	                    android:textSize="16sp" />
+
+ 	 	                <TextView
+ 	 	                    android:id="@+id/phone"
+ 	 	                    android:layout_width="0.0dip"
+ 	 	                    android:layout_height="wrap_content"
+ 	 	                    android:layout_marginLeft="16dp"
+ 	 	                    android:layout_marginRight="16dp"
+ 	 	                    android:layout_weight="1.0"
+ 	 	                    android:background="@null"
+ 	 	                    android:focusable="false"
+ 	 	                    android:gravity="right|center_vertical"
+ 	 	                    android:singleLine="true"
+ 	 	                    android:textColor="@color/gray_color"
+ 	 	                    android:textColorHint="@color/gray_color"
+ 	 	                    android:textSize="16sp"
+ 	 	                    android:windowSoftInputMode="stateHidden" />
+ 	 	            </LinearLayout>
+
  	 	            <include layout="@layout/line_horizontal_divider" />
  	 	        </LinearLayout>
- 	 	        
 
 <LinearLayout
  	 	            android:layout_width="fill_parent"
@@ -235,55 +230,48 @@
  	 	                android:windowSoftInputMode="stateHidden" />
  	 	        </LinearLayout>
  	 	        <include layout="@layout/line_horizontal_divider" />
- 	 	        
- 	 	           <LinearLayout
- 	 	             android:layout_width="match_parent"
- 	 	             android:layout_height="wrap_content"
- 	 	             android:orientation="vertical"
- 	 	             android:id="@+id/contact_layout"
- 	 	            >
+ 	 	        <LinearLayout
+ 	 	            android:layout_width="fill_parent"
+ 	 	            android:layout_height="wrap_content"
+ 	 	               android:minHeight="46dp"
+ 	 	            android:background="@drawable/list_color_item_bg_white"
+ 	 	            android:gravity="center_vertical" >
 
- 	 	             <LinearLayout
- 	 	                 android:layout_width="fill_parent"
- 	 	                 android:layout_height="46dp"
- 	 	                 android:background="@drawable/list_color_item_bg_white"
- 	 	                 android:gravity="center_vertical" >
+ 	 	            <TextView
+ 	 	                android:layout_width="wrap_content"
+ 	 	                android:layout_height="wrap_content"
+ 	 	             
+ 	 	                android:layout_marginLeft="8dp"
+ 	 	                android:text="截止日期"
+ 	 	                android:textColor="@color/black_color"
+ 	 	                android:textSize="16sp" />
 
- 	 	                 <TextView
- 	 	                     android:layout_width="wrap_content"
- 	 	                     android:layout_height="wrap_content"
- 	 	                     android:layout_marginLeft="8dp"
- 	 	                     android:text="手机"
- 	 	                     android:textColor="@color/black_color"
- 	 	                     android:textSize="16sp" 
- 	 	                     />
-
- 	 	                 <TextView
- 	 	                     android:id="@+id/phone"
- 	 	                     android:layout_width="0.0dip"
- 	 	                     android:layout_height="wrap_content"
- 	 	                     android:layout_marginLeft="16dp"
- 	 	                     android:layout_marginRight="16dp"
- 	 	                     android:layout_weight="1.0"
- 	 	                     android:background="@null"
- 	 	                     android:focusable="false"
- 	 	                     android:gravity="right|center_vertical"
- 	 	                     android:singleLine="true"
- 	 	                     android:textColor="@color/gray_color"
- 	 	                     android:textColorHint="@color/gray_color"
- 	 	                     android:textSize="16sp"
- 	 	                     android:windowSoftInputMode="stateHidden" />
- 	 	             </LinearLayout>
-
- 	 	             <include layout="@layout/line_horizontal_divider" />
- 	 	         </LinearLayout>
+ 	 	            <TextView
+ 	 	                android:id="@+id/closedOn"
+ 	 	                android:layout_width="0.0dip"
+ 	 	                android:layout_height="wrap_content"
+ 	 	                android:layout_marginLeft="16dp"
+ 	 	                android:layout_marginRight="16dp"
+ 	 	                android:layout_weight="1.0"
+ 	 	                android:background="@null"
+ 	 	                android:focusable="false"
+ 	 	                android:gravity="right|center_vertical"
+ 	 	                android:text="不限"
+ 	 	                android:hint=""
+ 	 	                android:textColor="@color/gray_color"
+ 	 	                android:textColorHint="@color/gray_color"
+ 	 	                android:textSize="16sp"
+ 	 	                android:windowSoftInputMode="stateHidden" />
+ 	 	        </LinearLayout>
+ 	 	         <include layout="@layout/line_horizontal_divider" />
  	 	         <include layout="@layout/line_space" />
 
  	 	           <LinearLayout
  	 	             android:layout_width="match_parent"
  	 	             android:layout_height="wrap_content"
  	 	             android:orientation="vertical"
- 	 	             android:id="@+id/login_layout">
+ 	 	             android:id="@+id/login_layout"
+ 	 	             android:visibility="gone">
 
  	 	             <include layout="@layout/line_horizontal_divider" />
 
@@ -355,16 +343,29 @@
  	 	             android:layout_width="match_parent"
  	 	             android:layout_height="wrap_content"
  	 	             android:orientation="vertical" 
- 	 	             android:visibility="gone"
+ 	 	         	 android:visibility="gone"
  	 	             >
 
- 	 	             <TextView
- 	 	                 android:id="@+id/offerList_label"
- 	 	                 android:layout_width="wrap_content"
- 	 	                 android:layout_height="20dp"
- 	 	                 android:layout_margin="8dp"
- 	 	                 android:text="帮助的人员"
- 	 	                 android:textSize="12sp" />
+ 	 	             <LinearLayout
+ 	 	                 android:layout_width="match_parent"
+ 	 	                 android:layout_height="wrap_content" >
+
+ 	 	                 <TextView
+ 	 	                     android:id="@+id/offerList_label"
+ 	 	                     android:layout_width="wrap_content"
+ 	 	                     android:layout_height="20dp"
+ 	 	                     android:layout_margin="8dp"
+ 	 	                     android:text="帮助的人员"
+ 	 	                     android:textSize="14sp" />
+
+ 	 	                 <TextView
+ 	 	                     android:id="@+id/number"
+ 	 	                     android:layout_width="wrap_content"
+ 	 	                      android:layout_height="20dp"
+ 	 	                     android:layout_marginTop="8dp"
+ 	 	                     android:text="" />
+
+ 	 	             </LinearLayout>
 
 					<include layout="@layout/line_horizontal_divider" />
  	 	             <LinearLayout
@@ -376,6 +377,7 @@
 
  	 	 
  	 	         </LinearLayout>
+
  	 	            <include layout="@layout/line_space" />
  	 	         <LinearLayout
  	 	             android:id="@+id/closeBtn_layout"

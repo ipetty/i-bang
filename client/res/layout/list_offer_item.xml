@@ -27,31 +27,31 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center" >
-           
-            <TextView
-                android:id="@+id/nickname"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_centerVertical="true"
-                android:ellipsize="end"
-                android:singleLine="true"
-                android:textColor="@color/base_color"
-                android:textSize="16sp"
-                android:textStyle="bold" 
-                android:text="张先生"/>
-           
-			    
+
 				    <TextView
 				        android:id="@+id/created_at"
 				        android:layout_width="wrap_content"
 				        android:layout_height="wrap_content"
 				        android:layout_alignParentRight="true"
-				        android:layout_centerVertical="true"
+				        android:layout_alignParentTop="true"
 				        android:gravity="center"
-				        android:textSize="12sp" 
+				        android:text="2分钟前"
 				        android:textColor="@color/gray_color"
-				        android:text="2分钟前"/>
+				        android:textSize="12sp" />
+
+				    <TextView
+				        android:id="@+id/nickname"
+				        android:layout_width="wrap_content"
+				        android:layout_height="wrap_content"
+				        android:layout_alignParentLeft="true"
+				        android:layout_alignParentTop="true"
+				        android:ellipsize="end"
+				        android:singleLine="true"
+				        android:text="张先生"
+				        android:textColor="@color/base_color"
+				        android:textSize="16sp"
+				        android:textStyle="bold" />
+
         </RelativeLayout>
 
         <TextView 
@@ -79,16 +79,15 @@
 			    android:text="接受帮助"
 			    android:textColor="@color/white_color"
 			    android:textSize="12sp" 
-			    android:visibility="gone"/>
+			    android:visibility="gone"
+		/>
 			
 			<TextView
 			    android:id="@+id/totalPoint"
 			    android:layout_width="wrap_content"
 			    android:layout_height="wrap_content"
-			    android:layout_alignBaseline="@+id/accept_button"
-			    android:layout_alignBottom="@+id/accept_button"
 			    android:layout_alignParentLeft="true"
-			    android:text="积分1000"
+			    android:text=""
 			    android:textColor="@color/gray_color"
 			    android:textSize="12sp" />
 			
