@@ -15,6 +15,7 @@ import net.ipetty.ibang.exception.BusinessException;
 import net.ipetty.ibang.model.Seek;
 import net.ipetty.ibang.util.JdbcDaoUtils;
 import net.ipetty.ibang.vo.Constants;
+import net.ipetty.ibang.vo.SeekCategory;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.jdbc.core.RowMapper;
@@ -209,6 +210,62 @@ public class SeekDaoImpl extends BaseJdbcDaoSupport implements SeekDao {
 						Constants.SEEK_STATUS_OFFERED, pageNumber * pageSize, pageSize);
 			}
 		}
+	}
+
+	private static final String LIST_LATEST_BY_CITY_AND_OFFER_RANGE_CLAUSE = FRAGMENT_SELECT_WHERE + FRAGMENT_BY_CITY;
+	private static final String LIST_LATEST_BY_DISTRICT_AND_OFFER_RANGE_CLAUSE = FRAGMENT_SELECT_WHERE
+			+ FRAGMENT_BY_CITY + FRAGMENT_BY_DISTRICT;
+	private static final String AND_FRAGMENT = " and ";
+
+	/**
+	 * 获取所在城市指定用户帮忙范围内的最新未关闭求助列表
+	 * 
+	 * @param pageNumber
+	 *            分页页码，从0开始
+	 */
+	@Override
+	public List<Long> listLatestByCityAndOfferRange(String city, String district, List<SeekCategory> offerRange,
+			Date timeline, int pageNumber, int pageSize) {
+		String offerRangeClause = populateOfferRangeClause(offerRange);
+		if (StringUtils.isBlank(city)) {
+			return super.getJdbcTemplate().query(FRAGMENT_SELECT_WHERE + offerRangeClause + FRAGMENT_OTHERS,
+					LONG_ROW_MAPPER, timeline, Constants.SEEK_STATUS_CREATED, Constants.SEEK_STATUS_OFFERED,
+					pageNumber * pageSize, pageSize);
+		} else if (StringUtils.isBlank(district)) {
+			return super.getJdbcTemplate().query(
+					LIST_LATEST_BY_CITY_AND_OFFER_RANGE_CLAUSE + AND_FRAGMENT + offerRangeClause + FRAGMENT_OTHERS,
+					LONG_ROW_MAPPER, city, timeline, Constants.SEEK_STATUS_CREATED, Constants.SEEK_STATUS_OFFERED,
+					pageNumber * pageSize, pageSize);
+		} else {
+			return super.getJdbcTemplate().query(
+					LIST_LATEST_BY_DISTRICT_AND_OFFER_RANGE_CLAUSE + AND_FRAGMENT + offerRangeClause + FRAGMENT_OTHERS,
+					LONG_ROW_MAPPER, city, district, timeline, Constants.SEEK_STATUS_CREATED,
+					Constants.SEEK_STATUS_OFFERED, pageNumber * pageSize, pageSize);
+		}
+	}
+
+	private String populateOfferRangeClause(List<SeekCategory> offerRange) {
+		StringBuffer sb = new StringBuffer("(");
+		for (int i = 0; i < offerRange.size(); i++) {
+			SeekCategory category = offerRange.get(i);
+			if (category != null) {
+				if (i != 0) {
+					sb.append(" or ");
+				}
+
+				String categoryL1 = category.getCategoryL1();
+				String categoryL2 = category.getCategoryL2();
+				if (StringUtils.isNotBlank(categoryL1)) {
+					sb.append("(category_l1='").append(categoryL1);
+					if (StringUtils.isNotBlank(categoryL2)) {
+						sb.append("' and category_l2='").append(categoryL2);
+					}
+					sb.append("')");
+				}
+			}
+		}
+		sb.append(")");
+		return sb.toString();
 	}
 
 	private static final String LIST_LATEST_BY_KEYWORD_SQL = "select id from seek where created_on<=? and (status=? or status=?) and (title like ? or content like ? or requirement like ? or reward like ? or additional_reward like ?) order by created_on desc limit ?,?";

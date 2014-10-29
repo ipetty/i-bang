@@ -61,6 +61,17 @@ public interface SeekApi {
 			@Query("timeline") String timeline, @Query("pageNumber") int pageNumber, @Query("pageSize") int pageSize);
 
 	/**
+	 * 获取所在城市指定用户帮忙范围内的最新未关闭求助列表
+	 * 
+	 * @param pageNumber
+	 *            分页页码，从0开始
+	 */
+	@GET("/seeklist/latestbycityAndOfferRange")
+	public List<SeekVO> listLatestByCityAndOfferRange(@Query("city") String city, @Query("district") String district,
+			@Query("userId") Integer userId, @Query("timeline") String timeline, @Query("pageNumber") int pageNumber,
+			@Query("pageSize") int pageSize);
+
+	/**
 	 * 根据关键字搜索最新的未关闭求助列表
 	 * 
 	 * @param pageNumber

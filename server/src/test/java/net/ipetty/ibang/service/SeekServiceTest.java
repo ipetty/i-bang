@@ -10,6 +10,7 @@ import net.ipetty.ibang.model.Image;
 import net.ipetty.ibang.model.Seek;
 import net.ipetty.ibang.model.User;
 import net.ipetty.ibang.vo.Constants;
+import net.ipetty.ibang.vo.SeekCategory;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -35,8 +36,8 @@ public class SeekServiceTest extends BaseServiceTest {
 		User user = userService.getByUsername(TEST_ACCOUNT_USERNAME);
 		Seek seek = new Seek();
 		seek.setSeekerId(user.getId());
-		seek.setCategoryL1("IT");
-		seek.setCategoryL2("软件");
+		seek.setCategoryL1("IT服务");
+		seek.setCategoryL2("电脑软件");
 		seek.setContent("求开发一款类似陌陌的手机App");
 		List<Image> images = new ArrayList<Image>();
 		images.add(new Image(null, null, "small_url", "original_url"));
@@ -67,19 +68,42 @@ public class SeekServiceTest extends BaseServiceTest {
 		seeks = seekService.listLatest(new Date(), 0, 20);
 		Assert.assertEquals(0, seeks.size());
 
-		seekService.listLatestByCategory(null, null, new Date(), 0, 20);
-		seekService.listLatestByCategory("categoryL1", null, new Date(), 0, 20);
-		seekService.listLatestByCategory("categoryL1", "categoryL2", new Date(), 0, 20);
+		seeks = seekService.listLatestByCategory(null, null, new Date(), 0, 20);
+		seeks = seekService.listLatestByCategory("categoryL1", null, new Date(), 0, 20);
+		seeks = seekService.listLatestByCategory("categoryL1", "categoryL2", new Date(), 0, 20);
 
-		seekService.listLatestByCityOrCategory(null, null, null, null, new Date(), 0, 20);
-		seekService.listLatestByCityOrCategory(null, null, "categoryL1", null, new Date(), 0, 20);
-		seekService.listLatestByCityOrCategory(null, null, "categoryL1", "categoryL2", new Date(), 0, 20);
-		seekService.listLatestByCityOrCategory("city", null, null, null, new Date(), 0, 20);
-		seekService.listLatestByCityOrCategory("city", null, "categoryL1", null, new Date(), 0, 20);
-		seekService.listLatestByCityOrCategory("city", null, "categoryL1", "categoryL2", new Date(), 0, 20);
-		seekService.listLatestByCityOrCategory("city", "district", null, null, new Date(), 0, 20);
-		seekService.listLatestByCityOrCategory("city", "district", "categoryL1", null, new Date(), 0, 20);
-		seekService.listLatestByCityOrCategory("city", "district", "categoryL1", "categoryL2", new Date(), 0, 20);
+		seeks = seekService.listLatestByCityOrCategory(null, null, null, null, new Date(), 0, 20);
+		seeks = seekService.listLatestByCityOrCategory(null, null, "categoryL1", null, new Date(), 0, 20);
+		seeks = seekService.listLatestByCityOrCategory(null, null, "categoryL1", "categoryL2", new Date(), 0, 20);
+		seeks = seekService.listLatestByCityOrCategory("city", null, null, null, new Date(), 0, 20);
+		seeks = seekService.listLatestByCityOrCategory("city", null, "categoryL1", null, new Date(), 0, 20);
+		seeks = seekService.listLatestByCityOrCategory("city", null, "categoryL1", "categoryL2", new Date(), 0, 20);
+		seeks = seekService.listLatestByCityOrCategory("city", "district", null, null, new Date(), 0, 20);
+		seeks = seekService.listLatestByCityOrCategory("city", "district", "categoryL1", null, new Date(), 0, 20);
+		seeks = seekService.listLatestByCityOrCategory("city", "district", "categoryL1", "categoryL2", new Date(), 0,
+				20);
+
+		seek = new Seek();
+		seek.setSeekerId(user.getId());
+		seek.setCategoryL1("IT服务");
+		seek.setCategoryL2("电脑软件");
+		seek.setContent("求开发一款类似陌陌的手机App");
+		images = new ArrayList<Image>();
+		images.add(new Image(null, null, "small_url", "original_url"));
+		images.add(new Image(null, null, "small_url2", "original_url2"));
+		seek.setImages(images);
+		seek.setRequirement("要求支持短视频分享");
+		seek.setReward("一个月内完成，两万；一个半月内完成，一万五。");
+		seekService.publish(seek);
+
+		user = userService.getByUsername(TEST_ACCOUNT_USERNAME);
+		List<SeekCategory> offerRange = new ArrayList<SeekCategory>();
+		offerRange.add(new SeekCategory("家政服务", "保洁"));
+		offerRange.add(new SeekCategory("IT服务", "电脑软件"));
+		userService.updateOfferRange(user.getId(), offerRange);
+		seeks = seekService.listLatestByCityAndOfferRange(null, null, user.getId(), new Date(), 0, 20);
+		seeks = seekService.listLatestByCityAndOfferRange("city", null, user.getId(), new Date(), 0, 20);
+		seeks = seekService.listLatestByCityAndOfferRange("city", "district", user.getId(), new Date(), 0, 20);
 	}
 
 }

@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import net.ipetty.ibang.model.Seek;
+import net.ipetty.ibang.vo.SeekCategory;
 
 /**
  * SeekDao
@@ -47,6 +48,15 @@ public interface SeekDao {
 	 *            分页页码，从0开始
 	 */
 	public List<Long> listLatestByCityOrCategory(String city, String district, String categoryL1, String categoryL2,
+			Date timeline, int pageNumber, int pageSize);
+
+	/**
+	 * 获取所在城市指定用户帮忙范围内的最新未关闭求助列表
+	 * 
+	 * @param pageNumber
+	 *            分页页码，从0开始
+	 */
+	public List<Long> listLatestByCityAndOfferRange(String city, String district, List<SeekCategory> offerRange,
 			Date timeline, int pageNumber, int pageSize);
 
 	/**

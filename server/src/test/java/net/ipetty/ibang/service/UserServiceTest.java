@@ -148,6 +148,7 @@ public class UserServiceTest extends BaseServiceTest {
 		User user = userService.getByUsername(TEST_ACCOUNT_USERNAME);
 		List<SeekCategory> offerRange = new ArrayList<SeekCategory>();
 		offerRange.add(new SeekCategory("家政服务", "保洁"));
+		offerRange.add(new SeekCategory("IT服务", "电脑软件"));
 		userService.updateOfferRange(user.getId(), offerRange);
 	}
 

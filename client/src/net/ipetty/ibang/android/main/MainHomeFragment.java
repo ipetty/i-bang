@@ -14,8 +14,8 @@ import net.ipetty.ibang.android.core.util.NetWorkUtils;
 import net.ipetty.ibang.android.message.MessageActivity;
 import net.ipetty.ibang.android.sdk.context.ApiContext;
 import net.ipetty.ibang.android.search.SearchActivity;
+import net.ipetty.ibang.android.seek.ListLatestAvaliableSeeksByCityAndOfferRangeTask;
 import net.ipetty.ibang.android.seek.ListLatestAvaliableSeeksByCityOrCategoryTask;
-import net.ipetty.ibang.android.seek.ListLatestAvaliableSeeksTask;
 import net.ipetty.ibang.android.seek.ListLatestAvaliableSeeksTaskListener;
 import net.ipetty.ibang.android.seek.SeekActivity;
 import net.ipetty.ibang.android.type.TypeActivity;
@@ -31,7 +31,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.text.format.DateUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -69,9 +68,14 @@ public class MainHomeFragment extends Fragment {
 	private String city;
 	private String district;
 
+	private Integer currentUserId; // 当前用户ID
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		// 获取当前用户
+		currentUserId = ApiContext.getInstance(getActivity()).getCurrentUserId();
+
 		IntentFilter filter = new IntentFilter();
 		filter.addAction(Constants.BROADCAST_INTENT_IS_LOGIN);
 		filter.addAction(Constants.BROADCAST_INTENT_NEW_MESSAGE);
@@ -82,7 +86,6 @@ public class MainHomeFragment extends Fragment {
 
 	@Override
 	public void onDestroy() {
-		// TODO Auto-generated method stub
 		super.onDestroy();
 		this.getActivity().unregisterReceiver(broadcastreciver);
 	}
@@ -97,7 +100,6 @@ public class MainHomeFragment extends Fragment {
 		super.onActivityCreated(savedInstanceState);
 
 		// get city from local store;
-		// TODO 如果是空首先跳出 城市选择
 		province = ApiContext.getInstance(getActivity()).getLocationProvince();
 		city = ApiContext.getInstance(getActivity()).getLocationCity();
 		district = ApiContext.getInstance(getActivity()).getLocationDistrict();
@@ -109,6 +111,7 @@ public class MainHomeFragment extends Fragment {
 		if (StringUtils.isNotBlank(city)) {
 			cityView.setText(city);
 		} else {
+			// 如果未选择城市，则需要先选择城市
 			Intent intent = new Intent(getActivity(), ProvinceActivity.class);
 			intent.putExtra(Constants.INTENT_LOCATION_TYPE, Constants.INTENT_LOCATION_CITY);
 			startActivityForResult(intent, Constants.REQUEST_CODE_CITY);
@@ -189,16 +192,15 @@ public class MainHomeFragment extends Fragment {
 		loadSeekByCityOrCategory(true);
 	}
 
-	private void loadSeek(boolean isRefresh) {
-		if (isRefresh) {
-			pageNumber = 0;
-		}
-		// 加载数据
-		new ListLatestAvaliableSeeksTask(getActivity()).setListener(
-				new ListLatestAvaliableSeeksTaskListener(MainHomeFragment.this, adapter, listView, isRefresh)).execute(
-				net.ipetty.ibang.android.core.util.DateUtils.toDatetimeString(new Date(getRefreshTime())),
-				String.valueOf(pageNumber++), String.valueOf(pageSize));
-	}
+	/*
+	 * private void loadSeek(boolean isRefresh) { if (isRefresh) { pageNumber =
+	 * 0; } // 加载数据 new ListLatestAvaliableSeeksTask(getActivity()).setListener(
+	 * new ListLatestAvaliableSeeksTaskListener(MainHomeFragment.this, adapter,
+	 * listView, isRefresh)).execute(
+	 * net.ipetty.ibang.android.core.util.DateUtils.toDatetimeString(new
+	 * Date(getRefreshTime())), String.valueOf(pageNumber++),
+	 * String.valueOf(pageSize)); }
+	 */
 
 	public void loadSeekByCityOrCategory(boolean isRefresh) {
 		if (isRefresh) {
@@ -208,6 +210,18 @@ public class MainHomeFragment extends Fragment {
 		new ListLatestAvaliableSeeksByCityOrCategoryTask(getActivity()).setListener(
 				new ListLatestAvaliableSeeksTaskListener(MainHomeFragment.this, adapter, listView, isRefresh)).execute(
 				city, district, category, subCategory,
+				net.ipetty.ibang.android.core.util.DateUtils.toDatetimeString(new Date(getRefreshTime())),
+				String.valueOf(pageNumber++), String.valueOf(pageSize));
+	}
+
+	public void loadSeekByCityAndOfferRange(boolean isRefresh) {
+		if (isRefresh) {
+			pageNumber = 0;
+		}
+		// 加载数据
+		new ListLatestAvaliableSeeksByCityAndOfferRangeTask(getActivity()).setListener(
+				new ListLatestAvaliableSeeksTaskListener(MainHomeFragment.this, adapter, listView, isRefresh)).execute(
+				city, district, currentUserId == null ? null : currentUserId.toString(),
 				net.ipetty.ibang.android.core.util.DateUtils.toDatetimeString(new Date(getRefreshTime())),
 				String.valueOf(pageNumber++), String.valueOf(pageSize));
 	}
@@ -233,7 +247,6 @@ public class MainHomeFragment extends Fragment {
 
 		private void init() {
 			adapter.notifyDataSetChanged();
-
 		}
 
 		private void initUser() {
@@ -255,13 +268,12 @@ public class MainHomeFragment extends Fragment {
 				category = intent.getStringExtra(Constants.INTENT_CATEGORY);
 				subCategory = intent.getStringExtra(Constants.INTENT_SUB_CATEGORY);
 				if (TypeActivity.CATEGORY_MY_STRING.equals(subCategory)) {
-					// TODO:加载我的特长
-					Log.i("-------->", subCategory);
+					// 根据我的帮忙范围加载求助列表
+					loadSeekByCityAndOfferRange(true);
 				} else {
 					loadSeekByCityOrCategory(true);
 				}
 				setCategoryText(category, subCategory);
-
 			}
 		}
 		if (requestCode == Constants.REQUEST_CODE_CITY) {
