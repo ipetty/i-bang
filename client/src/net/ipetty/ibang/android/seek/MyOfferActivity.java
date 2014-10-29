@@ -247,7 +247,7 @@ public class MyOfferActivity extends Activity {
 			bindTime(offer.getCreatedOn(), holder.created_at);
 			holder.content.setText(offer.getContent());
 			bindUser(user, holder.avator, holder.nickname);
-			holder.totalPoint.setText("积分" + String.valueOf(user.getSeekerTotalPoint()));
+			holder.totalPoint.setText("等级:" + String.valueOf(user.getSeekerTitle()));
 			return view;
 		}
 
