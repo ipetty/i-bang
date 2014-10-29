@@ -77,11 +77,20 @@ public class MyOfferActivity extends Activity {
 		listView.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				Intent intent = new Intent(MyOfferActivity.this, OfferActivity.class);
-				intent.putExtra(Constants.INTENT_OFFER_ID, id);
-				intent.putExtra(Constants.INTENT_OFFER_JSON, JSONUtils.toJson(parent.getAdapter().getItem(position))
-						.toString());
-				startActivity(intent);
+				OfferVO offer = (OfferVO) parent.getAdapter().getItem(position);
+				if (net.ipetty.ibang.vo.Constants.OFFER_STATUS_DELEGATED.equals(offer.getStatus())
+						|| net.ipetty.ibang.vo.Constants.OFFER_STATUS_FINISHED.equals(offer.getStatus())) {
+					Intent intent = new Intent(MyOfferActivity.this, DelegationActivity.class);
+					intent.putExtra(Constants.INTENT_OFFER_ID, offer.getId()); // 查看委托界面是通过offerId获取委托的
+					intent.putExtra(Constants.INTENT_OFFER_JSON, JSONUtils.toJson(offer).toString());
+					startActivity(intent);
+				} else {
+					Intent intent = new Intent(MyOfferActivity.this, OfferActivity.class);
+					intent.putExtra(Constants.INTENT_OFFER_ID, id);
+					intent.putExtra(Constants.INTENT_OFFER_JSON, JSONUtils.toJson(offer).toString());
+					startActivity(intent);
+				}
+
 			}
 		});
 

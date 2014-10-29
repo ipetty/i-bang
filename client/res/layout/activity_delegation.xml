@@ -179,6 +179,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="16dp"
                         android:layout_marginRight="16dp"
+                        
                         android:layout_weight="1.0"
                         android:background="@null"
                         android:focusable="false"
@@ -198,6 +199,7 @@
                     android:background="@drawable/list_color_item_bg_white"
                     android:layout_marginLeft="16dp"
                     android:layout_marginRight="16dp"
+                                        android:layout_marginBottom="8dp"
                     android:layout_weight="1.0"
                     android:focusable="false"
                     android:gravity="left|center_vertical"
@@ -210,6 +212,7 @@
                    <LinearLayout
                        android:id="@+id/seek_evaluation_image_layout"
                      android:layout_margin="16dp"
+                                         android:layout_marginTop="8dp"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/list_color_item_bg_white"
@@ -385,6 +388,7 @@
                     android:background="@drawable/list_color_item_bg_white"
                     android:layout_marginLeft="16dp"
                     android:layout_marginRight="16dp"
+                    android:layout_marginBottom="8dp"
                     android:layout_weight="1.0"
                     android:focusable="false"
                     android:gravity="left|center_vertical"
@@ -392,11 +396,13 @@
                     android:textColor="@color/gray_color"
                     android:textColorHint="@color/gray_color"
                     android:textSize="16sp"
+                    
                     android:windowSoftInputMode="stateHidden" />
 
                    <LinearLayout
                        android:id="@+id/delegation_evaluation_image_layout"
                      android:layout_margin="16dp"
+                     android:layout_marginTop="8dp"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/list_color_item_bg_white"

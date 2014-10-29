@@ -35,6 +35,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
@@ -220,6 +221,7 @@ public class DelegationActivity extends Activity {
 														} else {
 															delegation_evaluation_content.setVisibility(View.GONE);
 														}
+														Log.i("yyyy-->", evaluation.getImages().size() + "");
 														if (evaluation.getImages().size() > 0) {
 															delegation_evaluation_image_layout
 																	.setVisibility(View.VISIBLE);
@@ -240,6 +242,7 @@ public class DelegationActivity extends Activity {
 														} else {
 															seek_evaluation_content.setVisibility(View.GONE);
 														}
+														Log.i("xxxx-->", evaluation.getImages().size() + "");
 														if (evaluation.getImages().size() > 0) {
 															seek_evaluation_image_layout.setVisibility(View.VISIBLE);
 															initImage(seek_evaluation_image_layout,
@@ -363,7 +366,9 @@ public class DelegationActivity extends Activity {
 
 	private void initImage(LinearLayout layout, List<ImageVO> images) {
 		// TODO Auto-generated method stub
+		Log.i("xxxx-->", "initImage");
 		for (ImageVO image : images) {
+
 			LayoutParams ly = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
 			ly.width = AnimUtils.dip2px(this, 62);
 			ly.height = AnimUtils.dip2px(this, 62);
