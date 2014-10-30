@@ -250,7 +250,7 @@ public class DelegationActivity extends Activity {
 														} else {
 															delegation_evaluation_content.setVisibility(View.GONE);
 														}
-														Log.i("yyyy-->", evaluation.getImages().size() + "");
+														
 														if (evaluation.getImages().size() > 0) {
 															delegation_evaluation_image_layout
 																	.setVisibility(View.VISIBLE);
@@ -271,7 +271,7 @@ public class DelegationActivity extends Activity {
 														} else {
 															seek_evaluation_content.setVisibility(View.GONE);
 														}
-														Log.i("xxxx-->", evaluation.getImages().size() + "");
+														
 														if (evaluation.getImages().size() > 0) {
 															seek_evaluation_image_layout.setVisibility(View.VISIBLE);
 															initImage(seek_evaluation_image_layout,

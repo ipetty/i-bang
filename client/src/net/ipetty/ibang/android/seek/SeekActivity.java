@@ -300,7 +300,7 @@ public class SeekActivity extends Activity {
 			imageView.setVisibility(View.GONE);
 			return;
 		}
-
+		imageViews.clear();
 		for (ImageVO imageVO : imageList) {
 			ImageView imageView = new ImageView(this);
 			imageView.setScaleType(ScaleType.CENTER_CROP);
@@ -501,6 +501,7 @@ public class SeekActivity extends Activity {
 						.equals(offer.getStatus()))) {
 			holder.delegation_info_btn.setVisibility(View.VISIBLE);
 			holder.status.setVisibility(View.GONE);
+
 		} else {
 			holder.delegation_info_btn.setVisibility(View.GONE);
 		}

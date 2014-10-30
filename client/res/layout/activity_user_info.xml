@@ -260,7 +260,7 @@
             android:ellipsize="marquee"
             android:gravity="center_vertical|right"
             android:singleLine="true"
-            android:text="1391344xxxx"
+            android:text=""
             android:textColor="@color/gray_color"
             android:textSize="14sp" />
         
