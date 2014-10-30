@@ -81,6 +81,7 @@ public class ProvinceActivity extends Activity {
         locationLayout = (LinearLayout) this.findViewById(R.id.locationLayout);
         locationLayout.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
+                locateMessageTextView.setText("定位中...");
                 mLocationClient.start();
             }
         });
