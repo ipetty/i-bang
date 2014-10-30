@@ -52,7 +52,7 @@ public class OfferActivity extends Activity {
 	private TextView offer_totalPoint;
 	private TextView offer_close;
 	private View offer_close_layout;
-	private TextView offer_status;
+	// private TextView offer_status;
 	private TextView seek_seekerTitle;
 
 	private View delegation_layout;
@@ -60,6 +60,7 @@ public class OfferActivity extends Activity {
 	private TextView seek_additionalReward;
 	private TextView seek_serviceDate;
 	private View seek_additionalReward_layout;
+	private View offer_wait_delegated_layout;
 
 	private SeekVO seekVO;
 	private OfferVO offerVO;
@@ -100,7 +101,8 @@ public class OfferActivity extends Activity {
 		offer_phone = (TextView) this.findViewById(R.id.offer_phone);
 		offer_contact_layout = this.findViewById(R.id.offer_contact_layout);
 		offer_totalPoint = (TextView) this.findViewById(R.id.offer_totalPoint);
-		offer_status = (TextView) this.findViewById(R.id.offer_status);
+		offer_wait_delegated_layout = this.findViewById(R.id.offer_wait_delegated_layout);
+		// offer_status = (TextView) this.findViewById(R.id.offer_status);
 
 		offer_close = (TextView) this.findViewById(R.id.offer_close);
 		offer_close_layout = this.findViewById(R.id.offer_close_layout);
@@ -121,7 +123,7 @@ public class OfferActivity extends Activity {
 				offer_content.setText(offerVO.getContent());
 				offer_totalPoint.setText("等级:" + String.valueOf(offerer.getSeekerTitle()));
 				offer_phone.setText(offerer.getPhone());
-				offer_status.setText(offerVO.getStatus());
+				// offer_status.setText(offerVO.getStatus());
 
 				new GetSeekByIdTask(OfferActivity.this).setListener(
 						new DefaultTaskListener<SeekVO>(OfferActivity.this) {
@@ -209,6 +211,7 @@ public class OfferActivity extends Activity {
 							public void onSuccess(Boolean result) {
 								// 关闭帮助后的界面操作
 								offer_close_layout.setVisibility(View.GONE);
+								offer_wait_delegated_layout.setVisibility(View.GONE);
 							}
 						}).execute(offerId);
 			}
@@ -221,6 +224,13 @@ public class OfferActivity extends Activity {
 		} else {
 			offer_close_layout.setVisibility(View.GONE);
 		}
+
+		if (isOfferOwner() && (net.ipetty.ibang.vo.Constants.OFFER_STATUS_OFFERED.equals(offerVO.getStatus()))) {
+			offer_wait_delegated_layout.setVisibility(View.VISIBLE);
+		} else {
+			offer_wait_delegated_layout.setVisibility(View.GONE);
+		}
+
 	}
 
 	private void changeDelegationButtonToShowDelegation() {
@@ -237,7 +247,11 @@ public class OfferActivity extends Activity {
 				startActivity(intent);
 			}
 		});
-		delegation_layout.setVisibility(View.VISIBLE);
+
+		if (net.ipetty.ibang.vo.Constants.OFFER_STATUS_DELEGATED.equals(offerVO.getStatus())) {
+			delegation_layout.setVisibility(View.VISIBLE);
+		}
+
 	}
 
 	// 当前用户是否为当前求助单的求助者

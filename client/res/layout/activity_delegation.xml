@@ -595,6 +595,28 @@
 
                 <include layout="@layout/line_space" />
             </LinearLayout>
+            
+         <LinearLayout
+ 	 	             android:id="@+id/seek_wait_finish_layout"
+ 	 	             android:layout_width="match_parent"
+ 	 	             android:layout_height="wrap_content"
+ 	 	             android:orientation="vertical" 
+ 	 	             android:visibility="gone"
+ 	 	         	
+ 	 	             >
+					<include layout="@layout/line_horizontal_divider" />
+ 	 	   			<TextView
+ 	 	                     android:layout_width="match_parent"
+ 	 	                     android:layout_height="46dp"
+ 	 	                     android:layout_gravity="center"
+ 	 	                     android:background="@color/white_color"
+ 	 	                     android:gravity="center"
+ 	 	                     android:text="等待对方完成帮助"
+ 	 	                     android:textColor="@color/gray_color"
+ 	 	                     android:textSize="14sp" />
+					<include layout="@layout/line_horizontal_divider" />
+ 	 	 
+ 	 	         </LinearLayout>
         </LinearLayout>
     </ScrollView>
 

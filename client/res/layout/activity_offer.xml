@@ -406,7 +406,8 @@
 			    android:gravity="center"
 			    android:text="状态"
 			    android:textColor="@color/gray_color"
-			    android:textSize="12sp" />
+			    android:textSize="12sp"
+			    android:visibility="gone" />
 
         </RelativeLayout>
         
@@ -477,6 +478,28 @@
 				        android:text="接受帮助" />
  	 	         </LinearLayout>
  	 	         
+ 	 	                 <LinearLayout
+ 	 	             android:id="@+id/offer_wait_delegated_layout"
+ 	 	             android:layout_width="match_parent"
+ 	 	             android:layout_height="wrap_content"
+ 	 	             android:orientation="vertical" 
+ 	 	             android:visibility="gone"
+ 	 	         	
+ 	 	             >
+					<include layout="@layout/line_horizontal_divider" />
+ 	 	   			<TextView
+ 	 	                     android:layout_width="match_parent"
+ 	 	                     android:layout_height="46dp"
+ 	 	                     android:layout_gravity="center"
+ 	 	                     android:background="@color/white_color"
+ 	 	                     android:gravity="center"
+ 	 	                     android:text="等待对方接受帮助"
+ 	 	                     android:textColor="@color/gray_color"
+ 	 	                     android:textSize="14sp" />
+					<include layout="@layout/line_horizontal_divider" />
+ 	 	 			<include layout="@layout/line_space" />
+ 	 	         </LinearLayout>
+ 	 	        
  	 	        <LinearLayout
  	 	             android:id="@+id/offer_close_layout"
  	 	             android:layout_width="match_parent"
@@ -493,8 +516,9 @@
 				        android:background="@drawable/button_orange_shape"
 				        android:textColor="@color/white_color"
 				        android:textSize="24sp"
-				        android:text="关闭帮助" />
+				        android:text="取消帮助" />
  	 	         </LinearLayout>
+ 	 	         <include layout="@layout/line_space" />
  	 	    </LinearLayout>
  	 	</ScrollView>
 

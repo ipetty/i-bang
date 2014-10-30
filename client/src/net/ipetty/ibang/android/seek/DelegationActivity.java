@@ -35,7 +35,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
@@ -84,6 +83,7 @@ public class DelegationActivity extends Activity {
 	private LinearLayout delegation_evaluation_image_layout;
 	private TextView delegation_totalPoint;
 
+	private View seek_wait_finish_layout;
 	private View evaluation_layout;
 	private TextView evaluation;
 
@@ -129,6 +129,7 @@ public class DelegationActivity extends Activity {
 		seek_additionalReward = (TextView) this.findViewById(R.id.additionalReward);
 		seek_serviceDate = (TextView) this.findViewById(R.id.serviceDate);
 		seek_additionalReward_layout = this.findViewById(R.id.additionalReward_layout);
+		seek_wait_finish_layout = this.findViewById(R.id.seek_wait_finish_layout);
 
 		delegation_avatar = (ImageView) this.findViewById(R.id.delegation_avatar);
 		delegation_nickname = (TextView) this.findViewById(R.id.delegation_nickname);
@@ -250,7 +251,7 @@ public class DelegationActivity extends Activity {
 														} else {
 															delegation_evaluation_content.setVisibility(View.GONE);
 														}
-														
+
 														if (evaluation.getImages().size() > 0) {
 															delegation_evaluation_image_layout
 																	.setVisibility(View.VISIBLE);
@@ -271,7 +272,7 @@ public class DelegationActivity extends Activity {
 														} else {
 															seek_evaluation_content.setVisibility(View.GONE);
 														}
-														
+
 														if (evaluation.getImages().size() > 0) {
 															seek_evaluation_image_layout.setVisibility(View.VISIBLE);
 															initImage(seek_evaluation_image_layout,
@@ -335,6 +336,15 @@ public class DelegationActivity extends Activity {
 							evaluation_layout.setVisibility(View.VISIBLE);
 						} else {
 							evaluation_layout.setVisibility(View.GONE);
+						}
+
+						// 等待接受委托完成按钮
+						if (isSeekOwner()
+								&& net.ipetty.ibang.vo.Constants.DELEGATE_STATUS_DELEGATED.equals(delegationVO
+										.getStatus())) {
+							seek_wait_finish_layout.setVisibility(View.VISIBLE);
+						} else {
+							seek_wait_finish_layout.setVisibility(View.GONE);
 						}
 
 						// 求助/委托信息

@@ -83,6 +83,7 @@ public class SeekActivity extends Activity {
 	private View contact_layout;
 	private View login_layout;
 	private View additionalReward_layout;
+	private View offerList_empty_layout;
 
 	List<DelegationVO> delegationList = new ArrayList<DelegationVO>();
 	List<OfferVO> offerList = new ArrayList<OfferVO>();
@@ -136,6 +137,7 @@ public class SeekActivity extends Activity {
 		offerBtn_layout = this.findViewById(R.id.offerBtn_layout);
 		offerBtn_layout.setVisibility(View.GONE);
 		offerList_layout = this.findViewById(R.id.offerList_layout);
+		offerList_empty_layout = this.findViewById(R.id.offerList_empty_layout);
 		closeBtn_layout = this.findViewById(R.id.closeBtn_layout);
 		closeBtn_layout.setVisibility(View.GONE);
 		login_layout = this.findViewById(R.id.login_layout);
@@ -414,8 +416,10 @@ public class SeekActivity extends Activity {
 
 						if (offerNum == 0) {
 							offerList_layout.setVisibility(View.GONE);
+							offerList_empty_layout.setVisibility(View.VISIBLE);
 						} else {
 							offerList_layout.setVisibility(View.VISIBLE);
+							offerList_empty_layout.setVisibility(View.GONE);
 						}
 
 						for (OfferVO offer : offers) {
@@ -501,7 +505,6 @@ public class SeekActivity extends Activity {
 						.equals(offer.getStatus()))) {
 			holder.delegation_info_btn.setVisibility(View.VISIBLE);
 			holder.status.setVisibility(View.GONE);
-
 		} else {
 			holder.delegation_info_btn.setVisibility(View.GONE);
 		}
