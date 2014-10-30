@@ -29,6 +29,7 @@ public class Offer extends AbstractEntity {
 	private Date createdOn; // 应征单创建日期
 	private Date closedOn; // 关闭时间
 	private String status; // 状态
+	private Delegation delegation; // 对应的委托单，如果不存在则为null
 
 	public Offer() {
 		super();
@@ -36,13 +37,19 @@ public class Offer extends AbstractEntity {
 
 	public OfferVO toVO() {
 		OfferVO vo = new OfferVO();
-		BeanUtils.copyProperties(this, vo);
+		BeanUtils.copyProperties(this, vo, "delegation");
+		if (delegation != null) {
+			vo.setDelegation(delegation.toVO());
+		}
 		return vo;
 	}
 
 	public static Offer fromVO(OfferVO vo) {
 		Offer entity = new Offer();
-		BeanUtils.copyProperties(vo, entity);
+		BeanUtils.copyProperties(vo, entity, "delegation");
+		if (vo.getDelegation() != null) {
+			entity.setDelegation(Delegation.fromVO(vo.getDelegation()));
+		}
 		return entity;
 	}
 
@@ -132,6 +139,14 @@ public class Offer extends AbstractEntity {
 
 	public void setStatus(String status) {
 		this.status = status;
+	}
+
+	public Delegation getDelegation() {
+		return delegation;
+	}
+
+	public void setDelegation(Delegation delegation) {
+		this.delegation = delegation;
 	}
 
 }

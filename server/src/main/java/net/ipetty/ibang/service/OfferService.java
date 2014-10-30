@@ -35,6 +35,9 @@ public class OfferService extends BaseService {
 	private SeekService seekService;
 
 	@Resource
+	private DelegationService delegationService;
+
+	@Resource
 	private OffererInfoService offererInfoService;
 
 	@Resource
@@ -86,7 +89,9 @@ public class OfferService extends BaseService {
 	 * 获取
 	 */
 	public Offer getById(Long id) {
-		return offerDao.getById(id);
+		Offer offer = offerDao.getById(id);
+		offer.setDelegation(delegationService.getByOfferId(id));
+		return offer;
 	}
 
 	/**
@@ -96,7 +101,7 @@ public class OfferService extends BaseService {
 		List<Long> offerIds = offerDao.listBySeekId(seekId);
 		List<Offer> offers = new ArrayList<Offer>();
 		for (Long offerId : offerIds) {
-			offers.add(offerDao.getById(offerId));
+			offers.add(this.getById(offerId));
 		}
 		return offers;
 	}
@@ -111,7 +116,7 @@ public class OfferService extends BaseService {
 		List<Long> offerIds = offerDao.listByUserId(userId, pageNumber, pageSize);
 		List<Offer> offers = new ArrayList<Offer>();
 		for (Long offerId : offerIds) {
-			offers.add(offerDao.getById(offerId));
+			offers.add(this.getById(offerId));
 		}
 		return offers;
 	}

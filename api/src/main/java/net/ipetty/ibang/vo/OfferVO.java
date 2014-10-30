@@ -23,6 +23,7 @@ public class OfferVO extends BaseVO {
 	private Date createdOn; // 应征单创建日期
 	private Date closedOn; // 关闭时间
 	private String status; // 状态
+	private DelegationVO delegation; // 对应的委托单，如果不存在则为null
 
 	public OfferVO() {
 		super();
@@ -106,6 +107,14 @@ public class OfferVO extends BaseVO {
 
 	public void setStatus(String status) {
 		this.status = status;
+	}
+
+	public DelegationVO getDelegation() {
+		return delegation;
+	}
+
+	public void setDelegation(DelegationVO delegation) {
+		this.delegation = delegation;
 	}
 
 }

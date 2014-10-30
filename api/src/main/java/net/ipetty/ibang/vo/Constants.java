@@ -16,10 +16,10 @@ public interface Constants {
 	public static final String SEEK_STATUS_CLOSED = "已关闭"; // 已关闭（已中止求助）
 
 	/* offer status */
-	public static final String OFFER_STATUS_OFFERED = "应征中"; // 应征中（已发出应征）
+	public static final String OFFER_STATUS_OFFERED = "等待接受帮助"; // 应征中（已发出应征）
 	public static final String OFFER_STATUS_DELEGATED = "已委托"; // 已委托（求助者已接受应征）
 	public static final String OFFER_STATUS_FINISHED = "已完成"; // 已完成（已完成委托）
-	public static final String OFFER_STATUS_CLOSED = "已关闭"; // 已关闭（已中止委托）
+	public static final String OFFER_STATUS_CLOSED = "已关闭"; // 已关闭
 
 	/* delegate status */
 	public static final String DELEGATE_STATUS_DELEGATED = "已委托"; // 已委托（求助者已接受应征）
