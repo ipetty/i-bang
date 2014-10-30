@@ -104,9 +104,16 @@ public class ProvinceActivity extends Activity {
             intent.putExtra(Constants.INTENT_LOCATION_CITY, location.getCity());
             intent.putExtra(Constants.INTENT_LOCATION_DISTRICT, location.getDistrict());
             setResult(RESULT_OK, intent);
+            Log.i(TAG, "定位失败");
             finish();
         }
 
+    }
+
+    @Override
+    protected void onStop() {
+        Log.d(TAG, "onStop");
+        mLocationClient.stop();
     }
 
     public class ProvincesAdapter extends BaseAdapter implements OnScrollListener {
