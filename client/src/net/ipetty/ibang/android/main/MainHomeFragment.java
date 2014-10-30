@@ -147,7 +147,18 @@ public class MainHomeFragment extends Fragment {
 		});
 
 		type = (Button) getView().findViewById(R.id.type);
+		View type_layout = getView().findViewById(R.id.type_layout);
 		type.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent();
+				intent.setClass(getActivity(), TypeActivity.class);
+				intent.putExtra(Constants.INTENT_CATEGORY, category);
+				intent.putExtra(Constants.INTENT_SUB_CATEGORY, subCategory);
+				startActivityForResult(intent, Constants.REQUEST_CODE_CATEGORY);
+			}
+		});
+		type_layout.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent();

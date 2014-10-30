@@ -41,7 +41,7 @@ public class ListSystemMessageByUserIdTaskListener extends DefaultTaskListener<L
 	@Override
 	public void onSuccess(List<SystemMessageVO> systemMessages) {
 		Log.d(TAG, "list system messages by user id success");
-		adapter.loadData(systemMessages);
+		// adapter.loadData(systemMessages);
 		if (null != listView) {
 			listView.onRefreshComplete();
 		}
@@ -51,7 +51,6 @@ public class ListSystemMessageByUserIdTaskListener extends DefaultTaskListener<L
 		} else {
 			adapter.addData(systemMessages);
 		}
-		listView.onRefreshComplete();
 		if (activity instanceof MessageActivity) {
 			((MessageActivity) activity).loadMoreForResult(systemMessages);
 		}
