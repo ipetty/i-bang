@@ -15,6 +15,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import com.baidu.location.BDLocation;
@@ -40,10 +41,11 @@ public class ProvinceActivity extends Activity {
     private String[] provinces = Locations.listProvinces();
 
     private LocationClient mLocationClient;
-
     private TextView locateMessageTextView;
+    private LinearLayout locationLayout;
 
     @Override
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_province);
@@ -68,10 +70,15 @@ public class ProvinceActivity extends Activity {
             }
         });
 
-        locateMessageTextView = (TextView) this.findViewById(R.id.textView2);
         mLocationClient = ((MyApplication) getApplication()).mLocationClient;
         mLocationClient.registerLocationListener(new MyLocationListener());
-        mLocationClient.start();
+        locateMessageTextView = (TextView) this.findViewById(R.id.textView2);
+        locationLayout = (LinearLayout) this.findViewById(R.id.locationLayout);
+        locationLayout.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                mLocationClient.start();
+            }
+        });
 
     }
 
@@ -94,17 +101,18 @@ public class ProvinceActivity extends Activity {
         public void onReceiveLocation(final BDLocation location) {
             Log.d(TAG, "onReceiveLocation");
             if (location == null || StringUtils.isBlank(location.getCity())) {
-                locateMessageTextView.setText("定位失败,请选择...");
-                Log.d(TAG, "定位失败");
+                locateMessageTextView.setText("定位失败,请在下面列表中选择...");
                 return;
             }
             locateMessageTextView.setText(location.getCity());
             Intent intent = new Intent();
-            intent.putExtra(Constants.INTENT_LOCATION_PROVINCE, location.getProvince());
+            String province = location.getProvince();
+            province = province.replace("市", "");
+            intent.putExtra(Constants.INTENT_LOCATION_PROVINCE, province);
             intent.putExtra(Constants.INTENT_LOCATION_CITY, location.getCity());
             intent.putExtra(Constants.INTENT_LOCATION_DISTRICT, location.getDistrict());
             setResult(RESULT_OK, intent);
-            Log.i(TAG, "定位失败");
+            Log.i(TAG, province + " " + location.getCity() + " " + location.getDistrict());
             finish();
         }
 
