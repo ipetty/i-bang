@@ -264,6 +264,19 @@ public class MyOfferActivity extends Activity {
 					|| net.ipetty.ibang.vo.Constants.OFFER_STATUS_FINISHED.equals(offer.getStatus())) {
 				holder.delegation_info_btn.setVisibility(View.VISIBLE);
 				holder.status.setVisibility(View.GONE);
+
+				if (offer.getDelegation().getStatus().equals(net.ipetty.ibang.vo.Constants.DELEGATE_STATUS_FINISHED)
+						|| offer.getDelegation().getStatus()
+								.equals(net.ipetty.ibang.vo.Constants.DELEGATE_STATUS_OFFERER_EVALUATED)
+						|| offer.getDelegation().getStatus()
+								.equals(net.ipetty.ibang.vo.Constants.DELEGATE_STATUS_SEEKER_EVALUATED)
+						|| offer.getDelegation().getStatus()
+								.equals(net.ipetty.ibang.vo.Constants.DELEGATE_STATUS_BI_EVALUATED)) {
+					holder.delegation_info_btn.setText("查看评价");
+				} else {
+					holder.delegation_info_btn.setText("查看委托");
+				}
+
 			} else {
 				holder.delegation_info_btn.setVisibility(View.GONE);
 			}
