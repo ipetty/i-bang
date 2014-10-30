@@ -114,6 +114,7 @@ public class ProvinceActivity extends Activity {
     protected void onStop() {
         Log.d(TAG, "onStop");
         mLocationClient.stop();
+        super.onStop();
     }
 
     public class ProvincesAdapter extends BaseAdapter implements OnScrollListener {
