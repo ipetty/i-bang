@@ -281,6 +281,7 @@ public class DelegationActivity extends Activity {
 											.equals(evaluation.getType())) {
 										// 求助者对此次委托的评分信息
 										delegation_evaluation.setText(String.valueOf(evaluation.getPoint()));
+										delegation_evaluation.setVisibility(View.VISIBLE);
 										if (StringUtils.isNoneEmpty(evaluation.getContent())) {
 											delegation_evaluation_content.setText(evaluation.getContent());
 											delegation_evaluation_content.setVisibility(View.VISIBLE);
@@ -300,6 +301,7 @@ public class DelegationActivity extends Activity {
 											.equals(evaluation.getType())) {
 										// 帮助者对此次委托的评分信息
 										seek_evaluation.setText(String.valueOf(evaluation.getPoint()));
+										seek_evaluation.setVisibility(View.VISIBLE);
 										if (StringUtils.isNoneEmpty(evaluation.getContent())) {
 											seek_evaluation_content.setText(evaluation.getContent());
 											seek_evaluation_content.setVisibility(View.VISIBLE);
@@ -324,7 +326,7 @@ public class DelegationActivity extends Activity {
 		} else if (net.ipetty.ibang.vo.Constants.DELEGATE_STATUS_SEEKER_EVALUATED.equals(delegationVO.getStatus())) {
 			// 求助者已评价
 			delegation_evaluation.setVisibility(View.GONE);
-			String text = isSeekOwner() ? "对方已评价" : "我已评价";
+			String text = isSeekOwner() ? "我已评价,双方评价后可见" : "对方已评价,双方评价后可见";
 			delegation_evaluation_content.setText(text);
 			delegation_evaluation_content.setVisibility(View.VISIBLE);
 			delegation_evaluation_image_layout.setVisibility(View.GONE);
@@ -333,7 +335,7 @@ public class DelegationActivity extends Activity {
 		} else if (net.ipetty.ibang.vo.Constants.DELEGATE_STATUS_OFFERER_EVALUATED.equals(delegationVO.getStatus())) {
 			// 帮助者已评价
 			seek_evaluation.setVisibility(View.GONE);
-			String text = isSeekOwner() ? "我已评价" : "对方已评价";
+			String text = isSeekOwner() ? "对方已评价,双方评价后可见" : "我已评价,双方评价后可见";
 			seek_evaluation_content.setText(text);
 			seek_evaluation_content.setVisibility(View.VISIBLE);
 			seek_evaluation_image_layout.setVisibility(View.GONE);
