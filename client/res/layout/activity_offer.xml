@@ -463,7 +463,8 @@
  	 	             android:id="@+id/delegation_layout"
  	 	             android:layout_width="match_parent"
  	 	             android:layout_height="match_parent"
- 	 	             android:orientation="vertical" >
+ 	 	             android:orientation="vertical" 
+ 	 	             android:visibility="gone">
 									<TextView
 				        android:id="@+id/delegation"
 				        android:layout_width="match_parent"
@@ -499,12 +500,34 @@
 					<include layout="@layout/line_horizontal_divider" />
  	 	 			<include layout="@layout/line_space" />
  	 	         </LinearLayout>
- 	 	        
+ 	 	         
+ 	 	        <LinearLayout
+ 	 	             android:id="@+id/offer_self_closed_layout"
+ 	 	             android:layout_width="match_parent"
+ 	 	             android:layout_height="wrap_content"
+ 	 	             android:orientation="vertical" 
+ 	 	             android:visibility="gone"
+ 	 	         	
+ 	 	             >
+					<include layout="@layout/line_horizontal_divider" />
+ 	 	   			<TextView
+ 	 	                     android:layout_width="match_parent"
+ 	 	                     android:layout_height="46dp"
+ 	 	                     android:layout_gravity="center"
+ 	 	                     android:background="@color/white_color"
+ 	 	                     android:gravity="center"
+ 	 	                     android:text="帮助已关闭"
+ 	 	                     android:textColor="@color/gray_color"
+ 	 	                     android:textSize="14sp" />
+					<include layout="@layout/line_horizontal_divider" />
+ 	 	 			<include layout="@layout/line_space" />
+ 	 	         </LinearLayout>
  	 	        <LinearLayout
  	 	             android:id="@+id/offer_close_layout"
  	 	             android:layout_width="match_parent"
  	 	             android:layout_height="match_parent"
- 	 	             android:orientation="vertical" >
+ 	 	             android:orientation="vertical"
+ 	 	             android:visibility="gone" >
 									<TextView
 				        android:id="@+id/offer_close"
 				        android:layout_width="match_parent"

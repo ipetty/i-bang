@@ -7,6 +7,7 @@ import java.util.List;
 import net.ipetty.ibang.R;
 import net.ipetty.ibang.android.core.ActivityManager;
 import net.ipetty.ibang.android.core.Constants;
+import net.ipetty.ibang.android.core.DefaultTaskListener;
 import net.ipetty.ibang.android.core.MyAppStateManager;
 import net.ipetty.ibang.android.core.ui.BackClickListener;
 import net.ipetty.ibang.android.core.ui.MyPullToRefreshListView;
@@ -22,7 +23,10 @@ import net.ipetty.ibang.vo.UserVO;
 import org.apache.commons.lang3.StringUtils;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;
@@ -63,6 +67,10 @@ public class MyOfferActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_my_offer);
 		ActivityManager.getInstance().addActivity(this);
+
+		IntentFilter filter = new IntentFilter();
+		filter.addAction(Constants.BROADCAST_INTENT_OFFER_UPDATE);
+		registerReceiver(broadcastreciver, filter);
 
 		user = ApiContext.getInstance(MyOfferActivity.this).getCurrentUser();
 		/* action bar */
@@ -180,6 +188,22 @@ public class MyOfferActivity extends Activity {
 			return ((OfferVO) this.getItem(position)).getId();
 		}
 
+		public void updateOffer(final Long offerId) {
+			new GetOfferByIdTask(MyOfferActivity.this).setListener(
+					new DefaultTaskListener<OfferVO>(MyOfferActivity.this) {
+						@Override
+						public void onSuccess(OfferVO result) {
+							for (OfferVO offer : offerList) {
+								if (offer.getId().equals(offerId)) {
+									int i = offerList.indexOf(offer);
+									offerList.set(i, result);
+									adapter.notifyDataSetChanged();
+								}
+							}
+						}
+					}).execute(offerId);
+		}
+
 		private class ViewHolder {
 			View layout;
 			ImageView avator;
@@ -294,4 +318,20 @@ public class MyOfferActivity extends Activity {
 		});
 	}
 
+	private BroadcastReceiver broadcastreciver = new BroadcastReceiver() {
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			String action = intent.getAction();
+			if (Constants.BROADCAST_INTENT_OFFER_UPDATE.equals(action)) {
+				Long offerId = intent.getExtras().getLong(Constants.INTENT_OFFER_ID);
+				updateOffer(offerId);
+			}
+		}
+
+	};
+
+	private void updateOffer(Long offerId) {
+		// TODO Auto-generated method stub
+		adapter.updateOffer(offerId);
+	}
 }

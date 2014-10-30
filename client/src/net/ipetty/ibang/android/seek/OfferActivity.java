@@ -61,6 +61,7 @@ public class OfferActivity extends Activity {
 	private TextView seek_serviceDate;
 	private View seek_additionalReward_layout;
 	private View offer_wait_delegated_layout;
+	private View offer_self_closed_layout;
 
 	private SeekVO seekVO;
 	private OfferVO offerVO;
@@ -102,6 +103,7 @@ public class OfferActivity extends Activity {
 		offer_contact_layout = this.findViewById(R.id.offer_contact_layout);
 		offer_totalPoint = (TextView) this.findViewById(R.id.offer_totalPoint);
 		offer_wait_delegated_layout = this.findViewById(R.id.offer_wait_delegated_layout);
+		offer_self_closed_layout = this.findViewById(R.id.offer_self_closed_layout);
 		// offer_status = (TextView) this.findViewById(R.id.offer_status);
 
 		offer_close = (TextView) this.findViewById(R.id.offer_close);
@@ -191,6 +193,7 @@ public class OfferActivity extends Activity {
 									public void onSuccess(DelegationVO result) {
 										// 接受帮助后进行界面操作
 										changeDelegationButtonToShowDelegation();
+										broadCaseUpdate(offerId);
 									}
 								}).execute(delegation);
 					}
@@ -212,7 +215,11 @@ public class OfferActivity extends Activity {
 								// 关闭帮助后的界面操作
 								offer_close_layout.setVisibility(View.GONE);
 								offer_wait_delegated_layout.setVisibility(View.GONE);
+								offer_self_closed_layout.setVisibility(View.VISIBLE);
+								broadCaseUpdate(offerId);
+
 							}
+
 						}).execute(offerId);
 			}
 		});
@@ -231,6 +238,20 @@ public class OfferActivity extends Activity {
 			offer_wait_delegated_layout.setVisibility(View.GONE);
 		}
 
+		if (net.ipetty.ibang.vo.Constants.OFFER_STATUS_CLOSED.equals(offerVO.getStatus())
+				&& offerVO.getDelegation() == null) {
+			offer_self_closed_layout.setVisibility(View.VISIBLE);
+		} else {
+			offer_self_closed_layout.setVisibility(View.GONE);
+		}
+
+	}
+
+	private void broadCaseUpdate(Long offerId) {
+		// TODO Auto-generated method stub
+		Intent intent = new Intent(Constants.BROADCAST_INTENT_OFFER_UPDATE);
+		intent.putExtra(Constants.INTENT_OFFER_ID, offerId);
+		sendBroadcast(intent);
 	}
 
 	private void changeDelegationButtonToShowDelegation() {
@@ -248,7 +269,7 @@ public class OfferActivity extends Activity {
 			}
 		});
 
-		if (net.ipetty.ibang.vo.Constants.OFFER_STATUS_DELEGATED.equals(offerVO.getStatus())) {
+		if (offerVO.getDelegation() != null) {
 			delegation_layout.setVisibility(View.VISIBLE);
 		}
 
