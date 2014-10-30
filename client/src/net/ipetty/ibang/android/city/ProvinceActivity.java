@@ -1,11 +1,11 @@
 package net.ipetty.ibang.android.city;
 
 import android.app.Activity;
-import static android.app.Activity.RESULT_OK;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,7 +25,7 @@ import net.ipetty.ibang.R;
 import net.ipetty.ibang.android.core.ActivityManager;
 import net.ipetty.ibang.android.core.Constants;
 import net.ipetty.ibang.android.core.MyApplication;
-import net.ipetty.ibang.android.core.ui.BackClickListener;
+import net.ipetty.ibang.android.sdk.context.ApiContext;
 import net.ipetty.ibang.util.Locations;
 import org.apache.commons.lang3.StringUtils;
 
@@ -45,14 +45,19 @@ public class ProvinceActivity extends Activity {
     private LinearLayout locationLayout;
 
     @Override
-
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_province);
         ActivityManager.getInstance().addActivity(this);
 
         ImageView btnBack = (ImageView) this.findViewById(R.id.action_bar_left_image);
-        btnBack.setOnClickListener(new BackClickListener(this));
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                notSetCity();
+            }
+        });
         ((TextView) this.findViewById(R.id.action_bar_title)).setText(R.string.title_activity_city);
 
         type = this.getIntent().getExtras().getString(Constants.INTENT_LOCATION_TYPE);
@@ -79,7 +84,6 @@ public class ProvinceActivity extends Activity {
                 mLocationClient.start();
             }
         });
-
     }
 
     @Override
@@ -185,4 +189,23 @@ public class ProvinceActivity extends Activity {
 
     }
 
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            notSetCity();
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+
+    }
+
+    private void notSetCity() {
+        // TODO Auto-generated method stub
+        String city = ApiContext.getInstance(ProvinceActivity.this).getLocationCity();
+        if (StringUtils.isEmpty(city)) {
+            ActivityManager.getInstance().exit();
+        } else {
+            finish();
+        }
+    }
 }

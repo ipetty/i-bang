@@ -139,7 +139,6 @@ public class MessageActivity extends Activity {
 				String label = DateUtils.formatDateTime(MessageActivity.this, getRefreshTime(),
 						DateUtils.FORMAT_SHOW_TIME | DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_ABBREV_ALL);
 				refreshView.getLoadingLayoutProxy().setLastUpdatedLabel(label);
-
 				loadSystemMessage(true);
 			}
 		});
@@ -172,7 +171,6 @@ public class MessageActivity extends Activity {
 			pageNumber = 0;
 		}
 		// 加载数据
-
 		new ListSystemMessageByUserIdTask(MessageActivity.this).setListener(
 				new ListSystemMessageByUserIdTaskListener(MessageActivity.this, adapter, listView, isRefresh)).execute(
 				ApiContext.getInstance(MessageActivity.this).getCurrentUserId(), pageNumber++, pageSize);

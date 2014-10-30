@@ -31,7 +31,7 @@
                     android:drawableRight="@drawable/ic_arrow_down"
                     android:paddingLeft="4dp"
                     android:paddingRight="2dp"
-                    android:text="苏州"
+                    android:text="全国"
                     android:textColor="@color/base_color"
                     android:textSize="18sp" />
 
@@ -91,6 +91,7 @@
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:gravity="center"
+                    	android:id="@+id/type_layout"
                         android:orientation="vertical" >
 
                         <Button

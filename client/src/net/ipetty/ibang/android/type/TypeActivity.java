@@ -15,6 +15,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
@@ -51,6 +52,15 @@ public class TypeActivity extends Activity {
 		if (StringUtils.isEmpty(subCategory)) {
 			subCategory = CATEGORY_ALL_STRING;
 		}
+
+		View other = this.findViewById(R.id.other);
+		other.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				finish();
+			}
+		});
 
 		list1 = (ListView) this.findViewById(R.id.list1);
 		list2 = (ListView) this.findViewById(R.id.list2);
