@@ -212,8 +212,8 @@ public class MessageActivity extends Activity {
 	public class MessageAdapter extends BaseAdapter implements OnScrollListener {
 		public void changeToRead(Long id) {
 			for (SystemMessageVO msg : list) {
-				if (msg.getId() == id) {
-					msg.isRead();
+				if (msg.getId().equals(id)) {
+					msg.setRead(true);
 					this.notifyDataSetChanged();
 				}
 			}
