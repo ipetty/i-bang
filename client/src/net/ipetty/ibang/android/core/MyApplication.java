@@ -1,8 +1,10 @@
 package net.ipetty.ibang.android.core;
 
+import net.ipetty.ibang.vo.UserVO;
 import android.app.Application;
 import android.content.Context;
 import android.util.Log;
+
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
 import com.baidu.mapapi.SDKInitializer;
@@ -10,79 +12,66 @@ import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
-import net.ipetty.ibang.vo.UserVO;
 
 public class MyApplication extends Application {
 
-    private String TAG = getClass().getSimpleName();
-    private UserVO user;
-    public LocationClient mLocationClient;
+	private String TAG = getClass().getSimpleName();
+	private UserVO user;
+	public LocationClient mLocationClient;
 
-    @Override
-    public void onCreate() {
-        // TODO Auto-generated method stub
-        super.onCreate();
-        Log.d(TAG, "onCreate");
-        initImageLoader(getApplicationContext());
+	@Override
+	public void onCreate() {
+		// TODO Auto-generated method stub
+		super.onCreate();
+		Log.d(TAG, "onCreate");
+		initImageLoader(getApplicationContext());
+		initLocationClient();
 
-        // 模拟一个用户
-        user = new UserVO();
-        user.setAvatar("weibo/files/h/b9c31599803e48f0a0595e2e913714e4/h64.jpg");
-        user.setId(1);
-        user.setUsername("kcrens@gmail.com");
-        user.setNickname("孔纯");
-        user.setGender("男");
-        user.setPhone("13913550000");
-        user.setUsername("kcrens@gmail.com");
-        user.setSignature("这个家伙很懒");
+	}
 
-        initLocationClient();
+	private void initLocationClient() {
+		// 初始化百度定位SDK
+		mLocationClient = new LocationClient(getApplicationContext()); // 声明LocationClient类
+		SDKInitializer.initialize(getApplicationContext()); // 百度地图初始化
+		LocationClientOption option = new LocationClientOption();
+		option.setLocationMode(LocationClientOption.LocationMode.Hight_Accuracy);// 设置定位模式
+		option.setProdName("ipetty");// 产品线名称
+		option.setLocationNotify(false);// 不进行位置提醒
+		option.setCoorType("bd09ll");// 返回的定位结果是百度经纬度,默认值gcj02
+		option.setScanSpan(0);// 一次定位模式
+		option.setIsNeedAddress(true);// 返回的定位结果包含地址信息
+		option.setNeedDeviceDirect(false);// 返回的定位结果包含手机机头的方向
+		option.setOpenGps(true);// 如果用户已打开GPS，则可以使用GPS
+		option.SetIgnoreCacheException(true);// 不捕捉异常
+		option.setTimeOut(5 * 1000);
+		mLocationClient.setLocOption(option);
+	}
 
-    }
+	// imageLoader
+	private void initImageLoader(Context context) {
+		// File cacheDir =
+		// StorageUtils.getOwnCacheDirectory(getApplicationContext(), "Cache");
 
-    private void initLocationClient() {
-        //初始化百度定位SDK
-        mLocationClient = new LocationClient(getApplicationContext());     //声明LocationClient类
-        SDKInitializer.initialize(getApplicationContext());             //百度地图初始化
-        LocationClientOption option = new LocationClientOption();
-        option.setLocationMode(LocationClientOption.LocationMode.Hight_Accuracy);//设置定位模式
-        option.setProdName("ipetty");//产品线名称
-        option.setLocationNotify(false);//不进行位置提醒
-        option.setCoorType("bd09ll");//返回的定位结果是百度经纬度,默认值gcj02
-        option.setScanSpan(0);//一次定位模式
-        option.setIsNeedAddress(true);//返回的定位结果包含地址信息
-        option.setNeedDeviceDirect(false);//返回的定位结果包含手机机头的方向
-        option.setOpenGps(true);//如果用户已打开GPS，则可以使用GPS
-        option.SetIgnoreCacheException(true);//不捕捉异常
-        option.setTimeOut(5 * 1000);
-        mLocationClient.setLocOption(option);
-    }
+		ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(context)
+		// 线程优先级
+				.threadPriority(Thread.NORM_PRIORITY - 2)
+				// 当同一个Uri获取不同大小的图片，缓存到内存时，只缓存一个
+				.denyCacheImageMultipleSizesInMemory()
+				// 自定义缓存路径
+				// .diskCache(new UnlimitedDiscCache(cacheDir))
+				// 缓存文件名
+				.diskCacheFileNameGenerator(new Md5FileNameGenerator())
+				// 设置图片下载和显示的工作队列排序
+				.tasksProcessingOrder(QueueProcessingType.LIFO).build();
+		// Initialize ImageLoader with configuration.
+		ImageLoader.getInstance().init(config);
+	}
 
-    // imageLoader
-    private void initImageLoader(Context context) {
-        // File cacheDir =
-        // StorageUtils.getOwnCacheDirectory(getApplicationContext(), "Cache");
+	public UserVO getUser() {
+		return user;
+	}
 
-        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(context)
-            // 线程优先级
-            .threadPriority(Thread.NORM_PRIORITY - 2)
-            // 当同一个Uri获取不同大小的图片，缓存到内存时，只缓存一个
-            .denyCacheImageMultipleSizesInMemory()
-            // 自定义缓存路径
-            // .diskCache(new UnlimitedDiscCache(cacheDir))
-            // 缓存文件名
-            .diskCacheFileNameGenerator(new Md5FileNameGenerator())
-            // 设置图片下载和显示的工作队列排序
-            .tasksProcessingOrder(QueueProcessingType.LIFO).build();
-        // Initialize ImageLoader with configuration.
-        ImageLoader.getInstance().init(config);
-    }
-
-    public UserVO getUser() {
-        return user;
-    }
-
-    public void setUser(UserVO user) {
-        this.user = user;
-    }
+	public void setUser(UserVO user) {
+		this.user = user;
+	}
 }

@@ -298,6 +298,7 @@ public class MainHomeFragment extends Fragment {
 				city = intent.getStringExtra(Constants.INTENT_LOCATION_CITY);
 				district = intent.getStringExtra(Constants.INTENT_LOCATION_DISTRICT);
 				cityView.setText(city);
+
 				// saveTOLocalStore;
 				ApiContext.getInstance(getActivity()).setLocationProvince(province);
 				ApiContext.getInstance(getActivity()).setLocationCity(city);
