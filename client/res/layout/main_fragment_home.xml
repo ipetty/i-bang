@@ -28,10 +28,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@null"
-                    android:drawableRight="@drawable/ic_arrow_down"
+                    
                     android:paddingLeft="4dp"
                     android:paddingRight="2dp"
-                    android:text="全国"
+                    android:text="帮帮忙"
                     android:textColor="@color/base_color"
                     android:textSize="18sp" />
 
