@@ -15,7 +15,6 @@ import java.io.Writer;
 import net.ipetty.ibang.android.core.util.AppUtils;
 import net.ipetty.ibang.android.sdk.context.ApiContext;
 import net.ipetty.ibang.android.sdk.exception.ApiException;
-import net.ipetty.ibang.android.sdk.exception.ServiceUnavailableException;
 import net.ipetty.ibang.android.sdk.factory.IbangApi;
 import net.ipetty.ibang.api.CrashLogApi;
 import net.ipetty.ibang.vo.CrashLogVO;
@@ -57,7 +56,7 @@ public class ErrorHandler {
         if (ex instanceof ApiException) {
             ApiException e = (ApiException) ex;
             if (null == e.getMessage() || "".equals(e.getMessage())) {
-                showError("未知异常");
+                showError("API异常");
                 reportUnknowError(ex);
             } else {
                 showError(e.getMessage());
@@ -66,20 +65,7 @@ public class ErrorHandler {
             return;
         }
 
-        // 服务器不可用异常
-        if (ex instanceof ServiceUnavailableException) {
-            showError("服务器维护中,请稍后使用");
-            new DelayTask(context).setListener(new DefaultTaskListener<Void>(context) {
-                @Override
-                public void onSuccess(Void result) {
-                    ActivityManager.getInstance().exit();
-                }
-            }).execute(3 * 1000);
-
-            return;
-        }
-
-        showError("未知任务异常");
+        showError("未知异常");
         reportUnknowError(ex);
     }
 
@@ -112,10 +98,7 @@ public class ErrorHandler {
             new Thread() {
                 @Override
                 public void run() {
-                    try {
-                        IbangApi.init(context).create(CrashLogApi.class).save(crashVO);
-                    } catch (Exception e) {
-                    }
+                    IbangApi.init(context).create(CrashLogApi.class).save(crashVO);
                 }
             }.start();
         } catch (Exception e) {
