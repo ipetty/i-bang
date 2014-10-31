@@ -1,7 +1,7 @@
 {
-  "versionCode":1,
-  "versionName":"1.0",
-  "versionDescription":"暂无描述",
+  "versionCode":2,
+  "versionName":"1.0.2",
+  "versionDescription":"1.0.1功能：\n1、项目整体应用框架；\n2、注册、登录、注销、修改密码、修改个人信息；\n3、发布求助信息；\n4、信息分类展示界面；\n5、应征帮助、委托帮助和评分的基本流程；\n\n1.0.2功能：\n1、分类检索；\n2、消息通知模块完善；\n3、搜索功能；\n",
   "downloadUrl":"http://ibang.ipetty.net/files/ibang.apk",
   "forceUpdate":false
 }
