@@ -15,11 +15,11 @@ import java.io.Writer;
 import net.ipetty.ibang.android.core.util.AppUtils;
 import net.ipetty.ibang.android.sdk.context.ApiContext;
 import net.ipetty.ibang.android.sdk.exception.ApiException;
+import net.ipetty.ibang.android.sdk.exception.NetworkException;
 import net.ipetty.ibang.android.sdk.factory.IbangApi;
 import net.ipetty.ibang.api.CrashLogApi;
 import net.ipetty.ibang.vo.CrashLogVO;
 import net.ipetty.ibang.vo.UserVO;
-import org.apache.http.conn.ConnectTimeoutException;
 
 /**
  *
@@ -45,10 +45,9 @@ public class ErrorHandler {
             return;
         }
 
-        // 超时
-        if (ex instanceof ConnectTimeoutException) {
-            // ConnectTimeoutException e = (ConnectTimeoutException) ex;
-            showError("请求超时，请检查网络后重试");
+        // 网络异常
+        if (ex instanceof NetworkException) {
+            showError("网络异常,请检查网络是否正常");
             return;
         }
 
