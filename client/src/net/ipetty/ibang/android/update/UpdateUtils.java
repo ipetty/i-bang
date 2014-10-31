@@ -13,7 +13,6 @@ import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 import java.util.concurrent.TimeUnit;
-import net.ipetty.android.update.UpdateVO;
 import net.ipetty.ibang.android.core.Constants;
 import net.ipetty.ibang.android.core.util.NetWorkUtils;
 
