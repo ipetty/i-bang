@@ -38,7 +38,7 @@ public class UpdateManager {
     /* 下载保存路径 */
     private String mSavePath;
     /* 下载文件名 */
-    private final String mFileName = "ipetty.apk";
+    private final String mFileName = "ibang.apk";
 
     /* 记录进度条数量 */
     private int progress;
