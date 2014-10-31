@@ -9,17 +9,22 @@ import android.content.Context;
 import android.os.Looper;
 import android.util.Log;
 import android.widget.Toast;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.Writer;
 import net.ipetty.ibang.android.core.util.AppUtils;
+import net.ipetty.ibang.android.core.util.NetWorkUtils;
 import net.ipetty.ibang.android.sdk.context.ApiContext;
 import net.ipetty.ibang.android.sdk.exception.ApiException;
-import net.ipetty.ibang.android.sdk.exception.NetworkException;
 import net.ipetty.ibang.android.sdk.factory.IbangApi;
 import net.ipetty.ibang.api.CrashLogApi;
 import net.ipetty.ibang.vo.CrashLogVO;
 import net.ipetty.ibang.vo.UserVO;
+import org.apache.commons.io.IOUtils;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
+import retrofit.mime.TypedInput;
 
 /**
  *
@@ -37,17 +42,26 @@ public class ErrorHandler {
 
     public void handleError(Throwable ex) {
         Log.d(TAG, "handleError");
-        Log.e(TAG, "", ex);
-        // 应用异常 界面层
-        if (ex instanceof AppException) {
-            AppException e = (AppException) ex;
-            showError(e.getMessage());
-            return;
-        }
 
-        // 网络异常
-        if (ex instanceof NetworkException) {
-            showError("网络异常,请检查网络是否正常");
+        // RetrofitError
+        if (ex instanceof RetrofitError) {
+            RetrofitError cause = (RetrofitError) ex;
+            if (cause.isNetworkError()) {
+                showError("请检查网络是否正常");
+                return;
+            }
+            Response response = cause.getResponse();
+            if (response != null && response.getStatus() >= 400) {
+                TypedInput bodyInputStream = response.getBody();
+                String body = null;
+                try {
+                    body = IOUtils.toString(bodyInputStream.in(), net.ipetty.ibang.api.Constants.UTF8);
+                } catch (IOException ex1) {
+                }
+                showError(body);
+                return;
+            }
+            showError("未知网络异常");
             return;
         }
 
@@ -65,7 +79,10 @@ public class ErrorHandler {
         }
 
         showError("未知异常");
-        reportUnknowError(ex);
+        if (NetWorkUtils.isNetworkConnected(context)) {
+            reportUnknowError(ex);
+        }
+
     }
 
     private void reportUnknowError(Throwable ex) {

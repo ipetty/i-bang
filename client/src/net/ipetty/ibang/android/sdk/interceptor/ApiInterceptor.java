@@ -3,9 +3,7 @@ package net.ipetty.ibang.android.sdk.interceptor;
 import android.content.Context;
 import android.util.Base64;
 import android.util.Log;
-import net.ipetty.ibang.android.core.util.NetWorkUtils;
 import net.ipetty.ibang.android.sdk.context.ApiContext;
-import net.ipetty.ibang.android.sdk.exception.NetworkException;
 import net.ipetty.ibang.api.Constants;
 import org.apache.commons.lang3.StringUtils;
 import retrofit.RequestInterceptor;
@@ -31,9 +29,9 @@ public class ApiInterceptor implements RequestInterceptor {
      */
     @Override
     public void intercept(RequestFacade request) {
-        if (!NetWorkUtils.isNetworkConnected(context)) {
-            throw new NetworkException();
-        }
+//        if (!NetWorkUtils.isNetworkConnected(context)) {
+//            throw RetrofitError.networkError("", null);
+//        }
 
         // 设置user_token
         ApiContext apiContext = ApiContext.getInstance(context);
