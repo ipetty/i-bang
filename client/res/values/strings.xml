@@ -7,7 +7,7 @@
     <string name="title_activity_splash">SplashActivity</string>
     <string name="app_copyright">CopyRight 2014 帮帮忙</string>
     <string name="app_version">v%1s</string>
-    
+
     <!-- update -->
     <string name="soft_update_no">已经是最新版本</string>
     <string name="soft_update_title">软件更新</string>
@@ -86,5 +86,6 @@
     <string name="title_activity_district">DistrictActivity</string>
     <string name="title_activity_select_user_category">请选择用户特长</string>
     <string name="title_activity_locate">定位</string>
+    <string name="title_activity_my_evaluation">评价列表</string>
 
 </resources>

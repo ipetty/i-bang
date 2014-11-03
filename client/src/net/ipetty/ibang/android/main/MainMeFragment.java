@@ -5,6 +5,7 @@ import net.ipetty.ibang.android.core.Constants;
 import net.ipetty.ibang.android.core.ui.UnLoginView;
 import net.ipetty.ibang.android.core.util.AppUtils;
 import net.ipetty.ibang.android.sdk.context.ApiContext;
+import net.ipetty.ibang.android.seek.MyEvaluationActivity;
 import net.ipetty.ibang.android.seek.MyOfferActivity;
 import net.ipetty.ibang.android.seek.MySeekActivity;
 import net.ipetty.ibang.android.setting.SettingActivity;
@@ -46,6 +47,8 @@ public class MainMeFragment extends Fragment {
 	private TextView seekCount;
 	private TextView offerCount;
 	private TextView seekerTotalPoint;
+
+	private View evaluation_layout;
 
 	private DisplayImageOptions options = AppUtils.getCacheImageBublder()
 			.showImageForEmptyUri(R.drawable.default_avatar).build();
@@ -99,6 +102,17 @@ public class MainMeFragment extends Fragment {
 		offerCount = (TextView) getView().findViewById(R.id.offerCount);
 		seekerTotalPoint = (TextView) getView().findViewById(R.id.seekerTotalPoint);
 
+		View seekerTotalPoint_layout = getView().findViewById(R.id.seekerTotalPoint_layout);
+		seekerTotalPoint_layout.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent intent = new Intent(getActivity(), MyEvaluationActivity.class);
+				startActivity(intent);
+			}
+		});
+
 		View seekCount_layout = getView().findViewById(R.id.seekCount_layout);
 		seekCount_layout.setOnClickListener(new OnClickListener() {
 			@Override
@@ -131,6 +145,18 @@ public class MainMeFragment extends Fragment {
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent(getActivity(), MyOfferActivity.class);
+				startActivity(intent);
+			}
+		});
+
+		// TODO：评价列表
+		evaluation_layout = getView().findViewById(R.id.evaluation_layout);
+		evaluation_layout.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent intent = new Intent(getActivity(), MyEvaluationActivity.class);
 				startActivity(intent);
 			}
 		});
