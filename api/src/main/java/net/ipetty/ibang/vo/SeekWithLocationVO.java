@@ -5,15 +5,15 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * 求助
+ * 求助（带地理位置）
  * 
  * @author luocanfeng
- * @date 2014年9月18日
+ * @date 2014年11月3日
  */
-public class SeekVO extends BaseVO {
+public class SeekWithLocationVO extends BaseVO {
 
 	/** serialVersionUID */
-	private static final long serialVersionUID = -3457713874329718078L;
+	private static final long serialVersionUID = -8567137149467574178L;
 
 	private Long id; // 非业务主键
 	private String sn; // 求助单流水号
@@ -33,13 +33,13 @@ public class SeekVO extends BaseVO {
 	private String city; // 市
 	private String district; // 区/县
 	private String address; // 详细地址
-	private Long locationId; // 地理位置
+	private LocationVO location; // 地理位置
 	private Date createdOn; // 求助创建时间
 	private Date exipireDate; // 求助有效日期
 	private Date closedOn; // 关闭时间
 	private String status; // 状态
 
-	public SeekVO() {
+	public SeekWithLocationVO() {
 		super();
 	}
 
@@ -187,12 +187,12 @@ public class SeekVO extends BaseVO {
 		this.address = address;
 	}
 
-	public Long getLocationId() {
-		return locationId;
+	public LocationVO getLocation() {
+		return location;
 	}
 
-	public void setLocationId(Long locationId) {
-		this.locationId = locationId;
+	public void setLocation(LocationVO location) {
+		this.location = location;
 	}
 
 	public Date getCreatedOn() {

@@ -6,6 +6,7 @@ import java.util.List;
 
 import net.ipetty.ibang.vo.ImageVO;
 import net.ipetty.ibang.vo.SeekVO;
+import net.ipetty.ibang.vo.SeekWithLocationVO;
 
 import org.springframework.beans.BeanUtils;
 
@@ -34,6 +35,10 @@ public class Seek extends AbstractEntity {
 	private String reward; // 奖励
 	private String additionalReward; // 附加奖励
 	private String serviceDate; // 服务时间
+	private String province; // 省
+	private String city; // 市
+	private String district; // 区/县
+	private String address; // 详细地址
 	private Long locationId; // 地理位置
 	private Date createdOn; // 求助创建时间
 	private Date exipireDate; // 求助有效日期
@@ -54,6 +59,15 @@ public class Seek extends AbstractEntity {
 	}
 
 	public static Seek fromVO(SeekVO vo) {
+		Seek entity = new Seek();
+		BeanUtils.copyProperties(vo, entity, "images");
+		for (ImageVO image : vo.getImages()) {
+			entity.getImages().add(Image.fromVO(image));
+		}
+		return entity;
+	}
+
+	public static Seek fromVO(SeekWithLocationVO vo) {
 		Seek entity = new Seek();
 		BeanUtils.copyProperties(vo, entity, "images");
 		for (ImageVO image : vo.getImages()) {
@@ -180,6 +194,38 @@ public class Seek extends AbstractEntity {
 
 	public void setServiceDate(String serviceDate) {
 		this.serviceDate = serviceDate;
+	}
+
+	public String getProvince() {
+		return province;
+	}
+
+	public void setProvince(String province) {
+		this.province = province;
+	}
+
+	public String getCity() {
+		return city;
+	}
+
+	public void setCity(String city) {
+		this.city = city;
+	}
+
+	public String getDistrict() {
+		return district;
+	}
+
+	public void setDistrict(String district) {
+		this.district = district;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
 	}
 
 	public Long getLocationId() {

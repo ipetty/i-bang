@@ -8,9 +8,11 @@ import net.ipetty.ibang.api.factory.IbangApi;
 import net.ipetty.ibang.util.DateUtils;
 import net.ipetty.ibang.vo.Constants;
 import net.ipetty.ibang.vo.ImageVO;
+import net.ipetty.ibang.vo.LocationVO;
 import net.ipetty.ibang.vo.LoginResultVO;
 import net.ipetty.ibang.vo.SeekCategory;
 import net.ipetty.ibang.vo.SeekVO;
+import net.ipetty.ibang.vo.SeekWithLocationVO;
 import net.ipetty.ibang.vo.UserOfferRange;
 import net.ipetty.ibang.vo.UserVO;
 
@@ -90,6 +92,30 @@ public class SeekApiTest extends BaseApiTest {
 				DateUtils.toDatetimeString(new Date()), 0, 20);
 		seeks = seekApi.listLatestByCityAndOfferRange("city", "district", user.getId(),
 				DateUtils.toDatetimeString(new Date()), 0, 20);
+	}
+
+	@Test
+	public void testPublishWithLocation() {
+		LoginResultVO loginResult = userApi.login(TEST_ACCOUNT_EMAIL, TEST_ACCOUNT_PASSWORD);
+		UserVO user = loginResult.getUserVo();
+		SeekWithLocationVO seek = new SeekWithLocationVO();
+		seek.setSeekerId(user.getId());
+		seek.setCategoryL1("IT");
+		seek.setCategoryL2("软件");
+		seek.setContent("求开发一款类似陌陌的手机App");
+		List<ImageVO> images = new ArrayList<ImageVO>();
+		images.add(new ImageVO(null, null, "small_url", "original_url"));
+		images.add(new ImageVO(null, null, "small_url2", "original_url2"));
+		seek.setImages(images);
+		seek.setRequirement("要求支持短视频分享");
+		seek.setReward("一个月内完成，两万；一个半月内完成，一万五。");
+
+		LocationVO location = new LocationVO(31.1790070000, 121.4023470000, "bd09ll", 9f, "上海", "上海", "徐汇", "", true);
+		seek.setLocation(location);
+
+		SeekVO s = seekApi.publish(seek);
+		Assert.assertNotNull(s.getId());
+		Assert.assertEquals(Constants.SEEK_STATUS_CREATED, s.getStatus());
 	}
 
 }

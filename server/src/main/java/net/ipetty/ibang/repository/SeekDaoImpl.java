@@ -35,8 +35,9 @@ public class SeekDaoImpl extends BaseJdbcDaoSupport implements SeekDao {
 		public Seek mapRow(ResultSet rs, int rowNum) throws SQLException {
 			// id, sn, seeker_id, contact_info_visible, category_l1,
 			// category_l2, title, content, requirement, delegate_number,
-			// reward, additional_reward, service_date, location_id, created_on,
-			// expire_date, closed_on, status
+			// reward, additional_reward, service_date, province, city,
+			// district, address, location_id, created_on, expire_date,
+			// closed_on, status
 			Seek seek = new Seek();
 			seek.setId(rs.getLong("id"));
 			seek.setSn(rs.getString("sn"));
@@ -51,6 +52,10 @@ public class SeekDaoImpl extends BaseJdbcDaoSupport implements SeekDao {
 			seek.setReward(rs.getString("reward"));
 			seek.setAdditionalReward(rs.getString("additional_reward"));
 			seek.setServiceDate(rs.getString("service_date"));
+			seek.setProvince(rs.getString("province"));
+			seek.setCity(rs.getString("city"));
+			seek.setDistrict(rs.getString("district"));
+			seek.setAddress(rs.getString("address"));
 			seek.setLocationId(JdbcDaoUtils.getLong(rs, "location_id"));
 			seek.setCreatedOn(rs.getTimestamp("created_on"));
 			seek.setExipireDate(rs.getDate("expire_date"));
@@ -61,8 +66,8 @@ public class SeekDaoImpl extends BaseJdbcDaoSupport implements SeekDao {
 	};
 
 	private static final String SAVE_SQL = "insert into seek(sn, seeker_id, contact_info_visible, category_l1, category_l2,"
-			+ " title, content, requirement, delegate_number, reward, additional_reward, service_date, location_id, expire_date, status)"
-			+ " values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+			+ " title, content, requirement, delegate_number, reward, additional_reward, service_date, province, city, district, address, location_id, expire_date, status)"
+			+ " values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
 	/**
 	 * 保存
@@ -85,10 +90,14 @@ public class SeekDaoImpl extends BaseJdbcDaoSupport implements SeekDao {
 			statement.setString(10, seek.getReward());
 			statement.setString(11, seek.getAdditionalReward());
 			statement.setString(12, seek.getServiceDate());
-			JdbcDaoUtils.setLong(statement, 13, seek.getLocationId());
-			statement.setDate(14, seek.getExipireDate() != null ? new java.sql.Date(seek.getExipireDate().getTime())
+			statement.setString(13, seek.getProvince());
+			statement.setString(14, seek.getCity());
+			statement.setString(15, seek.getDistrict());
+			statement.setString(16, seek.getAddress());
+			JdbcDaoUtils.setLong(statement, 17, seek.getLocationId());
+			statement.setDate(18, seek.getExipireDate() != null ? new java.sql.Date(seek.getExipireDate().getTime())
 					: null);
-			statement.setString(15, seek.getStatus());
+			statement.setString(19, seek.getStatus());
 
 			statement.execute();
 			ResultSet rs = statement.getGeneratedKeys();

@@ -3,6 +3,7 @@ package net.ipetty.ibang.api;
 import java.util.List;
 
 import net.ipetty.ibang.vo.SeekVO;
+import net.ipetty.ibang.vo.SeekWithLocationVO;
 import retrofit.http.Body;
 import retrofit.http.GET;
 import retrofit.http.POST;
@@ -21,6 +22,12 @@ public interface SeekApi {
 	 */
 	@POST("/seek/publish")
 	public SeekVO publish(@Body SeekVO seek);
+
+	/**
+	 * 发布求助（带地理位置）
+	 */
+	@POST("/seek/publishWithLocation")
+	public SeekVO publish(@Body SeekWithLocationVO seek);
 
 	/**
 	 * 获取

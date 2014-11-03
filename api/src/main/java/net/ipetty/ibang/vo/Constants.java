@@ -42,4 +42,8 @@ public interface Constants {
 	public static final String SYS_MSG_TYPE_SEEK_FINISHED = "seek_finished"; // 您（求助者）的一个求助单已完成
 	public static final String SYS_MSG_TYPE_SEEK_CLOSED = "seek_closed"; // 您（帮助者）应征的一个求助单已被求助者关闭
 
+	public static final String ID_VERIFICATION_VERIFYING = "待审核";
+	public static final String ID_VERIFICATION_APPROVED = "审核通过";
+	public static final String ID_VERIFICATION_UNAPPROVED = "审核未通过";
+
 }

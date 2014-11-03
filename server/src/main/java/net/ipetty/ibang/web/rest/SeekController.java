@@ -8,10 +8,14 @@ import javax.annotation.Resource;
 
 import net.ipetty.ibang.context.UserContext;
 import net.ipetty.ibang.context.UserPrincipal;
+import net.ipetty.ibang.model.Location;
 import net.ipetty.ibang.model.Seek;
+import net.ipetty.ibang.service.LocationService;
 import net.ipetty.ibang.service.SeekService;
 import net.ipetty.ibang.util.DateUtils;
+import net.ipetty.ibang.vo.LocationVO;
 import net.ipetty.ibang.vo.SeekVO;
+import net.ipetty.ibang.vo.SeekWithLocationVO;
 import net.ipetty.ibang.web.rest.exception.RestException;
 
 import org.apache.commons.lang3.StringUtils;
@@ -33,6 +37,9 @@ public class SeekController extends BaseController {
 	@Resource
 	private SeekService seekService;
 
+	@Resource
+	private LocationService locationService;
+
 	/**
 	 * 发布求助
 	 */
@@ -49,6 +56,40 @@ public class SeekController extends BaseController {
 		seek.setSeekerId(currentUser.getId());
 
 		Seek s = Seek.fromVO(seek);
+		seekService.publish(s);
+		s = seekService.getById(s.getId());
+
+		return s.toVO();
+	}
+
+	/**
+	 * 发布求助（带地理位置）
+	 */
+	@RequestMapping(value = "/seek/publishWithLocation", method = RequestMethod.POST)
+	public SeekVO publish(@RequestBody SeekWithLocationVO seek) {
+		Assert.notNull(seek, "求助单不能为空");
+
+		UserPrincipal currentUser = UserContext.getContext();
+		if (currentUser == null || currentUser.getId() == null) {
+			throw new RestException("用户登录后才能发布求助");
+		}
+
+		// 设置求助人
+		seek.setSeekerId(currentUser.getId());
+
+		// 保存地理位置
+		LocationVO location = seek.getLocation();
+		Location loc = null;
+		if (location != null) {
+			loc = Location.fromVO(location);
+			locationService.save(loc);
+		}
+
+		// 保存求助单
+		Seek s = Seek.fromVO(seek);
+		if (loc != null) {
+			s.setLocationId(loc.getId());
+		}
 		seekService.publish(s);
 		s = seekService.getById(s.getId());
 
