@@ -8,6 +8,10 @@ package net.ipetty.ibang.vo;
  */
 public interface Constants {
 
+	/* seek type */
+	public static final String SEEK_TYPE_SEEK = "求助";
+	public static final String SEEK_TYPE_ASSISTANCE = "帮忙";
+
 	/* seek status */
 	public static final String SEEK_STATUS_CREATED = "求助中"; // 已创建（求助中）
 	public static final String SEEK_STATUS_OFFERED = "应征中"; // 应征中（已有应征者应征，甚至已有部分应征已达成委托协议）
@@ -42,6 +46,7 @@ public interface Constants {
 	public static final String SYS_MSG_TYPE_SEEK_FINISHED = "seek_finished"; // 您（求助者）的一个求助单已完成
 	public static final String SYS_MSG_TYPE_SEEK_CLOSED = "seek_closed"; // 您（帮助者）应征的一个求助单已被求助者关闭
 
+	/* 身份验证状态 */
 	public static final String ID_VERIFICATION_VERIFYING = "待审核";
 	public static final String ID_VERIFICATION_APPROVED = "审核通过";
 	public static final String ID_VERIFICATION_UNAPPROVED = "审核未通过";

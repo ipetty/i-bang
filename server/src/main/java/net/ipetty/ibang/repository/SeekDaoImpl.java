@@ -34,7 +34,7 @@ public class SeekDaoImpl extends BaseJdbcDaoSupport implements SeekDao {
 		@Override
 		public Seek mapRow(ResultSet rs, int rowNum) throws SQLException {
 			// id, sn, seeker_id, contact_info_visible, category_l1,
-			// category_l2, title, content, requirement, delegate_number,
+			// category_l2, type, title, content, requirement, delegate_number,
 			// reward, additional_reward, service_date, province, city,
 			// district, address, location_id, created_on, expire_date,
 			// closed_on, status
@@ -45,6 +45,7 @@ public class SeekDaoImpl extends BaseJdbcDaoSupport implements SeekDao {
 			seek.setContactInfoVisible(rs.getBoolean("contact_info_visible"));
 			seek.setCategoryL1(rs.getString("category_l1"));
 			seek.setCategoryL2(rs.getString("category_l2"));
+			seek.setType(rs.getString("type"));
 			seek.setTitle(rs.getString("title"));
 			seek.setContent(rs.getString("content"));
 			seek.setRequirement(rs.getString("requirement"));
@@ -65,9 +66,9 @@ public class SeekDaoImpl extends BaseJdbcDaoSupport implements SeekDao {
 		}
 	};
 
-	private static final String SAVE_SQL = "insert into seek(sn, seeker_id, contact_info_visible, category_l1, category_l2,"
+	private static final String SAVE_SQL = "insert into seek(sn, seeker_id, contact_info_visible, category_l1, category_l2, type,"
 			+ " title, content, requirement, delegate_number, reward, additional_reward, service_date, province, city, district, address, location_id, expire_date, status)"
-			+ " values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+			+ " values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
 	/**
 	 * 保存
@@ -83,21 +84,22 @@ public class SeekDaoImpl extends BaseJdbcDaoSupport implements SeekDao {
 			statement.setBoolean(3, seek.isContactInfoVisible());
 			statement.setString(4, seek.getCategoryL1());
 			statement.setString(5, seek.getCategoryL2());
-			statement.setString(6, seek.getTitle());
-			statement.setString(7, seek.getContent());
-			statement.setString(8, seek.getRequirement());
-			statement.setInt(9, seek.getDelegateNumber());
-			statement.setString(10, seek.getReward());
-			statement.setString(11, seek.getAdditionalReward());
-			statement.setString(12, seek.getServiceDate());
-			statement.setString(13, seek.getProvince());
-			statement.setString(14, seek.getCity());
-			statement.setString(15, seek.getDistrict());
-			statement.setString(16, seek.getAddress());
-			JdbcDaoUtils.setLong(statement, 17, seek.getLocationId());
-			statement.setDate(18, seek.getExipireDate() != null ? new java.sql.Date(seek.getExipireDate().getTime())
+			statement.setString(6, seek.getType());
+			statement.setString(7, seek.getTitle());
+			statement.setString(8, seek.getContent());
+			statement.setString(9, seek.getRequirement());
+			statement.setInt(10, seek.getDelegateNumber());
+			statement.setString(11, seek.getReward());
+			statement.setString(12, seek.getAdditionalReward());
+			statement.setString(13, seek.getServiceDate());
+			statement.setString(14, seek.getProvince());
+			statement.setString(15, seek.getCity());
+			statement.setString(16, seek.getDistrict());
+			statement.setString(17, seek.getAddress());
+			JdbcDaoUtils.setLong(statement, 18, seek.getLocationId());
+			statement.setDate(19, seek.getExipireDate() != null ? new java.sql.Date(seek.getExipireDate().getTime())
 					: null);
-			statement.setString(19, seek.getStatus());
+			statement.setString(20, seek.getStatus());
 
 			statement.execute();
 			ResultSet rs = statement.getGeneratedKeys();
@@ -123,7 +125,10 @@ public class SeekDaoImpl extends BaseJdbcDaoSupport implements SeekDao {
 		return super.queryUniqueEntity(GET_BY_ID_SQL, ROW_MAPPER, id);
 	}
 
-	private static final String LIST_LATEST_SQL = "select id from seek where created_on<=? and (status=? or status=?) order by created_on desc limit ?,?";
+	private static final String FRAGMENT_SELECT_FROM_WHERE = "select id from seek where type=?";
+	private static final String FRAGMENT_TIME_STATUS_ORDER_LIMIT = " and created_on<=? and (status=? or status=?) order by created_on desc limit ?,?";
+
+	private static final String LIST_LATEST_SQL = FRAGMENT_SELECT_FROM_WHERE + FRAGMENT_TIME_STATUS_ORDER_LIMIT;
 
 	/**
 	 * 获取最新的未关闭求助单ID列表
@@ -132,13 +137,18 @@ public class SeekDaoImpl extends BaseJdbcDaoSupport implements SeekDao {
 	 *            分页页码，从0开始
 	 */
 	@Override
-	public List<Long> listLatest(Date timeline, int pageNumber, int pageSize) {
-		return super.getJdbcTemplate().query(LIST_LATEST_SQL, LONG_ROW_MAPPER, timeline, Constants.SEEK_STATUS_CREATED,
-				Constants.SEEK_STATUS_OFFERED, pageNumber * pageSize, pageSize);
+	public List<Long> listLatest(String type, Date timeline, int pageNumber, int pageSize) {
+		return super.getJdbcTemplate().query(LIST_LATEST_SQL, LONG_ROW_MAPPER, type, timeline,
+				Constants.SEEK_STATUS_CREATED, Constants.SEEK_STATUS_OFFERED, pageNumber * pageSize, pageSize);
 	}
 
-	private static final String LIST_LATEST_BY_CATEGORYL1_SQL = "select id from seek where category_l1=? and created_on<=? and (status=? or status=?) order by created_on desc limit ?,?";
-	private static final String LIST_LATEST_BY_CATEGORYL2_SQL = "select id from seek where category_l1=? and category_l2=? and created_on<=? and (status=? or status=?) order by created_on desc limit ?,?";
+	private static final String FRAGMENT_CATEGORY_L1 = " and category_l1=?";
+	private static final String FRAGMENT_CATEGORY_L12 = FRAGMENT_CATEGORY_L1 + " and category_l2=?";
+
+	private static final String LIST_LATEST_BY_CATEGORYL1_SQL = FRAGMENT_SELECT_FROM_WHERE + FRAGMENT_CATEGORY_L1
+			+ FRAGMENT_TIME_STATUS_ORDER_LIMIT;
+	private static final String LIST_LATEST_BY_CATEGORYL12_SQL = FRAGMENT_SELECT_FROM_WHERE + FRAGMENT_CATEGORY_L12
+			+ FRAGMENT_TIME_STATUS_ORDER_LIMIT;
 
 	/**
 	 * 获取指定分类中最新的未关闭求助单ID列表
@@ -147,38 +157,38 @@ public class SeekDaoImpl extends BaseJdbcDaoSupport implements SeekDao {
 	 *            分页页码，从0开始
 	 */
 	@Override
-	public List<Long> listLatestByCategory(String categoryL1, String categoryL2, Date timeline, int pageNumber,
-			int pageSize) {
+	public List<Long> listLatestByCategory(String type, String categoryL1, String categoryL2, Date timeline,
+			int pageNumber, int pageSize) {
 		if (StringUtils.isBlank(categoryL1)) {
-			return listLatest(timeline, pageNumber, pageSize);
+			return listLatest(type, timeline, pageNumber, pageSize);
 		} else if (StringUtils.isBlank(categoryL2)) {
-			return super.getJdbcTemplate().query(LIST_LATEST_BY_CATEGORYL1_SQL, LONG_ROW_MAPPER, categoryL1, timeline,
-					Constants.SEEK_STATUS_CREATED, Constants.SEEK_STATUS_OFFERED, pageNumber * pageSize, pageSize);
+			return super.getJdbcTemplate().query(LIST_LATEST_BY_CATEGORYL1_SQL, LONG_ROW_MAPPER, type, categoryL1,
+					timeline, Constants.SEEK_STATUS_CREATED, Constants.SEEK_STATUS_OFFERED, pageNumber * pageSize,
+					pageSize);
 		} else {
-			return super.getJdbcTemplate().query(LIST_LATEST_BY_CATEGORYL2_SQL, LONG_ROW_MAPPER, categoryL1,
+			return super.getJdbcTemplate().query(LIST_LATEST_BY_CATEGORYL12_SQL, LONG_ROW_MAPPER, type, categoryL1,
 					categoryL2, timeline, Constants.SEEK_STATUS_CREATED, Constants.SEEK_STATUS_OFFERED,
 					pageNumber * pageSize, pageSize);
 		}
 	}
 
-	private static final String FRAGMENT_SELECT_WHERE = "select s.id from seek s left join users u on s.seeker_id=u.id where ";
-	private static final String FRAGMENT_BY_CITY = " u.city=?";
-	private static final String FRAGMENT_BY_DISTRICT = " and u.district=?";
-	private static final String FRAGMENT_BY_CATEGORYL1 = " and s.category_l1=?";
-	private static final String FRAGMENT_BY_CATEGORYL2 = " and s.category_l2=?";
-	private static final String FRAGMENT_OTHERS = " and s.created_on<=? and (s.status=? or s.status=?) order by s.created_on desc limit ?,?";
+	// private static final String FRAGMENT_PROVINCE = " and province=?";
+	private static final String FRAGMENT_CITY = " and city=?";
+	private static final String FRAGMENT_DISTRICT = FRAGMENT_CITY + " and district=?";
 
-	private static final String LIST_LATEST_BY_CITY_SQL = FRAGMENT_SELECT_WHERE + FRAGMENT_BY_CITY + FRAGMENT_OTHERS;
-	private static final String LIST_LATEST_BY_CITY_AND_CATEGORYL1_SQL = FRAGMENT_SELECT_WHERE + FRAGMENT_BY_CITY
-			+ FRAGMENT_BY_CATEGORYL1 + FRAGMENT_OTHERS;
-	private static final String LIST_LATEST_BY_CITY_AND_CATEGORYL2_SQL = FRAGMENT_SELECT_WHERE + FRAGMENT_BY_CITY
-			+ FRAGMENT_BY_CATEGORYL1 + FRAGMENT_BY_CATEGORYL2 + FRAGMENT_OTHERS;
-	private static final String LIST_LATEST_BY_DISTRICT_SQL = FRAGMENT_SELECT_WHERE + FRAGMENT_BY_CITY
-			+ FRAGMENT_BY_DISTRICT + FRAGMENT_OTHERS;
-	private static final String LIST_LATEST_BY_DISTRICT_AND_CATEGORYL1_SQL = FRAGMENT_SELECT_WHERE + FRAGMENT_BY_CITY
-			+ FRAGMENT_BY_DISTRICT + FRAGMENT_BY_CATEGORYL1 + FRAGMENT_OTHERS;
-	private static final String LIST_LATEST_BY_DISTRICT_AND_CATEGORYL2_SQL = FRAGMENT_SELECT_WHERE + FRAGMENT_BY_CITY
-			+ FRAGMENT_BY_DISTRICT + FRAGMENT_BY_CATEGORYL1 + FRAGMENT_BY_CATEGORYL2 + FRAGMENT_OTHERS;
+	private static final String LIST_LATEST_BY_CITY_SQL = FRAGMENT_SELECT_FROM_WHERE + FRAGMENT_CITY
+			+ FRAGMENT_TIME_STATUS_ORDER_LIMIT;
+	private static final String LIST_LATEST_BY_CITY_AND_CATEGORYL1_SQL = FRAGMENT_SELECT_FROM_WHERE + FRAGMENT_CITY
+			+ FRAGMENT_CATEGORY_L1 + FRAGMENT_TIME_STATUS_ORDER_LIMIT;
+	private static final String LIST_LATEST_BY_CITY_AND_CATEGORYL12_SQL = FRAGMENT_SELECT_FROM_WHERE + FRAGMENT_CITY
+			+ FRAGMENT_CATEGORY_L12 + FRAGMENT_TIME_STATUS_ORDER_LIMIT;
+
+	private static final String LIST_LATEST_BY_DISTRICT_SQL = FRAGMENT_SELECT_FROM_WHERE + FRAGMENT_DISTRICT
+			+ FRAGMENT_TIME_STATUS_ORDER_LIMIT;
+	private static final String LIST_LATEST_BY_DISTRICT_AND_CATEGORYL1_SQL = FRAGMENT_SELECT_FROM_WHERE
+			+ FRAGMENT_DISTRICT + FRAGMENT_CATEGORY_L1 + FRAGMENT_TIME_STATUS_ORDER_LIMIT;
+	private static final String LIST_LATEST_BY_DISTRICT_AND_CATEGORYL2_SQL = FRAGMENT_SELECT_FROM_WHERE
+			+ FRAGMENT_DISTRICT + FRAGMENT_CATEGORY_L12 + FRAGMENT_TIME_STATUS_ORDER_LIMIT;
 
 	/**
 	 * 获取所在城市指定分类中最新的未关闭求助ID列表
@@ -187,44 +197,42 @@ public class SeekDaoImpl extends BaseJdbcDaoSupport implements SeekDao {
 	 *            分页页码，从0开始
 	 */
 	@Override
-	public List<Long> listLatestByCityOrCategory(String city, String district, String categoryL1, String categoryL2,
-			Date timeline, int pageNumber, int pageSize) {
+	public List<Long> listLatestByCityOrCategory(String type, String city, String district, String categoryL1,
+			String categoryL2, Date timeline, int pageNumber, int pageSize) {
 		if (StringUtils.isBlank(city)) {
-			return listLatestByCategory(categoryL1, categoryL2, timeline, pageNumber, pageSize);
+			return listLatestByCategory(type, categoryL1, categoryL2, timeline, pageNumber, pageSize);
 		} else if (StringUtils.isBlank(district)) {
 			if (StringUtils.isBlank(categoryL1)) {
-				return super.getJdbcTemplate().query(LIST_LATEST_BY_CITY_SQL, LONG_ROW_MAPPER, city, timeline,
+				return super.getJdbcTemplate().query(LIST_LATEST_BY_CITY_SQL, LONG_ROW_MAPPER, type, city, timeline,
 						Constants.SEEK_STATUS_CREATED, Constants.SEEK_STATUS_OFFERED, pageNumber * pageSize, pageSize);
 			} else if (StringUtils.isBlank(categoryL2)) {
-				return super.getJdbcTemplate().query(LIST_LATEST_BY_CITY_AND_CATEGORYL1_SQL, LONG_ROW_MAPPER, city,
-						categoryL1, timeline, Constants.SEEK_STATUS_CREATED, Constants.SEEK_STATUS_OFFERED,
+				return super.getJdbcTemplate().query(LIST_LATEST_BY_CITY_AND_CATEGORYL1_SQL, LONG_ROW_MAPPER, type,
+						city, categoryL1, timeline, Constants.SEEK_STATUS_CREATED, Constants.SEEK_STATUS_OFFERED,
 						pageNumber * pageSize, pageSize);
 			} else {
-				return super.getJdbcTemplate().query(LIST_LATEST_BY_CITY_AND_CATEGORYL2_SQL, LONG_ROW_MAPPER, city,
-						categoryL1, categoryL2, timeline, Constants.SEEK_STATUS_CREATED, Constants.SEEK_STATUS_OFFERED,
-						pageNumber * pageSize, pageSize);
+				return super.getJdbcTemplate().query(LIST_LATEST_BY_CITY_AND_CATEGORYL12_SQL, LONG_ROW_MAPPER, type,
+						city, categoryL1, categoryL2, timeline, Constants.SEEK_STATUS_CREATED,
+						Constants.SEEK_STATUS_OFFERED, pageNumber * pageSize, pageSize);
 			}
 		} else {
 			if (StringUtils.isBlank(categoryL1)) {
-				return super.getJdbcTemplate().query(LIST_LATEST_BY_DISTRICT_SQL, LONG_ROW_MAPPER, city, district,
-						timeline, Constants.SEEK_STATUS_CREATED, Constants.SEEK_STATUS_OFFERED, pageNumber * pageSize,
-						pageSize);
-			} else if (StringUtils.isBlank(categoryL2)) {
-				return super.getJdbcTemplate().query(LIST_LATEST_BY_DISTRICT_AND_CATEGORYL1_SQL, LONG_ROW_MAPPER, city,
-						district, categoryL1, timeline, Constants.SEEK_STATUS_CREATED, Constants.SEEK_STATUS_OFFERED,
+				return super.getJdbcTemplate().query(LIST_LATEST_BY_DISTRICT_SQL, LONG_ROW_MAPPER, type, city,
+						district, timeline, Constants.SEEK_STATUS_CREATED, Constants.SEEK_STATUS_OFFERED,
 						pageNumber * pageSize, pageSize);
+			} else if (StringUtils.isBlank(categoryL2)) {
+				return super.getJdbcTemplate().query(LIST_LATEST_BY_DISTRICT_AND_CATEGORYL1_SQL, LONG_ROW_MAPPER, type,
+						city, district, categoryL1, timeline, Constants.SEEK_STATUS_CREATED,
+						Constants.SEEK_STATUS_OFFERED, pageNumber * pageSize, pageSize);
 			} else {
-				return super.getJdbcTemplate().query(LIST_LATEST_BY_DISTRICT_AND_CATEGORYL2_SQL, LONG_ROW_MAPPER, city,
-						district, categoryL1, categoryL2, timeline, Constants.SEEK_STATUS_CREATED,
+				return super.getJdbcTemplate().query(LIST_LATEST_BY_DISTRICT_AND_CATEGORYL2_SQL, LONG_ROW_MAPPER, type,
+						city, district, categoryL1, categoryL2, timeline, Constants.SEEK_STATUS_CREATED,
 						Constants.SEEK_STATUS_OFFERED, pageNumber * pageSize, pageSize);
 			}
 		}
 	}
 
-	private static final String LIST_LATEST_BY_CITY_AND_OFFER_RANGE_CLAUSE = FRAGMENT_SELECT_WHERE + FRAGMENT_BY_CITY;
-	private static final String LIST_LATEST_BY_DISTRICT_AND_OFFER_RANGE_CLAUSE = FRAGMENT_SELECT_WHERE
-			+ FRAGMENT_BY_CITY + FRAGMENT_BY_DISTRICT;
-	private static final String AND_FRAGMENT = " and ";
+	private static final String FRAGMENT_SELECT_FROM_WHERE_CITY = FRAGMENT_SELECT_FROM_WHERE + FRAGMENT_CITY;
+	private static final String FRAGMENT_SELECT_FROM_WHERE_DISTRICT = FRAGMENT_SELECT_FROM_WHERE + FRAGMENT_DISTRICT;
 
 	/**
 	 * 获取所在城市指定用户帮忙范围内的最新未关闭求助列表
@@ -233,28 +241,29 @@ public class SeekDaoImpl extends BaseJdbcDaoSupport implements SeekDao {
 	 *            分页页码，从0开始
 	 */
 	@Override
-	public List<Long> listLatestByCityAndOfferRange(String city, String district, List<SeekCategory> offerRange,
-			Date timeline, int pageNumber, int pageSize) {
+	public List<Long> listLatestByCityAndOfferRange(String type, String city, String district,
+			List<SeekCategory> offerRange, Date timeline, int pageNumber, int pageSize) {
 		String offerRangeClause = populateOfferRangeClause(offerRange);
 		if (StringUtils.isBlank(city)) {
-			return super.getJdbcTemplate().query(FRAGMENT_SELECT_WHERE + offerRangeClause + FRAGMENT_OTHERS,
-					LONG_ROW_MAPPER, timeline, Constants.SEEK_STATUS_CREATED, Constants.SEEK_STATUS_OFFERED,
+			return super.getJdbcTemplate().query(
+					FRAGMENT_SELECT_FROM_WHERE + offerRangeClause + FRAGMENT_TIME_STATUS_ORDER_LIMIT, LONG_ROW_MAPPER,
+					type, timeline, Constants.SEEK_STATUS_CREATED, Constants.SEEK_STATUS_OFFERED,
 					pageNumber * pageSize, pageSize);
 		} else if (StringUtils.isBlank(district)) {
 			return super.getJdbcTemplate().query(
-					LIST_LATEST_BY_CITY_AND_OFFER_RANGE_CLAUSE + AND_FRAGMENT + offerRangeClause + FRAGMENT_OTHERS,
-					LONG_ROW_MAPPER, city, timeline, Constants.SEEK_STATUS_CREATED, Constants.SEEK_STATUS_OFFERED,
-					pageNumber * pageSize, pageSize);
+					FRAGMENT_SELECT_FROM_WHERE_CITY + offerRangeClause + FRAGMENT_TIME_STATUS_ORDER_LIMIT,
+					LONG_ROW_MAPPER, type, city, timeline, Constants.SEEK_STATUS_CREATED,
+					Constants.SEEK_STATUS_OFFERED, pageNumber * pageSize, pageSize);
 		} else {
 			return super.getJdbcTemplate().query(
-					LIST_LATEST_BY_DISTRICT_AND_OFFER_RANGE_CLAUSE + AND_FRAGMENT + offerRangeClause + FRAGMENT_OTHERS,
-					LONG_ROW_MAPPER, city, district, timeline, Constants.SEEK_STATUS_CREATED,
+					FRAGMENT_SELECT_FROM_WHERE_DISTRICT + offerRangeClause + FRAGMENT_TIME_STATUS_ORDER_LIMIT,
+					LONG_ROW_MAPPER, type, city, district, timeline, Constants.SEEK_STATUS_CREATED,
 					Constants.SEEK_STATUS_OFFERED, pageNumber * pageSize, pageSize);
 		}
 	}
 
 	private String populateOfferRangeClause(List<SeekCategory> offerRange) {
-		StringBuffer sb = new StringBuffer("(");
+		StringBuffer sb = new StringBuffer("and (");
 		for (int i = 0; i < offerRange.size(); i++) {
 			SeekCategory category = offerRange.get(i);
 			if (category != null) {
@@ -277,7 +286,9 @@ public class SeekDaoImpl extends BaseJdbcDaoSupport implements SeekDao {
 		return sb.toString();
 	}
 
-	private static final String LIST_LATEST_BY_KEYWORD_SQL = "select id from seek where created_on<=? and (status=? or status=?) and (title like ? or content like ? or requirement like ? or reward like ? or additional_reward like ?) order by created_on desc limit ?,?";
+	private static final String FRAGMENT_KEYWORD = " and (title like ? or content like ? or requirement like ? or reward like ? or additional_reward like ?)";
+	private static final String LIST_LATEST_BY_KEYWORD_SQL = FRAGMENT_SELECT_FROM_WHERE + FRAGMENT_KEYWORD
+			+ FRAGMENT_TIME_STATUS_ORDER_LIMIT;
 
 	/**
 	 * 根据关键字搜索最新的未关闭求助单ID列表
@@ -286,17 +297,18 @@ public class SeekDaoImpl extends BaseJdbcDaoSupport implements SeekDao {
 	 *            分页页码，从0开始
 	 */
 	@Override
-	public List<Long> listLatestByKeyword(String keyword, Date timeline, int pageNumber, int pageSize) {
+	public List<Long> listLatestByKeyword(String type, String keyword, Date timeline, int pageNumber, int pageSize) {
 		if (StringUtils.isEmpty(keyword)) {
-			return listLatest(timeline, pageNumber, pageSize);
+			return listLatest(type, timeline, pageNumber, pageSize);
 		}
 		String likeStatement = "%" + keyword + "%";
-		return super.getJdbcTemplate().query(LIST_LATEST_BY_KEYWORD_SQL, LONG_ROW_MAPPER, timeline,
+		return super.getJdbcTemplate().query(LIST_LATEST_BY_KEYWORD_SQL, LONG_ROW_MAPPER, type, timeline,
 				Constants.SEEK_STATUS_CREATED, Constants.SEEK_STATUS_OFFERED, likeStatement, likeStatement,
 				likeStatement, likeStatement, likeStatement, pageNumber * pageSize, pageSize);
 	}
 
-	private static final String LIST_BY_USER_ID_SQL = "select id from seek where seeker_id=? order by created_on desc limit ?,?";
+	private static final String LIST_BY_USER_ID_SQL = FRAGMENT_SELECT_FROM_WHERE
+			+ " and seeker_id=? order by created_on desc limit ?,?";
 
 	/**
 	 * 获取指定用户的求助单ID列表
@@ -305,8 +317,8 @@ public class SeekDaoImpl extends BaseJdbcDaoSupport implements SeekDao {
 	 *            分页页码，从0开始
 	 */
 	@Override
-	public List<Long> listByUserId(Integer userId, int pageNumber, int pageSize) {
-		return super.getJdbcTemplate().query(LIST_BY_USER_ID_SQL, LONG_ROW_MAPPER, userId, pageNumber * pageSize,
+	public List<Long> listByUserId(String type, Integer userId, int pageNumber, int pageSize) {
+		return super.getJdbcTemplate().query(LIST_BY_USER_ID_SQL, LONG_ROW_MAPPER, type, userId, pageNumber * pageSize,
 				pageSize);
 	}
 

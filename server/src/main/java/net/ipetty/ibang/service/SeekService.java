@@ -56,6 +56,7 @@ public class SeekService extends BaseService {
 	 */
 	public void publish(Seek seek) {
 		Assert.notNull(seek, "求助单不能为空");
+		Assert.notNull(seek.getType(), "类型不能为空");
 		Assert.notNull(seek.getSeekerId(), "求助人不能为空");
 
 		// 生成序列号 TODO 生成日期数字的序列号
@@ -107,13 +108,9 @@ public class SeekService extends BaseService {
 	 * @param pageNumber
 	 *            分页页码，从0开始
 	 */
-	public List<Seek> listLatest(Date timeline, int pageNumber, int pageSize) {
-		List<Long> seekIds = seekDao.listLatest(timeline, pageNumber, pageSize);
-		List<Seek> seeks = new ArrayList<Seek>();
-		for (Long seekId : seekIds) {
-			seeks.add(this.getById(seekId));
-		}
-		return seeks;
+	public List<Seek> listLatest(String type, Date timeline, int pageNumber, int pageSize) {
+		List<Long> seekIds = seekDao.listLatest(type, timeline, pageNumber, pageSize);
+		return this.listByIds(seekIds);
 	}
 
 	/**
@@ -122,14 +119,10 @@ public class SeekService extends BaseService {
 	 * @param pageNumber
 	 *            分页页码，从0开始
 	 */
-	public List<Seek> listLatestByCategory(String categoryL1, String categoryL2, Date timeline, int pageNumber,
-			int pageSize) {
-		List<Long> seekIds = seekDao.listLatestByCategory(categoryL1, categoryL2, timeline, pageNumber, pageSize);
-		List<Seek> seeks = new ArrayList<Seek>();
-		for (Long seekId : seekIds) {
-			seeks.add(this.getById(seekId));
-		}
-		return seeks;
+	public List<Seek> listLatestByCategory(String type, String categoryL1, String categoryL2, Date timeline,
+			int pageNumber, int pageSize) {
+		List<Long> seekIds = seekDao.listLatestByCategory(type, categoryL1, categoryL2, timeline, pageNumber, pageSize);
+		return this.listByIds(seekIds);
 	}
 
 	/**
@@ -138,15 +131,11 @@ public class SeekService extends BaseService {
 	 * @param pageNumber
 	 *            分页页码，从0开始
 	 */
-	public List<Seek> listLatestByCityOrCategory(String city, String district, String categoryL1, String categoryL2,
-			Date timeline, int pageNumber, int pageSize) {
-		List<Long> seekIds = seekDao.listLatestByCityOrCategory(city, district, categoryL1, categoryL2, timeline,
+	public List<Seek> listLatestByCityOrCategory(String type, String city, String district, String categoryL1,
+			String categoryL2, Date timeline, int pageNumber, int pageSize) {
+		List<Long> seekIds = seekDao.listLatestByCityOrCategory(type, city, district, categoryL1, categoryL2, timeline,
 				pageNumber, pageSize);
-		List<Seek> seeks = new ArrayList<Seek>();
-		for (Long seekId : seekIds) {
-			seeks.add(this.getById(seekId));
-		}
-		return seeks;
+		return this.listByIds(seekIds);
 	}
 
 	/**
@@ -155,28 +144,24 @@ public class SeekService extends BaseService {
 	 * @param pageNumber
 	 *            分页页码，从0开始
 	 */
-	public List<Seek> listLatestByCityAndOfferRange(String city, String district, Integer userId, Date timeline,
-			int pageNumber, int pageSize) {
+	public List<Seek> listLatestByCityAndOfferRange(String type, String city, String district, Integer userId,
+			Date timeline, int pageNumber, int pageSize) {
 		if (userId == null) {
-			return this.listLatestByCityOrCategory(city, district, null, null, timeline, pageNumber, pageSize);
+			return this.listLatestByCityOrCategory(type, city, district, null, null, timeline, pageNumber, pageSize);
 		}
 
 		User user = userService.getById(userId);
 		if (user == null) {
-			return this.listLatestByCityOrCategory(city, district, null, null, timeline, pageNumber, pageSize);
+			return this.listLatestByCityOrCategory(type, city, district, null, null, timeline, pageNumber, pageSize);
 		}
 		List<SeekCategory> offerRange = user.getOffererInfo().getOfferRange();
 		if (CollectionUtils.isEmpty(offerRange)) {
-			return this.listLatestByCityOrCategory(city, district, null, null, timeline, pageNumber, pageSize);
+			return this.listLatestByCityOrCategory(type, city, district, null, null, timeline, pageNumber, pageSize);
 		}
 
-		List<Long> seekIds = seekDao.listLatestByCityAndOfferRange(city, district, offerRange, timeline, pageNumber,
-				pageSize);
-		List<Seek> seeks = new ArrayList<Seek>();
-		for (Long seekId : seekIds) {
-			seeks.add(this.getById(seekId));
-		}
-		return seeks;
+		List<Long> seekIds = seekDao.listLatestByCityAndOfferRange(type, city, district, offerRange, timeline,
+				pageNumber, pageSize);
+		return this.listByIds(seekIds);
 	}
 
 	/**
@@ -185,13 +170,9 @@ public class SeekService extends BaseService {
 	 * @param pageNumber
 	 *            分页页码，从0开始
 	 */
-	public List<Seek> listLatestByKeyword(String keyword, Date timeline, int pageNumber, int pageSize) {
-		List<Long> seekIds = seekDao.listLatestByKeyword(keyword, timeline, pageNumber, pageSize);
-		List<Seek> seeks = new ArrayList<Seek>();
-		for (Long seekId : seekIds) {
-			seeks.add(this.getById(seekId));
-		}
-		return seeks;
+	public List<Seek> listLatestByKeyword(String type, String keyword, Date timeline, int pageNumber, int pageSize) {
+		List<Long> seekIds = seekDao.listLatestByKeyword(type, keyword, timeline, pageNumber, pageSize);
+		return this.listByIds(seekIds);
 	}
 
 	/**
@@ -200,13 +181,9 @@ public class SeekService extends BaseService {
 	 * @param pageNumber
 	 *            分页页码，从0开始
 	 */
-	public List<Seek> listByUserId(Integer userId, int pageNumber, int pageSize) {
-		List<Long> seekIds = seekDao.listByUserId(userId, pageNumber, pageSize);
-		List<Seek> seeks = new ArrayList<Seek>();
-		for (Long seekId : seekIds) {
-			seeks.add(this.getById(seekId));
-		}
-		return seeks;
+	public List<Seek> listByUserId(String type, Integer userId, int pageNumber, int pageSize) {
+		List<Long> seekIds = seekDao.listByUserId(type, userId, pageNumber, pageSize);
+		return this.listByIds(seekIds);
 	}
 
 	/**

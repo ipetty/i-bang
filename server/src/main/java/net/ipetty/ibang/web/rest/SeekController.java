@@ -13,6 +13,7 @@ import net.ipetty.ibang.model.Seek;
 import net.ipetty.ibang.service.LocationService;
 import net.ipetty.ibang.service.SeekService;
 import net.ipetty.ibang.util.DateUtils;
+import net.ipetty.ibang.vo.Constants;
 import net.ipetty.ibang.vo.LocationVO;
 import net.ipetty.ibang.vo.SeekVO;
 import net.ipetty.ibang.vo.SeekWithLocationVO;
@@ -54,6 +55,7 @@ public class SeekController extends BaseController {
 
 		// 设置求助人
 		seek.setSeekerId(currentUser.getId());
+		seek.setType(Constants.SEEK_TYPE_SEEK);
 
 		Seek s = Seek.fromVO(seek);
 		seekService.publish(s);
@@ -76,6 +78,7 @@ public class SeekController extends BaseController {
 
 		// 设置求助人
 		seek.setSeekerId(currentUser.getId());
+		seek.setType(Constants.SEEK_TYPE_SEEK);
 
 		// 保存地理位置
 		LocationVO location = seek.getLocation();
@@ -86,6 +89,41 @@ public class SeekController extends BaseController {
 		}
 
 		// 保存求助单
+		Seek s = Seek.fromVO(seek);
+		if (loc != null) {
+			s.setLocationId(loc.getId());
+		}
+		seekService.publish(s);
+		s = seekService.getById(s.getId());
+
+		return s.toVO();
+	}
+
+	/**
+	 * 发布帮忙（带地理位置）
+	 */
+	@RequestMapping(value = "/seek/publishAssistance", method = RequestMethod.POST)
+	public SeekVO publishAssistance(@RequestBody SeekWithLocationVO seek) {
+		Assert.notNull(seek, "帮忙不能为空");
+
+		UserPrincipal currentUser = UserContext.getContext();
+		if (currentUser == null || currentUser.getId() == null) {
+			throw new RestException("用户登录后才能发布帮忙");
+		}
+
+		// 设置帮忙者
+		seek.setSeekerId(currentUser.getId());
+		seek.setType(Constants.SEEK_TYPE_ASSISTANCE);
+
+		// 保存地理位置
+		LocationVO location = seek.getLocation();
+		Location loc = null;
+		if (location != null) {
+			loc = Location.fromVO(location);
+			locationService.save(loc);
+		}
+
+		// 保存帮忙
 		Seek s = Seek.fromVO(seek);
 		if (loc != null) {
 			s.setLocationId(loc.getId());
@@ -115,7 +153,7 @@ public class SeekController extends BaseController {
 	@RequestMapping(value = "/seeklist/latest", method = RequestMethod.GET)
 	public List<SeekVO> listLatest(String timeline, int pageNumber, int pageSize) {
 		Date date = StringUtils.isBlank(timeline) ? new Date() : DateUtils.fromDatetimeString(timeline);
-		List<Seek> seeks = seekService.listLatest(date, pageNumber, pageSize);
+		List<Seek> seeks = seekService.listLatest(Constants.SEEK_TYPE_SEEK, date, pageNumber, pageSize);
 		return Seek.listToVoList(seeks);
 	}
 
@@ -129,7 +167,8 @@ public class SeekController extends BaseController {
 	public List<SeekVO> listLatestByCategory(String categoryL1, String categoryL2, String timeline, int pageNumber,
 			int pageSize) {
 		Date date = StringUtils.isBlank(timeline) ? new Date() : DateUtils.fromDatetimeString(timeline);
-		List<Seek> seeks = seekService.listLatestByCategory(categoryL1, categoryL2, date, pageNumber, pageSize);
+		List<Seek> seeks = seekService.listLatestByCategory(Constants.SEEK_TYPE_SEEK, categoryL1, categoryL2, date,
+				pageNumber, pageSize);
 		return Seek.listToVoList(seeks);
 	}
 
@@ -143,8 +182,8 @@ public class SeekController extends BaseController {
 	public List<SeekVO> listLatestByCityOrCategory(String city, String district, String categoryL1, String categoryL2,
 			String timeline, int pageNumber, int pageSize) {
 		Date date = StringUtils.isBlank(timeline) ? new Date() : DateUtils.fromDatetimeString(timeline);
-		List<Seek> seeks = seekService.listLatestByCityOrCategory(city, district, categoryL1, categoryL2, date,
-				pageNumber, pageSize);
+		List<Seek> seeks = seekService.listLatestByCityOrCategory(Constants.SEEK_TYPE_SEEK, city, district, categoryL1,
+				categoryL2, date, pageNumber, pageSize);
 		return Seek.listToVoList(seeks);
 	}
 
@@ -158,8 +197,8 @@ public class SeekController extends BaseController {
 	public List<SeekVO> listLatestByCityAndOfferRange(String city, String district, Integer userId, String timeline,
 			int pageNumber, int pageSize) {
 		Date date = StringUtils.isBlank(timeline) ? new Date() : DateUtils.fromDatetimeString(timeline);
-		List<Seek> seeks = seekService
-				.listLatestByCityAndOfferRange(city, district, userId, date, pageNumber, pageSize);
+		List<Seek> seeks = seekService.listLatestByCityAndOfferRange(Constants.SEEK_TYPE_SEEK, city, district, userId,
+				date, pageNumber, pageSize);
 		return Seek.listToVoList(seeks);
 	}
 
@@ -172,7 +211,8 @@ public class SeekController extends BaseController {
 	@RequestMapping(value = "/seeklist/latestbykeyword", method = RequestMethod.GET)
 	public List<SeekVO> listLatestByKeyword(String keyword, String timeline, int pageNumber, int pageSize) {
 		Date date = StringUtils.isBlank(timeline) ? new Date() : DateUtils.fromDatetimeString(timeline);
-		List<Seek> seeks = seekService.listLatestByKeyword(keyword, date, pageNumber, pageSize);
+		List<Seek> seeks = seekService.listLatestByKeyword(Constants.SEEK_TYPE_SEEK, keyword, date, pageNumber,
+				pageSize);
 		return Seek.listToVoList(seeks);
 	}
 
@@ -186,7 +226,7 @@ public class SeekController extends BaseController {
 	public List<SeekVO> listByUserId(Integer userId, int pageNumber, int pageSize) {
 		Assert.notNull(userId, "用户ID不能为空");
 
-		List<Seek> seeks = seekService.listByUserId(userId, pageNumber, pageSize);
+		List<Seek> seeks = seekService.listByUserId(Constants.SEEK_TYPE_SEEK, userId, pageNumber, pageSize);
 		return Seek.listToVoList(seeks);
 	}
 

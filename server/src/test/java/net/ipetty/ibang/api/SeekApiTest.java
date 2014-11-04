@@ -118,4 +118,28 @@ public class SeekApiTest extends BaseApiTest {
 		Assert.assertEquals(Constants.SEEK_STATUS_CREATED, s.getStatus());
 	}
 
+	@Test
+	public void testPublishAssistance() {
+		LoginResultVO loginResult = userApi.login(TEST_ACCOUNT_EMAIL, TEST_ACCOUNT_PASSWORD);
+		UserVO user = loginResult.getUserVo();
+		SeekWithLocationVO seek = new SeekWithLocationVO();
+		seek.setSeekerId(user.getId());
+		seek.setCategoryL1("IT");
+		seek.setCategoryL2("软件");
+		seek.setContent("我有大量业余时间，可以提供手机App的开发服务。");
+		List<ImageVO> images = new ArrayList<ImageVO>();
+		images.add(new ImageVO(null, null, "small_url", "original_url"));
+		images.add(new ImageVO(null, null, "small_url2", "original_url2"));
+		seek.setImages(images);
+		seek.setRequirement("需要100元/小时以上的报酬");
+		seek.setReward("100-500元/小时");
+
+		LocationVO location = new LocationVO(31.1790070000, 121.4023470000, "bd09ll", 9f, "上海", "上海", "徐汇", "", true);
+		seek.setLocation(location);
+
+		SeekVO s = seekApi.publishAssistance(seek);
+		Assert.assertNotNull(s.getId());
+		Assert.assertEquals(Constants.SEEK_STATUS_CREATED, s.getStatus());
+	}
+
 }

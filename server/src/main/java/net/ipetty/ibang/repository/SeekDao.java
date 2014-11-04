@@ -30,7 +30,7 @@ public interface SeekDao {
 	 * @param pageNumber
 	 *            分页页码，从0开始
 	 */
-	public List<Long> listLatest(Date timeline, int pageNumber, int pageSize);
+	public List<Long> listLatest(String type, Date timeline, int pageNumber, int pageSize);
 
 	/**
 	 * 获取指定分类中最新的未关闭求助单ID列表
@@ -38,8 +38,8 @@ public interface SeekDao {
 	 * @param pageNumber
 	 *            分页页码，从0开始
 	 */
-	public List<Long> listLatestByCategory(String categoryL1, String categoryL2, Date timeline, int pageNumber,
-			int pageSize);
+	public List<Long> listLatestByCategory(String type, String categoryL1, String categoryL2, Date timeline,
+			int pageNumber, int pageSize);
 
 	/**
 	 * 获取所在城市指定分类中最新的未关闭求助ID列表
@@ -47,8 +47,8 @@ public interface SeekDao {
 	 * @param pageNumber
 	 *            分页页码，从0开始
 	 */
-	public List<Long> listLatestByCityOrCategory(String city, String district, String categoryL1, String categoryL2,
-			Date timeline, int pageNumber, int pageSize);
+	public List<Long> listLatestByCityOrCategory(String type, String city, String district, String categoryL1,
+			String categoryL2, Date timeline, int pageNumber, int pageSize);
 
 	/**
 	 * 获取所在城市指定用户帮忙范围内的最新未关闭求助列表
@@ -56,8 +56,8 @@ public interface SeekDao {
 	 * @param pageNumber
 	 *            分页页码，从0开始
 	 */
-	public List<Long> listLatestByCityAndOfferRange(String city, String district, List<SeekCategory> offerRange,
-			Date timeline, int pageNumber, int pageSize);
+	public List<Long> listLatestByCityAndOfferRange(String type, String city, String district,
+			List<SeekCategory> offerRange, Date timeline, int pageNumber, int pageSize);
 
 	/**
 	 * 根据关键字搜索最新的未关闭求助单ID列表
@@ -65,7 +65,7 @@ public interface SeekDao {
 	 * @param pageNumber
 	 *            分页页码，从0开始
 	 */
-	public List<Long> listLatestByKeyword(String keyword, Date timeline, int pageNumber, int pageSize);
+	public List<Long> listLatestByKeyword(String type, String keyword, Date timeline, int pageNumber, int pageSize);
 
 	/**
 	 * 获取指定用户的求助单ID列表
@@ -73,7 +73,7 @@ public interface SeekDao {
 	 * @param pageNumber
 	 *            分页页码，从0开始
 	 */
-	public List<Long> listByUserId(Integer userId, int pageNumber, int pageSize);
+	public List<Long> listByUserId(String type, Integer userId, int pageNumber, int pageSize);
 
 	/**
 	 * 更新求助单状态

@@ -35,6 +35,7 @@ public class SeekServiceTest extends BaseServiceTest {
 	public void testAll() {
 		User user = userService.getByUsername(TEST_ACCOUNT_USERNAME);
 		Seek seek = new Seek();
+		seek.setType(Constants.SEEK_TYPE_SEEK);
 		seek.setSeekerId(user.getId());
 		seek.setCategoryL1("IT服务");
 		seek.setCategoryL2("电脑软件");
@@ -58,32 +59,42 @@ public class SeekServiceTest extends BaseServiceTest {
 		seek = seekService.getById(seek.getId());
 		Assert.assertEquals(2, seek.getImages().size());
 
-		seeks = seekService.listLatest(new Date(), 0, 20);
+		seeks = seekService.listLatest(Constants.SEEK_TYPE_SEEK, new Date(), 0, 20);
 		Assert.assertEquals(1, seeks.size());
 
-		seeks = seekService.listByUserId(user.getId(), 0, 20);
+		seeks = seekService.listByUserId(Constants.SEEK_TYPE_SEEK, user.getId(), 0, 20);
 		Assert.assertEquals(1, seeks.size());
 
 		seekService.close(seek.getId());
-		seeks = seekService.listLatest(new Date(), 0, 20);
+		seeks = seekService.listLatest(Constants.SEEK_TYPE_SEEK, new Date(), 0, 20);
 		Assert.assertEquals(0, seeks.size());
 
-		seeks = seekService.listLatestByCategory(null, null, new Date(), 0, 20);
-		seeks = seekService.listLatestByCategory("categoryL1", null, new Date(), 0, 20);
-		seeks = seekService.listLatestByCategory("categoryL1", "categoryL2", new Date(), 0, 20);
-
-		seeks = seekService.listLatestByCityOrCategory(null, null, null, null, new Date(), 0, 20);
-		seeks = seekService.listLatestByCityOrCategory(null, null, "categoryL1", null, new Date(), 0, 20);
-		seeks = seekService.listLatestByCityOrCategory(null, null, "categoryL1", "categoryL2", new Date(), 0, 20);
-		seeks = seekService.listLatestByCityOrCategory("city", null, null, null, new Date(), 0, 20);
-		seeks = seekService.listLatestByCityOrCategory("city", null, "categoryL1", null, new Date(), 0, 20);
-		seeks = seekService.listLatestByCityOrCategory("city", null, "categoryL1", "categoryL2", new Date(), 0, 20);
-		seeks = seekService.listLatestByCityOrCategory("city", "district", null, null, new Date(), 0, 20);
-		seeks = seekService.listLatestByCityOrCategory("city", "district", "categoryL1", null, new Date(), 0, 20);
-		seeks = seekService.listLatestByCityOrCategory("city", "district", "categoryL1", "categoryL2", new Date(), 0,
+		seeks = seekService.listLatestByCategory(Constants.SEEK_TYPE_SEEK, null, null, new Date(), 0, 20);
+		seeks = seekService.listLatestByCategory(Constants.SEEK_TYPE_SEEK, "categoryL1", null, new Date(), 0, 20);
+		seeks = seekService.listLatestByCategory(Constants.SEEK_TYPE_SEEK, "categoryL1", "categoryL2", new Date(), 0,
 				20);
 
+		seeks = seekService.listLatestByCityOrCategory(Constants.SEEK_TYPE_SEEK, null, null, null, null, new Date(), 0,
+				20);
+		seeks = seekService.listLatestByCityOrCategory(Constants.SEEK_TYPE_SEEK, null, null, "categoryL1", null,
+				new Date(), 0, 20);
+		seeks = seekService.listLatestByCityOrCategory(Constants.SEEK_TYPE_SEEK, null, null, "categoryL1",
+				"categoryL2", new Date(), 0, 20);
+		seeks = seekService.listLatestByCityOrCategory(Constants.SEEK_TYPE_SEEK, "city", null, null, null, new Date(),
+				0, 20);
+		seeks = seekService.listLatestByCityOrCategory(Constants.SEEK_TYPE_SEEK, "city", null, "categoryL1", null,
+				new Date(), 0, 20);
+		seeks = seekService.listLatestByCityOrCategory(Constants.SEEK_TYPE_SEEK, "city", null, "categoryL1",
+				"categoryL2", new Date(), 0, 20);
+		seeks = seekService.listLatestByCityOrCategory(Constants.SEEK_TYPE_SEEK, "city", "district", null, null,
+				new Date(), 0, 20);
+		seeks = seekService.listLatestByCityOrCategory(Constants.SEEK_TYPE_SEEK, "city", "district", "categoryL1",
+				null, new Date(), 0, 20);
+		seeks = seekService.listLatestByCityOrCategory(Constants.SEEK_TYPE_SEEK, "city", "district", "categoryL1",
+				"categoryL2", new Date(), 0, 20);
+
 		seek = new Seek();
+		seek.setType(Constants.SEEK_TYPE_SEEK);
 		seek.setSeekerId(user.getId());
 		seek.setCategoryL1("IT服务");
 		seek.setCategoryL2("电脑软件");
@@ -101,9 +112,12 @@ public class SeekServiceTest extends BaseServiceTest {
 		offerRange.add(new SeekCategory("家政服务", "保洁"));
 		offerRange.add(new SeekCategory("IT服务", "电脑软件"));
 		userService.updateOfferRange(user.getId(), offerRange);
-		seeks = seekService.listLatestByCityAndOfferRange(null, null, user.getId(), new Date(), 0, 20);
-		seeks = seekService.listLatestByCityAndOfferRange("city", null, user.getId(), new Date(), 0, 20);
-		seeks = seekService.listLatestByCityAndOfferRange("city", "district", user.getId(), new Date(), 0, 20);
+		seeks = seekService.listLatestByCityAndOfferRange(Constants.SEEK_TYPE_SEEK, null, null, user.getId(),
+				new Date(), 0, 20);
+		seeks = seekService.listLatestByCityAndOfferRange(Constants.SEEK_TYPE_SEEK, "city", null, user.getId(),
+				new Date(), 0, 20);
+		seeks = seekService.listLatestByCityAndOfferRange(Constants.SEEK_TYPE_SEEK, "city", "district", user.getId(),
+				new Date(), 0, 20);
 	}
 
 }

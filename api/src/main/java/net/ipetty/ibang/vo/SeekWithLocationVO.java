@@ -21,6 +21,7 @@ public class SeekWithLocationVO extends BaseVO {
 	private boolean contactInfoVisible; // 是否公开求助者联系信息，默认隐藏
 	private String categoryL1; // 一级分类
 	private String categoryL2; // 二级分类
+	private String type; // 类型，求助 | 帮忙
 	private String title; // 求助标题
 	private String content; // 求助内容
 	private List<ImageVO> images = new ArrayList<ImageVO>(); // 图片
@@ -89,6 +90,14 @@ public class SeekWithLocationVO extends BaseVO {
 
 	public void setCategoryL2(String categoryL2) {
 		this.categoryL2 = categoryL2;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
 	}
 
 	public String getTitle() {

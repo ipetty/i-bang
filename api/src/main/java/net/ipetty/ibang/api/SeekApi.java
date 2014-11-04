@@ -30,6 +30,12 @@ public interface SeekApi {
 	public SeekVO publish(@Body SeekWithLocationVO seek);
 
 	/**
+	 * 发布帮忙（带地理位置）
+	 */
+	@POST("/seek/publishAssistance")
+	public SeekVO publishAssistance(@Body SeekWithLocationVO seek);
+
+	/**
 	 * 获取
 	 */
 	@GET("/seek")

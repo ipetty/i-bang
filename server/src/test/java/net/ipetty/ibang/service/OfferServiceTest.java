@@ -40,6 +40,7 @@ public class OfferServiceTest extends BaseServiceTest {
 		User user = userService.getByUsername(TEST_ACCOUNT_USERNAME);
 
 		Seek seek = new Seek();
+		seek.setType(Constants.SEEK_TYPE_SEEK);
 		seek.setSeekerId(user.getId());
 		seek.setCategoryL1("IT");
 		seek.setCategoryL2("软件");
