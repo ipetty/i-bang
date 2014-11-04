@@ -28,6 +28,7 @@ public class Constants {
 	public final static String INTENT_IMAGE_ORIGINAL_KEY = "ORIGINAL_url";
 	public final static String INTENT_IMAGE_SAMILL_KEY = "SAMILL_url";
 
+	public static final String INTENT_SEEK_TYPE = "INTENT_TYPE";
 	public static final String INTENT_CATEGORY = "INTENT_CATEGORY";
 	public static final String INTENT_SUB_CATEGORY = "INTENT_SUB_CATEGORY";
 	public static final String INTENT_IMAGE_UPLOAD_PATH = "INTENT_IMAGE_UPLOAD_PATH";
@@ -65,6 +66,7 @@ public class Constants {
 	public static final int REQUEST_CODE_USER_EDIT = 10;
 	public static final int REQUEST_CODE_CITY = 100;
 	public static final int REQUEST_CODE_CATEGORY = 101;
+	public static final int REQUEST_CODE_TYPE = 102;
 
 	public static final String PIC_USER_HEAD_IMAGE_NAME = "cacheHead.jpg";
 

@@ -87,5 +87,6 @@
     <string name="title_activity_select_user_category">请选择用户特长</string>
     <string name="title_activity_locate">定位</string>
     <string name="title_activity_my_evaluation">评价列表</string>
+    <string name="title_activity_select_seek_type">SelectSeekTypeActivity</string>
 
 </resources>

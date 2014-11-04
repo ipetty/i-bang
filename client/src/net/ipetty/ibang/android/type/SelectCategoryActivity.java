@@ -25,7 +25,7 @@ import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-public class TypeActivity extends Activity {
+public class SelectCategoryActivity extends Activity {
 	public static String CATEGORY_ALL_STRING = "全部";
 	public static String CATEGORY_MY_STRING = "我的特长";
 	private ArrayList<String> categoryL1 = new ArrayList<String>();
@@ -174,7 +174,7 @@ public class TypeActivity extends Activity {
 			// TODO Auto-generated method stub
 			View view;
 			if (convertView == null) {
-				LayoutInflater inflater = LayoutInflater.from(TypeActivity.this);
+				LayoutInflater inflater = LayoutInflater.from(SelectCategoryActivity.this);
 				view = inflater.inflate(R.layout.list_pop_category_item, null);
 				holder = new ViewHolder();
 				holder.layout = view.findViewById(R.id.layout);
@@ -258,7 +258,7 @@ public class TypeActivity extends Activity {
 			// TODO Auto-generated method stub
 			View view;
 			if (convertView == null) {
-				LayoutInflater inflater = LayoutInflater.from(TypeActivity.this);
+				LayoutInflater inflater = LayoutInflater.from(SelectCategoryActivity.this);
 				view = inflater.inflate(R.layout.list_pop_sub_category_item, null);
 				holder = new ViewHolder();
 				holder.name = (TextView) view.findViewById(R.id.name);

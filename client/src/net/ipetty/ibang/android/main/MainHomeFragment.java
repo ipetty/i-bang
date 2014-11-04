@@ -4,7 +4,6 @@ import java.util.Date;
 import java.util.List;
 
 import net.ipetty.ibang.R;
-import net.ipetty.ibang.android.city.ProvinceActivity;
 import net.ipetty.ibang.android.core.Constants;
 import net.ipetty.ibang.android.core.MyAppStateManager;
 import net.ipetty.ibang.android.core.ui.MyPullToRefreshListView;
@@ -18,7 +17,8 @@ import net.ipetty.ibang.android.seek.ListLatestAvaliableSeeksByCityAndOfferRange
 import net.ipetty.ibang.android.seek.ListLatestAvaliableSeeksByCityOrCategoryTask;
 import net.ipetty.ibang.android.seek.ListLatestAvaliableSeeksTaskListener;
 import net.ipetty.ibang.android.seek.SeekActivity;
-import net.ipetty.ibang.android.type.TypeActivity;
+import net.ipetty.ibang.android.type.SelectCategoryActivity;
+import net.ipetty.ibang.android.type.SelectSeekTypeActivity;
 import net.ipetty.ibang.android.user.UpdateProfileTask;
 import net.ipetty.ibang.android.user.UpdateProfileTaskListener;
 import net.ipetty.ibang.vo.SeekVO;
@@ -59,10 +59,11 @@ public class MainHomeFragment extends Fragment {
 	private ImageView msg;
 	private String category = "";
 	private String subCategory = "";
+	private String type = "";
 	private MyPullToRefreshListView listView;
 	private SeekAdapter adapter;
 
-	private Button type, order;
+	private Button categoryView, typeView;
 	private Integer pageNumber = 0;
 	private final Integer pageSize = 20;
 	private Long lastTimeMillis;
@@ -104,28 +105,32 @@ public class MainHomeFragment extends Fragment {
 		super.onActivityCreated(savedInstanceState);
 
 		// get city from local store;
-		province ="";// ApiContext.getInstance(getActivity()).getLocationProvince();
-		city = "";//ApiContext.getInstance(getActivity()).getLocationCity();
-		district = "";//ApiContext.getInstance(getActivity()).getLocationDistrict();
+		province = "";// ApiContext.getInstance(getActivity()).getLocationProvince();
+		city = "";// ApiContext.getInstance(getActivity()).getLocationCity();
+		district = "";// ApiContext.getInstance(getActivity()).getLocationDistrict();
 
 		cityView = (TextView) this.getView().findViewById(R.id.city);
 		search = (TextView) this.getView().findViewById(R.id.search);
 		msg = (ImageView) this.getView().findViewById(R.id.msg);
 
 		if (StringUtils.isNotBlank(city)) {
-			//cityView.setText(city);
+			// cityView.setText(city);
 		} else {
 			// 如果未选择城市，则需要先选择城市
-			//Intent intent = new Intent(getActivity(), ProvinceActivity.class);
-			//intent.putExtra(Constants.INTENT_LOCATION_TYPE, Constants.INTENT_LOCATION_CITY);
-			//startActivityForResult(intent, Constants.REQUEST_CODE_CITY);
+			// Intent intent = new Intent(getActivity(),
+			// ProvinceActivity.class);
+			// intent.putExtra(Constants.INTENT_LOCATION_TYPE,
+			// Constants.INTENT_LOCATION_CITY);
+			// startActivityForResult(intent, Constants.REQUEST_CODE_CITY);
 		}
 		cityView.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				//Intent intent = new Intent(getActivity(), ProvinceActivity.class);
-				//intent.putExtra(Constants.INTENT_LOCATION_TYPE, Constants.INTENT_LOCATION_CITY);
-				//startActivityForResult(intent, Constants.REQUEST_CODE_CITY);
+				// Intent intent = new Intent(getActivity(),
+				// ProvinceActivity.class);
+				// intent.putExtra(Constants.INTENT_LOCATION_TYPE,
+				// Constants.INTENT_LOCATION_CITY);
+				// startActivityForResult(intent, Constants.REQUEST_CODE_CITY);
 			}
 		});
 
@@ -146,26 +151,47 @@ public class MainHomeFragment extends Fragment {
 			}
 		});
 
-		type = (Button) getView().findViewById(R.id.type);
-		View type_layout = getView().findViewById(R.id.type_layout);
-		type.setOnClickListener(new OnClickListener() {
+		categoryView = (Button) getView().findViewById(R.id.category);
+		View category_layout = getView().findViewById(R.id.category_layout);
+		categoryView.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent();
-				intent.setClass(getActivity(), TypeActivity.class);
+				intent.setClass(getActivity(), SelectCategoryActivity.class);
 				intent.putExtra(Constants.INTENT_CATEGORY, category);
 				intent.putExtra(Constants.INTENT_SUB_CATEGORY, subCategory);
 				startActivityForResult(intent, Constants.REQUEST_CODE_CATEGORY);
+			}
+		});
+		category_layout.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent();
+				intent.setClass(getActivity(), SelectCategoryActivity.class);
+				intent.putExtra(Constants.INTENT_CATEGORY, category);
+				intent.putExtra(Constants.INTENT_SUB_CATEGORY, subCategory);
+				startActivityForResult(intent, Constants.REQUEST_CODE_CATEGORY);
+			}
+		});
+
+		typeView = (Button) getView().findViewById(R.id.type);
+		View type_layout = getView().findViewById(R.id.type_layout);
+		typeView.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent();
+				intent.setClass(getActivity(), SelectSeekTypeActivity.class);
+				intent.putExtra(Constants.INTENT_SEEK_TYPE, type);
+				startActivityForResult(intent, Constants.REQUEST_CODE_TYPE);
 			}
 		});
 		type_layout.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent();
-				intent.setClass(getActivity(), TypeActivity.class);
-				intent.putExtra(Constants.INTENT_CATEGORY, category);
-				intent.putExtra(Constants.INTENT_SUB_CATEGORY, subCategory);
-				startActivityForResult(intent, Constants.REQUEST_CODE_CATEGORY);
+				intent.setClass(getActivity(), SelectSeekTypeActivity.class);
+				intent.putExtra(Constants.INTENT_SEEK_TYPE, type);
+				startActivityForResult(intent, Constants.REQUEST_CODE_TYPE);
 			}
 		});
 
@@ -282,7 +308,7 @@ public class MainHomeFragment extends Fragment {
 				Intent intent = data;
 				category = intent.getStringExtra(Constants.INTENT_CATEGORY);
 				subCategory = intent.getStringExtra(Constants.INTENT_SUB_CATEGORY);
-				if (TypeActivity.CATEGORY_MY_STRING.equals(subCategory)) {
+				if (SelectCategoryActivity.CATEGORY_MY_STRING.equals(subCategory)) {
 					// 根据我的帮忙范围加载求助列表
 					loadSeekByCityAndOfferRange(true);
 				} else {
@@ -291,6 +317,22 @@ public class MainHomeFragment extends Fragment {
 				setCategoryText(category, subCategory);
 			}
 		}
+
+		if (requestCode == Constants.REQUEST_CODE_TYPE) {
+			if (resultCode == FragmentActivity.RESULT_OK) {
+				Intent intent = data;
+				type = intent.getStringExtra(Constants.INTENT_SEEK_TYPE);
+				String str = type;
+				if (StringUtils.isEmpty(str)) {
+					str = "全部类型";
+				}
+
+				typeView.setText(str);
+				// TODO: 加载帮助或者帮忙
+
+			}
+		}
+
 		if (requestCode == Constants.REQUEST_CODE_CITY) {
 			if (resultCode == FragmentActivity.RESULT_OK) {
 				Intent intent = data;
@@ -352,7 +394,7 @@ public class MainHomeFragment extends Fragment {
 		if (StringUtils.isEmpty(str)) {
 			str = "全部分类";
 		}
-		type.setText(str);
+		categoryView.setText(str);
 	}
 
 	public void loadMoreForResult(List<SeekVO> result) {

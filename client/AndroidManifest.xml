@@ -115,7 +115,7 @@
             android:label="@string/title_activity_message" >
         </activity>
         <activity
-            android:name="net.ipetty.ibang.android.type.TypeActivity"
+            android:name="net.ipetty.ibang.android.type.SelectCategoryActivity"
             android:label="@string/title_activity_type"
             android:theme="@style/TopDialog" >
         </activity>
@@ -179,6 +179,11 @@
         <activity
             android:name="net.ipetty.ibang.android.seek.MyEvaluationActivity"
             android:label="@string/title_activity_my_evaluation" >
+        </activity>
+        <activity
+            android:name="net.ipetty.ibang.android.type.SelectSeekTypeActivity"
+            android:label="@string/title_activity_select_seek_type" 
+            android:theme="@style/TopDialog" >
         </activity>
     </application>
 

@@ -91,11 +91,11 @@
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:gravity="center"
-                    	android:id="@+id/type_layout"
+                    	android:id="@+id/category_layout"
                         android:orientation="vertical" >
 
                         <Button
-                            android:id="@+id/type"
+                            android:id="@+id/category"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:background="@null"
@@ -106,6 +106,7 @@
                     </LinearLayout>
 
                     <LinearLayout
+                          android:id="@+id/type_layout"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
@@ -113,12 +114,12 @@
                         android:orientation="vertical" >
 
                         <Button
-                            android:id="@+id/order"
+                            android:id="@+id/type"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:background="@null"
                             android:drawableRight="@drawable/ic_arrow_down_gray"
-                            android:text="最新发布"
+                            android:text="全部类型"
                             android:textColor="@color/gray_color"
                             android:textSize="16sp" />
                     </LinearLayout>
