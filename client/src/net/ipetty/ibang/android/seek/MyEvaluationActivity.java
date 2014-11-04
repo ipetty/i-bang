@@ -128,7 +128,7 @@ public class MyEvaluationActivity extends Activity {
 		// listView_to_me
 		listView_to_me = (MyPullToRefreshListView) this.findViewById(R.id.listView_to_me);
 		adapter_to_me = new EvaluationAdapter();
-		listView_to_me.setAdapter(adapter_from_me);
+		listView_to_me.setAdapter(adapter_to_me);
 		listView_to_me.setOnItemClickListener(itemClick);
 
 		listView_to_me.setOnRefreshListener(new OnRefreshListener<ListView>() {
@@ -215,8 +215,13 @@ public class MyEvaluationActivity extends Activity {
 	private OnItemClickListener itemClick = new OnItemClickListener() {
 		@Override
 		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-			// TODO Auto-generated method stub
+			EvaluationVO vo = (EvaluationVO) parent.getAdapter().getItem(position);
 
+			Intent intent = new Intent(MyEvaluationActivity.this, DelegationActivity.class);
+			// TODO: 这里貌似 DelegationActivity 接受的都是 offerId
+			// intent.putExtra(Constants.INTENT_OFFER_ID, vo.getDelegationId());
+			// // 查看委托界面是通过offerId获取委托的
+			// startActivity(intent);
 		}
 	};
 
@@ -262,7 +267,7 @@ public class MyEvaluationActivity extends Activity {
 		public View getView(int position, View convertView, ViewGroup parent) {
 			View view;
 			if (convertView == null) {
-				view = LayoutInflater.from(MyEvaluationActivity.this).inflate(R.layout.list_offer_item, null);
+				view = LayoutInflater.from(MyEvaluationActivity.this).inflate(R.layout.list_evaluation_item, null);
 				holder = new ViewHolder();
 				holder.layout = view.findViewById(R.id.layout);
 				holder.avator = (ImageView) view.findViewById(R.id.avatar);

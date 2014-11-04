@@ -24,8 +24,8 @@ import android.widget.TextView;
 
 public class SelectSeekTypeActivity extends Activity {
 	public static String TYPE_ALL_STRING = "全部";
-	public static String TYPE_TO_HELP_STRING = "帮忙";
-	public static String TYPE_HELP_ME_STRING = "求助";
+	public static String TYPE_TO_HELP_STRING = net.ipetty.ibang.vo.Constants.SEEK_TYPE_ASSISTANCE;
+	public static String TYPE_HELP_ME_STRING = net.ipetty.ibang.vo.Constants.SEEK_TYPE_SEEK;
 
 	private ListView list;
 	private String type;
