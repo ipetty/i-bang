@@ -14,6 +14,10 @@ import net.ipetty.ibang.android.core.util.AppUtils;
 import net.ipetty.ibang.android.core.util.JSONUtils;
 import net.ipetty.ibang.android.core.util.NetWorkUtils;
 import net.ipetty.ibang.android.core.util.PrettyDateFormat;
+import net.ipetty.ibang.android.evaluation.ListEvaluationByEvaluateTargetIdTask;
+import net.ipetty.ibang.android.evaluation.ListEvaluationByEvaluateTargetIdTaskListener;
+import net.ipetty.ibang.android.evaluation.ListEvaluationByEvaluatorIdTask;
+import net.ipetty.ibang.android.evaluation.ListEvaluationByEvaluatorIdTaskListener;
 import net.ipetty.ibang.android.sdk.context.ApiContext;
 import net.ipetty.ibang.android.user.GetUserByIdSynchronously;
 import net.ipetty.ibang.android.user.UserInfoActivity;
@@ -113,7 +117,6 @@ public class MyEvaluationActivity extends Activity {
 		listView_from_me.setOnLastItemVisibleListener(new OnLastItemVisibleListener() {
 			@Override
 			public void onLastItemVisible() {
-				// TODO Auto-generated method stub
 				if (hasMore_from_me) {
 					load_from_me(false);
 				}
@@ -141,7 +144,6 @@ public class MyEvaluationActivity extends Activity {
 		listView_to_me.setOnLastItemVisibleListener(new OnLastItemVisibleListener() {
 			@Override
 			public void onLastItemVisible() {
-				// TODO Auto-generated method stub
 				if (hasMore_to_me) {
 					load_to_me(false);
 				}
@@ -151,39 +153,42 @@ public class MyEvaluationActivity extends Activity {
 	}
 
 	public void load_from_me(boolean isRefresh) {
-		// TODO Auto-generated method stub
 		if (isRefresh) {
 			pageNumber_from_me = 0;
 		}
 		// 加载数据
-		// TODO:
-		// new ListOfferByUserIdTask(MyEvaluationActivity.this).setListener(
-		// new ListOfferByUserIdTaskListener(MyEvaluationActivity.this,
-		// adapter_from_me, listView_from_me,
-		// isRefresh)).execute(user.getId(), pageNumber_from_me++, pageSize);
+		new ListEvaluationByEvaluatorIdTask(MyEvaluationActivity.this).setListener(
+				new ListEvaluationByEvaluatorIdTaskListener(MyEvaluationActivity.this, adapter_from_me,
+						listView_from_me, isRefresh)).execute(user.getId(), pageNumber_from_me++, pageSize);
 	}
 
 	public void load_to_me(boolean isRefresh) {
-		// TODO Auto-generated method stub
 		if (isRefresh) {
 			pageNumber_to_me = 0;
 		}
 		// 加载数据
-		// TODO:
-		// new ListOfferByUserIdTask(MyEvaluationActivity.this).setListener(
-		// new ListOfferByUserIdTaskListener(MyEvaluationActivity.this,
-		// adapter_to_me, listView_to_me, isRefresh))
-		// .execute(user.getId(), pageNumber_to_me++, pageSize);
+		new ListEvaluationByEvaluateTargetIdTask(MyEvaluationActivity.this).setListener(
+				new ListEvaluationByEvaluateTargetIdTaskListener(MyEvaluationActivity.this, adapter_to_me,
+						listView_to_me, isRefresh)).execute(user.getId(), pageNumber_to_me++, pageSize);
 	}
 
 	public void loadMoreForResult_from_me(List<EvaluationVO> result) {
-		// TODO Auto-generated method stub
 		if (result.size() < pageSize) {
 			hasMore_from_me = false;
 			listView_from_me.hideMoreView();
 		} else {
 			hasMore_from_me = true;
 			listView_from_me.showMoreView();
+		}
+	}
+
+	public void loadMoreForResult_to_me(List<EvaluationVO> result) {
+		if (result.size() < pageSize) {
+			hasMore_to_me = false;
+			listView_to_me.hideMoreView();
+		} else {
+			hasMore_to_me = true;
+			listView_to_me.showMoreView();
 		}
 	}
 
@@ -230,19 +235,16 @@ public class MyEvaluationActivity extends Activity {
 
 		@Override
 		public int getCount() {
-			// TODO Auto-generated method stub
 			return list.size();
 		}
 
 		@Override
 		public Object getItem(int position) {
-			// TODO Auto-generated method stub
 			return list.get(position);
 		}
 
 		@Override
 		public long getItemId(int position) {
-			// TODO Auto-generated method stub
 			return ((EvaluationVO) this.getItem(position)).getId();
 		}
 
@@ -258,7 +260,6 @@ public class MyEvaluationActivity extends Activity {
 
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
-			// TODO Auto-generated method stub
 			View view;
 			if (convertView == null) {
 				view = LayoutInflater.from(MyEvaluationActivity.this).inflate(R.layout.list_offer_item, null);
@@ -290,16 +291,11 @@ public class MyEvaluationActivity extends Activity {
 
 		@Override
 		public void onScrollStateChanged(AbsListView view, int scrollState) {
-			// TODO Auto-generated method stub
-
 		}
 
 		@Override
 		public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-			// TODO Auto-generated method stub
-
 		}
-
 	}
 
 	private void bindTime(Date date, TextView time) {
@@ -333,7 +329,6 @@ public class MyEvaluationActivity extends Activity {
 	}
 
 	public class TabClickListener implements OnClickListener {
-
 		private int index = 0;
 
 		public TabClickListener(int i) {
@@ -342,7 +337,6 @@ public class MyEvaluationActivity extends Activity {
 
 		@Override
 		public void onClick(View v) {
-			// TODO Auto-generated method stub
 			viewFlipper.setDisplayedChild(index);
 			if (index == 0) {
 				from_me_layout.setBackgroundResource(R.drawable.news_tab_selected);
