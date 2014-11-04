@@ -28,7 +28,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:gravity="center"
-                    android:text="@string/help"
+                    android:text="发布"
                     android:textColor="@color/base_color"
                     android:textSize="22sp" />
             </LinearLayout>
@@ -71,7 +71,7 @@
                      android:layout_marginLeft="10dp"
                      android:gravity="left|center"
                      android:textSize="18sp"
-                     android:text="请选择您需要的帮助" />
+                     android:text="请选择您需要发布的类型" />
 				
                  <include layout="@layout/line_horizontal_divider" />
 
