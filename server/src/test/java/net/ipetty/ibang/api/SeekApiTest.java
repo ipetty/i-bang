@@ -68,7 +68,7 @@ public class SeekApiTest extends BaseApiTest {
 		Assert.assertEquals(1, seeks.size());
 
 		seeks = seekApi.listByUserId(user.getId(), 0, 20);
-		Assert.assertEquals(1, seeks.size());
+		Assert.assertTrue(seeks.size() >= 1);
 
 		Assert.assertTrue(seekApi.close(seek.getId()));
 		seeks = seekApi.listLatest(DateUtils.toDatetimeString(new Date()), 0, 20);
@@ -97,6 +97,26 @@ public class SeekApiTest extends BaseApiTest {
 				DateUtils.toDatetimeString(new Date()), 0, 20);
 		seeks = seekApi.listLatestByCityAndOfferRange("city", "district", user.getId(),
 				DateUtils.toDatetimeString(new Date()), 0, 20);
+
+		seekApi.listLatest(Constants.SEEK_TYPE_SEEK, DateUtils.toDatetimeString(new Date()), 0, 20);
+		seekApi.listLatest(Constants.SEEK_TYPE_ASSISTANCE, DateUtils.toDatetimeString(new Date()), 0, 20);
+		seekApi.listLatestByCategory(Constants.SEEK_TYPE_SEEK, "IT服务", "电脑软件", DateUtils.toDatetimeString(new Date()),
+				0, 20);
+		seekApi.listLatestByCategory(Constants.SEEK_TYPE_ASSISTANCE, "IT服务", "电脑软件",
+				DateUtils.toDatetimeString(new Date()), 0, 20);
+		seekApi.listLatestByCityOrCategory(Constants.SEEK_TYPE_SEEK, "上海", "上海市", "IT服务", "电脑软件",
+				DateUtils.toDatetimeString(new Date()), 0, 20);
+		seekApi.listLatestByCityOrCategory(Constants.SEEK_TYPE_ASSISTANCE, "上海", "上海市", "IT服务", "电脑软件",
+				DateUtils.toDatetimeString(new Date()), 0, 20);
+		seekApi.listLatestByCityAndOfferRange(Constants.SEEK_TYPE_SEEK, "上海", "上海市", user.getId(),
+				DateUtils.toDatetimeString(new Date()), 0, 20);
+		seekApi.listLatestByCityAndOfferRange(Constants.SEEK_TYPE_ASSISTANCE, "上海", "上海市", user.getId(),
+				DateUtils.toDatetimeString(new Date()), 0, 20);
+		seekApi.listLatestByKeyword(Constants.SEEK_TYPE_SEEK, "keyword", DateUtils.toDatetimeString(new Date()), 0, 20);
+		seekApi.listLatestByKeyword(Constants.SEEK_TYPE_ASSISTANCE, "keyword", DateUtils.toDatetimeString(new Date()),
+				0, 20);
+		seekApi.listByUserId(Constants.SEEK_TYPE_SEEK, user.getId(), 0, 20);
+		seekApi.listByUserId(Constants.SEEK_TYPE_ASSISTANCE, user.getId(), 0, 20);
 	}
 
 	@Test

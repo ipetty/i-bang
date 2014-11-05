@@ -27,7 +27,7 @@ public class ListLatestAvaliableSeeksTask extends Task<String, List<SeekVO>> {
 	protected List<SeekVO> myDoInBackground(String... args) {
 		Log.d(TAG, "list latest avaliable seeks");
 		return IbangApi.init(activity).create(SeekApi.class)
-				.listLatest(args[0], Integer.valueOf(args[1]), Integer.valueOf(args[2]));
+				.listLatest(args[0], args[1], Integer.valueOf(args[2]), Integer.valueOf(args[3]));
 	}
 
 }

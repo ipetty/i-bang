@@ -15,7 +15,7 @@ import android.util.Log;
  * @author luocanfeng
  * @date 2014年10月14日
  */
-public class ListSeeksByUserIdTask extends Task<Integer, List<SeekVO>> {
+public class ListSeeksByUserIdTask extends Task<String, List<SeekVO>> {
 
 	private String TAG = getClass().getSimpleName();
 
@@ -24,9 +24,10 @@ public class ListSeeksByUserIdTask extends Task<Integer, List<SeekVO>> {
 	}
 
 	@Override
-	protected List<SeekVO> myDoInBackground(Integer... args) {
+	protected List<SeekVO> myDoInBackground(String... args) {
 		Log.d(TAG, "list seeks by user id");
-		return IbangApi.init(activity).create(SeekApi.class).listByUserId(args[0], args[1], args[2]);
+		return IbangApi.init(activity).create(SeekApi.class)
+				.listByUserId(args[0], Integer.valueOf(args[1]), Integer.valueOf(args[2]), Integer.valueOf(args[3]));
 	}
 
 }

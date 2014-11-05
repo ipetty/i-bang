@@ -70,7 +70,7 @@ public class Seek extends AbstractEntity {
 
 	public static Seek fromVO(SeekWithLocationVO vo) {
 		Seek entity = new Seek();
-		BeanUtils.copyProperties(vo, entity, "images");
+		BeanUtils.copyProperties(vo, entity, "images", "location");
 		for (ImageVO image : vo.getImages()) {
 			entity.getImages().add(Image.fromVO(image));
 		}

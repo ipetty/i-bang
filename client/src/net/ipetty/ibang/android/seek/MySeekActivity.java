@@ -79,7 +79,6 @@ public class MySeekActivity extends Activity {
 		listView.setOnLastItemVisibleListener(new OnLastItemVisibleListener() {
 			@Override
 			public void onLastItemVisible() {
-				// TODO Auto-generated method stub
 				if (hasMore) {
 					loadSeek(false);
 				}
@@ -90,15 +89,15 @@ public class MySeekActivity extends Activity {
 	}
 
 	public void loadSeek(boolean isRefresh) {
-		// TODO Auto-generated method stub
 		if (isRefresh) {
 			pageNumber = 0;
 		}
 		// 加载数据
-
 		new ListSeeksByUserIdTask(MySeekActivity.this).setListener(
 				new ListSeeksByUserIdTaskListener(MySeekActivity.this, adapter, listView, isRefresh)).execute(
-				ApiContext.getInstance(MySeekActivity.this).getCurrentUserId(), pageNumber++, pageSize);
+				net.ipetty.ibang.vo.Constants.SEEK_TYPE_SEEK,
+				String.valueOf(ApiContext.getInstance(MySeekActivity.this).getCurrentUserId()),
+				String.valueOf(pageNumber++), String.valueOf(pageSize));
 	}
 
 	// 获取刷新时间，若网络不可用则取最后一次刷新时间
@@ -113,7 +112,6 @@ public class MySeekActivity extends Activity {
 	}
 
 	public void loadMoreForResult(List<SeekVO> result) {
-		// TODO Auto-generated method stub
 		if (result.size() < pageSize) {
 			hasMore = false;
 			listView.hideMoreView();

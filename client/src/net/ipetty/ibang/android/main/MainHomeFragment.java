@@ -59,7 +59,7 @@ public class MainHomeFragment extends Fragment {
 	private ImageView msg;
 	private String category = "";
 	private String subCategory = "";
-	private String type = "";
+	private String type = net.ipetty.ibang.vo.Constants.SEEK_TYPE_SEEK;
 	private MyPullToRefreshListView listView;
 	private SeekAdapter adapter;
 
@@ -233,16 +233,6 @@ public class MainHomeFragment extends Fragment {
 		loadSeekByCityOrCategory(true);
 	}
 
-	/*
-	 * private void loadSeek(boolean isRefresh) { if (isRefresh) { pageNumber =
-	 * 0; } // 加载数据 new ListLatestAvaliableSeeksTask(getActivity()).setListener(
-	 * new ListLatestAvaliableSeeksTaskListener(MainHomeFragment.this, adapter,
-	 * listView, isRefresh)).execute(
-	 * net.ipetty.ibang.android.core.util.DateUtils.toDatetimeString(new
-	 * Date(getRefreshTime())), String.valueOf(pageNumber++),
-	 * String.valueOf(pageSize)); }
-	 */
-
 	public void loadSeekByCityOrCategory(boolean isRefresh) {
 		if (isRefresh) {
 			pageNumber = 0;
@@ -250,7 +240,7 @@ public class MainHomeFragment extends Fragment {
 		// 加载数据
 		new ListLatestAvaliableSeeksByCityOrCategoryTask(getActivity()).setListener(
 				new ListLatestAvaliableSeeksTaskListener(MainHomeFragment.this, adapter, listView, isRefresh)).execute(
-				city, district, category, subCategory,
+				type, city, district, category, subCategory,
 				net.ipetty.ibang.android.core.util.DateUtils.toDatetimeString(new Date(getRefreshTime())),
 				String.valueOf(pageNumber++), String.valueOf(pageSize));
 	}
@@ -262,7 +252,7 @@ public class MainHomeFragment extends Fragment {
 		// 加载数据
 		new ListLatestAvaliableSeeksByCityAndOfferRangeTask(getActivity()).setListener(
 				new ListLatestAvaliableSeeksTaskListener(MainHomeFragment.this, adapter, listView, isRefresh)).execute(
-				city, district, currentUserId == null ? null : currentUserId.toString(),
+				type, city, district, currentUserId == null ? null : currentUserId.toString(),
 				net.ipetty.ibang.android.core.util.DateUtils.toDatetimeString(new Date(getRefreshTime())),
 				String.valueOf(pageNumber++), String.valueOf(pageSize));
 	}
@@ -322,12 +312,7 @@ public class MainHomeFragment extends Fragment {
 			if (resultCode == FragmentActivity.RESULT_OK) {
 				Intent intent = data;
 				type = intent.getStringExtra(Constants.INTENT_SEEK_TYPE);
-				String str = type;
-				if (StringUtils.isEmpty(str)) {
-					str = "全部类型";
-				}
-
-				typeView.setText(str);
+				typeView.setText(type);
 				// TODO: 加载帮助或者帮忙
 
 			}
