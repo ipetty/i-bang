@@ -88,5 +88,6 @@
     <string name="title_activity_locate">定位</string>
     <string name="title_activity_my_evaluation">评价列表</string>
     <string name="title_activity_select_seek_type">SelectSeekTypeActivity</string>
+    <string name="title_activity_select_address">SelectAddressActivity</string>
 
 </resources>

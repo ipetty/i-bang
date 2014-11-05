@@ -528,7 +528,7 @@ public class DelegationActivity extends Activity {
 	}
 
 	private void bindTime(Date date, TextView time) {
-		String creatAt = new PrettyDateFormat("@", "yyyy-MM-dd HH:mm:dd").format(date);
+		String creatAt = new PrettyDateFormat("@", "yyyy-MM-dd").format(date);
 		time.setText(creatAt);
 	}
 
