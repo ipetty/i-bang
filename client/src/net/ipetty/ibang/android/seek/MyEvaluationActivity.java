@@ -216,12 +216,9 @@ public class MyEvaluationActivity extends Activity {
 		@Override
 		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 			EvaluationVO vo = (EvaluationVO) parent.getAdapter().getItem(position);
-
 			Intent intent = new Intent(MyEvaluationActivity.this, DelegationActivity.class);
-			// TODO: 这里貌似 DelegationActivity 接受的都是 offerId
-			// intent.putExtra(Constants.INTENT_OFFER_ID, vo.getDelegationId());
-			// // 查看委托界面是通过offerId获取委托的
-			// startActivity(intent);
+			intent.putExtra(Constants.INTENT_DELEGATION_ID, vo.getDelegationId());
+			startActivity(intent);
 		}
 	};
 
