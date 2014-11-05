@@ -49,11 +49,16 @@ public class SeekApiTest extends BaseApiTest {
 		seek.setRequirement("要求支持短视频分享");
 		seek.setReward("一个月内完成，两万；一个半月内完成，一万五。");
 
+		List<SeekVO> seeks = seekApi.listLatest(DateUtils.toDatetimeString(new Date()), 0, 20);
+		for (SeekVO s : seeks) {
+			Assert.assertTrue(seekApi.close(s.getId()));
+		}
+
 		seek = seekApi.publish(seek);
 		Assert.assertNotNull(seek.getId());
 		Assert.assertEquals(Constants.SEEK_STATUS_CREATED, seek.getStatus());
 
-		List<SeekVO> seeks = seekApi.listByIds(seek.getId());
+		seeks = seekApi.listByIds(seek.getId());
 		Assert.assertEquals(1, seeks.size());
 
 		seek = seekApi.getById(seek.getId());

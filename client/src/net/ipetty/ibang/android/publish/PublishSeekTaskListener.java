@@ -17,15 +17,20 @@ import android.widget.Toast;
 public class PublishSeekTaskListener extends DefaultTaskListener<SeekVO> {
 
 	private String TAG = getClass().getSimpleName();
+	private String seekType;
 
-	public PublishSeekTaskListener(Activity activity) {
-		super(activity, "正在发布求助...");
+	public PublishSeekTaskListener(Activity activity, String seekType) {
+		super(activity, "正在发布" + (net.ipetty.ibang.vo.Constants.SEEK_TYPE_ASSISTANCE.equals(seekType) ? "帮忙" : "求助")
+				+ "...");
+		this.seekType = seekType;
 	}
 
 	@Override
 	public void onSuccess(SeekVO seek) {
 		Log.d(TAG, "publish seek success");
-		Toast.makeText(activity, "发布求助成功！", Toast.LENGTH_SHORT).show();
+		Toast.makeText(activity,
+				"发布" + (net.ipetty.ibang.vo.Constants.SEEK_TYPE_ASSISTANCE.equals(seekType) ? "帮忙" : "求助") + "成功！",
+				Toast.LENGTH_SHORT).show();
 		Intent intent = new Intent(Constants.BROADCAST_INTENT_PUBLISH_SEEK);
 		activity.sendBroadcast(intent);
 		activity.finish();
