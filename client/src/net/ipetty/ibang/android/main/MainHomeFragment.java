@@ -5,6 +5,7 @@ import java.util.List;
 
 import net.ipetty.ibang.R;
 import net.ipetty.ibang.android.core.Constants;
+import net.ipetty.ibang.android.core.DefaultTaskListener;
 import net.ipetty.ibang.android.core.MyAppStateManager;
 import net.ipetty.ibang.android.core.ui.MyPullToRefreshListView;
 import net.ipetty.ibang.android.core.ui.UnLoginView;
@@ -20,7 +21,6 @@ import net.ipetty.ibang.android.seek.SeekActivity;
 import net.ipetty.ibang.android.type.SelectCategoryActivity;
 import net.ipetty.ibang.android.type.SelectSeekTypeActivity;
 import net.ipetty.ibang.android.user.UpdateProfileTask;
-import net.ipetty.ibang.android.user.UpdateProfileTaskListener;
 import net.ipetty.ibang.vo.SeekVO;
 import net.ipetty.ibang.vo.UserFormVO;
 import net.ipetty.ibang.vo.UserVO;
@@ -217,7 +217,7 @@ public class MainHomeFragment extends Fragment {
 						getRefreshTime(), DateUtils.FORMAT_SHOW_TIME | DateUtils.FORMAT_SHOW_DATE
 								| DateUtils.FORMAT_ABBREV_ALL);
 				refreshView.getLoadingLayoutProxy().setLastUpdatedLabel(label);
-				loadSeekByCityOrCategory(true);
+				loadSeeks(true);
 			}
 		});
 
@@ -225,36 +225,12 @@ public class MainHomeFragment extends Fragment {
 			@Override
 			public void onLastItemVisible() {
 				if (hasMore) {
-					loadSeekByCityOrCategory(false);
+					loadSeeks(false);
 				}
 			}
 		});
 
-		loadSeekByCityOrCategory(true);
-	}
-
-	public void loadSeekByCityOrCategory(boolean isRefresh) {
-		if (isRefresh) {
-			pageNumber = 0;
-		}
-		// 加载数据
-		new ListLatestAvaliableSeeksByCityOrCategoryTask(getActivity()).setListener(
-				new ListLatestAvaliableSeeksTaskListener(MainHomeFragment.this, adapter, listView, isRefresh)).execute(
-				type, city, district, category, subCategory,
-				net.ipetty.ibang.android.core.util.DateUtils.toDatetimeString(new Date(getRefreshTime())),
-				String.valueOf(pageNumber++), String.valueOf(pageSize));
-	}
-
-	public void loadSeekByCityAndOfferRange(boolean isRefresh) {
-		if (isRefresh) {
-			pageNumber = 0;
-		}
-		// 加载数据
-		new ListLatestAvaliableSeeksByCityAndOfferRangeTask(getActivity()).setListener(
-				new ListLatestAvaliableSeeksTaskListener(MainHomeFragment.this, adapter, listView, isRefresh)).execute(
-				type, city, district, currentUserId == null ? null : currentUserId.toString(),
-				net.ipetty.ibang.android.core.util.DateUtils.toDatetimeString(new Date(getRefreshTime())),
-				String.valueOf(pageNumber++), String.valueOf(pageSize));
+		loadSeeks(true);
 	}
 
 	private BroadcastReceiver broadcastreciver = new BroadcastReceiver() {
@@ -272,7 +248,7 @@ public class MainHomeFragment extends Fragment {
 				initUser();
 			}
 			if (Constants.BROADCAST_INTENT_PUBLISH_SEEK.equals(action)) {
-				loadSeekByCityOrCategory(true);
+				loadSeeks(true);
 			}
 		}
 
@@ -298,33 +274,31 @@ public class MainHomeFragment extends Fragment {
 				Intent intent = data;
 				category = intent.getStringExtra(Constants.INTENT_CATEGORY);
 				subCategory = intent.getStringExtra(Constants.INTENT_SUB_CATEGORY);
-				if (SelectCategoryActivity.CATEGORY_MY_STRING.equals(subCategory)) {
-					// 根据我的帮忙范围加载求助列表
-					loadSeekByCityAndOfferRange(true);
-				} else {
-					loadSeekByCityOrCategory(true);
-				}
 				setCategoryText(category, subCategory);
+
+				loadSeeks(true);
 			}
 		}
 
-		if (requestCode == Constants.REQUEST_CODE_TYPE) {
+		else if (requestCode == Constants.REQUEST_CODE_TYPE) {
 			if (resultCode == FragmentActivity.RESULT_OK) {
 				Intent intent = data;
 				type = intent.getStringExtra(Constants.INTENT_SEEK_TYPE);
 				typeView.setText(type);
-				// TODO: 加载帮助或者帮忙
 
+				loadSeeks(true);
 			}
 		}
 
-		if (requestCode == Constants.REQUEST_CODE_CITY) {
+		else if (requestCode == Constants.REQUEST_CODE_CITY) {
 			if (resultCode == FragmentActivity.RESULT_OK) {
 				Intent intent = data;
 				province = intent.getStringExtra(Constants.INTENT_LOCATION_PROVINCE);
 				city = intent.getStringExtra(Constants.INTENT_LOCATION_CITY);
 				district = intent.getStringExtra(Constants.INTENT_LOCATION_DISTRICT);
 				cityView.setText(city);
+
+				loadSeeks(true);
 
 				// saveTOLocalStore;
 				ApiContext.getInstance(getActivity()).setLocationProvince(province);
@@ -351,13 +325,48 @@ public class MainHomeFragment extends Fragment {
 					userForm.setDistrict(user.getDistrict());
 
 					// 更新用户所在地区
-					new UpdateProfileTask(getActivity()).setListener(new UpdateProfileTaskListener(getActivity()))
-							.execute(userForm);
+					new UpdateProfileTask(getActivity()).setListener(new DefaultTaskListener<UserVO>(getActivity()) {
+						@Override
+						public void onSuccess(UserVO result) {
+						}
+					}).execute(userForm);
 				}
-
-				loadSeekByCityOrCategory(true);
 			}
 		}
+	}
+
+	private void loadSeeks(boolean refresh) {
+		if (SelectCategoryActivity.CATEGORY_MY_STRING.equals(subCategory)) {
+			// 根据我的帮忙范围加载求助/帮忙列表
+			loadSeekByCityAndOfferRange(refresh);
+		} else {
+			// 根据城市与分类加载求助/帮忙列表
+			loadSeekByCityOrCategory(refresh);
+		}
+	}
+
+	public void loadSeekByCityOrCategory(boolean isRefresh) {
+		if (isRefresh) {
+			pageNumber = 0;
+		}
+		// 加载数据
+		new ListLatestAvaliableSeeksByCityOrCategoryTask(getActivity()).setListener(
+				new ListLatestAvaliableSeeksTaskListener(MainHomeFragment.this, adapter, listView, isRefresh)).execute(
+				type, city, district, category, subCategory,
+				net.ipetty.ibang.android.core.util.DateUtils.toDatetimeString(new Date(getRefreshTime())),
+				String.valueOf(pageNumber++), String.valueOf(pageSize));
+	}
+
+	public void loadSeekByCityAndOfferRange(boolean isRefresh) {
+		if (isRefresh) {
+			pageNumber = 0;
+		}
+		// 加载数据
+		new ListLatestAvaliableSeeksByCityAndOfferRangeTask(getActivity()).setListener(
+				new ListLatestAvaliableSeeksTaskListener(MainHomeFragment.this, adapter, listView, isRefresh)).execute(
+				type, city, district, currentUserId == null ? null : currentUserId.toString(),
+				net.ipetty.ibang.android.core.util.DateUtils.toDatetimeString(new Date(getRefreshTime())),
+				String.valueOf(pageNumber++), String.valueOf(pageSize));
 	}
 
 	// 获取刷新时间，若网络不可用则取最后一次刷新时间
