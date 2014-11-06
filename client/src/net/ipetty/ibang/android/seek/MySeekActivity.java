@@ -204,6 +204,14 @@ public class MySeekActivity extends Activity {
 		return MyAppStateManager.getLastRefrsh4Home(MySeekActivity.this);
 	}
 
+	public void loadMoreForResult(List<SeekVO> result, MyPullToRefreshListView listView) {
+		if (listView == this.listView) {
+			loadMoreForResult(result);
+		} else {
+			loadMoreForResult_for_help(result);
+		}
+	}
+
 	public void loadMoreForResult_for_help(List<SeekVO> result) {
 		if (result.size() < pageSize) {
 			hasMore_for_help = false;
