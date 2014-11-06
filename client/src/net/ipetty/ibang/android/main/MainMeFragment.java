@@ -104,10 +104,8 @@ public class MainMeFragment extends Fragment {
 
 		View seekerTotalPoint_layout = getView().findViewById(R.id.seekerTotalPoint_layout);
 		seekerTotalPoint_layout.setOnClickListener(new OnClickListener() {
-
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
 				Intent intent = new Intent(getActivity(), MyEvaluationActivity.class);
 				startActivity(intent);
 			}
@@ -152,10 +150,8 @@ public class MainMeFragment extends Fragment {
 		// TODO：评价列表
 		evaluation_layout = getView().findViewById(R.id.evaluation_layout);
 		evaluation_layout.setOnClickListener(new OnClickListener() {
-
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
 				Intent intent = new Intent(getActivity(), MyEvaluationActivity.class);
 				startActivity(intent);
 			}

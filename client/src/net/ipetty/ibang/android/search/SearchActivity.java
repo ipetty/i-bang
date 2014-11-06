@@ -45,6 +45,7 @@ public class SearchActivity extends Activity {
 	private Long lastTimeMillis;
 
 	private TextView typeView;
+	private String type = net.ipetty.ibang.vo.Constants.SEEK_TYPE_SEEK;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -62,16 +63,17 @@ public class SearchActivity extends Activity {
 		search_result = this.findViewById(R.id.search_result);
 
 		typeView = (TextView) this.findViewById(R.id.type);
+		typeView.setText(type);
 		View type_layout = this.findViewById(R.id.type_layout);
 		type_layout.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				if (net.ipetty.ibang.vo.Constants.SEEK_TYPE_SEEK.equals(typeView.getText().toString())) {
-					typeView.setText(net.ipetty.ibang.vo.Constants.SEEK_TYPE_ASSISTANCE);
+				if (net.ipetty.ibang.vo.Constants.SEEK_TYPE_SEEK.equals(type)) {
+					type = net.ipetty.ibang.vo.Constants.SEEK_TYPE_ASSISTANCE;
 				} else {
-					typeView.setText(net.ipetty.ibang.vo.Constants.SEEK_TYPE_SEEK);
+					type = net.ipetty.ibang.vo.Constants.SEEK_TYPE_SEEK;
 				}
+				typeView.setText(type);
 			}
 		});
 
@@ -115,7 +117,6 @@ public class SearchActivity extends Activity {
 					search_del.setVisibility(View.INVISIBLE);
 				}
 			}
-
 		});
 
 		search_del.setOnClickListener(new OnClickListener() {
@@ -127,7 +128,6 @@ public class SearchActivity extends Activity {
 		});
 
 		search_del.setVisibility(View.INVISIBLE);
-
 	}
 
 	private OnClickListener searchOnClickListener = new OnClickListener() {
@@ -147,8 +147,7 @@ public class SearchActivity extends Activity {
 		// 加载数据
 		new ListLatestAvaliableSeeksByKeywordTask(SearchActivity.this).setListener(
 				new ListLatestAvaliableSeeksTaskListener(SearchActivity.this, adapter, listView, isRefresh)).execute(
-				net.ipetty.ibang.vo.Constants.SEEK_TYPE_SEEK, key,
-				net.ipetty.ibang.android.core.util.DateUtils.toDatetimeString(new Date(getRefreshTime())),
+				type, key, net.ipetty.ibang.android.core.util.DateUtils.toDatetimeString(new Date(getRefreshTime())),
 				String.valueOf(pageNumber++), String.valueOf(pageSize));
 	}
 
