@@ -27,7 +27,7 @@ public class ListLatestAvaliableSeeksByKeywordTask extends Task<String, List<See
 	protected List<SeekVO> myDoInBackground(String... args) {
 		Log.d(TAG, "list latest avaliable seeks by keyword");
 		return IbangApi.init(activity).create(SeekApi.class)
-				.listLatestByKeyword(args[0], args[1], Integer.valueOf(args[2]), Integer.valueOf(args[3]));
+				.listLatestByKeyword(args[0], args[1], args[2], Integer.valueOf(args[3]), Integer.valueOf(args[4]));
 	}
 
 }

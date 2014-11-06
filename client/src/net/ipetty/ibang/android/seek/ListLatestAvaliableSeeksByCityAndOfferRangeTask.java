@@ -29,13 +29,13 @@ public class ListLatestAvaliableSeeksByCityAndOfferRangeTask extends Task<String
 	@Override
 	protected List<SeekVO> myDoInBackground(String... args) {
 		Log.d(TAG, "list latest avaliable seeks by city and offer range");
-		String userIdStr = args[2];
+		String userIdStr = args[3];
 		Integer userId = StringUtils.isNotBlank(userIdStr) ? Integer.valueOf(userIdStr) : null;
 		return IbangApi
 				.init(activity)
 				.create(SeekApi.class)
-				.listLatestByCityAndOfferRange(args[0], args[1], userId, args[3], Integer.valueOf(args[4]),
-						Integer.valueOf(args[5]));
+				.listLatestByCityAndOfferRange(args[0], args[1], args[2], userId, args[4], Integer.valueOf(args[5]),
+						Integer.valueOf(args[6]));
 	}
 
 }

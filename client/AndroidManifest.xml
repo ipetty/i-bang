@@ -182,8 +182,12 @@
         </activity>
         <activity
             android:name="net.ipetty.ibang.android.type.SelectSeekTypeActivity"
-            android:label="@string/title_activity_select_seek_type" 
+            android:label="@string/title_activity_select_seek_type"
             android:theme="@style/TopDialog" >
+        </activity>
+        <activity
+            android:name="net.ipetty.ibang.android.publish.SelectAddressActivity"
+            android:label="@string/title_activity_select_address" >
         </activity>
     </application>
 

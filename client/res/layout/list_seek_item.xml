@@ -33,7 +33,7 @@
     android:layout_toRightOf="@+id/imageView"
     android:ellipsize="end"
     android:maxLines="2"
-    android:text="我饿的索拉卡山"
+    android:text=""
     android:textSize="16sp" />
 
 
@@ -44,7 +44,7 @@
     android:layout_height="wrap_content"
     android:layout_alignBottom="@+id/imageView"
     android:layout_toRightOf="@+id/imageView"
-    android:text="软件开发-家政服务"
+    android:text=""
     android:textColor="@color/gray_color"
     android:textSize="12sp" />
 
@@ -55,7 +55,7 @@
     android:layout_alignBaseline="@+id/category"
     android:layout_alignBottom="@+id/imageView"
     android:layout_alignParentRight="true"
-    android:text="2小时前"
+    android:text=""
     android:textColor="@color/gray_color"
     android:textSize="12sp" />
 

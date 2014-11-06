@@ -1,4 +1,4 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
               xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
@@ -12,11 +12,11 @@
         <include
                 android:id="@+id/include"
                 layout="@layout/action_bar_simple_back" />
-
-        <include layout="@layout/line_horizontal_divider"/>
         <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
+                	 	    android:layout_above="@+id/operation_layout"
+ 	 	  		  android:layout_below="@+id/include" 
                 android:background="@drawable/list_color_item_bg_white"
                 android:gravity="center_vertical" >
 
@@ -26,6 +26,43 @@
                         android:layout_height="fill_parent"
                         android:clickable="true" />
         </LinearLayout>
+<LinearLayout
+ 	 	    android:id="@+id/operation_layout"
+ 	 	    android:layout_width="match_parent"
+ 	 	    android:layout_height="48dp"
+ 	 	    android:layout_alignParentBottom="true"
+ 	 	    android:layout_alignParentLeft="true"
+ 	 	    android:orientation="vertical"
+ 	 	    android:background="@color/white_color" >
+			<include layout="@layout/line_horizontal_divider" />
 
+			<RelativeLayout
+			    android:layout_width="match_parent"
+			    android:layout_height="wrap_content"
+			    android:gravity="center_vertical" >
 
-</LinearLayout>
+			    <TextView
+			        android:padding="8dp"
+			        android:id="@+id/address"
+			        android:layout_width="match_parent"
+			        android:layout_height="match_parent"
+			        android:layout_toLeftOf="@+id/button"
+			        android:gravity="center|left"
+			        android:text="正在定位..."
+			        android:textSize="12sp" />
+			    
+				<TextView
+				    android:id="@+id/button"
+				    android:layout_width="48dp"
+				    android:layout_height="match_parent"
+				    android:layout_alignParentRight="true"
+				    android:background="@color/base_color"
+				    android:gravity="center"
+				    android:text="确定"
+				    android:textColor="@color/white_color"
+				    android:textSize="12sp" />
+
+			</RelativeLayout>
+ 	 	</LinearLayout>
+
+</RelativeLayout>

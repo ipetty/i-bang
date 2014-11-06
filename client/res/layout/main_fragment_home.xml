@@ -46,7 +46,7 @@
                     android:gravity="center|left"
                     android:paddingLeft="8dp"
                     android:paddingRight="8dp"
-                    android:text="查找需要帮助的信息"
+                    android:text="查找您需要的信息"
                     android:textColor="@color/gray_color"
                     android:textSize="14sp" />
 
@@ -119,7 +119,7 @@
                             android:layout_height="wrap_content"
                             android:background="@null"
                             android:drawableRight="@drawable/ic_arrow_down_gray"
-                            android:text="全部类型"
+                            android:text="求助"
                             android:textColor="@color/gray_color"
                             android:textSize="16sp" />
                     </LinearLayout>

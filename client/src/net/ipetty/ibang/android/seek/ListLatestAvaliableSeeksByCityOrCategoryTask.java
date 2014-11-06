@@ -29,8 +29,8 @@ public class ListLatestAvaliableSeeksByCityOrCategoryTask extends Task<String, L
 		return IbangApi
 				.init(activity)
 				.create(SeekApi.class)
-				.listLatestByCityOrCategory(args[0], args[1], args[2], args[3], args[4], Integer.valueOf(args[5]),
-						Integer.valueOf(args[6]));
+				.listLatestByCityOrCategory(args[0], args[1], args[2], args[3], args[4], args[5],
+						Integer.valueOf(args[6]), Integer.valueOf(args[7]));
 	}
 
 }

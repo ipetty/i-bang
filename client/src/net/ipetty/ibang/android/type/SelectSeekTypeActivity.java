@@ -23,9 +23,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 public class SelectSeekTypeActivity extends Activity {
-	public static String TYPE_ALL_STRING = "全部";
-	public static String TYPE_TO_HELP_STRING = "帮忙";
-	public static String TYPE_HELP_ME_STRING = "求助";
+
+	public static String TYPE_TO_HELP_STRING = net.ipetty.ibang.vo.Constants.SEEK_TYPE_ASSISTANCE;
+	public static String TYPE_HELP_ME_STRING = net.ipetty.ibang.vo.Constants.SEEK_TYPE_SEEK;
 
 	private ListView list;
 	private String type;
@@ -39,14 +39,13 @@ public class SelectSeekTypeActivity extends Activity {
 
 		ActivityManager.getInstance().addActivity(this);
 
-		typeList.add(TYPE_ALL_STRING);
 		typeList.add(TYPE_HELP_ME_STRING);
 		typeList.add(TYPE_TO_HELP_STRING);
 
 		Intent intent = getIntent();
 		type = intent.getStringExtra(Constants.INTENT_SEEK_TYPE);
 		if (StringUtils.isEmpty(type)) {
-			type = TYPE_ALL_STRING;
+			type = TYPE_TO_HELP_STRING;
 		}
 
 		list = (ListView) this.findViewById(R.id.listView);
@@ -54,15 +53,10 @@ public class SelectSeekTypeActivity extends Activity {
 		list.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				// TODO Auto-generated method stub
 				TypeAdapter adapter = (TypeAdapter) parent.getAdapter();
 				adapter.setSelectedPosition(position);
 				adapter.notifyDataSetInvalidated();
 				type = (String) adapter.getItem(position);
-
-				if (type.equals(TYPE_ALL_STRING)) {
-					type = "";
-				}
 
 				Intent intent = new Intent();
 				intent.putExtra(Constants.INTENT_SEEK_TYPE, type);
@@ -72,7 +66,6 @@ public class SelectSeekTypeActivity extends Activity {
 		});
 
 		((TypeAdapter) list.getAdapter()).setSelected(type);
-
 	}
 
 	public class TypeAdapter extends BaseAdapter implements OnScrollListener {
@@ -90,19 +83,16 @@ public class SelectSeekTypeActivity extends Activity {
 
 		@Override
 		public int getCount() {
-			// TODO Auto-generated method stub
 			return typeList.size();
 		}
 
 		@Override
 		public Object getItem(int position) {
-			// TODO Auto-generated method stub
 			return typeList.get(position);
 		}
 
 		@Override
 		public long getItemId(int position) {
-			// TODO Auto-generated method stub
 			return 0;
 		}
 
@@ -115,7 +105,6 @@ public class SelectSeekTypeActivity extends Activity {
 
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
-			// TODO Auto-generated method stub
 			View view;
 			if (convertView == null) {
 				LayoutInflater inflater = LayoutInflater.from(SelectSeekTypeActivity.this);
@@ -142,16 +131,11 @@ public class SelectSeekTypeActivity extends Activity {
 
 		@Override
 		public void onScrollStateChanged(AbsListView view, int scrollState) {
-			// TODO Auto-generated method stub
-
 		}
 
 		@Override
 		public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-			// TODO Auto-generated method stub
-
 		}
-
 	}
 
 }

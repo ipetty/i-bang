@@ -52,6 +52,16 @@ public interface SeekApi {
 			@Query("pageSize") int pageSize);
 
 	/**
+	 * 获取最新的未关闭求助/帮忙列表
+	 * 
+	 * @param pageNumber
+	 *            分页页码，从0开始
+	 */
+	@GET("/seeks/latest")
+	public List<SeekVO> listLatest(@Query("type") String type, @Query("timeline") String timeline,
+			@Query("pageNumber") int pageNumber, @Query("pageSize") int pageSize);
+
+	/**
 	 * 获取指定分类中最新的未关闭求助列表
 	 * 
 	 * @param pageNumber
@@ -59,6 +69,17 @@ public interface SeekApi {
 	 */
 	@GET("/seeklist/latestbycategory")
 	public List<SeekVO> listLatestByCategory(@Query("categoryL1") String categoryL1,
+			@Query("categoryL2") String categoryL2, @Query("timeline") String timeline,
+			@Query("pageNumber") int pageNumber, @Query("pageSize") int pageSize);
+
+	/**
+	 * 获取指定分类中最新的未关闭求助/帮忙列表
+	 * 
+	 * @param pageNumber
+	 *            分页页码，从0开始
+	 */
+	@GET("/seeks/latestbycategory")
+	public List<SeekVO> listLatestByCategory(@Query("type") String type, @Query("categoryL1") String categoryL1,
 			@Query("categoryL2") String categoryL2, @Query("timeline") String timeline,
 			@Query("pageNumber") int pageNumber, @Query("pageSize") int pageSize);
 
@@ -74,6 +95,18 @@ public interface SeekApi {
 			@Query("timeline") String timeline, @Query("pageNumber") int pageNumber, @Query("pageSize") int pageSize);
 
 	/**
+	 * 获取所在城市指定分类中最新的未关闭求助/帮忙列表
+	 * 
+	 * @param pageNumber
+	 *            分页页码，从0开始
+	 */
+	@GET("/seeks/latestbycityorcategory")
+	public List<SeekVO> listLatestByCityOrCategory(@Query("type") String type, @Query("city") String city,
+			@Query("district") String district, @Query("categoryL1") String categoryL1,
+			@Query("categoryL2") String categoryL2, @Query("timeline") String timeline,
+			@Query("pageNumber") int pageNumber, @Query("pageSize") int pageSize);
+
+	/**
 	 * 获取所在城市指定用户帮忙范围内的最新未关闭求助列表
 	 * 
 	 * @param pageNumber
@@ -83,6 +116,17 @@ public interface SeekApi {
 	public List<SeekVO> listLatestByCityAndOfferRange(@Query("city") String city, @Query("district") String district,
 			@Query("userId") Integer userId, @Query("timeline") String timeline, @Query("pageNumber") int pageNumber,
 			@Query("pageSize") int pageSize);
+
+	/**
+	 * 获取所在城市指定用户帮忙范围内的最新未关闭求助/帮忙列表
+	 * 
+	 * @param pageNumber
+	 *            分页页码，从0开始
+	 */
+	@GET("/seeks/latestbycityAndOfferRange")
+	public List<SeekVO> listLatestByCityAndOfferRange(@Query("type") String type, @Query("city") String city,
+			@Query("district") String district, @Query("userId") Integer userId, @Query("timeline") String timeline,
+			@Query("pageNumber") int pageNumber, @Query("pageSize") int pageSize);
 
 	/**
 	 * 根据关键字搜索最新的未关闭求助列表
@@ -95,6 +139,16 @@ public interface SeekApi {
 			@Query("pageNumber") int pageNumber, @Query("pageSize") int pageSize);
 
 	/**
+	 * 根据关键字搜索最新的未关闭求助/帮忙列表
+	 * 
+	 * @param pageNumber
+	 *            分页页码，从0开始
+	 */
+	@GET("/seeks/latestbykeyword")
+	public List<SeekVO> listLatestByKeyword(@Query("type") String type, @Query("keyword") String keyword,
+			@Query("timeline") String timeline, @Query("pageNumber") int pageNumber, @Query("pageSize") int pageSize);
+
+	/**
 	 * 获取指定用户的求助列表
 	 * 
 	 * @param pageNumber
@@ -103,6 +157,16 @@ public interface SeekApi {
 	@GET("/seeklist/byuser")
 	public List<SeekVO> listByUserId(@Query("userId") Integer userId, @Query("pageNumber") int pageNumber,
 			@Query("pageSize") int pageSize);
+
+	/**
+	 * 获取指定用户的求助/帮忙列表
+	 * 
+	 * @param pageNumber
+	 *            分页页码，从0开始
+	 */
+	@GET("/seeks/byuser")
+	public List<SeekVO> listByUserId(@Query("type") String type, @Query("userId") Integer userId,
+			@Query("pageNumber") int pageNumber, @Query("pageSize") int pageSize);
 
 	/**
 	 * 根据id列表获取求助列表

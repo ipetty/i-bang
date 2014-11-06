@@ -27,6 +27,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.handmark.pulltorefresh.library.PullToRefreshBase.OnLastItemVisibleListener;
 
@@ -43,6 +44,8 @@ public class SearchActivity extends Activity {
 	private final Integer pageSize = 20;
 	private Long lastTimeMillis;
 
+	private TextView typeView;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -57,13 +60,27 @@ public class SearchActivity extends Activity {
 		search = (EditText) this.findViewById(R.id.search);
 		search_del = (ImageView) this.findViewById(R.id.search_del);
 		search_result = this.findViewById(R.id.search_result);
+
+		typeView = (TextView) this.findViewById(R.id.type);
+		View type_layout = this.findViewById(R.id.type_layout);
+		type_layout.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				if (net.ipetty.ibang.vo.Constants.SEEK_TYPE_SEEK.equals(typeView.getText().toString())) {
+					typeView.setText(net.ipetty.ibang.vo.Constants.SEEK_TYPE_ASSISTANCE);
+				} else {
+					typeView.setText(net.ipetty.ibang.vo.Constants.SEEK_TYPE_SEEK);
+				}
+			}
+		});
+
 		listView = (MyPullToRefreshListView) this.findViewById(R.id.listView);
 		adapter = new SeekAdapter(this);
 		listView.setAdapter(adapter);
 		listView.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				// TODO Auto-generated method stub
 				Intent intent = new Intent(SearchActivity.this, SeekActivity.class);
 				intent.putExtra(Constants.INTENT_SEEK_ID, id);
 				intent.putExtra(Constants.INTENT_SEEK_JSON, JSONUtils.toJson(parent.getAdapter().getItem(position))
@@ -75,7 +92,6 @@ public class SearchActivity extends Activity {
 		listView.setOnLastItemVisibleListener(new OnLastItemVisibleListener() {
 			@Override
 			public void onLastItemVisible() {
-				// TODO Auto-generated method stub
 				if (hasMore) {
 					loadSeek(false);
 				}
@@ -85,19 +101,14 @@ public class SearchActivity extends Activity {
 		search.addTextChangedListener(new TextWatcher() {
 			@Override
 			public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-				// TODO Auto-generated method stub
-
 			}
 
 			@Override
 			public void onTextChanged(CharSequence s, int start, int before, int count) {
-				// TODO Auto-generated method stub
-
 			}
 
 			@Override
 			public void afterTextChanged(Editable s) {
-				// TODO Auto-generated method stub
 				if (s.toString().length() > 0) {
 					search_del.setVisibility(View.VISIBLE);
 				} else {
@@ -110,7 +121,6 @@ public class SearchActivity extends Activity {
 		search_del.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
 				search.setText("");
 				search_result.setVisibility(View.GONE);
 			}
@@ -137,7 +147,8 @@ public class SearchActivity extends Activity {
 		// 加载数据
 		new ListLatestAvaliableSeeksByKeywordTask(SearchActivity.this).setListener(
 				new ListLatestAvaliableSeeksTaskListener(SearchActivity.this, adapter, listView, isRefresh)).execute(
-				key, net.ipetty.ibang.android.core.util.DateUtils.toDatetimeString(new Date(getRefreshTime())),
+				net.ipetty.ibang.vo.Constants.SEEK_TYPE_SEEK, key,
+				net.ipetty.ibang.android.core.util.DateUtils.toDatetimeString(new Date(getRefreshTime())),
 				String.valueOf(pageNumber++), String.valueOf(pageSize));
 	}
 
@@ -152,7 +163,6 @@ public class SearchActivity extends Activity {
 	}
 
 	public void loadMoreForResult(List<SeekVO> result) {
-		// TODO Auto-generated method stub
 		if (result.size() < pageSize) {
 			hasMore = false;
 			listView.hideMoreView();

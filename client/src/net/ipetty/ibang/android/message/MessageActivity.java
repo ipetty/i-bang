@@ -273,7 +273,7 @@ public class MessageActivity extends Activity {
 			}
 			SystemMessageVO msg = (SystemMessageVO) this.getItem(position);
 			holder.message.setText(msg.getTitle());
-			holder.timestamp.setText(new PrettyDateFormat("@", "yyyy-MM-dd HH:mm:dd").format(msg.getCreatedOn()));
+			holder.timestamp.setText(new PrettyDateFormat("@", "yyyy-MM-dd").format(msg.getCreatedOn()));
 
 			if (msg.isRead()) {
 				holder.item.setBackgroundResource(R.drawable.list_color_item_bg_white);

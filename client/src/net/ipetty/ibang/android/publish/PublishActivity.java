@@ -16,7 +16,7 @@ import net.ipetty.ibang.android.core.util.DateUtils;
 import net.ipetty.ibang.android.core.util.DialogUtils;
 import net.ipetty.ibang.android.sdk.context.ApiContext;
 import net.ipetty.ibang.android.user.UserEditActivity;
-import net.ipetty.ibang.vo.SeekVO;
+import net.ipetty.ibang.vo.SeekWithLocationVO;
 import net.ipetty.ibang.vo.UserVO;
 
 import org.apache.commons.lang3.StringUtils;
@@ -60,6 +60,7 @@ public class PublishActivity extends Activity {
 	private View help_me_layout;
 	private View to_help_layout;
 	private View num_layout;
+	private String type = net.ipetty.ibang.vo.Constants.SEEK_TYPE_SEEK;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -118,7 +119,6 @@ public class PublishActivity extends Activity {
 					// c.add(Calendar.MONTH, 3);
 					str = DateUtils.toDateString(c.getTime());
 				}
-				// TODO Auto-generated method stub
 				exipireDateDialog = DialogUtils.datePopupDialog(PublishActivity.this, exipireDateClick, str,
 						exipireDateDialog);
 			}
@@ -152,7 +152,6 @@ public class PublishActivity extends Activity {
 		serviceDateView.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
 				serviceDateDialog = DialogUtils.modPopupDialog(PublishActivity.this, serviceDateItems,
 						serviceDateDialog);
 			}
@@ -164,12 +163,13 @@ public class PublishActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				if (StringUtils.isBlank(contentView.getText().toString())) {
-					Toast.makeText(PublishActivity.this, "求助内容不能为空", Toast.LENGTH_SHORT).show();
+					Toast.makeText(PublishActivity.this, "内容不能为空", Toast.LENGTH_SHORT).show();
 					contentView.requestFocus();
 					return;
 				}
 
-				final SeekVO seek = new SeekVO();
+				final SeekWithLocationVO seek = new SeekWithLocationVO();
+				seek.setType(type);
 				seek.setSeekerId(user.getId());
 				seek.setCategoryL1(categoryL1);
 				seek.setCategoryL2(categoryL2);
@@ -196,9 +196,9 @@ public class PublishActivity extends Activity {
 					filePaths.add(file.getAbsolutePath());
 				}
 
-				new PublishSeekTask(PublishActivity.this)
-						.setListener(new PublishSeekTaskListener(PublishActivity.this)).execute(
-								new SeekForm(seek, filePaths));
+				new PublishSeekTask(PublishActivity.this).setListener(
+						new PublishSeekTaskListener(PublishActivity.this, type)).execute(
+						new SeekWithLocationForm(seek, filePaths));
 			}
 		});
 	}
@@ -206,7 +206,6 @@ public class PublishActivity extends Activity {
 	private OnClickListener selectServiceDateClick = new OnClickListener() {
 		@Override
 		public void onClick(View v) {
-			// TODO Auto-generated method stub
 			serviceDateDialog.cancel();
 			Calendar c = Calendar.getInstance();
 			c.setTime(new Date());
@@ -240,11 +239,9 @@ public class PublishActivity extends Activity {
 		user = ApiContext.getInstance(PublishActivity.this).getCurrentUser();
 		nicknameView.setText(user.getNickname());
 		phoneView.setText(user.getPhone());
-
 	}
 
 	private class EditOnClickListener implements OnClickListener {
-
 		private String type = null;
 
 		public EditOnClickListener(String type) {
@@ -285,7 +282,6 @@ public class PublishActivity extends Activity {
 	}
 
 	public class TabClickListener implements OnClickListener {
-
 		private int index = 0;
 
 		public TabClickListener(int i) {
@@ -294,18 +290,20 @@ public class PublishActivity extends Activity {
 
 		@Override
 		public void onClick(View v) {
-
 			if (index == 0) {
 				help_me_layout.setBackgroundResource(R.drawable.news_tab_selected);
 				to_help_layout.setBackgroundResource(R.drawable.trans);
-				// TODO 发布求助
+				// 发布求助
+				type = net.ipetty.ibang.vo.Constants.SEEK_TYPE_SEEK;
 				num_layout.setVisibility(View.VISIBLE);
 			} else {
 				help_me_layout.setBackgroundResource(R.drawable.trans);
 				to_help_layout.setBackgroundResource(R.drawable.news_tab_selected);
-				// TODO 发布帮助
+				// 发布帮助
+				type = net.ipetty.ibang.vo.Constants.SEEK_TYPE_ASSISTANCE;
 				num_layout.setVisibility(View.GONE);
 			}
 		}
 	}
+
 }

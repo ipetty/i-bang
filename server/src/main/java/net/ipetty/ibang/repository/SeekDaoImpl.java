@@ -302,9 +302,9 @@ public class SeekDaoImpl extends BaseJdbcDaoSupport implements SeekDao {
 			return listLatest(type, timeline, pageNumber, pageSize);
 		}
 		String likeStatement = "%" + keyword + "%";
-		return super.getJdbcTemplate().query(LIST_LATEST_BY_KEYWORD_SQL, LONG_ROW_MAPPER, type, timeline,
-				Constants.SEEK_STATUS_CREATED, Constants.SEEK_STATUS_OFFERED, likeStatement, likeStatement,
-				likeStatement, likeStatement, likeStatement, pageNumber * pageSize, pageSize);
+		return super.getJdbcTemplate().query(LIST_LATEST_BY_KEYWORD_SQL, LONG_ROW_MAPPER, type, likeStatement,
+				likeStatement, likeStatement, likeStatement, likeStatement, timeline, Constants.SEEK_STATUS_CREATED,
+				Constants.SEEK_STATUS_OFFERED, pageNumber * pageSize, pageSize);
 	}
 
 	private static final String LIST_BY_USER_ID_SQL = FRAGMENT_SELECT_FROM_WHERE

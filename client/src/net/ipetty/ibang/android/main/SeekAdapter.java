@@ -97,7 +97,8 @@ public class SeekAdapter extends BaseAdapter implements OnScrollListener {
 		String category = seek.getCategoryL1() + "-" + seek.getCategoryL2();
 		holder.category.setText(category);
 		holder.content.setText(seek.getContent());
-		String creatAt = new PrettyDateFormat("@", "yyyy-MM-dd HH:mm:dd").format(seek.getCreatedOn());
+
+		String creatAt = new PrettyDateFormat("@", "yyyy-MM-dd").format(seek.getCreatedOn());
 		holder.time.setText(creatAt);
 
 		return view;
