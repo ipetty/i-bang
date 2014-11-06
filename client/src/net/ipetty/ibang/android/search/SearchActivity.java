@@ -27,6 +27,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.handmark.pulltorefresh.library.PullToRefreshBase.OnLastItemVisibleListener;
 
@@ -43,6 +44,8 @@ public class SearchActivity extends Activity {
 	private final Integer pageSize = 20;
 	private Long lastTimeMillis;
 
+	private TextView typeView;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -57,6 +60,21 @@ public class SearchActivity extends Activity {
 		search = (EditText) this.findViewById(R.id.search);
 		search_del = (ImageView) this.findViewById(R.id.search_del);
 		search_result = this.findViewById(R.id.search_result);
+
+		typeView = (TextView) this.findViewById(R.id.type);
+		View type_layout = this.findViewById(R.id.type_layout);
+		type_layout.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				if (net.ipetty.ibang.vo.Constants.SEEK_TYPE_SEEK.equals(typeView.getText().toString())) {
+					typeView.setText(net.ipetty.ibang.vo.Constants.SEEK_TYPE_ASSISTANCE);
+				} else {
+					typeView.setText(net.ipetty.ibang.vo.Constants.SEEK_TYPE_SEEK);
+				}
+			}
+		});
+
 		listView = (MyPullToRefreshListView) this.findViewById(R.id.listView);
 		adapter = new SeekAdapter(this);
 		listView.setAdapter(adapter);

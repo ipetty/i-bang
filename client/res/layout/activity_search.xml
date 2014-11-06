@@ -34,6 +34,32 @@
              android:layout_weight="1"
             android:gravity="center" >
 
+            <LinearLayout
+                android:id="@+id/type_layout"
+                android:layout_width="wrap_content"
+                            android:layout_margin="1dp"
+                android:background="@drawable/news_bg"
+                android:padding="4dp"
+                android:layout_height="match_parent" >
+
+                <TextView
+                    android:id="@+id/type"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+    
+                    android:gravity="center"
+                    android:textColor="@color/gray_color"
+                    android:text="求助" />
+
+                <ImageView
+                    android:id="@+id/imageView1"
+                    android:layout_width="10dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/ic_arrow_down_gray" />
+
+            </LinearLayout>
+
             <EditText
                 android:id="@+id/search"
                 android:layout_width="wrap_content"
@@ -45,7 +71,7 @@
                 android:paddingLeft="0dp"
                 android:paddingRight="0dp"
                 android:text=""
-                android:hint="查找需要帮助的信息"
+                android:hint="查找您需要的信息"
                 android:textColor="@color/gray_color"
                 android:textSize="14sp">
 				   <requestFocus />
