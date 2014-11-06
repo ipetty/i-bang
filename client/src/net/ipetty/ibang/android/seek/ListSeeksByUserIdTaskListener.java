@@ -53,7 +53,7 @@ public class ListSeeksByUserIdTaskListener extends DefaultTaskListener<List<Seek
 		}
 		listView.onRefreshComplete();
 		if (activity instanceof MySeekActivity) {
-			((MySeekActivity) activity).loadMoreForResult(seeks);
+			((MySeekActivity) activity).loadMoreForResult(seeks, listView);
 		}
 
 	}

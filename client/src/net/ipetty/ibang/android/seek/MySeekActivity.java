@@ -59,9 +59,9 @@ public class MySeekActivity extends Activity {
 
 		/* action bar */
 		ImageView btnBack = (ImageView) this.findViewById(R.id.action_bar_left_image);
+		btnBack.setOnClickListener(new BackClickListener(this));
 		TextView text = (TextView) this.findViewById(R.id.action_bar_title);
 		text.setText(R.string.title_activity_my_seek);
-		btnBack.setOnClickListener(new BackClickListener(this));
 
 		to_help_layout = this.findViewById(R.id.to_help_layout);
 		for_help_layout = this.findViewById(R.id.for_help_layout);
@@ -151,7 +151,7 @@ public class MySeekActivity extends Activity {
 		if (isRefresh) {
 			pageNumber = 0;
 		}
-		// 加载数据
+		// 我发布的求助
 		new ListSeeksByUserIdTask(MySeekActivity.this).setListener(
 				new ListSeeksByUserIdTaskListener(MySeekActivity.this, adapter, listView, isRefresh)).execute(
 				net.ipetty.ibang.vo.Constants.SEEK_TYPE_SEEK,
@@ -185,10 +185,10 @@ public class MySeekActivity extends Activity {
 		if (isRefresh) {
 			pageNumber_for_help = 0;
 		}
-		// TODO:for help
+		// 我发布的帮忙
 		new ListSeeksByUserIdTask(MySeekActivity.this).setListener(
 				new ListSeeksByUserIdTaskListener(MySeekActivity.this, adapter_for_help, listView_for_help, isRefresh))
-				.execute(net.ipetty.ibang.vo.Constants.SEEK_TYPE_SEEK,
+				.execute(net.ipetty.ibang.vo.Constants.SEEK_TYPE_ASSISTANCE,
 						String.valueOf(ApiContext.getInstance(MySeekActivity.this).getCurrentUserId()),
 						String.valueOf(pageNumber_for_help++), String.valueOf(pageSize));
 	}
@@ -202,6 +202,14 @@ public class MySeekActivity extends Activity {
 		}
 
 		return MyAppStateManager.getLastRefrsh4Home(MySeekActivity.this);
+	}
+
+	public void loadMoreForResult(List<SeekVO> result, MyPullToRefreshListView listView) {
+		if (listView == this.listView) {
+			loadMoreForResult(result);
+		} else {
+			loadMoreForResult_for_help(result);
+		}
 	}
 
 	public void loadMoreForResult_for_help(List<SeekVO> result) {
