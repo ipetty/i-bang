@@ -13,7 +13,46 @@
     <include
         android:id="@+id/include"
         layout="@layout/action_bar_simple_back" />
+	<LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="48dp" 
+            android:background="@drawable/news_bg">
+           
+           <LinearLayout
+             android:id="@+id/to_help_layout"
+             android:layout_width="wrap_content"
+             android:layout_height="match_parent"
+             android:layout_margin="5dp"
+             android:layout_weight="1"
+             android:background="@drawable/news_tab_selected"
+             android:gravity="center" >
 
+            <TextView
+                android:id="@+id/to_help_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="我的求助" />
+
+        </LinearLayout>
+                
+           <LinearLayout
+             android:id="@+id/for_help_layout"
+             android:layout_width="wrap_content"
+             android:layout_height="match_parent"
+             android:layout_weight="1"
+             android:layout_margin="5dp"
+              android:gravity="center" >
+
+            <TextView
+                android:id="@+id/for_help_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="我的帮忙" />
+
+        </LinearLayout>
+        </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="42dp"
@@ -79,11 +118,21 @@
     </LinearLayout>
 
     <include layout="@layout/line_horizontal_divider" />
-
+	 <ViewFlipper
+            android:id="@+id/viewFlipper"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
     <net.ipetty.ibang.android.core.ui.MyPullToRefreshListView
         android:id="@+id/listView"
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
     </net.ipetty.ibang.android.core.ui.MyPullToRefreshListView>
+    
+     <net.ipetty.ibang.android.core.ui.MyPullToRefreshListView
+        android:id="@+id/listView_for_help"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+    </net.ipetty.ibang.android.core.ui.MyPullToRefreshListView>
+    </ViewFlipper>
 
 </LinearLayout>
