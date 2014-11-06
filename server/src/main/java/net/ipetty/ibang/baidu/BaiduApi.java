@@ -1,5 +1,7 @@
 package net.ipetty.ibang.baidu;
 
+import net.ipetty.ibang.baidu.vo.GeoGetByAdressRetVO;
+import net.ipetty.ibang.baidu.vo.GeoGetByXYRetVO;
 import net.ipetty.ibang.baidu.vo.NearbyRetVO;
 import net.ipetty.ibang.baidu.vo.PoiRetVO;
 import net.ipetty.ibang.baidu.vo.RetVO;
@@ -77,13 +79,13 @@ public interface BaiduApi {
      */
     @FormUrlEncoded
     @GET("/geocoder")
-    public PoiRetVO geoGetXY(@Field("key") String ak, @Field("address") String address, @Field("city") String city, @Field("output") String output);
+    public GeoGetByXYRetVO geoGetByXY(@Field("key") String ak, @Field("address") String address, @Field("city") String city, @Field("output") String output);
 
     /**
      * 坐标转地址
      */
     @FormUrlEncoded
     @GET("/geocoder")
-    public PoiRetVO geoGetAdress(@Field("key") String ak, @Field("location") String location, @Field("output") String output);
+    public GeoGetByAdressRetVO geoGetByAdress(@Field("key") String ak, @Field("location") String location, @Field("output") String output);
 
 }
