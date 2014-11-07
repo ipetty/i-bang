@@ -164,95 +164,101 @@
         </LinearLayout>
 
     </LinearLayout>
-    <include layout="@layout/line_horizontal_divider" />
- 	 	             
+					 	  <include layout="@layout/line_horizontal_divider" />
+ 	 	         </LinearLayout>
+
+ 	 	         <LinearLayout
+ 	 	             android:id="@+id/desc_layout"
+ 	 	             android:layout_width="match_parent"
+ 	 	             android:layout_height="wrap_content"
+ 	 	             android:gravity="center_vertical"
+ 	 	             android:orientation="vertical"
+					android:background="@color/white_color"
+ 	 	             android:visibility="gone" >
 
  	 	             <LinearLayout
- 	 	                 android:id="@+id/desc_layout"
  	 	                 android:layout_width="match_parent"
  	 	                 android:layout_height="wrap_content"
- 	 	                 android:gravity="center_vertical"
- 	 	                 android:orientation="vertical"
- 	 	                 android:paddingLeft="16dp"
- 	 	                 android:paddingRight="16dp" 
- 	 	                 android:visibility="gone">
+ 	 	                  	 	             android:paddingLeft="16dp"
+ 	 	             android:paddingRight="16dp"
+ 	 	                 android:orientation="vertical" >
+ 	 	            
 
- 	 	                 <TextView
- 	 	                     android:layout_width="wrap_content"
- 	 	                     android:layout_height="wrap_content"
- 	 	                      android:minHeight="46dp"
- 	 	                      android:gravity="center"
- 	 	                     android:text="照片要求"
- 	 	                     android:textColor="@color/black_color"
- 	 	                     android:textSize="16sp" />
+ 	 	             <TextView
+ 	 	                 android:layout_width="wrap_content"
+ 	 	                 android:layout_height="wrap_content"
+ 	 	                 android:gravity="center"
+ 	 	                 android:minHeight="46dp"
+ 	 	                 android:text="照片要求"
+ 	 	                 android:textColor="@color/black_color"
+ 	 	                 android:textSize="16sp" />
 
- 	 	                 <TextView
- 	 	                     android:id="@+id/textView1"
- 	 	                     android:layout_width="wrap_content"
- 	 	                     android:layout_height="wrap_content"
- 	 	                     android:textColor="@color/gray_color"
- 	 	                     android:textSize="12sp"
- 	 	                     android:text="1.免冠、未化妆；五官清楚；" />
+ 	 	             <TextView
+ 	 	                 android:id="@+id/textView1"
+ 	 	                 android:layout_width="wrap_content"
+ 	 	                 android:layout_height="wrap_content"
+ 	 	                 android:text="1.免冠、未化妆；五官清楚；"
+ 	 	                 android:textColor="@color/gray_color"
+ 	 	                 android:textSize="12sp" />
 
- 	 	                 <TextView
- 	 	                     android:id="@+id/textView2"
- 	 	                     android:layout_width="wrap_content"
- 	 	                     android:layout_height="wrap_content"
- 	 	                     android:textColor="@color/gray_color"
- 	 	                     android:textSize="12sp"
- 	 	                     android:text="2.身份证全部信息清晰无遮挡；" />
+ 	 	             <TextView
+ 	 	                 android:id="@+id/textView2"
+ 	 	                 android:layout_width="wrap_content"
+ 	 	                 android:layout_height="wrap_content"
+ 	 	                 android:text="2.身份证全部信息清晰无遮挡；"
+ 	 	                 android:textColor="@color/gray_color"
+ 	 	                 android:textSize="12sp" />
 
- 	 	                 <TextView
- 	 	                     android:id="@+id/textView3"
- 	 	                     android:layout_width="wrap_content"
- 	 	                     android:layout_height="wrap_content"
- 	 	                    android:textColor="@color/gray_color"
- 	 	                     android:textSize="12sp"
- 	 	                     android:text="3.完整露出手臂；" />
+ 	 	             <TextView
+ 	 	                 android:id="@+id/textView3"
+ 	 	                 android:layout_width="wrap_content"
+ 	 	                 android:layout_height="wrap_content"
+ 	 	                 android:text="3.完整露出手臂；"
+ 	 	                 android:textColor="@color/gray_color"
+ 	 	                 android:textSize="12sp" />
 
- 	 	                 <TextView
- 	 	                     android:id="@+id/textView4"
- 	 	                     android:layout_width="wrap_content"
- 	 	                     android:layout_height="wrap_content"
- 	 	                     android:textColor="@color/gray_color"
- 	 	                     android:textSize="12sp"
- 	 	                     android:text="4.请勿进行任何软件处理；" />
+ 	 	             <TextView
+ 	 	                 android:id="@+id/textView4"
+ 	 	                 android:layout_width="wrap_content"
+ 	 	                 android:layout_height="wrap_content"
+ 	 	                 android:text="4.请勿进行任何软件处理；"
+ 	 	                 android:textColor="@color/gray_color"
+ 	 	                 android:textSize="12sp" />
 
- 	 	                 <TextView
- 	 	                     android:id="@+id/textView5"
- 	 	                     android:layout_width="wrap_content"
- 	 	                     android:layout_height="wrap_content"
- 	 	                     android:textColor="@color/gray_color"
- 	 	                     android:textSize="12sp"
- 	 	                     android:text="5.支持jpg/jpeg/bmp格式" />
- 	 	                    
- 	 	                 <include layout="@layout/line_space" />
+ 	 	             <TextView
+ 	 	                 android:id="@+id/textView5"
+ 	 	                 android:layout_width="wrap_content"
+ 	 	                 android:layout_height="wrap_content"
+ 	 	                 android:text="5.支持jpg/jpeg/bmp格式"
+ 	 	                 android:textColor="@color/gray_color"
+ 	 	                 android:textSize="12sp" />
 
- 	 	                 <ImageView
- 	 	                     android:id="@+id/imageView1"
- 	 	                     android:layout_width="wrap_content"
- 	 	                     android:layout_height="wrap_content"
- 	 	                     android:layout_gravity="center"
- 	 	                     android:src="@drawable/approve_example1" />
+ 	 	             <include layout="@layout/line_space" />
 
- 	 	                 <ImageView
- 	 	                     android:id="@+id/imageView2"
- 	 	                     android:layout_width="wrap_content"
- 	 	                     android:layout_height="wrap_content"
- 	 	                     android:layout_gravity="center"
- 	 	                     android:src="@drawable/approve_example2" />
- 	 	                 <include layout="@layout/line_space" />
-						  <include layout="@layout/line_horizontal_divider" />
- 	 	             </LinearLayout>
-					 
+ 	 	             <ImageView
+ 	 	                 android:id="@+id/imageView1"
+ 	 	                 android:layout_width="wrap_content"
+ 	 	                 android:layout_height="wrap_content"
+ 	 	                 android:layout_gravity="center"
+ 	 	                 android:src="@drawable/approve_example1" />
+
+ 	 	             <ImageView
+ 	 	                 android:id="@+id/imageView2"
+ 	 	                 android:layout_width="wrap_content"
+ 	 	                 android:layout_height="wrap_content"
+ 	 	                 android:layout_gravity="center"
+ 	 	                 android:src="@drawable/approve_example2" />
+					 </LinearLayout>
+ 	 	             <include layout="@layout/line_space" />
+ 	 	              <include layout="@layout/line_horizontal_divider" />
  	 	         </LinearLayout>
-					
      
  	 	                 <LinearLayout
  	 	             android:layout_width="match_parent"
  	 	             android:layout_height="wrap_content"
  	 	             android:orientation="vertical"
  	 	             android:id="@+id/status_layout"
+ 	 	             android:visibility="gone"
  	 	            >
 <include layout="@layout/line_space" />
  	 	             <include layout="@layout/line_horizontal_divider" />

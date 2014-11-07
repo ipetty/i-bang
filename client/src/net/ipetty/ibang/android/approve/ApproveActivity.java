@@ -116,7 +116,7 @@ public class ApproveActivity extends Activity {
 				status.setText("实名认证审核中...");
 			}
 			if (net.ipetty.ibang.vo.Constants.ID_VERIFICATION_APPROVED.equals(approve.getStatus())) {
-				status.setText("您已通过实名认证审核.");
+				status.setText("您已通过实名认证");
 			}
 			if (net.ipetty.ibang.vo.Constants.ID_VERIFICATION_UNAPPROVED.equals(approve.getStatus())) {
 				status.setText("实名认证审核未通过");
