@@ -216,8 +216,26 @@ public class SeekActivity extends Activity {
 	private void init() {
 		initUser();
 		// 数据重新加载后显示
-		initViewLayout();
-		initOfferView();
+		if (seekVO.getType().equals(net.ipetty.ibang.vo.Constants.SEEK_TYPE_SEEK)) {
+			initOfferView();
+			initViewLayout();
+		} else {
+			initAssistance();
+		}
+	}
+
+	private void initAssistance() {
+		// TODO Auto-generated method stub
+		closeBtn_layout.setVisibility(View.GONE);
+		offerBtn_layout.setVisibility(View.GONE);
+		if (isLogin) { // 只有已登录用户才有可能看到这两个按钮
+			login_layout.setVisibility(View.GONE);
+			if (isSeekOwner()) {
+				closeBtn_layout.setVisibility(View.VISIBLE);
+			}
+		} else {
+			login_layout.setVisibility(View.VISIBLE);
+		}
 	}
 
 	// 重新加载当前的用户及相关视图

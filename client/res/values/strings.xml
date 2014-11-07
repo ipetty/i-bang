@@ -70,7 +70,7 @@
     <string name="title_activity_city">城市</string>
     <string name="title_activity_message">消息中心</string>
     <string name="title_activity_type">分类列表</string>
-    <string name="title_activity_seek">求助详细</string>
+    <string name="title_activity_seek">信息详情</string>
     <string name="title_activity_offer">帮助</string>
     <string name="title_activity_publish_offer">我要帮助</string>
     <string name="un_login_message"> 登录后，您可以查看未读的通知消息</string>
