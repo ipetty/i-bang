@@ -16,7 +16,7 @@ import org.junit.runners.Suite;
 @Suite.SuiteClasses({
 		UserServiceTest.class, LocationServiceTest.class, SeekServiceTest.class, OfferServiceTest.class,
 		DelegationServiceTest.class, EvaluationServiceTest.class, SystemMessageServiceTest.class,
-		LetterServiceTest.class, CrashLogServiceTest.class
+		IdentityVerificationServiceTest.class, LetterServiceTest.class, CrashLogServiceTest.class
 })
 public class AllServiceTest extends BaseServiceTest {
 

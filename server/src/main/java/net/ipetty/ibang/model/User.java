@@ -10,7 +10,6 @@ import org.springframework.beans.BeanUtils;
 
 /**
  * 用户
- * 
  * @author luocanfeng
  * @date 2014年9月17日
  */
@@ -24,6 +23,7 @@ public class User extends AbstractEntity {
 	private String email; // 邮箱
 	private String password; // 密码
 	private String salt; // 盐值
+	private boolean identityVerified = false; // 是否通过身份验证
 	private String nickname; // 昵称
 	private String gender; // 性别
 	private String job; // 职位
@@ -130,6 +130,14 @@ public class User extends AbstractEntity {
 
 	public void setSalt(String salt) {
 		this.salt = salt;
+	}
+
+	public boolean isIdentityVerified() {
+		return identityVerified;
+	}
+
+	public void setIdentityVerified(boolean identityVerified) {
+		this.identityVerified = identityVerified;
 	}
 
 	public String getNickname() {

@@ -4,8 +4,6 @@ import java.util.Date;
 
 /**
  * 身份审核
- * 
- * 
  * @author luocanfeng
  * @date 2014年11月3日
  */
@@ -20,8 +18,10 @@ public class IdentityVerificationVO extends BaseVO {
 	private String idCardFront; // 身份证正面照
 	private String idCardReverseSide; // 身份证反面照
 	private String idCardInHand; // 手持身份证照
+	private String description; // 提交审核描述信息
 	private Date submittedOn; // 提交审核时间
 	private Integer verifierId; // 审核人ID
+	private String verifyInfo; // 审核信息
 	private Date verifiedOn; // 审核时间
 	private String status; // 审核状态，待审核 | 审核通过 | 审核未通过
 
@@ -77,6 +77,14 @@ public class IdentityVerificationVO extends BaseVO {
 		this.idCardInHand = idCardInHand;
 	}
 
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
 	public Date getSubmittedOn() {
 		return submittedOn;
 	}
@@ -91,6 +99,14 @@ public class IdentityVerificationVO extends BaseVO {
 
 	public void setVerifierId(Integer verifierId) {
 		this.verifierId = verifierId;
+	}
+
+	public String getVerifyInfo() {
+		return verifyInfo;
+	}
+
+	public void setVerifyInfo(String verifyInfo) {
+		this.verifyInfo = verifyInfo;
 	}
 
 	public Date getVerifiedOn() {

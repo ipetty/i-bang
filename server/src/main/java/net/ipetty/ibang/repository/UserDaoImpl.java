@@ -20,7 +20,6 @@ import org.springframework.stereotype.Repository;
 
 /**
  * UserDaoImpl
- * 
  * @author luocanfeng
  * @date 2014年9月19日
  */
@@ -28,17 +27,20 @@ import org.springframework.stereotype.Repository;
 public class UserDaoImpl extends BaseJdbcDaoSupport implements UserDao {
 
 	static final RowMapper<User> ROW_MAPPER = new RowMapper<User>() {
+
 		@Override
 		public User mapRow(ResultSet rs, int rowNum) throws SQLException {
-			// id, username, email, password, salt, nickname, gender, job,
-			// phone, telephone, avatar, signature, speciality, preference,
-			// province, city, district, address, created_on, version
+			// id, username, email, password, salt, identity_verified, nickname,
+			// gender, job, phone, telephone, avatar, signature, speciality,
+			// preference, province, city, district, address, created_on,
+			// version
 			User user = new User();
 			user.setId(rs.getInt("id"));
 			user.setUsername(rs.getString("username"));
 			user.setEmail(rs.getString("email"));
 			user.setPassword(rs.getString("password"));
 			user.setSalt(rs.getString("salt"));
+			user.setIdentityVerified(rs.getBoolean("identity_verified"));
 			user.setNickname(rs.getString("nickname"));
 			user.setGender(rs.getString("gender"));
 			user.setJob(rs.getString("job"));
@@ -150,11 +152,13 @@ public class UserDaoImpl extends BaseJdbcDaoSupport implements UserDao {
 	 * 更新用户帐号信息
 	 */
 	@Override
-	@UpdatesToCache({ @UpdateToCache(mapName = CacheConstants.CACHE_USER_ID_TO_USER, key = "${user.id}"),
+	@UpdatesToCache({
+			@UpdateToCache(mapName = CacheConstants.CACHE_USER_ID_TO_USER, key = "${user.id}"),
 			@UpdateToCache(mapName = CacheConstants.CACHE_USERNAME_TO_USER_ID, key = "${user.username}"),
 			@UpdateToCache(mapName = CacheConstants.CACHE_EMAIL_TO_USER_ID, key = "${user.email}"),
 			@UpdateToCache(mapName = CacheConstants.CACHE_LOGIN_NAME_TO_USER_ID, key = "${user.username}"),
-			@UpdateToCache(mapName = CacheConstants.CACHE_LOGIN_NAME_TO_USER_ID, key = "${user.email}") })
+			@UpdateToCache(mapName = CacheConstants.CACHE_LOGIN_NAME_TO_USER_ID, key = "${user.email}")
+	})
 	public void update(User user) {
 		super.getJdbcTemplate().update(UPDATE_USER_SQL, user.getNickname(), user.getGender(), user.getJob(),
 				user.getPhone(), user.getTelephone(), user.getAvatar(), user.getSignature(), user.getSpeciality(),
@@ -169,8 +173,10 @@ public class UserDaoImpl extends BaseJdbcDaoSupport implements UserDao {
 	 * 更新邮箱
 	 */
 	@Override
-	@UpdatesToCache({ @UpdateToCache(mapName = CacheConstants.CACHE_USER_ID_TO_USER, key = "${id}"),
-			@UpdateToCache(mapName = CacheConstants.CACHE_EMAIL_TO_USER_ID, key = "${email}") })
+	@UpdatesToCache({
+			@UpdateToCache(mapName = CacheConstants.CACHE_USER_ID_TO_USER, key = "${id}"),
+			@UpdateToCache(mapName = CacheConstants.CACHE_EMAIL_TO_USER_ID, key = "${email}")
+	})
 	public void updateEmail(Integer id, String email) {
 		super.getJdbcTemplate().update(UPDATE_EMAIL_SQL, email, id);
 		logger.debug("updated email for user({}), email is {}", id, email);

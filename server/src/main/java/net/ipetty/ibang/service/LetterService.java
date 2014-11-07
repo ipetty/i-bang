@@ -10,10 +10,9 @@ import net.ipetty.ibang.model.Letter;
 import net.ipetty.ibang.repository.LetterDao;
 import net.ipetty.ibang.vo.LetterContacts;
 
-import org.apache.commons.lang3.StringUtils;
-import org.junit.Assert;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
 
 /**
  * 站内信
@@ -31,10 +30,10 @@ public class LetterService extends BaseService {
 	 * 保存
 	 */
 	public Letter send(Integer fromUserId, Integer toUserId, String content) {
-		Assert.assertNotNull("站内信发送者不能为空", fromUserId);
-		Assert.assertNotNull("站内信接收者不能为空", toUserId);
-		Assert.assertTrue("不能给自己发站内信", !fromUserId.equals(toUserId));
-		Assert.assertTrue("站内信内容不能为空", StringUtils.isNotEmpty(content));
+		Assert.notNull(fromUserId, "站内信发送者不能为空");
+		Assert.notNull(toUserId, "站内信接收者不能为空");
+		Assert.isTrue(!fromUserId.equals(toUserId), "不能给自己发站内信");
+		Assert.hasText(content, "站内信内容不能为空");
 
 		Letter letterA = new Letter();
 		letterA.setOwnerId(fromUserId);
