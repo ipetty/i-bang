@@ -9,14 +9,15 @@ import org.junit.runners.Suite;
 
 /**
  * AllServiceTest
- * 
  * @author luocanfeng
  * @date 2014年9月24日
  */
 @RunWith(Suite.class)
-@Suite.SuiteClasses({ UserServiceTest.class, LocationServiceTest.class, SeekServiceTest.class, OfferServiceTest.class,
+@Suite.SuiteClasses({
+		UserServiceTest.class, LocationServiceTest.class, SeekServiceTest.class, OfferServiceTest.class,
 		DelegationServiceTest.class, EvaluationServiceTest.class, SystemMessageServiceTest.class,
-		CrashLogServiceTest.class })
+		LetterServiceTest.class, CrashLogServiceTest.class
+})
 public class AllServiceTest extends BaseServiceTest {
 
 	@BeforeClass

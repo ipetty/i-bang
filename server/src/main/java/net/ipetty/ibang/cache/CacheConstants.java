@@ -2,7 +2,6 @@ package net.ipetty.ibang.cache;
 
 /**
  * CacheConstants
- * 
  * @author luocanfeng
  * @date 2014年5月20日
  */
@@ -42,5 +41,8 @@ public interface CacheConstants {
 
 	/* system message */
 	public static final String CACHE_SYS_MSG_ID_TO_SYS_MSG = "cacheSysMsgId2SysMsg";
+
+	/* letter */
+	public static final String CACHE_LETTER_ID_TO_LETTER = "cacheLetterId2Letter";
 
 }

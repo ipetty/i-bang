@@ -5,18 +5,21 @@
 	<users id="1" username="ibang" email="ibang@ipetty.net" password="9bd68c251be901430d6b3bd111ac8cba13b008ce" salt="7a2a9b7682d478ef"
 		nickname="爱帮" />
 
+	<identity_verification />
 	<user_refresh_token />
 	<seeker_info />
 	<offerer_info />
 	<offerer_range />
 
-	<seek />
+	<location />
 	<image />
+	<seek />
 	<offer />
 	<delegation />
 	<evaluation />
 
 	<system_message />
+	<letter />
 	<crash_log />
 
 </dataset>
