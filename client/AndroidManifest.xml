@@ -189,6 +189,10 @@
             android:name="net.ipetty.ibang.android.publish.SelectAddressActivity"
             android:label="@string/title_activity_select_address" >
         </activity>
+        <activity
+            android:name="net.ipetty.ibang.android.approve.ApproveActivity"
+            android:label="@string/title_activity_approve" >
+        </activity>
     </application>
 
 </manifest>

@@ -1,6 +1,7 @@
 package net.ipetty.ibang.android.main;
 
 import net.ipetty.ibang.R;
+import net.ipetty.ibang.android.approve.ApproveActivity;
 import net.ipetty.ibang.android.core.Constants;
 import net.ipetty.ibang.android.core.ui.UnLoginView;
 import net.ipetty.ibang.android.core.util.AppUtils;
@@ -23,6 +24,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -101,6 +103,18 @@ public class MainMeFragment extends Fragment {
 		seekCount = (TextView) getView().findViewById(R.id.seekCount);
 		offerCount = (TextView) getView().findViewById(R.id.offerCount);
 		seekerTotalPoint = (TextView) getView().findViewById(R.id.seekerTotalPoint);
+
+		// TODO:toV2.0
+		nickname.setOnLongClickListener(new OnLongClickListener() {
+
+			@Override
+			public boolean onLongClick(View v) {
+				// TODO Auto-generated method stub
+				Intent intent = new Intent(getActivity(), ApproveActivity.class);
+				startActivity(intent);
+				return false;
+			}
+		});
 
 		View seekerTotalPoint_layout = getView().findViewById(R.id.seekerTotalPoint_layout);
 		seekerTotalPoint_layout.setOnClickListener(new OnClickListener() {

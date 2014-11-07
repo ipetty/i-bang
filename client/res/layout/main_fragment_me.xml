@@ -132,8 +132,10 @@
 			             android:gravity="left|center"
 			             android:singleLine="true"
 			             android:textColor="@color/black_color"
+			             android:text=""
 			             android:textSize="18dp" />
-			         
+			                  
+			                  
 			         			         <TextView
 			             android:id="@+id/signature"
 			             android:layout_width="wrap_content"
@@ -145,6 +147,16 @@
 			             android:singleLine="true"
 			             android:textColor="@color/gray_color"
 			             android:textSize="14dp" />
+
+			         			         <ImageView
+			         			             android:id="@+id/imageView1"
+			         			             android:layout_width="wrap_content"
+			         			             android:layout_height="28dp"
+			         			             android:layout_alignParentTop="true"
+			         			             android:layout_toRightOf="@+id/nickname"
+			         			             android:src="@drawable/ic_approve" 
+			         			             android:visibility="gone"/>
+			         	
 			     </RelativeLayout>
 
 	</RelativeLayout>
