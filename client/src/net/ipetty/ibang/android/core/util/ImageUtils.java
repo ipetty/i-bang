@@ -18,12 +18,16 @@ public class ImageUtils {
 	public final static int RESULT_FAILTRUE = 1; // 失败
 
 	public static void compressImage(String path, String outPath) {
+		compressImage(path, outPath, Constants.COMPRESS_IMAGE_KB);
+	}
+
+	public static void compressImage(String path, String outPath, int maxSize) {
 		long t1 = System.currentTimeMillis(); // 排序前取得当前时间
 		Bitmap bitmap = compressImageZoom(path);
 		long t2 = System.currentTimeMillis(); // 排序前取得当前时间
 		bitmap = compressImageScaled(bitmap);
 		long t3 = System.currentTimeMillis(); // 排序前取得当前时间
-		int level = getCompressLevel(bitmap);
+		int level = getCompressLevel(bitmap, maxSize);
 		long t4 = System.currentTimeMillis(); // 排序前取得当前时间
 		Log.d(TAG, "缩小:" + (t2 - t1));
 		Log.d(TAG, "等比:" + (t3 - t2));
@@ -91,11 +95,11 @@ public class ImageUtils {
 		return bitmap;
 	}
 
-	public static int getCompressLevel(Bitmap image) {
+	public static int getCompressLevel(Bitmap image, int maxSize) {
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		int options = 80;
 		image.compress(Bitmap.CompressFormat.JPEG, options, baos);
-		while (baos.toByteArray().length / 1024 > Constants.COMPRESS_IMAGE_KB && options > 20) { // 压缩后图片过大，继续压缩
+		while (baos.toByteArray().length / 1024 > maxSize && options > 20) { // 压缩后图片过大，继续压缩
 			baos.reset();// 即清空baos
 			image.compress(Bitmap.CompressFormat.JPEG, options, baos);
 			options -= 10;// 每次都减少10
@@ -104,8 +108,8 @@ public class ImageUtils {
 		return options;
 	}
 
-	public static Bitmap compressImageMemorySize(Bitmap image) {
-		int level = getCompressLevel(image);
+	public static Bitmap compressImageMemorySize(Bitmap image, int maxSize) {
+		int level = getCompressLevel(image, maxSize);
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		image.compress(Bitmap.CompressFormat.JPEG, level, baos);
 		ByteArrayInputStream isBm = new ByteArrayInputStream(baos.toByteArray());

@@ -69,5 +69,6 @@ public class Constants {
 	public static final int REQUEST_CODE_TYPE = 102;
 
 	public static final String PIC_USER_HEAD_IMAGE_NAME = "cacheHead.jpg";
+	public static final String PIC_IDCARD_IN_HAND = "cacheIdCardInHand.jpg";
 
 }
