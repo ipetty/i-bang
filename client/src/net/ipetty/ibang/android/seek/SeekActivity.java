@@ -228,10 +228,14 @@ public class SeekActivity extends Activity {
 		// TODO Auto-generated method stub
 		closeBtn_layout.setVisibility(View.GONE);
 		offerBtn_layout.setVisibility(View.GONE);
+		String status = seekVO.getStatus();
 		if (isLogin) { // 只有已登录用户才有可能看到这两个按钮
 			login_layout.setVisibility(View.GONE);
-			if (isSeekOwner()) {
-				closeBtn_layout.setVisibility(View.VISIBLE);
+			if (!net.ipetty.ibang.vo.Constants.SEEK_STATUS_FINISHED.equals(status)
+					&& !net.ipetty.ibang.vo.Constants.SEEK_STATUS_CLOSED.equals(status)) {
+				if (isSeekOwner()) {
+					closeBtn_layout.setVisibility(View.VISIBLE);
+				}
 			}
 		} else {
 			login_layout.setVisibility(View.VISIBLE);
