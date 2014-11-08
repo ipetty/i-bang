@@ -1,6 +1,8 @@
 package net.ipetty.ibang.model;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import net.ipetty.ibang.vo.IdentityVerificationVO;
 
@@ -43,6 +45,14 @@ public class IdentityVerification extends AbstractEntity {
 		IdentityVerification entity = new IdentityVerification();
 		BeanUtils.copyProperties(vo, entity);
 		return entity;
+	}
+
+	public static List<IdentityVerificationVO> listToVoList(List<IdentityVerification> list) {
+		List<IdentityVerificationVO> voList = new ArrayList<IdentityVerificationVO>();
+		for (IdentityVerification item : list) {
+			voList.add(item.toVO());
+		}
+		return voList;
 	}
 
 	public Integer getUserId() {

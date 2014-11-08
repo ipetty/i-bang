@@ -14,7 +14,13 @@
 	<!-- 拦截器 -->
 	<mvc:interceptors>
 		<mvc:interceptor>
-			<mvc:mapping path="/**" /><!-- 如果不配置或/**,将拦截所有的Controller -->
+			<mvc:mapping path="/api/**" /><!-- 如果不配置或/**,将拦截所有的Controller -->
+			<bean class="net.ipetty.ibang.web.rest.interceptor.UserContextInterceptor">
+				<property name="userService" ref="userService" />
+			</bean>
+		</mvc:interceptor>
+		<mvc:interceptor>
+			<mvc:mapping path="/admin/verify/**" />
 			<bean class="net.ipetty.ibang.web.rest.interceptor.UserContextInterceptor">
 				<property name="userService" ref="userService" />
 			</bean>
