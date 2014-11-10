@@ -10,22 +10,22 @@
 		<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller" />
 		<context:include-filter type="annotation" expression="org.springframework.web.bind.annotation.ControllerAdvice" />
 	</context:component-scan>
-
+	
+	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
+		<property name="prefix" value="/WEB-INF/jsps/"/>
+		<property name="suffix" value=".jsp"/>
+	</bean>
 	<!-- 拦截器 -->
 	<mvc:interceptors>
 		<mvc:interceptor>
-			<mvc:mapping path="/api/**" /><!-- 如果不配置或/**,将拦截所有的Controller -->
-			<bean class="net.ipetty.ibang.web.rest.interceptor.UserContextInterceptor">
-				<property name="userService" ref="userService" />
-			</bean>
-		</mvc:interceptor>
-		<mvc:interceptor>
-			<mvc:mapping path="/admin/verify/**" />
-			<bean class="net.ipetty.ibang.web.rest.interceptor.UserContextInterceptor">
-				<property name="userService" ref="userService" />
-			</bean>
+			<mvc:mapping path="/**" /><!-- 如果不配置或/**,将拦截所有的Controller -->
+			<ref bean="userContextInterceptor" />
 		</mvc:interceptor>
 	</mvc:interceptors>
+	<bean id="userContextInterceptor" class="net.ipetty.ibang.web.rest.interceptor.UserContextInterceptor">
+		<property name="userService" ref="userService" />
+	</bean>
 
 	<!-- Spring文件上传支持 -->
 	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
@@ -47,5 +47,16 @@
 			</bean>
 		</mvc:message-converters>
 	</mvc:annotation-driven>
-
+	<!-- 映射静态资源 -->
+	<mvc:resources location="/static/" mapping="/static/**"  cache-period="604800" />
+	<mvc:resources location="/images/" mapping="/images/**"  cache-period="86400" />
+	<mvc:resources location="/js/" mapping="/js/**"  cache-period="86400" />
+	<mvc:resources location="/css/" mapping="/css/**"  cache-period="86400" />
+	<mvc:resources location="/upload/" mapping="/upload/**" cache-period="86400" />
+	<mvc:resources location="/photos/" mapping="/photos/**" cache-period="31556926" />
+ 	<mvc:resources location="/feedAttachment/" mapping="/feedAttachment/**"  cache-period="86400" />
+ 	<mvc:resources location="/favicon.ico" mapping="/favicon.ico"  cache-period="86400" />
+ 	<mvc:resources location="/error/" mapping="/error/**"  cache-period="86400" />
+ 	<mvc:resources location="/login/photos" mapping="/login/photos/**"  cache-period="86400" />
+ 	
 </beans>

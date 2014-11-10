@@ -10,13 +10,14 @@ import org.junit.runners.Suite;
 
 /**
  * AllApiTest
- * 
  * @author luocanfeng
  * @date 2014年9月28日
  */
 @RunWith(Suite.class)
-@Suite.SuiteClasses({ UserApiTest.class, SeekApiTest.class, OfferApiTest.class, DelegationApiTest.class,
-		EvaluationApiTest.class, ImageApiTest.class, SystemMessageApiTest.class, CrashLogApiTest.class })
+@Suite.SuiteClasses({
+		UserApiTest.class, SeekApiTest.class, OfferApiTest.class, DelegationApiTest.class, EvaluationApiTest.class,
+		ImageApiTest.class, SystemMessageApiTest.class, IdentityVerificationApiTest.class, CrashLogApiTest.class
+})
 public class AllApiTest extends BaseApiTest {
 
 	@BeforeClass
