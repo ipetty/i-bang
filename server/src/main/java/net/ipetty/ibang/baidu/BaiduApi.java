@@ -9,6 +9,7 @@ import retrofit.http.Field;
 import retrofit.http.FormUrlEncoded;
 import retrofit.http.GET;
 import retrofit.http.POST;
+import retrofit.http.Query;
 
 /**
  *
@@ -31,7 +32,7 @@ public interface BaiduApi {
      */
     @FormUrlEncoded
     @POST("/geodata/v3/poi/delete")
-    public void lbsDeletePoi(@Field("loginName") Long id);
+    public RetVO lbsDeletePoi(@Field("ak") String ak, @Field("geotable_id") String geotable_id, @Field("id") String id);
 
     /**
      * 改
@@ -72,20 +73,16 @@ public interface BaiduApi {
         @Field("tags") String tags, @Field("sortby") String sortby, @Field("filter") String filter,
         @Field("page_index") Integer pageIndex, @Field("page_size") Integer pageSize);
 
-    //TODO:以下两个方法还需各自定义返回值格式
-    //http://developer.baidu.com/map/geocoding-api.htm
     /**
      * 地址转坐标
      */
-    @FormUrlEncoded
     @GET("/geocoder")
-    public GeoGetByXYRetVO geoGetByXY(@Field("key") String ak, @Field("address") String address, @Field("city") String city, @Field("output") String output);
+    public GeoGetByAdressRetVO geoGetByAdress(@Query("key") String ak, @Query("address") String address, @Query("city") String city, @Query("output") String output);
 
     /**
      * 坐标转地址
      */
-    @FormUrlEncoded
     @GET("/geocoder")
-    public GeoGetByAdressRetVO geoGetByAdress(@Field("key") String ak, @Field("location") String location, @Field("output") String output);
+    public GeoGetByXYRetVO geoGetByXY(@Query("key") String ak, @Query("location") String location, @Query("output") String output);
 
 }

@@ -14,11 +14,11 @@ import retrofit.converter.GsonConverter;
 public class BaiduApiFactory {
 
     //临时写死
-    private static String ak = "8691f5dfa58c9acccf7bb4c72e529382";
+    public static String ak = "SzoDrDkx1rdGDHuGZUA3zgGC";
     //临时写死
-    private static String lbsTableId = "82284";
+    public static String lbsTableId = "84783";
     //临时写死
-    private static Integer coordTypeValue = 3;
+    public static Integer coordTypeValue = 3;
 
     private static final String endPoint = "http://api.map.baidu.com/";
 
@@ -31,7 +31,7 @@ public class BaiduApiFactory {
     private static void init() {
         restAdapter = new RestAdapter.Builder()
             .setEndpoint(endPoint)
-            .setConverter(new GsonConverter(gson))//.setLogLevel(RestAdapter.LogLevel.FULL)
+            .setConverter(new GsonConverter(gson)).setLogLevel(RestAdapter.LogLevel.FULL)
             .build();
         baiduApi = restAdapter.create(BaiduApi.class);
     }
