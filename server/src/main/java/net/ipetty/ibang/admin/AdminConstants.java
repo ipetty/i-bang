@@ -5,7 +5,7 @@ package net.ipetty.ibang.admin;
  * @author luocanfeng
  * @date 2014年11月11日
  */
-public interface AdminConstants {
+public class AdminConstants {
 
 	public static final String SESSION_NAME = "user_session";
 	public static final String ADMIN_USER_NAME = "ibang";
