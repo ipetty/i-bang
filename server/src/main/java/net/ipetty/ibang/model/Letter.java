@@ -1,6 +1,8 @@
 package net.ipetty.ibang.model;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import net.ipetty.ibang.vo.LetterVO;
 
@@ -39,6 +41,14 @@ public class Letter extends AbstractEntity {
 		Letter entity = new Letter();
 		BeanUtils.copyProperties(vo, entity);
 		return entity;
+	}
+
+	public static List<LetterVO> listToVoList(List<Letter> list) {
+		List<LetterVO> voList = new ArrayList<LetterVO>();
+		for (Letter item : list) {
+			voList.add(item.toVO());
+		}
+		return voList;
 	}
 
 	public Long getId() {

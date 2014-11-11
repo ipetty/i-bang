@@ -41,8 +41,6 @@ public class IdentityVerificationController extends BaseController {
 			throw new RestException("用户登录后才能提交身份审核");
 		}
 		if (!currentUser.getId().equals(identityVerification.getUserId())) {
-			logger.debug("current user id = {}", currentUser.getId());
-			logger.debug("verify user id = {}", identityVerification.getUserId());
 			throw new RestException("只能提交自己的身份审核信息");
 		}
 

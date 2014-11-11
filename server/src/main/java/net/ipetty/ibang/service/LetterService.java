@@ -27,7 +27,7 @@ public class LetterService extends BaseService {
 	private LetterDao letterDao;
 
 	/**
-	 * 保存
+	 * 发送站内信
 	 */
 	public Letter send(Integer fromUserId, Integer toUserId, String content) {
 		Assert.notNull(fromUserId, "站内信发送者不能为空");
@@ -71,7 +71,7 @@ public class LetterService extends BaseService {
 	}
 
 	/**
-	 * 获取指定用户与某个联系人的站内信ID列表
+	 * 获取指定用户与某个联系人的站内信列表
 	 */
 	public List<Letter> listByUserIdAndContactUserId(Integer userId, Integer contactUserId, int pageNumber, int pageSize) {
 		List<Long> letterIds = letterDao.listByUserIdAndContactUserId(userId, contactUserId, pageNumber, pageSize);
