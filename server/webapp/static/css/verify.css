@@ -1,0 +1,248 @@
+@charset "utf-8";
+
+html,body {
+}
+
+.wrap-all {
+	background: none repeat scroll 0 0 #DBDBDB;
+	height: 100%;
+	min-height: 650px;
+	width:100%;
+}
+
+.wrap-main {
+	margin: 0 auto;
+    padding: 36px 0 7px;
+    width: 960px;
+}
+
+.wrap-main .aside {
+	background: none repeat scroll 0 0 #FAFAFA;
+	border: 1px solid #D2D2D2;
+	float: left;
+	height: 100%;
+	margin-right: 2px;
+	width: 240px;
+}
+
+.wrap-main .main {
+	border: 1px solid #D2D2D2;
+    height: 100%;
+    overflow: hidden;
+}
+
+.main .main-btn {
+	background: none repeat scroll 0 0 #EEEEEE;
+	border-bottom: 1px solid #D2D2D2;
+	height: 39px;
+	padding: 0 6px;
+	position: relative;
+}
+
+.main .main-content {
+	background: none repeat scroll 0 0 #FAFAFA;
+	clear: both;
+	color: #313131;
+    font-size: 12px;
+}
+
+.main-btn .search-label {
+    right: 122px;
+}
+
+.table-header-content {
+	position: relative;
+}
+
+.table-header-content table {
+	table-layout:fixed;
+	width:100%;
+}
+
+.table-header-content .table-header {
+	border-bottom: 1px solid #d2d2d2;
+}
+
+.table-header-content .table-header td {
+	height: 30px;
+	font-weight: bold;
+}
+
+.table-header td.c1 {
+	padding: 0 2px 0 20px;
+	width: 160px;
+}
+
+.table-content td.c1 {
+	padding: 0 2px 0 20px;
+	width: 160px;
+}
+
+.table-header td.c2 {
+	padding: 0 2px 0 6px;
+	width: 320px;
+}
+
+.table-content td.c2 {
+	padding: 0 2px 0 6px;
+	width: 320px;
+}
+
+.table-header td.c3 {
+	padding: 0 2px 0 6px;
+	width:320px;
+}
+
+.table-content td.c3 {
+	padding: 0 2px 0 6px;
+	width: 320px;
+}
+
+.table-header td.c4 {
+	padding: 0 2px 0 6px;
+	width: 160px;
+}
+
+.table-content td.c4 {
+	padding: 0 2px 0 6px;
+	width:160px;
+}
+
+
+.table-header td.sep {
+	background: url("../images/table-header-sep.png?t=4.82584843639") no-repeat scroll 0 transparent;
+	display: block;
+	width: 1px;
+}
+
+.data-content {
+	overflow-x: hidden;
+	overflow-y: auto;
+}
+
+.data-content .data-table {
+	width: 100%;
+}
+
+.table-content {
+	table-layout:fixed;
+	width: 100%;
+}
+
+.table-content tr:hover {
+	background: #eeeeee;
+}
+
+.table-content tr:hover td{
+	color: #313131;
+}
+
+.table-content tr.checked {
+	background: #eeeeee;
+}
+
+.table-content tr.checked td{
+	color: #313131;
+}
+
+.table-content td {
+	border-bottom: 1px solid #d2d2d2;
+	height: 38px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;/*以省略号替代截除部分*/
+}
+
+.table-content td.data-td {
+	cursor: pointer;
+}
+
+#userWrapper {
+	display:none;
+}
+
+#userWrapper .userWrapper-content {
+	height: 531px;
+    width: 550px;
+}
+
+#userWrapper .userWrapper-content .info {
+	height: 490px;
+}
+
+#userWrapper .userWrapper-content .info .setting-content {
+	height: 410px;
+	overflow: auto;
+}
+
+#user-group-tree-main {
+	background: none repeat scroll 0 0 #FFFFFF;
+    border: 1px solid #dbdbdb;
+    display: none;
+    height: 200px;
+    left: 0px;
+    overflow: auto;
+    position: absolute;
+    top: 35px;
+    width: 288px;
+    z-index: 10000;
+}
+
+#userWrapper .select-user-group {
+	position: absolute;
+    right: 75px;
+    top: 14px;
+}
+
+#userWrapper .user-role-main {
+	display: none;
+}
+
+#userWrapper .select-user-role {
+	position: absolute;
+    right: 75px;
+    top: 14px;
+}
+
+#userGroupWrapper {
+	display:none;
+}
+
+#userGroupWrapper .userGroupWrapper-content {
+	height: 185px;
+	width: 397px;
+}
+
+.userGroupWrapper-content .info .input-text {
+	width: 220px;
+}
+
+.userGroupWrapper-content .info {
+	margin-left: 39px;
+}
+
+.userGroupWrapper-content .info .setting-content {
+	padding: 10px 0 12px;
+}
+
+.userGroupWrapper-content .setting-item-main {
+	width: 260px;
+}
+
+#shiftWrapper, #copyWrapper {
+	display:none;
+}
+
+#shiftWrapper .shiftWrapper-content, #copyWrapper .copyWrapper-content {
+	height: 500px;
+    width: 410px;
+}
+
+#shiftWrapper .shiftWrapper-content .shift-tree-main, #copyWrapper .copyWrapper-content .copy-tree-main {
+	height: 380px;
+	overflow: auto;
+}
+
+#shiftWrapper .ums-dialog-content .info, #copyWrapper .ums-dialog-content .info {
+    margin-left: 21px;
+}

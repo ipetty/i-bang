@@ -1,5 +1,7 @@
 package net.ipetty.ibang.web.controller;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -7,9 +9,12 @@ import javax.servlet.http.HttpSession;
 
 import net.ipetty.ibang.admin.AdminConstants;
 import net.ipetty.ibang.exception.BusinessException;
+import net.ipetty.ibang.model.IdentityVerification;
 import net.ipetty.ibang.model.User;
+import net.ipetty.ibang.service.IdentityVerificationService;
 import net.ipetty.ibang.service.UserService;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -53,16 +58,7 @@ public class LoginController{
 		return result;
 	}
 	
-	@RequestMapping(value = "/manager", method = RequestMethod.GET)
-	public String managaer(Model model, HttpServletRequest request, HttpServletResponse response) {
-		User user = (User)request.getSession().getAttribute(AdminConstants.SESSION_NAME);
-		//TODO:判断是否有权限登录
-		if(user == null){
-			return "/admin/login";
-		}
-		model.addAttribute("user",user);
-		return "/admin/manager";
-	}
+
 	
 	@RequestMapping(value = "/web/logout", method = RequestMethod.GET)
 	public String logout() {

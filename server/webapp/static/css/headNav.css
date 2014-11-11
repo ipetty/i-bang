@@ -66,10 +66,9 @@
 }
 
 .head-nav li.logo a{
-    background: url("../images/meeting-ico.png?t=4.81245527784") no-repeat scroll 0 -412px transparent;
 	cursor: default;
 	line-height: 29px;
-	padding: 0 50px 0 124px;
+	padding: 0 50px 0 0px;
 	width: 88px;
 	color: #E2E2E2;
 	font-size: 14px;

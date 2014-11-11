@@ -30,7 +30,7 @@ Ibang.login = {
 				dataType: 'json',
 				success: function(msg){
 					if (msg.success) {
-						location.href=Ibang.Config.appUrl + "/admin/manager";
+						location.href=Ibang.Config.appUrl + "/admin/verify";
 					} else {
 						Ibang.login.showLoginMsg(msg.description);
 					}
