@@ -3,8 +3,6 @@ package net.ipetty.ibang.web.controller;
 import java.util.List;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import net.ipetty.ibang.model.IdentityVerification;
 import net.ipetty.ibang.service.IdentityVerificationService;
@@ -26,22 +24,18 @@ public class IdentityVerificationController extends BaseController {
 	@Resource
 	private IdentityVerificationService identityVerificationService;
 
-	@Resource
-	private HttpServletRequest request;
-
 	/**
 	 * 审核
 	 */
-	@RequestMapping(value = "/verification/verify", method = RequestMethod.POST)
+	@RequestMapping(value = "/verify", method = RequestMethod.POST)
 	public void verify(String verifyInfo, boolean approve) {
-		HttpSession session = request.getSession(false);
 
 	}
 
 	/**
 	 * 获取待审核列表
 	 */
-	@RequestMapping(value = "/verification/listVerifying", method = RequestMethod.GET)
+	@RequestMapping(value = "/verify/listVerifying", method = RequestMethod.GET)
 	public List<IdentityVerificationVO> listVerifying(int pageNumber, int pageSize) {
 		List<IdentityVerification> identityVerifications = identityVerificationService.listVerifying(pageNumber,
 				pageSize);
@@ -51,7 +45,7 @@ public class IdentityVerificationController extends BaseController {
 	/**
 	 * 获取身份审核列表
 	 */
-	@RequestMapping(value = "/verification/list", method = RequestMethod.GET)
+	@RequestMapping(value = "/verify/listAll", method = RequestMethod.GET)
 	public List<IdentityVerificationVO> list(int pageNumber, int pageSize) {
 		List<IdentityVerification> identityVerifications = identityVerificationService.list(pageNumber, pageSize);
 		return IdentityVerification.listToVoList(identityVerifications);
