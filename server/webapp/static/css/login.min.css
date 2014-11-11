@@ -1,1 +1,26 @@
-@charset "utf-8";body,html{height:100%}#wrapper{background-color:#dbdbdb;min-height:650px;height:100%;position:relative;min-width:1000px}#header{background-color:#2d2d2d;height:29px;line-height:29px}#header .header-content{height:100%;margin:0 auto;width:960px}#header .ent{background:url(../images/logo.png?t=4.8824431691) no-repeat scroll 0 transparent;display:block;float:left;height:13px;margin:8px 0;width:190px}#header .default-head{background:url(../images/default-head.png?t=4.83768683544) no-repeat scroll 0 transparent;display:block;float:right;height:24px;margin:2px 0 3px;width:24px}#main{margin:0 auto}#main .title{margin-top:77px;text-align:center}#main .title span{color:#313131;font-size:36px}#main .login{background:none repeat scroll 0 0 #fafafa;border:1px solid #97afbc;height:306px;position:relative;margin:50px auto 0;width:408px}#main .login .input-text{border:1px solid #DBDBDB;color:#313131;display:inline-block;font-size:16px;height:28px;padding-left:12px;line-height:28px;vertical-align:middle}#main .input-login{width:257px}#main .input-login.selected{border:1px solid #0091ff}.login .item-username{margin:48px 0 0 41px}.login .item-password{margin:24px 0 0 41px}.login .item-remember{margin:17px 0 0 98px}.login label{color:#313131;display:inline-block;width:55px}#main .login a.remember-me{top:0;vertical-align:middle}#main .login .remember-msg{color:#8c8c8c;vertical-align:middle}#main .item-msg{background:#f9f5c7;display:none;height:23px;line-height:23px;margin:15px 0 0 41px;overflow:hidden;text-align:center;text-overflow:ellipsis;white-space:nowrap;width:328px}#main .item-msg .msg{color:#313131;font-size:12px;margin:0 0 0 5px}.login .item-btn{bottom:44px;left:41px;position:absolute}a.btn-login{background:url(../images/login-btn-bg.png?t=4.8251369858) no-repeat scroll 0 0 transparent;color:#FFF;cursor:pointer;display:block;font-size:14px;height:34px;line-height:34px;text-align:center;width:328px}a.btn-login:hover{background-position:-328px 0;color:#0091ff}a.btn-login:active{background-position:-656px 0;color:#fff}a.btn-login.disabled{background-position:-984px 0;color:#fff}#footer{position:absolute;bottom:20px;overflow:hidden;text-align:center;width:100%;height:20px;z-index:0}#footer span{color:#8c8c8c;font-size:12px}
+@charset "utf-8";
+body,html{height:100%}
+#wrapper{background-color:#f9f9f9;min-height:650px;height:100%;position:relative;min-width:1000px}
+#header{background-color:#2d2d2d;height:29px;line-height:29px}
+#header .header-content{height:100%;margin:0 auto;width:960px}
+#header .ent{display:block;float:left;height:13px;margin:8px 0;width:190px}
+#header .default-head{display:block;float:right;height:24px;margin:2px 0 3px;width:24px}
+#main{margin:0 auto}
+#main .title{margin-top:77px;text-align:center}
+#main .title span{color:#222;font-size:36px}
+#main .login{background:none repeat scroll 0 0 #fff;border:1px solid #F9C498;height:280px;position:relative;margin:50px auto 0;width:408px}
+#main .login .input-text{border:1px solid #DBDBDB;color:#313131;display:inline-block;font-size:16px;height:28px;padding-left:12px;line-height:28px;vertical-align:middle}
+#main .input-login{width:257px}
+#main .input-login.selected{border:1px solid #0091ff}
+.login .item-username{margin:48px 0 0 41px}
+.login .item-password{margin:24px 0 0 41px}
+.login .item-remember{margin:17px 0 0 98px}
+.login label{color:#313131;display:inline-block;width:55px}
+#main .login a.remember-me{top:0;vertical-align:middle}
+#main .login .remember-msg{color:#8c8c8c;vertical-align:middle}
+#main .item-msg{background:#f9f5c7;display:none;height:23px;line-height:23px;margin:15px 0 0 41px;overflow:hidden;text-align:center;text-overflow:ellipsis;white-space:nowrap;width:328px}
+#main .item-msg .msg{color:#313131;font-size:12px;margin:0 0 0 5px}
+.login .item-btn{bottom:44px;left:41px;position:absolute}
+a.btn-login{background:#F4811F;color:#fff;cursor:pointer;display:block;font-size:14px;height:34px;line-height:34px;text-align:center;width:328px}
+#footer{position:absolute;bottom:20px;overflow:hidden;text-align:center;width:100%;height:20px;z-index:0}
+#footer span{color:#8c8c8c;font-size:12px}
