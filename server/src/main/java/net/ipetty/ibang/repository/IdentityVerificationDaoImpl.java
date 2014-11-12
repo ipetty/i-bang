@@ -110,6 +110,18 @@ public class IdentityVerificationDaoImpl extends BaseJdbcDaoSupport implements I
 				Constants.ID_VERIFICATION_VERIFYING, pageNumber * pageSize, pageSize);
 	}
 
+	private static final String GET_VERIFYING_TOTAL_NUMBER_SQL = "select count(user_id) from identity_verification where status=?";
+
+	/**
+	 * 获取待审核数目
+	 */
+	@Override
+	public int getVerifyingTotalNum() {
+		Integer result = super.queryUniqueEntity(GET_VERIFYING_TOTAL_NUMBER_SQL, INTEGER_ROW_MAPPER,
+				Constants.ID_VERIFICATION_VERIFYING);
+		return result == null ? 0 : result;
+	}
+
 	private static final String LIST_SQL = "select user_id from identity_verification order by submitted_on asc limit ?,?";
 
 	/**
@@ -118,6 +130,17 @@ public class IdentityVerificationDaoImpl extends BaseJdbcDaoSupport implements I
 	@Override
 	public List<Integer> list(int pageNumber, int pageSize) {
 		return super.getJdbcTemplate().query(LIST_SQL, INTEGER_ROW_MAPPER, pageNumber * pageSize, pageSize);
+	}
+
+	private static final String GET_TOTAL_NUMBER_SQL = "select count(user_id) from identity_verification";
+
+	/**
+	 * 获取总审核数目
+	 */
+	@Override
+	public int getTotalNum() {
+		Integer result = super.queryUniqueEntity(GET_TOTAL_NUMBER_SQL, INTEGER_ROW_MAPPER);
+		return result == null ? 0 : result;
 	}
 
 }

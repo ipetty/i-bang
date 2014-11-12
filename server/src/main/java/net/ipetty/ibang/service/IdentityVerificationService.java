@@ -62,6 +62,13 @@ public class IdentityVerificationService extends BaseService {
 		return this.userIds2IdentityVerifications(users);
 	}
 
+	/**
+	 * 获取待审核数目
+	 */
+	public int getVerifyingTotalNum() {
+		return identityVerificationDao.getVerifyingTotalNum();
+	}
+
 	private List<IdentityVerification> userIds2IdentityVerifications(List<Integer> userIds) {
 		List<IdentityVerification> identityVerifications = new ArrayList<IdentityVerification>();
 		for (Integer userId : userIds) {
@@ -76,6 +83,13 @@ public class IdentityVerificationService extends BaseService {
 	public List<IdentityVerification> list(int pageNumber, int pageSize) {
 		List<Integer> users = identityVerificationDao.list(pageNumber, pageSize);
 		return this.userIds2IdentityVerifications(users);
+	}
+
+	/**
+	 * 获取总审核数目
+	 */
+	public int getTotalNum() {
+		return identityVerificationDao.getTotalNum();
 	}
 
 }

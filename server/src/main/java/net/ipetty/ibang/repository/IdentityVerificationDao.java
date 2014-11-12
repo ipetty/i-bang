@@ -37,8 +37,18 @@ public interface IdentityVerificationDao {
 	public List<Integer> listVerifying(int pageNumber, int pageSize);
 
 	/**
+	 * 获取待审核数目
+	 */
+	public int getVerifyingTotalNum();
+
+	/**
 	 * 获取身份审核列表
 	 */
 	public List<Integer> list(int pageNumber, int pageSize);
+
+	/**
+	 * 获取总审核数目
+	 */
+	public int getTotalNum();
 
 }

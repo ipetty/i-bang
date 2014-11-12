@@ -11,6 +11,7 @@ import net.ipetty.ibang.admin.AdminConstants;
 import net.ipetty.ibang.model.IdentityVerification;
 import net.ipetty.ibang.model.User;
 import net.ipetty.ibang.service.IdentityVerificationService;
+import net.ipetty.ibang.vo.Constants;
 import net.ipetty.ibang.vo.IdentityVerificationVO;
 
 import org.apache.commons.lang3.StringUtils;
@@ -56,11 +57,16 @@ public class IdentityVerificationController {
 		}
 		int cPage = Integer.parseInt(currentPage);
 		// TODO:这里需要根据参数区分是全部还是部分
-		List<IdentityVerificationVO> listVerify = listVerifying(cPage, PAGE_SIZE);
+		List<IdentityVerificationVO> listVerify = listVerifying(cPage - 1, PAGE_SIZE);
+		int totalNum = identityVerificationService.getVerifyingTotalNum();
+		int totalPage = totalNum / PAGE_SIZE;
+		if (totalNum % PAGE_SIZE != 0) {
+			++totalPage;
+		}
+
 		model.addAttribute("listVerify", listVerify);
 		model.addAttribute("currentPage", currentPage);
-		// TODO: 这里可能需要知道一共有多少页
-		model.addAttribute("totalPage", 0);
+		model.addAttribute("totalPage", totalPage);
 
 		return "admin/verify";
 	}
@@ -69,8 +75,13 @@ public class IdentityVerificationController {
 	 * 审核
 	 */
 	@RequestMapping(value = "/verify", method = RequestMethod.POST)
-	public void verify(String verifyInfo, boolean approve) {
-
+	public void verify(Integer userId, String verifyInfo, boolean approve) {
+		IdentityVerification identityVerification = new IdentityVerification();
+		identityVerification.setUserId(userId);
+		identityVerification.setVerifyInfo(verifyInfo);
+		identityVerification.setStatus(approve ? Constants.ID_VERIFICATION_APPROVED
+				: Constants.ID_VERIFICATION_UNAPPROVED);
+		identityVerificationService.verify(identityVerification);
 	}
 
 	/**

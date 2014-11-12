@@ -33,12 +33,18 @@ public class IdentityVerificationServiceTest extends BaseServiceTest {
 		user.setPassword(TEST_PASSWORD);
 		userService.register(user);
 
+		Assert.assertEquals(0, identityVerificationService.getVerifyingTotalNum());
+		Assert.assertEquals(0, identityVerificationService.getTotalNum());
+
 		IdentityVerification identityVerification = new IdentityVerification();
 		identityVerification.setUserId(user.getId());
 		identityVerification.setRealName("张三");
 		identityVerification.setIdNumber("210320************");
 		identityVerification.setIdCardFront("/usr/local/id/front/zhangsan.jpg");
 		identityVerificationService.submit(identityVerification);
+
+		Assert.assertEquals(1, identityVerificationService.getVerifyingTotalNum());
+		Assert.assertEquals(1, identityVerificationService.getTotalNum());
 
 		identityVerification = identityVerificationService.getByUserId(user.getId());
 		Assert.assertNotNull(identityVerification);
