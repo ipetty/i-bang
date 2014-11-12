@@ -10,7 +10,6 @@ import net.ipetty.ibang.android.core.Constants;
 import net.ipetty.ibang.android.core.DefaultTaskListener;
 import net.ipetty.ibang.android.core.util.AnimUtils;
 import net.ipetty.ibang.android.core.util.AppUtils;
-import net.ipetty.ibang.android.main.MainActivity;
 import net.ipetty.ibang.vo.LoginResultVO;
 import android.app.Activity;
 import android.content.Intent;
@@ -40,7 +39,7 @@ public class ReloginTaskListener extends DefaultTaskListener<LoginResultVO> {
 			activity.sendBroadcast(intent);
 		}
 
-		AppUtils.goTo(activity, MainActivity.class);
+		AppUtils.goTo(activity, AdActivity.class);
 		AnimUtils.fadeInToOut(activity);
 		ActivityManager.getInstance().removeActivity(activity);
 		ActivityManager.getInstance().finishLoginAndRegister();
