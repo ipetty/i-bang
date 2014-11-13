@@ -34,6 +34,7 @@ public class IdentityVerificationServiceTest extends BaseServiceTest {
 		userService.register(user);
 
 		Assert.assertEquals(0, identityVerificationService.getVerifyingTotalNum());
+		Assert.assertEquals(0, identityVerificationService.getVerifiedTotalNum());
 		Assert.assertEquals(0, identityVerificationService.getTotalNum());
 
 		IdentityVerification identityVerification = new IdentityVerification();
@@ -44,6 +45,7 @@ public class IdentityVerificationServiceTest extends BaseServiceTest {
 		identityVerificationService.submit(identityVerification);
 
 		Assert.assertEquals(1, identityVerificationService.getVerifyingTotalNum());
+		Assert.assertEquals(0, identityVerificationService.getVerifiedTotalNum());
 		Assert.assertEquals(1, identityVerificationService.getTotalNum());
 
 		identityVerification = identityVerificationService.getByUserId(user.getId());
@@ -60,6 +62,10 @@ public class IdentityVerificationServiceTest extends BaseServiceTest {
 		Assert.assertEquals(1, identityVerifications.size());
 		identityVerifications = identityVerificationService.listVerifying(0, 20);
 		Assert.assertEquals(0, identityVerifications.size());
+
+		Assert.assertEquals(0, identityVerificationService.getVerifyingTotalNum());
+		Assert.assertEquals(1, identityVerificationService.getVerifiedTotalNum());
+		Assert.assertEquals(1, identityVerificationService.getTotalNum());
 	}
 
 }

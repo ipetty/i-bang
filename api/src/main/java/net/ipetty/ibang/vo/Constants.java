@@ -2,7 +2,6 @@ package net.ipetty.ibang.vo;
 
 /**
  * Constants
- * 
  * @author luocanfeng
  * @date 2014年9月19日
  */
@@ -50,5 +49,22 @@ public interface Constants {
 	public static final String ID_VERIFICATION_VERIFYING = "待审核";
 	public static final String ID_VERIFICATION_APPROVED = "审核通过";
 	public static final String ID_VERIFICATION_UNAPPROVED = "审核未通过";
+
+	/* report type */
+	public static final String REPORT_TYPE_SEEK = "REPORT_SEEK";
+	public static final String REPORT_TYPE_OFFER = "REPORT_OFFER";
+	public static final String REPORT_TYPE_USER = "REPORT_USER";
+	/* report behave type */
+	public static final String REPORT_BEHAVE_TYPE_GARBAGE = "垃圾营销";
+	public static final String REPORT_BEHAVE_TYPE_AD = "小广告";
+	public static final String REPORT_BEHAVE_TYPE_FAKE = "虚假信息";
+	public static final String REPORT_BEHAVE_TYPE_PIRATE = "抄袭/盗版";
+	public static final String REPORT_BEHAVE_TYPE_SENSITIVE = "敏感信息";
+	/* report result */
+	public static final String REPORT_RESULT_PUNISH = "严惩不贷";
+	public static final String REPORT_RESULT_WARNING = "警告";
+	public static final String REPORT_RESULT_PENDING = "暂不处理";
+	public static final String REPORT_RESULT_FAKE_REPORT = "虚假举报";
+	public static final String REPORT_RESULT_EVIL_REPORT = "恶意举报";
 
 }

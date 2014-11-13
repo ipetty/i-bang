@@ -99,7 +99,7 @@ public class IdentityVerificationDaoImpl extends BaseJdbcDaoSupport implements I
 		super.getJdbcTemplate().update(SET_VERIFIED_SQL, userId);
 	}
 
-	private static final String LIST_VERIFYING_SQL = "select user_id from identity_verification where status=? order by submitted_on asc limit ?,?";
+	private static final String LIST_VERIFYING_SQL = "select user_id from identity_verification where status=? order by submitted_on desc limit ?,?";
 
 	/**
 	 * 获取待审核列表
@@ -122,7 +122,30 @@ public class IdentityVerificationDaoImpl extends BaseJdbcDaoSupport implements I
 		return result == null ? 0 : result;
 	}
 
-	private static final String LIST_SQL = "select user_id from identity_verification order by submitted_on asc limit ?,?";
+	private static final String LIST_VERIFIED_SQL = "select user_id from identity_verification where status!=? order by submitted_on desc limit ?,?";
+
+	/**
+	 * 获取已审核列表
+	 */
+	@Override
+	public List<Integer> listVerified(int pageNumber, int pageSize) {
+		return super.getJdbcTemplate().query(LIST_VERIFIED_SQL, INTEGER_ROW_MAPPER,
+				Constants.ID_VERIFICATION_VERIFYING, pageNumber * pageSize, pageSize);
+	}
+
+	private static final String GET_VERIFIED_TOTAL_NUMBER_SQL = "select count(user_id) from identity_verification where status!=?";
+
+	/**
+	 * 获取已审核数目
+	 */
+	@Override
+	public int getVerifiedTotalNum() {
+		Integer result = super.queryUniqueEntity(GET_VERIFIED_TOTAL_NUMBER_SQL, INTEGER_ROW_MAPPER,
+				Constants.ID_VERIFICATION_VERIFYING);
+		return result == null ? 0 : result;
+	}
+
+	private static final String LIST_SQL = "select user_id from identity_verification order by submitted_on desc limit ?,?";
 
 	/**
 	 * 获取身份审核列表

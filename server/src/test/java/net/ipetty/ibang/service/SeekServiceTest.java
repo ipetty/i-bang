@@ -17,7 +17,6 @@ import org.junit.Test;
 
 /**
  * SeekServiceTest
- * 
  * @author luocanfeng
  * @date 2014年9月24日
  */
@@ -118,6 +117,8 @@ public class SeekServiceTest extends BaseServiceTest {
 				new Date(), 0, 20);
 		seeks = seekService.listLatestByCityAndOfferRange(Constants.SEEK_TYPE_SEEK, "city", "district", user.getId(),
 				new Date(), 0, 20);
+
+		seekService.disable(seek.getId());
 	}
 
 }

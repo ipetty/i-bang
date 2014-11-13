@@ -26,7 +26,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 /**
  * UserService
- * 
  * @author luocanfeng
  * @date 2014年9月18日
  */
@@ -56,6 +55,10 @@ public class UserService extends BaseService {
 		User user = this.getByLoginName(loginName);
 		if (user == null) {
 			throw new BusinessException("用户名不存在");
+		}
+
+		if (!user.isEnable()) {
+			throw new BusinessException("此帐号已禁用");
 		}
 
 		String encodedPassword = SaltEncoder.encode(password, user.getSalt());
@@ -274,6 +277,13 @@ public class UserService extends BaseService {
 	 */
 	public void deleteRefreshToken(String refreshToken) {
 		refreshTokenDao.delete(refreshToken);
+	}
+
+	/**
+	 * 禁用
+	 */
+	public void disable(Integer id) {
+		userDao.disable(id);
 	}
 
 }

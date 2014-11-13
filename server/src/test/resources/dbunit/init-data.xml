@@ -20,6 +20,7 @@
 
 	<system_message />
 	<letter />
+	<report />
 	<crash_log />
 
 </dataset>

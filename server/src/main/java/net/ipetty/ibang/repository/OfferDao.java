@@ -6,7 +6,6 @@ import net.ipetty.ibang.model.Offer;
 
 /**
  * OfferDao
- * 
  * @author luocanfeng
  * @date 2014年9月22日
  */
@@ -29,9 +28,7 @@ public interface OfferDao {
 
 	/**
 	 * 获取指定用户的应征单ID列表
-	 * 
-	 * @param pageNumber
-	 *            分页页码，从0开始
+	 * @param pageNumber 分页页码，从0开始
 	 */
 	public List<Long> listByUserId(Integer userId, int pageNumber, int pageSize);
 
@@ -39,5 +36,10 @@ public interface OfferDao {
 	 * 更新应征单状态
 	 */
 	public void updateStatus(Long offerId, String newStatus);
+
+	/**
+	 * 禁用/软删除
+	 */
+	public void disable(Long offerId);
 
 }

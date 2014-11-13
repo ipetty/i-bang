@@ -38,6 +38,7 @@ public class User extends AbstractEntity {
 	private String district; // 区/县
 	private String address; // 所在地
 	private Date createdOn; // 注册时间
+	private boolean enable = true; // 帐号是否有效
 
 	private SeekerInfo seekerInfo; // 用户作为求助者身份的相应信息
 	private OffererInfo offererInfo; // 用户作为帮助者身份的相应信息
@@ -266,6 +267,14 @@ public class User extends AbstractEntity {
 
 	public void setOffererInfo(OffererInfo offererInfo) {
 		this.offererInfo = offererInfo;
+	}
+
+	public boolean isEnable() {
+		return enable;
+	}
+
+	public void setEnable(boolean enable) {
+		this.enable = enable;
 	}
 
 }

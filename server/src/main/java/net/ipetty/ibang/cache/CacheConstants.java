@@ -47,4 +47,7 @@ public interface CacheConstants {
 	/* letter */
 	public static final String CACHE_LETTER_ID_TO_LETTER = "cacheLetterId2Letter";
 
+	/* report */
+	public static final String CACHE_REPORT_ID_TO_REPORT = "cacheReportId2Report";
+
 }
