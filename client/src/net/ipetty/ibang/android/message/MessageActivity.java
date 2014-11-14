@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.ipetty.ibang.R;
+import net.ipetty.ibang.android.approve.ApproveActivity;
 import net.ipetty.ibang.android.core.Constants;
 import net.ipetty.ibang.android.core.DefaultTaskListener;
 import net.ipetty.ibang.android.core.MyAppStateManager;
@@ -94,14 +95,15 @@ public class MessageActivity extends Activity {
 		adapter = new MessageAdapter();
 		listView.setAdapter(adapter);
 		listView.setOnItemClickListener(new OnItemClickListener() {
+
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				SystemMessageVO msg = (SystemMessageVO) parent.getAdapter().getItem(position);
 				String type = msg.getType();
 				Intent intent = new Intent();
-				if (net.ipetty.ibang.vo.Constants.SYS_MSG_TYPE_NEW_OFFER.equals(type)) {
+				if (net.ipetty.ibang.vo.Constants.SYS_MSG_TYPE_NEW_OFFER.equals(type)
+						|| net.ipetty.ibang.vo.Constants.SYS_MSG_TYPE_OFFER_DISABLED.equals(type)) {
 					intent = new Intent(MessageActivity.this, OfferActivity.class);
-					intent.putExtra(Constants.INTENT_SEEK_ID, msg.getSeekId());
 					intent.putExtra(Constants.INTENT_OFFER_ID, msg.getOfferId());
 				} else if (net.ipetty.ibang.vo.Constants.SYS_MSG_TYPE_NEW_DELEGATION.equals(type)
 						|| net.ipetty.ibang.vo.Constants.SYS_MSG_TYPE_DELEGATION_FINISHED.equals(type)
@@ -112,9 +114,13 @@ public class MessageActivity extends Activity {
 					intent.putExtra(Constants.INTENT_OFFER_ID, msg.getOfferId());
 					intent.putExtra(Constants.INTENT_DELEGATION_ID, msg.getDelegationId());
 				} else if (net.ipetty.ibang.vo.Constants.SYS_MSG_TYPE_SEEK_FINISHED.equals(type)
-						|| net.ipetty.ibang.vo.Constants.SYS_MSG_TYPE_SEEK_CLOSED.equals(type)) {
+						|| net.ipetty.ibang.vo.Constants.SYS_MSG_TYPE_SEEK_CLOSED.equals(type)
+						|| net.ipetty.ibang.vo.Constants.SYS_MSG_TYPE_SEEK_DISABLED.equals(type)) {
 					intent = new Intent(MessageActivity.this, SeekActivity.class);
 					intent.putExtra(Constants.INTENT_SEEK_ID, msg.getSeekId());
+				} else if (net.ipetty.ibang.vo.Constants.SYS_MSG_TYPE_ID_VERIFICATION_APPROVED.equals(type)
+						|| net.ipetty.ibang.vo.Constants.SYS_MSG_TYPE_ID_VERIFICATION_UNAPPROVED.equals(type)) {
+					intent = new Intent(MessageActivity.this, ApproveActivity.class);
 				}
 				startActivity(intent);
 
@@ -122,9 +128,9 @@ public class MessageActivity extends Activity {
 					final long tId = msg.getId();
 					new ReadSystemMessageTask(MessageActivity.this).setListener(
 							new DefaultTaskListener<Boolean>(MessageActivity.this) {
+
 								@Override
 								public void onSuccess(Boolean result) {
-									// TODO Auto-generated method stub
 									((MessageActivity) activity).changeToRead(tId);
 								}
 							}).execute(msg.getId());
@@ -134,6 +140,7 @@ public class MessageActivity extends Activity {
 
 		// listView.hideMoreView();
 		listView.setOnRefreshListener(new OnRefreshListener<ListView>() {
+
 			@Override
 			public void onRefresh(PullToRefreshBase<ListView> refreshView) {
 				String label = DateUtils.formatDateTime(MessageActivity.this, getRefreshTime(),
@@ -144,6 +151,7 @@ public class MessageActivity extends Activity {
 		});
 
 		listView.setOnLastItemVisibleListener(new OnLastItemVisibleListener() {
+
 			@Override
 			public void onLastItemVisible() {
 				if (hasMore) {
@@ -198,6 +206,7 @@ public class MessageActivity extends Activity {
 	}
 
 	private BroadcastReceiver broadcastreciver = new BroadcastReceiver() {
+
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			String action = intent.getAction();
@@ -208,6 +217,7 @@ public class MessageActivity extends Activity {
 	};
 
 	public class MessageAdapter extends BaseAdapter implements OnScrollListener {
+
 		public void changeToRead(Long id) {
 			for (SystemMessageVO msg : list) {
 				if (msg.getId().equals(id)) {
@@ -243,6 +253,7 @@ public class MessageActivity extends Activity {
 		}
 
 		private class ViewHolder {
+
 			public View item;
 			public TextView nickname;
 			public ImageView avatar;
@@ -298,12 +309,10 @@ public class MessageActivity extends Activity {
 
 		@Override
 		public void onScrollStateChanged(AbsListView view, int scrollState) {
-			// TODO Auto-generated method stub
 		}
 
 		@Override
 		public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-			// TODO Auto-generated method stub
 		}
 	}
 

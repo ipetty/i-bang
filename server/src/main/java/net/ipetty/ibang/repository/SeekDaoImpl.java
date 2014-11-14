@@ -37,7 +37,7 @@ public class SeekDaoImpl extends BaseJdbcDaoSupport implements SeekDao {
 			// category_l2, type, title, content, requirement, delegate_number,
 			// reward, additional_reward, service_date, province, city,
 			// district, address, location_id, created_on, expire_date,
-			// closed_on, status
+			// closed_on, status, enable
 			Seek seek = new Seek();
 			seek.setId(rs.getLong("id"));
 			seek.setSn(rs.getString("sn"));
@@ -62,6 +62,7 @@ public class SeekDaoImpl extends BaseJdbcDaoSupport implements SeekDao {
 			seek.setExipireDate(rs.getDate("expire_date"));
 			seek.setClosedOn(rs.getTimestamp("closed_on"));
 			seek.setStatus(rs.getString("status"));
+			seek.setEnable(rs.getBoolean("enable"));
 			return seek;
 		}
 	};

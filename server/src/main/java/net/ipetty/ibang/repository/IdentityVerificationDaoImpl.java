@@ -2,7 +2,6 @@ package net.ipetty.ibang.repository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Date;
 import java.util.List;
 
 import net.ipetty.ibang.cache.CacheConstants;
@@ -73,20 +72,16 @@ public class IdentityVerificationDaoImpl extends BaseJdbcDaoSupport implements I
 		return super.queryUniqueEntity(GET_BY_USER_ID_SQL, ROW_MAPPER, userId);
 	}
 
-	private static final String VERIFY_SQL = "update identity_verification set verify_info=?, verified_on=?, status=? where user_id=?";
+	private static final String VERIFY_SQL = "update identity_verification set verify_info=?, verified_on=now(), status=? where user_id=?";
 
 	/**
 	 * 审核
 	 */
 	@Override
-	@UpdateToCache(mapName = CacheConstants.CACHE_USER_ID_TO_IDENTITY_VERIFICATION, key = "${identityVerification.userId}")
-	public void verify(IdentityVerification identityVerification) {
-		if (identityVerification.getVerifiedOn() == null) {
-			identityVerification.setVerifiedOn(new Date());
-		}
-		super.getJdbcTemplate().update(VERIFY_SQL, identityVerification.getVerifyInfo(),
-				identityVerification.getVerifiedOn(), identityVerification.getStatus(),
-				identityVerification.getUserId());
+	@UpdateToCache(mapName = CacheConstants.CACHE_USER_ID_TO_IDENTITY_VERIFICATION, key = "${userId}")
+	public void verify(Integer userId, boolean approved, String verifyInfo) {
+		super.getJdbcTemplate().update(VERIFY_SQL, verifyInfo,
+				approved ? Constants.ID_VERIFICATION_APPROVED : Constants.ID_VERIFICATION_UNAPPROVED, userId);
 	}
 
 	private static final String SET_VERIFIED_SQL = "update users set identity_verified=true where id=?";

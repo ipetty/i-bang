@@ -7,7 +7,6 @@ import javax.annotation.Resource;
 import junit.framework.Assert;
 import net.ipetty.ibang.model.IdentityVerification;
 import net.ipetty.ibang.model.User;
-import net.ipetty.ibang.vo.Constants;
 
 import org.junit.Test;
 
@@ -56,8 +55,7 @@ public class IdentityVerificationServiceTest extends BaseServiceTest {
 		identityVerifications = identityVerificationService.listVerifying(0, 20);
 		Assert.assertEquals(1, identityVerifications.size());
 
-		identityVerification.setStatus(Constants.ID_VERIFICATION_UNAPPROVED);
-		identityVerificationService.verify(identityVerification);
+		identityVerificationService.verify(user.getId(), false, "");
 		identityVerifications = identityVerificationService.list(0, 20);
 		Assert.assertEquals(1, identityVerifications.size());
 		identityVerifications = identityVerificationService.listVerifying(0, 20);

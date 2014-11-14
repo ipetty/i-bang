@@ -12,7 +12,6 @@ import org.springframework.beans.BeanUtils;
 
 /**
  * 求助
- * 
  * @author luocanfeng
  * @date 2014年9月17日
  */
@@ -45,6 +44,7 @@ public class Seek extends AbstractEntity {
 	private Date exipireDate; // 求助有效日期
 	private Date closedOn; // 关闭时间
 	private String status; // 状态
+	private boolean enable = true; // 是否有效
 
 	public Seek() {
 		super();
@@ -275,6 +275,14 @@ public class Seek extends AbstractEntity {
 
 	public void setStatus(String status) {
 		this.status = status;
+	}
+
+	public boolean isEnable() {
+		return enable;
+	}
+
+	public void setEnable(boolean enable) {
+		this.enable = enable;
 	}
 
 }

@@ -11,7 +11,6 @@ import net.ipetty.ibang.admin.AdminConstants;
 import net.ipetty.ibang.model.IdentityVerification;
 import net.ipetty.ibang.model.User;
 import net.ipetty.ibang.service.IdentityVerificationService;
-import net.ipetty.ibang.vo.Constants;
 import net.ipetty.ibang.vo.IdentityVerificationVO;
 
 import org.apache.commons.lang3.StringUtils;
@@ -75,13 +74,8 @@ public class IdentityVerificationController {
 	 * 审核
 	 */
 	@RequestMapping(value = "/verify", method = RequestMethod.POST)
-	public void verify(Integer userId, String verifyInfo, boolean approve) {
-		IdentityVerification identityVerification = new IdentityVerification();
-		identityVerification.setUserId(userId);
-		identityVerification.setVerifyInfo(verifyInfo);
-		identityVerification.setStatus(approve ? Constants.ID_VERIFICATION_APPROVED
-				: Constants.ID_VERIFICATION_UNAPPROVED);
-		identityVerificationService.verify(identityVerification);
+	public void verify(Integer userId, boolean approved, String verifyInfo) {
+		identityVerificationService.verify(userId, approved, verifyInfo);
 	}
 
 	/**

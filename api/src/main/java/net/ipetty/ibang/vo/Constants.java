@@ -38,12 +38,16 @@ public interface Constants {
 
 	/* system message type */
 	public static final String SYS_MSG_TYPE_NEW_OFFER = "new_offer"; // 您的求助单有了新的应征
+	public static final String SYS_MSG_TYPE_OFFER_DISABLED = "offer_disabled"; // 您的应征被管理员屏蔽
 	public static final String SYS_MSG_TYPE_NEW_DELEGATION = "new_delegation"; // 您的应征已被求助者接受
 	public static final String SYS_MSG_TYPE_DELEGATION_FINISHED = "delegation_finished"; // 您（求助者）的一个委托已被帮助者完成
 	public static final String SYS_MSG_TYPE_DELEGATION_CLOSED = "delegation_closed"; // 您（求助者）的一个委托已被帮助者关闭
 	public static final String SYS_MSG_TYPE_NEW_EVALUATION = "new_evaluation"; // 您收到了新的评价
 	public static final String SYS_MSG_TYPE_SEEK_FINISHED = "seek_finished"; // 您（求助者）的一个求助单已完成
 	public static final String SYS_MSG_TYPE_SEEK_CLOSED = "seek_closed"; // 您（帮助者）应征的一个求助单已被求助者关闭
+	public static final String SYS_MSG_TYPE_SEEK_DISABLED = "seek_disabled"; // 您的求助被管理员屏蔽
+	public static final String SYS_MSG_TYPE_ID_VERIFICATION_APPROVED = "id_verification_approved"; // 您的身份审核通过
+	public static final String SYS_MSG_TYPE_ID_VERIFICATION_UNAPPROVED = "id_verification_unapproved"; // 您的身份审核未通过
 
 	/* 身份验证状态 */
 	public static final String ID_VERIFICATION_VERIFYING = "待审核";
@@ -51,9 +55,9 @@ public interface Constants {
 	public static final String ID_VERIFICATION_UNAPPROVED = "审核未通过";
 
 	/* report type */
-	public static final String REPORT_TYPE_SEEK = "REPORT_SEEK";
-	public static final String REPORT_TYPE_OFFER = "REPORT_OFFER";
-	public static final String REPORT_TYPE_USER = "REPORT_USER";
+	public static final String REPORT_TYPE_SEEK = "report_seek";
+	public static final String REPORT_TYPE_OFFER = "report_offer";
+	public static final String REPORT_TYPE_USER = "report_user";
 	/* report behave type */
 	public static final String REPORT_BEHAVE_TYPE_GARBAGE = "垃圾营销";
 	public static final String REPORT_BEHAVE_TYPE_AD = "小广告";

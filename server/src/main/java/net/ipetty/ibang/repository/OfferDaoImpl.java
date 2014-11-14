@@ -31,7 +31,7 @@ public class OfferDaoImpl extends BaseJdbcDaoSupport implements OfferDao {
 		@Override
 		public Offer mapRow(ResultSet rs, int rowNum) throws SQLException {
 			// id, sn, offerer_id, seek_id, content, description, deadline,
-			// created_on, closed_on, status
+			// created_on, closed_on, status, enable
 			Offer offer = new Offer();
 			offer.setId(rs.getLong("id"));
 			offer.setSn(rs.getString("sn"));
@@ -43,6 +43,7 @@ public class OfferDaoImpl extends BaseJdbcDaoSupport implements OfferDao {
 			offer.setCreatedOn(rs.getTimestamp("created_on"));
 			offer.setClosedOn(rs.getTimestamp("closed_on"));
 			offer.setStatus(rs.getString("status"));
+			offer.setEnable(rs.getBoolean("enable"));
 			return offer;
 		}
 	};

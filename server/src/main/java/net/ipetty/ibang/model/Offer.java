@@ -10,7 +10,6 @@ import org.springframework.beans.BeanUtils;
 
 /**
  * 应征
- * 
  * @author luocanfeng
  * @date 2014年9月17日
  */
@@ -30,6 +29,7 @@ public class Offer extends AbstractEntity {
 	private Date closedOn; // 关闭时间
 	private String status; // 状态
 	private Delegation delegation; // 对应的委托单，如果不存在则为null
+	private boolean enable = true; // 是否有效
 
 	public Offer() {
 		super();
@@ -147,6 +147,14 @@ public class Offer extends AbstractEntity {
 
 	public void setDelegation(Delegation delegation) {
 		this.delegation = delegation;
+	}
+
+	public boolean isEnable() {
+		return enable;
+	}
+
+	public void setEnable(boolean enable) {
+		this.enable = enable;
 	}
 
 }

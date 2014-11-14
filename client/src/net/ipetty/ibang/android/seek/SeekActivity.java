@@ -145,6 +145,7 @@ public class SeekActivity extends Activity {
 
 		// 事件绑定
 		offerBtn.setOnClickListener(new OnClickListener() {
+
 			@Override
 			public void onClick(View view) {
 				Intent intent = new Intent(SeekActivity.this, PublishOfferActivity.class);
@@ -155,6 +156,7 @@ public class SeekActivity extends Activity {
 
 		// 关闭求助
 		closeBtn.setOnClickListener(new OnClickListener() {
+
 			@Override
 			public void onClick(View v) {
 				new CloseSeekTask(SeekActivity.this).setListener(new CloseSeekTaskListener(SeekActivity.this)).execute(
@@ -164,6 +166,7 @@ public class SeekActivity extends Activity {
 
 		// 触发到登陆界面
 		login_layout.setOnClickListener(new OnClickListener() {
+
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent(SeekActivity.this, LoginActivity.class);
@@ -180,11 +183,10 @@ public class SeekActivity extends Activity {
 	}
 
 	private void loadSeekFromService() {
-		// TODO Auto-generated method stub
 		new GetSeekByIdTask(SeekActivity.this).setListener(new DefaultTaskListener<SeekVO>(SeekActivity.this) {
+
 			@Override
 			public void onSuccess(SeekVO result) {
-				// TODO Auto-generated method stub
 				seekVO = result;
 				preLoad();
 				init();
@@ -201,7 +203,6 @@ public class SeekActivity extends Activity {
 	}
 
 	private void preLoad() {
-		// TODO Auto-generated method stub
 		initImageView();
 		initContent();
 	}
@@ -225,7 +226,6 @@ public class SeekActivity extends Activity {
 	}
 
 	private void initAssistance() {
-		// TODO Auto-generated method stub
 		closeBtn_layout.setVisibility(View.GONE);
 		offerBtn_layout.setVisibility(View.GONE);
 		String status = seekVO.getStatus();
@@ -256,7 +256,6 @@ public class SeekActivity extends Activity {
 	}
 
 	private void initContent() {
-		// TODO Auto-generated method stub
 		seek_avatar.setImageResource(R.drawable.default_avatar);
 		content.setText(seekVO.getContent());
 
@@ -286,15 +285,13 @@ public class SeekActivity extends Activity {
 	}
 
 	private void initViewLayout() {
-
-		// TODO Auto-generated method stub
 		String status = seekVO.getStatus();
 
 		closeBtn_layout.setVisibility(View.GONE);
 		offerBtn_layout.setVisibility(View.GONE);
 		if (isLogin) { // 只有已登录用户才有可能看到这两个按钮
 			login_layout.setVisibility(View.GONE);
-			if (!net.ipetty.ibang.vo.Constants.SEEK_STATUS_FINISHED.equals(status)
+			if (seekVO.isEnable() && !net.ipetty.ibang.vo.Constants.SEEK_STATUS_FINISHED.equals(status)
 					&& !net.ipetty.ibang.vo.Constants.SEEK_STATUS_CLOSED.equals(status)) {
 				if (isSeekOwner()) {
 					closeBtn_layout.setVisibility(View.VISIBLE);
@@ -305,6 +302,15 @@ public class SeekActivity extends Activity {
 				if (net.ipetty.ibang.vo.Constants.SEEK_STATUS_DELEGATED.equals(status) && !isSeekOwner()) {
 					offerBtn_layout.setVisibility(View.VISIBLE);
 				}
+			} else if (!seekVO.isEnable()) {
+				closeBtn.setText("已被屏蔽");
+				closeBtn.setOnClickListener(new OnClickListener() {
+
+					@Override
+					public void onClick(View v) {
+					}
+				});
+				closeBtn_layout.setVisibility(View.VISIBLE);
 			}
 		} else {
 			login_layout.setVisibility(View.VISIBLE);
@@ -339,13 +345,13 @@ public class SeekActivity extends Activity {
 		}
 
 		imageView.setVisibility(View.VISIBLE);
-		// TODO Auto-generated method stub
 		viewPager.setAdapter(new pageAdapter());// 设置填充Viewpager 页面的适配器
 		viewPager.setOnPageChangeListener(new MyPageChangeListener());
 		setImageViewText();
 	}
 
 	public class ImageOnClickListener implements OnClickListener {
+
 		private ImageVO imageVO;
 
 		public ImageOnClickListener(ImageVO imageVO) {
@@ -354,7 +360,6 @@ public class SeekActivity extends Activity {
 
 		@Override
 		public void onClick(View v) {
-			// TODO Auto-generated method stub
 			// 展示大图
 			if (StringUtils.isNotEmpty(this.imageVO.getSmallUrl())) {
 				Intent intent = new Intent(SeekActivity.this, LargerImageActivity.class);
@@ -368,21 +373,19 @@ public class SeekActivity extends Activity {
 	}
 
 	private void setImageViewText() {
-		// TODO Auto-generated method stub
 		String text = String.valueOf(currentItem + 1) + "/" + String.valueOf(imageViews.size());
 		imageViewText.setText(text);
 	}
 
 	private class pageAdapter extends PagerAdapter {
+
 		@Override
 		public int getCount() {
-			// TODO Auto-generated method stub
 			return imageViews.size();
 		}
 
 		@Override
 		public boolean isViewFromObject(View arg0, Object arg1) {
-			// TODO Auto-generated method stub
 			return arg0 == arg1;
 		}
 
@@ -397,25 +400,24 @@ public class SeekActivity extends Activity {
 	}
 
 	private class MyPageChangeListener implements OnPageChangeListener {
+
 		@Override
 		public void onPageScrollStateChanged(int arg0) {
-			// TODO Auto-generated method stub
 		}
 
 		@Override
 		public void onPageScrolled(int arg0, float arg1, int arg2) {
-			// TODO Auto-generated method stub
 		}
 
 		@Override
 		public void onPageSelected(int position) {
-			// TODO Auto-generated method stub
 			currentItem = position;
 			setImageViewText();
 		}
 	}
 
 	private class OfferHolder {
+
 		View layout;
 		ImageView avator;
 		TextView nickname;
@@ -431,6 +433,7 @@ public class SeekActivity extends Activity {
 		offerListView.removeAllViews();
 		new ListOfferBySeekIdTask(SeekActivity.this).setListener(
 				new DefaultTaskListener<List<OfferVO>>(SeekActivity.this) {
+
 					@Override
 					public void onSuccess(List<OfferVO> offers) {
 						int delegationNum = 0;
@@ -483,6 +486,7 @@ public class SeekActivity extends Activity {
 
 		// 接受帮助按钮
 		holder.accept_button.setOnClickListener(new OnClickListener() {
+
 			@Override
 			public void onClick(View v) {
 				DelegationVO delegation = new DelegationVO();
@@ -490,6 +494,7 @@ public class SeekActivity extends Activity {
 				delegation.setOfferId(offer.getId());
 				new AcceptOfferTask(SeekActivity.this).setListener(
 						new DefaultTaskListener<DelegationVO>(SeekActivity.this) {
+
 							@Override
 							public void onSuccess(DelegationVO result) {
 								// 接受帮助后进行界面操作
@@ -510,6 +515,7 @@ public class SeekActivity extends Activity {
 
 		// 查看委托按钮
 		holder.delegation_info_btn.setOnClickListener(new OnClickListener() {
+
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent(SeekActivity.this, DelegationActivity.class);
@@ -565,6 +571,7 @@ public class SeekActivity extends Activity {
 		}
 		nickname.setText(user.getNickname());
 		avatar.setOnClickListener(new OnClickListener() {
+
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent(SeekActivity.this, UserInfoActivity.class);
@@ -574,6 +581,7 @@ public class SeekActivity extends Activity {
 			}
 		});
 		nickname.setOnClickListener(new OnClickListener() {
+
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent(SeekActivity.this, UserInfoActivity.class);
@@ -585,6 +593,7 @@ public class SeekActivity extends Activity {
 	}
 
 	private BroadcastReceiver broadcastreciver = new BroadcastReceiver() {
+
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			String action = intent.getAction();

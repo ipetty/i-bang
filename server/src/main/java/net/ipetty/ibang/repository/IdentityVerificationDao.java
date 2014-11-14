@@ -24,7 +24,7 @@ public interface IdentityVerificationDao {
 	/**
 	 * 审核
 	 */
-	public void verify(IdentityVerification identityVerification);
+	public void verify(Integer userId, boolean approved, String verifyInfo);
 
 	/**
 	 * 将用户标记为已通过身份验证状态
