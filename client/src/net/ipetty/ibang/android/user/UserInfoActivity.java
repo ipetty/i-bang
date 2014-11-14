@@ -70,6 +70,7 @@ public class UserInfoActivity extends Activity {
 	TextView to_help_tab;
 	TextView for_help_tab;
 	TextView info_tab;
+	TextView seekerTotalPoint_tab;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -115,13 +116,17 @@ public class UserInfoActivity extends Activity {
 		View to_help_tab_layout = this.findViewById(R.id.to_help_tab_layout);
 		View for_help_tab_layout = this.findViewById(R.id.for_help_tab_layout);
 		View info_tab_layout = this.findViewById(R.id.info_tab_layout);
+		View seekerTotalPoint_tab_layout = this.findViewById(R.id.seekerTotalPoint_tab_layout);
+
 		to_help_tab_layout.setOnClickListener(new TabClickListener(0));
 		for_help_tab_layout.setOnClickListener(new TabClickListener(1));
 		info_tab_layout.setOnClickListener(new TabClickListener(2));
+		seekerTotalPoint_tab_layout.setOnClickListener(new TabClickListener(3));
 
 		to_help_tab = (TextView) this.findViewById(R.id.to_help_tab);
 		for_help_tab = (TextView) this.findViewById(R.id.for_help_tab);
 		info_tab = (TextView) this.findViewById(R.id.info_tab);
+		seekerTotalPoint_tab = (TextView) this.findViewById(R.id.seekerTotalPoint_tab);
 
 		viewFlipper = (ViewFlipper) this.findViewById(R.id.viewFlipper);
 		viewFlipper.setDisplayedChild(0);
@@ -294,6 +299,7 @@ public class UserInfoActivity extends Activity {
 			to_help_tab.setTextColor(UserInfoActivity.this.getResources().getColor(R.color.gray_color));
 			for_help_tab.setTextColor(UserInfoActivity.this.getResources().getColor(R.color.gray_color));
 			info_tab.setTextColor(UserInfoActivity.this.getResources().getColor(R.color.gray_color));
+			seekerTotalPoint_tab.setTextColor(UserInfoActivity.this.getResources().getColor(R.color.gray_color));
 
 			switch (index) {
 
@@ -307,6 +313,10 @@ public class UserInfoActivity extends Activity {
 			}
 			case 2: {
 				info_tab.setTextColor(UserInfoActivity.this.getResources().getColor(R.color.base_color));
+				break;
+			}
+			case 3: {
+				seekerTotalPoint_tab.setTextColor(UserInfoActivity.this.getResources().getColor(R.color.base_color));
 			}
 			}
 

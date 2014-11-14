@@ -20,7 +20,7 @@
 
           <LinearLayout
               android:layout_width="match_parent"
-              android:layout_height="match_parent"
+              android:layout_height="wrap_content"
               
               android:orientation="vertical" >
               <RelativeLayout
@@ -177,6 +177,7 @@
                            android:layout_width="wrap_content"
                            android:layout_height="wrap_content"
                            android:textSize="16dp"
+                           android:visibility="gone"
                            android:text="0" />
                    </LinearLayout>
                    
@@ -204,10 +205,12 @@
                            android:layout_width="wrap_content"
                            android:layout_height="wrap_content"
                            android:textSize="16dp"
+                           android:visibility="gone"
                            android:text="0" />
  					 </LinearLayout>
 
                                           <LinearLayout
+                                                android:id="@+id/seekerTotalPoint_tab_layout"
                                               android:layout_width="wrap_content"
                                               android:layout_height="match_parent"
                                               android:layout_gravity="center"
@@ -219,7 +222,7 @@
  				
  
                        <TextView
-                        
+                         android:id="@+id/seekerTotalPoint_tab"
                            android:layout_width="wrap_content"
                            android:layout_height="wrap_content"
                                android:textColor="@color/gray_color"
@@ -227,10 +230,11 @@
                            android:text="积分 " />
                        
                        	<TextView
-                           android:id="@+id/seekerTotalPoint"
+
                            android:layout_width="wrap_content"
                            android:layout_height="wrap_content"
                            android:textSize="16dp"
+                           android:visibility="gone"
                            android:text="0" />
 
                    </LinearLayout>
@@ -459,6 +463,62 @@
  					    </LinearLayout>
 
  					    <include layout="@layout/line_horizontal_divider" />
+ 					</LinearLayout>
+ 					
+ 										<!--  -->
+ 					<LinearLayout
+ 					    android:id="@+id/seekerTotalPoint_layout"
+ 					    android:layout_width="match_parent"
+ 					    android:layout_height="wrap_content"
+
+ 					    android:orientation="vertical" >
+
+ 					    <include layout="@layout/line_space" />
+
+ 					    <include layout="@layout/line_horizontal_divider" />
+
+ 					    <LinearLayout
+ 					        android:layout_width="fill_parent"
+ 					        android:layout_height="wrap_content"
+ 					        android:background="@drawable/list_color_item_bg_white"
+ 					        android:gravity="center_vertical"
+ 					        android:minHeight="46dp"
+ 					        android:paddingLeft="16dp"
+ 					        android:paddingRight="16dp" >
+
+ 					        <TextView
+ 					            android:layout_width="wrap_content"
+ 					            android:layout_height="wrap_content"
+ 					            android:text="积分"
+ 					            android:textColor="@color/black_color"
+ 					            android:textSize="16sp" />
+
+ 					        <LinearLayout
+ 					            android:layout_width="wrap_content"
+ 					            android:layout_height="wrap_content"
+ 					            android:layout_marginLeft="16dp"
+ 					            android:layout_weight="1"
+ 					            android:gravity="center"
+ 					            android:orientation="vertical" >
+
+ 					            <TextView
+ 					                android:id="@+id/seekerTotalPoint"
+ 					                android:layout_width="wrap_content"
+ 					                android:layout_height="wrap_content"
+ 					                android:layout_gravity="right"
+ 					                android:background="@null"
+ 					                android:ellipsize="marquee"
+ 					                android:gravity="left"
+ 					                android:paddingBottom="5dp"
+ 					                android:paddingTop="5dp"
+ 					                android:textColor="@color/gray_color"
+ 					                android:textSize="14sp" />
+ 					        </LinearLayout>
+ 					    </LinearLayout>
+
+ 					    <include layout="@layout/line_horizontal_divider" />
+
+ 		
  					</LinearLayout>
 
  				</ViewFlipper>
