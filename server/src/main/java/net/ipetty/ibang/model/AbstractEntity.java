@@ -7,7 +7,6 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 /**
  * 所有实体的基类
- * 
  * @author luocanfeng
  * @date 2014年9月16日
  */

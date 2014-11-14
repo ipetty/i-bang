@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>51帮忙管理平台</title>
+<title>51帮帮忙管理平台</title>
 <meta http-equiv="X-UA-Compatible" content="IE=Edge"/>
 <meta name="renderer" content="webkit">
 <%@ include file="/inc/page_base.jsp"%>
@@ -33,7 +33,7 @@ $(document).ready(function(){
 		<div id="content">
 			<div id="main">
 				<div class="title">
-					<span>综合管理平台</span>
+					<span>51帮帮忙管理平台</span>
 				</div>
 				<div class="login">
 					<div class="item-username">
@@ -45,19 +45,6 @@ $(document).ready(function(){
 					<div class="item-password">
 						<label>密码</label>
 						<input type="password" id="password" name="password" class="input-text input-login" value="${password }" />
-					</div>
-					<div class="item-remember">
-						<c:choose>
-							<c:when test="${username != null && username != '' && password != null && password != ''}">
-								<input type="hidden" id="remember-me" value="1" />
-								<a class="checkbox-custom checkbox-selected remember-me" href="javascript:" hidefocus="true"></a>
-							</c:when>
-							<c:otherwise>
-								<input type="hidden" id="remember-me" value="0" />
-								<a class="checkbox-custom remember-me" href="javascript:" hidefocus="true"></a>
-							</c:otherwise>
-						</c:choose>
-						<span class="remember-msg">记住用户名和密码</span>
 					</div>
 					<div class="item-msg">
 						<span class="msg">请输入用户名!</span>

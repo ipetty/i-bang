@@ -2,7 +2,6 @@ package net.ipetty.ibang.repository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Date;
 import java.util.List;
 
 import net.ipetty.ibang.cache.CacheConstants;
@@ -73,20 +72,16 @@ public class IdentityVerificationDaoImpl extends BaseJdbcDaoSupport implements I
 		return super.queryUniqueEntity(GET_BY_USER_ID_SQL, ROW_MAPPER, userId);
 	}
 
-	private static final String VERIFY_SQL = "update identity_verification set verify_info=?, verified_on=?, status=? where user_id=?";
+	private static final String VERIFY_SQL = "update identity_verification set verify_info=?, verified_on=now(), status=? where user_id=?";
 
 	/**
 	 * 审核
 	 */
 	@Override
-	@UpdateToCache(mapName = CacheConstants.CACHE_USER_ID_TO_IDENTITY_VERIFICATION, key = "${identityVerification.userId}")
-	public void verify(IdentityVerification identityVerification) {
-		if (identityVerification.getVerifiedOn() == null) {
-			identityVerification.setVerifiedOn(new Date());
-		}
-		super.getJdbcTemplate().update(VERIFY_SQL, identityVerification.getVerifyInfo(),
-				identityVerification.getVerifiedOn(), identityVerification.getStatus(),
-				identityVerification.getUserId());
+	@UpdateToCache(mapName = CacheConstants.CACHE_USER_ID_TO_IDENTITY_VERIFICATION, key = "${userId}")
+	public void verify(Integer userId, boolean approved, String verifyInfo) {
+		super.getJdbcTemplate().update(VERIFY_SQL, verifyInfo,
+				approved ? Constants.ID_VERIFICATION_APPROVED : Constants.ID_VERIFICATION_UNAPPROVED, userId);
 	}
 
 	private static final String SET_VERIFIED_SQL = "update users set identity_verified=true where id=?";
@@ -99,7 +94,7 @@ public class IdentityVerificationDaoImpl extends BaseJdbcDaoSupport implements I
 		super.getJdbcTemplate().update(SET_VERIFIED_SQL, userId);
 	}
 
-	private static final String LIST_VERIFYING_SQL = "select user_id from identity_verification where status=? order by submitted_on asc limit ?,?";
+	private static final String LIST_VERIFYING_SQL = "select user_id from identity_verification where status=? order by submitted_on desc limit ?,?";
 
 	/**
 	 * 获取待审核列表
@@ -110,7 +105,42 @@ public class IdentityVerificationDaoImpl extends BaseJdbcDaoSupport implements I
 				Constants.ID_VERIFICATION_VERIFYING, pageNumber * pageSize, pageSize);
 	}
 
-	private static final String LIST_SQL = "select user_id from identity_verification order by submitted_on asc limit ?,?";
+	private static final String GET_VERIFYING_TOTAL_NUMBER_SQL = "select count(user_id) from identity_verification where status=?";
+
+	/**
+	 * 获取待审核数目
+	 */
+	@Override
+	public int getVerifyingTotalNum() {
+		Integer result = super.queryUniqueEntity(GET_VERIFYING_TOTAL_NUMBER_SQL, INTEGER_ROW_MAPPER,
+				Constants.ID_VERIFICATION_VERIFYING);
+		return result == null ? 0 : result;
+	}
+
+	private static final String LIST_VERIFIED_SQL = "select user_id from identity_verification where status!=? order by submitted_on desc limit ?,?";
+
+	/**
+	 * 获取已审核列表
+	 */
+	@Override
+	public List<Integer> listVerified(int pageNumber, int pageSize) {
+		return super.getJdbcTemplate().query(LIST_VERIFIED_SQL, INTEGER_ROW_MAPPER,
+				Constants.ID_VERIFICATION_VERIFYING, pageNumber * pageSize, pageSize);
+	}
+
+	private static final String GET_VERIFIED_TOTAL_NUMBER_SQL = "select count(user_id) from identity_verification where status!=?";
+
+	/**
+	 * 获取已审核数目
+	 */
+	@Override
+	public int getVerifiedTotalNum() {
+		Integer result = super.queryUniqueEntity(GET_VERIFIED_TOTAL_NUMBER_SQL, INTEGER_ROW_MAPPER,
+				Constants.ID_VERIFICATION_VERIFYING);
+		return result == null ? 0 : result;
+	}
+
+	private static final String LIST_SQL = "select user_id from identity_verification order by submitted_on desc limit ?,?";
 
 	/**
 	 * 获取身份审核列表
@@ -118,6 +148,17 @@ public class IdentityVerificationDaoImpl extends BaseJdbcDaoSupport implements I
 	@Override
 	public List<Integer> list(int pageNumber, int pageSize) {
 		return super.getJdbcTemplate().query(LIST_SQL, INTEGER_ROW_MAPPER, pageNumber * pageSize, pageSize);
+	}
+
+	private static final String GET_TOTAL_NUMBER_SQL = "select count(user_id) from identity_verification";
+
+	/**
+	 * 获取总审核数目
+	 */
+	@Override
+	public int getTotalNum() {
+		Integer result = super.queryUniqueEntity(GET_TOTAL_NUMBER_SQL, INTEGER_ROW_MAPPER);
+		return result == null ? 0 : result;
 	}
 
 }

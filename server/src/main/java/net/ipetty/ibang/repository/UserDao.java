@@ -4,7 +4,6 @@ import net.ipetty.ibang.model.User;
 
 /**
  * UserDao
- * 
  * @author luocanfeng
  * @date 2014年9月19日
  */
@@ -54,5 +53,10 @@ public interface UserDao {
 	 * 修改密码与盐值
 	 */
 	public void changePassword(Integer id, String newEncodedPassword, String salt);
+
+	/**
+	 * 禁用
+	 */
+	public void disable(Integer id);
 
 }

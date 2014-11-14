@@ -123,6 +123,7 @@ public class OfferActivity extends Activity {
 	 */
 	private void loadData() {
 		new GetOfferByIdTask(OfferActivity.this).setListener(new DefaultTaskListener<OfferVO>(OfferActivity.this) {
+
 			@Override
 			public void onSuccess(OfferVO result) {
 				offerVO = result;
@@ -136,6 +137,7 @@ public class OfferActivity extends Activity {
 
 				new GetSeekByIdTask(OfferActivity.this).setListener(
 						new DefaultTaskListener<SeekVO>(OfferActivity.this) {
+
 							@Override
 							public void onSuccess(SeekVO result) {
 								seekVO = result;
@@ -194,13 +196,14 @@ public class OfferActivity extends Activity {
 		// 关闭帮助按钮
 		initCloseButton();
 
-		if (isOfferOwner() && (net.ipetty.ibang.vo.Constants.OFFER_STATUS_OFFERED.equals(offerVO.getStatus()))) {
+		if (offerVO.isEnable() && isOfferOwner()
+				&& (net.ipetty.ibang.vo.Constants.OFFER_STATUS_OFFERED.equals(offerVO.getStatus()))) {
 			offer_wait_delegated_layout.setVisibility(View.VISIBLE);
 		} else {
 			offer_wait_delegated_layout.setVisibility(View.GONE);
 		}
 
-		if (net.ipetty.ibang.vo.Constants.OFFER_STATUS_CLOSED.equals(offerVO.getStatus())
+		if (offerVO.isEnable() && net.ipetty.ibang.vo.Constants.OFFER_STATUS_CLOSED.equals(offerVO.getStatus())
 				&& offerVO.getDelegation() == null) {
 			offer_self_closed_layout.setVisibility(View.VISIBLE);
 		} else {
@@ -212,10 +215,14 @@ public class OfferActivity extends Activity {
 	 * 接受帮助/查看委托按钮
 	 */
 	private void initDelegateButton() {
-		if (net.ipetty.ibang.vo.Constants.OFFER_STATUS_OFFERED.equals(offerVO.getStatus())) {
+		if (!offerVO.isEnable()) {
+			delegation.setText("已被屏蔽");
+			delegation_layout.setVisibility(View.VISIBLE);
+		} else if (net.ipetty.ibang.vo.Constants.OFFER_STATUS_OFFERED.equals(offerVO.getStatus())) {
 			if (!isSeekFinishedOrClosed() && isSeekOwner()) {
 				delegation.setText("接受帮助");
 				delegation.setOnClickListener(new OnClickListener() {
+
 					@Override
 					public void onClick(View v) {
 						// 接受帮助
@@ -224,6 +231,7 @@ public class OfferActivity extends Activity {
 						delegation.setOfferId(offerVO.getId());
 						new AcceptOfferTask(OfferActivity.this).setListener(
 								new DefaultTaskListener<DelegationVO>(OfferActivity.this) {
+
 									@Override
 									public void onSuccess(DelegationVO result) {
 										// 接受帮助后进行界面操作
@@ -244,15 +252,18 @@ public class OfferActivity extends Activity {
 	 * 设置关闭帮助按钮
 	 */
 	private void initCloseButton() {
-		if (!isSeekFinishedOrClosed()
+		if (offerVO.isEnable()
+				&& !isSeekFinishedOrClosed()
 				&& isOfferOwner()
 				&& (net.ipetty.ibang.vo.Constants.OFFER_STATUS_OFFERED.equals(offerVO.getStatus()) || net.ipetty.ibang.vo.Constants.OFFER_STATUS_DELEGATED
 						.equals(offerVO.getStatus()))) {
 			offer_close.setOnClickListener(new OnClickListener() {
+
 				@Override
 				public void onClick(View v) {
 					new CloseOfferTask(OfferActivity.this).setListener(
 							new DefaultTaskListener<Boolean>(OfferActivity.this) {
+
 								@Override
 								public void onSuccess(Boolean result) {
 									// 关闭帮助后的界面操作
@@ -291,6 +302,7 @@ public class OfferActivity extends Activity {
 		if (offerVO.getDelegation() != null) {
 			delegation.setText("查看委托");
 			delegation.setOnClickListener(new OnClickListener() {
+
 				@Override
 				public void onClick(View v) {
 					// 查看委托单
@@ -329,6 +341,7 @@ public class OfferActivity extends Activity {
 		}
 		nickname.setText(user.getNickname());
 		avatar.setOnClickListener(new OnClickListener() {
+
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent(OfferActivity.this, UserInfoActivity.class);

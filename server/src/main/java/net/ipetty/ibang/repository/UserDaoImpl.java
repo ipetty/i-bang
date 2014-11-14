@@ -33,7 +33,7 @@ public class UserDaoImpl extends BaseJdbcDaoSupport implements UserDao {
 			// id, username, email, password, salt, identity_verified, nickname,
 			// gender, job, phone, telephone, avatar, signature, speciality,
 			// preference, province, city, district, address, created_on,
-			// version
+			// version, enable
 			User user = new User();
 			user.setId(rs.getInt("id"));
 			user.setUsername(rs.getString("username"));
@@ -55,6 +55,7 @@ public class UserDaoImpl extends BaseJdbcDaoSupport implements UserDao {
 			user.setDistrict(rs.getString("district"));
 			user.setAddress(rs.getString("address"));
 			user.setCreatedOn(rs.getTimestamp("created_on"));
+			user.setEnable(rs.getBoolean("enable"));
 			return user;
 		}
 	};
@@ -204,6 +205,18 @@ public class UserDaoImpl extends BaseJdbcDaoSupport implements UserDao {
 	public void changePassword(Integer id, String newEncodedPassword, String salt) {
 		super.getJdbcTemplate().update(CHANGE_PASSWORD_WITH_SALT_SQL, newEncodedPassword, salt, id);
 		logger.debug("changed password and salt for user({})", id);
+	}
+
+	private static final String DISABLE_SQL = "update users set enable=false, disabled_on=now() where id=?";
+
+	/**
+	 * 禁用
+	 */
+	@Override
+	@UpdateToCache(mapName = CacheConstants.CACHE_USER_ID_TO_USER, key = "${id}")
+	public void disable(Integer id) {
+		super.getJdbcTemplate().update(DISABLE_SQL, id);
+		logger.debug("disabled user({})", id);
 	}
 
 }

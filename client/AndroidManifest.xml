@@ -80,118 +80,152 @@
         </activity>
         <activity
             android:name="net.ipetty.ibang.android.user.UserProfileActivity"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_user_profile" >
         </activity>
         <activity
             android:name="net.ipetty.ibang.android.publish.SelectSeekCategoryActivity"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_publish_sub_type" >
         </activity>
         <activity
             android:name="net.ipetty.ibang.android.publish.PublishActivity"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_publish" >
         </activity>
         <activity
             android:name="net.ipetty.ibang.android.publish.UploadLargerImageActivity"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_upload_largin_image" >
         </activity>
         <activity
             android:name="net.ipetty.ibang.android.user.UserEditActivity"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_user_edit" >
         </activity>
         <activity
             android:name="net.ipetty.ibang.android.setting.SettingActivity"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_setting" >
         </activity>
         <activity
             android:name="net.ipetty.ibang.android.setting.ChangePwdActivity"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_change_pwd" >
         </activity>
         <activity
             android:name="net.ipetty.ibang.android.city.CityActivity"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_city" >
         </activity>
         <activity
             android:name="net.ipetty.ibang.android.message.MessageActivity"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_message" >
         </activity>
         <activity
             android:name="net.ipetty.ibang.android.type.SelectCategoryActivity"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_type"
             android:theme="@style/TopDialog" >
         </activity>
         <activity
             android:name="net.ipetty.ibang.android.seek.SeekActivity"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_seek" >
         </activity>
         <activity
             android:name="net.ipetty.ibang.android.seek.OfferActivity"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_offer" >
         </activity>
         <activity
             android:name="net.ipetty.ibang.android.seek.PublishOfferActivity"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_publish_offer" >
         </activity>
         <activity
             android:name="net.ipetty.ibang.android.seek.MySeekActivity"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_my_seek" >
         </activity>
         <activity
             android:name="net.ipetty.ibang.android.seek.DelegationActivity"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_delegation" >
         </activity>
         <activity
             android:name="net.ipetty.ibang.android.seek.MyOfferActivity"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_my_delegation" >
         </activity>
         <activity
             android:name="net.ipetty.ibang.android.seek.LargerImageActivity"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_larger_image" >
         </activity>
         <activity
             android:name="net.ipetty.ibang.android.user.UserInfoActivity"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_user_info" >
         </activity>
         <activity
             android:name="net.ipetty.ibang.android.evaluation.EvaluationActivity"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_evaluation" >
         </activity>
         <activity
             android:name="net.ipetty.ibang.android.search.SearchActivity"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_search"
             android:windowSoftInputMode="stateVisible" >
         </activity>
         <activity
             android:name="net.ipetty.ibang.android.city.ProvinceActivity"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_province" >
         </activity>
         <activity
             android:name="net.ipetty.ibang.android.city.DistrictActivity"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_district" >
         </activity>
         <activity
             android:name="net.ipetty.ibang.android.user.SelectUserCategoryActivity"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_select_user_category" >
         </activity>
         <activity
             android:name="net.ipetty.ibang.android.publish.LocateActivity"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_locate" >
         </activity>
         <activity
             android:name="net.ipetty.ibang.android.seek.MyEvaluationActivity"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_my_evaluation" >
+            
         </activity>
         <activity
             android:name="net.ipetty.ibang.android.type.SelectSeekTypeActivity"
             android:label="@string/title_activity_select_seek_type"
+            android:screenOrientation="portrait"
             android:theme="@style/TopDialog" >
         </activity>
         <activity
             android:name="net.ipetty.ibang.android.publish.SelectAddressActivity"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_select_address" >
         </activity>
         <activity
             android:name="net.ipetty.ibang.android.approve.ApproveActivity"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_approve" >
+        </activity>
+        <activity
+            android:name="net.ipetty.ibang.android.boot.AdActivity"
+            android:screenOrientation="portrait"
+            android:label="@string/title_activity_ad" >
         </activity>
     </application>
 

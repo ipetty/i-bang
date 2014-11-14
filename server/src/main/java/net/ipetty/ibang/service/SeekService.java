@@ -25,7 +25,6 @@ import org.springframework.util.Assert;
 
 /**
  * SeekService
- * 
  * @author luocanfeng
  * @date 2014年9月19日
  */
@@ -104,9 +103,7 @@ public class SeekService extends BaseService {
 
 	/**
 	 * 获取最新的未关闭求助列表
-	 * 
-	 * @param pageNumber
-	 *            分页页码，从0开始
+	 * @param pageNumber 分页页码，从0开始
 	 */
 	public List<Seek> listLatest(String type, Date timeline, int pageNumber, int pageSize) {
 		List<Long> seekIds = seekDao.listLatest(type, timeline, pageNumber, pageSize);
@@ -115,9 +112,7 @@ public class SeekService extends BaseService {
 
 	/**
 	 * 获取指定分类中最新的未关闭求助列表
-	 * 
-	 * @param pageNumber
-	 *            分页页码，从0开始
+	 * @param pageNumber 分页页码，从0开始
 	 */
 	public List<Seek> listLatestByCategory(String type, String categoryL1, String categoryL2, Date timeline,
 			int pageNumber, int pageSize) {
@@ -127,9 +122,7 @@ public class SeekService extends BaseService {
 
 	/**
 	 * 获取所在城市指定分类中最新的未关闭求助列表
-	 * 
-	 * @param pageNumber
-	 *            分页页码，从0开始
+	 * @param pageNumber 分页页码，从0开始
 	 */
 	public List<Seek> listLatestByCityOrCategory(String type, String city, String district, String categoryL1,
 			String categoryL2, Date timeline, int pageNumber, int pageSize) {
@@ -140,9 +133,7 @@ public class SeekService extends BaseService {
 
 	/**
 	 * 获取所在城市指定用户帮忙范围内的最新未关闭求助列表
-	 * 
-	 * @param pageNumber
-	 *            分页页码，从0开始
+	 * @param pageNumber 分页页码，从0开始
 	 */
 	public List<Seek> listLatestByCityAndOfferRange(String type, String city, String district, Integer userId,
 			Date timeline, int pageNumber, int pageSize) {
@@ -166,9 +157,7 @@ public class SeekService extends BaseService {
 
 	/**
 	 * 根据关键字搜索最新的未关闭求助列表
-	 * 
-	 * @param pageNumber
-	 *            分页页码，从0开始
+	 * @param pageNumber 分页页码，从0开始
 	 */
 	public List<Seek> listLatestByKeyword(String type, String keyword, Date timeline, int pageNumber, int pageSize) {
 		List<Long> seekIds = seekDao.listLatestByKeyword(type, keyword, timeline, pageNumber, pageSize);
@@ -177,9 +166,7 @@ public class SeekService extends BaseService {
 
 	/**
 	 * 获取指定用户的求助列表
-	 * 
-	 * @param pageNumber
-	 *            分页页码，从0开始
+	 * @param pageNumber 分页页码，从0开始
 	 */
 	public List<Seek> listByUserId(String type, Integer userId, int pageNumber, int pageSize) {
 		List<Long> seekIds = seekDao.listByUserId(type, userId, pageNumber, pageSize);
@@ -235,6 +222,13 @@ public class SeekService extends BaseService {
 	 */
 	public void delegated(Long seekId) {
 		seekDao.updateStatus(seekId, Constants.SEEK_STATUS_DELEGATED);
+	}
+
+	/**
+	 * 禁用/软删除
+	 */
+	public void disable(Long seekId) {
+		seekDao.disable(seekId);
 	}
 
 }

@@ -5,7 +5,7 @@ html,body {
 }
 
 #wrapper {
-	background-color: #dbdbdb;
+	background-color: #f9f9f9;
 	min-height: 650px;
 	height: 100%;
     position: relative;
@@ -25,7 +25,6 @@ html,body {
 }
 
 #header .ent {
-	background: url("../images/logo.png?t=4.8824431691") no-repeat scroll 0 transparent;
 	display: block;
     float: left;
     height: 13px;
@@ -34,7 +33,6 @@ html,body {
 }
 
 #header .default-head {
-	background: url("../images/default-head.png?t=4.83768683544") no-repeat scroll 0 transparent;
 	display: block;
     float: right;
     height: 24px;
@@ -52,14 +50,14 @@ html,body {
 }
 
 #main .title span {
-	color: #313131;
+	color: #222;
 	font-size: 36px;
 }
 
 #main .login {
-	background: none repeat scroll 0 0 #fafafa;
-	border: 1px solid #97afbc;
-	height: 306px;
+	background: none repeat scroll 0 0 white;
+	border: 1px solid #F9C498;
+	height: 280px;
 	position: relative;
 	margin: 50px auto 0;
 	width: 408px;
@@ -138,8 +136,8 @@ html,body {
 }
 
 a.btn-login {
-	background: url("../images/login-btn-bg.png?t=4.8251369858") no-repeat scroll 0 0 transparent;
-	color: #FFFFFF;
+	background: #F4811F;
+	color: #fff;
     cursor: pointer;
     display: block;
     font-size: 14px;
@@ -149,20 +147,8 @@ a.btn-login {
     width: 328px;
 }
 
-a.btn-login:hover {
-	background-position: -328px 0;
-	color: #0091ff;
-}
 
-a.btn-login:active {
-	background-position: -656px 0;
-	color: #ffffff;
-}
 
-a.btn-login.disabled {
-	background-position: -984px 0;
-	color: #ffffff;
-}
 
 #footer {
 	position: absolute;

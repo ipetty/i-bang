@@ -19,6 +19,10 @@
 	<!-- 拦截器 -->
 	<mvc:interceptors>
 		<mvc:interceptor>
+			<mvc:mapping path="/verify/**" />
+			<ref bean="adminInterceptor" />
+		</mvc:interceptor>
+		<mvc:interceptor>
 			<mvc:mapping path="/**" /><!-- 如果不配置或/**,将拦截所有的Controller -->
 			<ref bean="userContextInterceptor" />
 		</mvc:interceptor>
@@ -26,6 +30,7 @@
 	<bean id="userContextInterceptor" class="net.ipetty.ibang.web.rest.interceptor.UserContextInterceptor">
 		<property name="userService" ref="userService" />
 	</bean>
+	<bean id="adminInterceptor" class="net.ipetty.ibang.web.controller.interceptor.AdminInterceptor" />
 
 	<!-- Spring文件上传支持 -->
 	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">

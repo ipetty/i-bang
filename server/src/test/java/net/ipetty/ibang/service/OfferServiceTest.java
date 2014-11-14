@@ -18,7 +18,6 @@ import org.junit.Test;
 
 /**
  * OfferServiceTest
- * 
  * @author luocanfeng
  * @date 2014年9月24日
  */
@@ -79,6 +78,8 @@ public class OfferServiceTest extends BaseServiceTest {
 		offerService.close(offer.getId());
 		offer = offerService.getById(offer.getId());
 		Assert.assertNotNull(offer.getClosedOn());
+
+		offerService.disable(offer.getId());
 
 		// close seek
 		seekService.close(seek.getId());

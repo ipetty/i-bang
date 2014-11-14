@@ -20,7 +20,6 @@ import org.springframework.stereotype.Repository;
 
 /**
  * OfferDaoImpl
- * 
  * @author luocanfeng
  * @date 2014年9月22日
  */
@@ -28,10 +27,11 @@ import org.springframework.stereotype.Repository;
 public class OfferDaoImpl extends BaseJdbcDaoSupport implements OfferDao {
 
 	static final RowMapper<Offer> ROW_MAPPER = new RowMapper<Offer>() {
+
 		@Override
 		public Offer mapRow(ResultSet rs, int rowNum) throws SQLException {
 			// id, sn, offerer_id, seek_id, content, description, deadline,
-			// created_on, closed_on, status
+			// created_on, closed_on, status, enable
 			Offer offer = new Offer();
 			offer.setId(rs.getLong("id"));
 			offer.setSn(rs.getString("sn"));
@@ -43,6 +43,7 @@ public class OfferDaoImpl extends BaseJdbcDaoSupport implements OfferDao {
 			offer.setCreatedOn(rs.getTimestamp("created_on"));
 			offer.setClosedOn(rs.getTimestamp("closed_on"));
 			offer.setStatus(rs.getString("status"));
+			offer.setEnable(rs.getBoolean("enable"));
 			return offer;
 		}
 	};
@@ -90,7 +91,7 @@ public class OfferDaoImpl extends BaseJdbcDaoSupport implements OfferDao {
 		return super.queryUniqueEntity(GET_BY_ID_SQL, ROW_MAPPER, id);
 	}
 
-	private static final String LIST_BY_SEEK_ID_SQL = "select id from offer where seek_id=? order by created_on desc";
+	private static final String LIST_BY_SEEK_ID_SQL = "select id from offer where enable and seek_id=? order by created_on desc";
 
 	/**
 	 * 获取指定求助单的应征单ID列表
@@ -100,13 +101,11 @@ public class OfferDaoImpl extends BaseJdbcDaoSupport implements OfferDao {
 		return super.getJdbcTemplate().query(LIST_BY_SEEK_ID_SQL, LONG_ROW_MAPPER, seekId);
 	}
 
-	private static final String LIST_BY_USER_ID_SQL = "select id from offer where offerer_id=? order by created_on desc limit ?,?";
+	private static final String LIST_BY_USER_ID_SQL = "select id from offer where enable and offerer_id=? order by created_on desc limit ?,?";
 
 	/**
 	 * 获取指定用户的应征单ID列表
-	 * 
-	 * @param pageNumber
-	 *            分页页码，从0开始
+	 * @param pageNumber 分页页码，从0开始
 	 */
 	@Override
 	public List<Long> listByUserId(Integer userId, int pageNumber, int pageSize) {
@@ -124,6 +123,17 @@ public class OfferDaoImpl extends BaseJdbcDaoSupport implements OfferDao {
 	public void updateStatus(Long offerId, String newStatus) {
 		super.getJdbcTemplate().update(UPDATE_STATUS_SQL,
 				Constants.OFFER_STATUS_CLOSED.equals(newStatus) ? new Date() : null, newStatus, offerId);
+	}
+
+	private static final String DISABLE_SQL = "update offer set enable=false, disabled_on=now() where id=?";
+
+	/**
+	 * 禁用/软删除
+	 */
+	@Override
+	@UpdateToCache(mapName = CacheConstants.CACHE_OFFER_ID_TO_OFFER, key = "${offerId}")
+	public void disable(Long offerId) {
+		super.getJdbcTemplate().update(DISABLE_SQL, offerId);
 	}
 
 }

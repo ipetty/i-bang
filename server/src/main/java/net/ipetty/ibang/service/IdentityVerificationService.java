@@ -7,6 +7,7 @@ import java.util.List;
 import javax.annotation.Resource;
 
 import net.ipetty.ibang.model.IdentityVerification;
+import net.ipetty.ibang.model.SystemMessage;
 import net.ipetty.ibang.repository.IdentityVerificationDao;
 import net.ipetty.ibang.vo.Constants;
 
@@ -22,15 +23,20 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class IdentityVerificationService extends BaseService {
 
+	private static final Integer VERIFIER_ID = 1;
+
 	@Resource
 	private IdentityVerificationDao identityVerificationDao;
+
+	@Resource
+	private SystemMessageService systemMessageService;
 
 	/**
 	 * 提交审核/修改后重新提交审核
 	 */
 	public void submit(IdentityVerification identityVerification) {
 		identityVerification.setSubmittedOn(new Date());
-		identityVerification.setVerifierId(1);
+		identityVerification.setVerifierId(VERIFIER_ID);
 		identityVerification.setStatus(Constants.ID_VERIFICATION_VERIFYING);
 		identityVerificationDao.save(identityVerification);
 	}
@@ -45,13 +51,19 @@ public class IdentityVerificationService extends BaseService {
 	/**
 	 * 审核
 	 */
-	public void verify(IdentityVerification identityVerification) {
-		identityVerification.setVerifiedOn(new Date());
-		identityVerificationDao.verify(identityVerification);
-		if (Constants.ID_VERIFICATION_APPROVED.equals(identityVerification.getStatus())) {
+	public void verify(Integer userId, boolean approved, String verifyInfo) {
+		identityVerificationDao.verify(userId, approved, verifyInfo);
+		if (approved) {
 			// 审核通过
-			identityVerificationDao.setVerified(identityVerification.getUserId());
+			identityVerificationDao.setVerified(userId);
 		}
+
+		// 保存系统消息
+		String title = approved ? "您的身份审核已通过。" : "您的身份审核未通过。";
+		SystemMessage systemMessage = new SystemMessage(VERIFIER_ID, userId,
+				approved ? Constants.SYS_MSG_TYPE_ID_VERIFICATION_APPROVED
+						: Constants.SYS_MSG_TYPE_ID_VERIFICATION_UNAPPROVED, title, title);
+		systemMessageService.save(systemMessage);
 	}
 
 	/**
@@ -60,6 +72,28 @@ public class IdentityVerificationService extends BaseService {
 	public List<IdentityVerification> listVerifying(int pageNumber, int pageSize) {
 		List<Integer> users = identityVerificationDao.listVerifying(pageNumber, pageSize);
 		return this.userIds2IdentityVerifications(users);
+	}
+
+	/**
+	 * 获取待审核数目
+	 */
+	public int getVerifyingTotalNum() {
+		return identityVerificationDao.getVerifyingTotalNum();
+	}
+
+	/**
+	 * 获取已审核列表
+	 */
+	public List<IdentityVerification> listVerified(int pageNumber, int pageSize) {
+		List<Integer> users = identityVerificationDao.listVerified(pageNumber, pageSize);
+		return this.userIds2IdentityVerifications(users);
+	}
+
+	/**
+	 * 获取已审核数目
+	 */
+	public int getVerifiedTotalNum() {
+		return identityVerificationDao.getVerifiedTotalNum();
 	}
 
 	private List<IdentityVerification> userIds2IdentityVerifications(List<Integer> userIds) {
@@ -76,6 +110,13 @@ public class IdentityVerificationService extends BaseService {
 	public List<IdentityVerification> list(int pageNumber, int pageSize) {
 		List<Integer> users = identityVerificationDao.list(pageNumber, pageSize);
 		return this.userIds2IdentityVerifications(users);
+	}
+
+	/**
+	 * 获取总审核数目
+	 */
+	public int getTotalNum() {
+		return identityVerificationDao.getTotalNum();
 	}
 
 }

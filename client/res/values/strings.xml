@@ -90,5 +90,6 @@
     <string name="title_activity_select_seek_type">SelectSeekTypeActivity</string>
     <string name="title_activity_select_address">选择地址</string>
     <string name="title_activity_approve">实名认证</string>
+    <string name="title_activity_ad">AdActivity</string>
 
 </resources>

@@ -23,7 +23,6 @@ import org.springframework.stereotype.Repository;
 
 /**
  * SeekDaoImpl
- * 
  * @author luocanfeng
  * @date 2014年9月19日
  */
@@ -31,13 +30,14 @@ import org.springframework.stereotype.Repository;
 public class SeekDaoImpl extends BaseJdbcDaoSupport implements SeekDao {
 
 	static final RowMapper<Seek> ROW_MAPPER = new RowMapper<Seek>() {
+
 		@Override
 		public Seek mapRow(ResultSet rs, int rowNum) throws SQLException {
 			// id, sn, seeker_id, contact_info_visible, category_l1,
 			// category_l2, type, title, content, requirement, delegate_number,
 			// reward, additional_reward, service_date, province, city,
 			// district, address, location_id, created_on, expire_date,
-			// closed_on, status
+			// closed_on, status, enable
 			Seek seek = new Seek();
 			seek.setId(rs.getLong("id"));
 			seek.setSn(rs.getString("sn"));
@@ -62,6 +62,7 @@ public class SeekDaoImpl extends BaseJdbcDaoSupport implements SeekDao {
 			seek.setExipireDate(rs.getDate("expire_date"));
 			seek.setClosedOn(rs.getTimestamp("closed_on"));
 			seek.setStatus(rs.getString("status"));
+			seek.setEnable(rs.getBoolean("enable"));
 			return seek;
 		}
 	};
@@ -126,15 +127,13 @@ public class SeekDaoImpl extends BaseJdbcDaoSupport implements SeekDao {
 	}
 
 	private static final String FRAGMENT_SELECT_FROM_WHERE = "select id from seek where type=?";
-	private static final String FRAGMENT_TIME_STATUS_ORDER_LIMIT = " and created_on<=? and (status=? or status=?) order by created_on desc limit ?,?";
+	private static final String FRAGMENT_TIME_STATUS_ORDER_LIMIT = " and enable and created_on<=? and (status=? or status=?) order by created_on desc limit ?,?";
 
 	private static final String LIST_LATEST_SQL = FRAGMENT_SELECT_FROM_WHERE + FRAGMENT_TIME_STATUS_ORDER_LIMIT;
 
 	/**
 	 * 获取最新的未关闭求助单ID列表
-	 * 
-	 * @param pageNumber
-	 *            分页页码，从0开始
+	 * @param pageNumber 分页页码，从0开始
 	 */
 	@Override
 	public List<Long> listLatest(String type, Date timeline, int pageNumber, int pageSize) {
@@ -152,9 +151,7 @@ public class SeekDaoImpl extends BaseJdbcDaoSupport implements SeekDao {
 
 	/**
 	 * 获取指定分类中最新的未关闭求助单ID列表
-	 * 
-	 * @param pageNumber
-	 *            分页页码，从0开始
+	 * @param pageNumber 分页页码，从0开始
 	 */
 	@Override
 	public List<Long> listLatestByCategory(String type, String categoryL1, String categoryL2, Date timeline,
@@ -192,9 +189,7 @@ public class SeekDaoImpl extends BaseJdbcDaoSupport implements SeekDao {
 
 	/**
 	 * 获取所在城市指定分类中最新的未关闭求助ID列表
-	 * 
-	 * @param pageNumber
-	 *            分页页码，从0开始
+	 * @param pageNumber 分页页码，从0开始
 	 */
 	@Override
 	public List<Long> listLatestByCityOrCategory(String type, String city, String district, String categoryL1,
@@ -236,9 +231,7 @@ public class SeekDaoImpl extends BaseJdbcDaoSupport implements SeekDao {
 
 	/**
 	 * 获取所在城市指定用户帮忙范围内的最新未关闭求助列表
-	 * 
-	 * @param pageNumber
-	 *            分页页码，从0开始
+	 * @param pageNumber 分页页码，从0开始
 	 */
 	@Override
 	public List<Long> listLatestByCityAndOfferRange(String type, String city, String district,
@@ -292,9 +285,7 @@ public class SeekDaoImpl extends BaseJdbcDaoSupport implements SeekDao {
 
 	/**
 	 * 根据关键字搜索最新的未关闭求助单ID列表
-	 * 
-	 * @param pageNumber
-	 *            分页页码，从0开始
+	 * @param pageNumber 分页页码，从0开始
 	 */
 	@Override
 	public List<Long> listLatestByKeyword(String type, String keyword, Date timeline, int pageNumber, int pageSize) {
@@ -308,13 +299,11 @@ public class SeekDaoImpl extends BaseJdbcDaoSupport implements SeekDao {
 	}
 
 	private static final String LIST_BY_USER_ID_SQL = FRAGMENT_SELECT_FROM_WHERE
-			+ " and seeker_id=? order by created_on desc limit ?,?";
+			+ " and enable and seeker_id=? order by created_on desc limit ?,?";
 
 	/**
 	 * 获取指定用户的求助单ID列表
-	 * 
-	 * @param pageNumber
-	 *            分页页码，从0开始
+	 * @param pageNumber 分页页码，从0开始
 	 */
 	@Override
 	public List<Long> listByUserId(String type, Integer userId, int pageNumber, int pageSize) {
@@ -332,6 +321,17 @@ public class SeekDaoImpl extends BaseJdbcDaoSupport implements SeekDao {
 	public void updateStatus(Long seekId, String newStatus) {
 		super.getJdbcTemplate().update(UPDATE_STATUS_SQL,
 				Constants.SEEK_STATUS_CLOSED.equals(newStatus) ? new Date() : null, newStatus, seekId);
+	}
+
+	private static final String DISABLE_SQL = "update seek set enable=false, disabled_on=now() where id=?";
+
+	/**
+	 * 禁用/软删除
+	 */
+	@Override
+	@UpdateToCache(mapName = CacheConstants.CACHE_SEEK_ID_TO_SEEK, key = "${seekId}")
+	public void disable(Long seekId) {
+		super.getJdbcTemplate().update(DISABLE_SQL, seekId);
 	}
 
 }

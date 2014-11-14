@@ -20,7 +20,6 @@ import org.springframework.util.Assert;
 
 /**
  * OfferService
- * 
  * @author luocanfeng
  * @date 2014年9月23日
  */
@@ -108,9 +107,7 @@ public class OfferService extends BaseService {
 
 	/**
 	 * 获取指定用户的应征列表
-	 * 
-	 * @param pageNumber
-	 *            分页页码，从0开始
+	 * @param pageNumber 分页页码，从0开始
 	 */
 	public List<Offer> listByUserId(Integer userId, int pageNumber, int pageSize) {
 		List<Long> offerIds = offerDao.listByUserId(userId, pageNumber, pageSize);
@@ -140,6 +137,13 @@ public class OfferService extends BaseService {
 	 */
 	public void delegated(Long offerId) {
 		offerDao.updateStatus(offerId, Constants.OFFER_STATUS_DELEGATED);
+	}
+
+	/**
+	 * 禁用/软删除
+	 */
+	public void disable(Long offerId) {
+		offerDao.disable(offerId);
 	}
 
 }
