@@ -17,7 +17,7 @@ case "$1" in
         iclinetConfigPrompt
         linuxInit
         installTomcat
-        installProbe
+        #installProbe
         installAnt
         installMaven
         installMysql
