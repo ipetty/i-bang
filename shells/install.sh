@@ -115,6 +115,10 @@ case "$1" in
         installIperf
         echo "iperf OK"
         ;;
+    probe)
+        installProbe
+        echo "probe OK"
+        ;;
     *)
       usage
       ;;
