@@ -125,6 +125,13 @@ public class MyOfferActivity extends Activity {
 		loadOffer(true);
 	}
 
+	@Override
+	protected void onDestroy() {
+		// TODO Auto-generated method stub
+		super.onDestroy();
+		unregisterReceiver(broadcastreciver);
+	}
+
 	public void loadOffer(boolean isRefresh) {
 		// TODO Auto-generated method stub
 		if (isRefresh) {
