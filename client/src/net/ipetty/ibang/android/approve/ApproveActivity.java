@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import net.ipetty.ibang.R;
 import net.ipetty.ibang.android.core.ActivityManager;
 import net.ipetty.ibang.android.core.Constants;
+import net.ipetty.ibang.android.core.DefaultTaskListener;
 import net.ipetty.ibang.android.core.MyAppStateManager;
 import net.ipetty.ibang.android.core.ui.BackClickListener;
 import net.ipetty.ibang.android.core.ui.ModDialogItem;
@@ -38,15 +39,17 @@ import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 public class ApproveActivity extends Activity {
+
 	private UserVO user;
 	private EditText realname;
 	private EditText idNum;
-	private TextView button;
+	private TextView submitButton;
 	private View operation_layout;
 	private View desc_layout;
 	private View status_layout;
 	private TextView status;
 	private ImageView idCardInHand;
+	private String idCardInHandFilePath;
 	private IdentityVerificationVO approve;
 	private DisplayImageOptions options = AppUtils.getNormalImageOptions();
 	private String mImageName = Constants.PIC_IDCARD_IN_HAND; // 默认头像值
@@ -77,25 +80,59 @@ public class ApproveActivity extends Activity {
 		idCardInHand = (ImageView) this.findViewById(R.id.id_cardinhand);
 		operation_layout = this.findViewById(R.id.operation_layout);
 		desc_layout = this.findViewById(R.id.desc_layout);
-		button = (TextView) this.findViewById(R.id.button);
+		submitButton = (TextView) this.findViewById(R.id.button);
 		status_layout = this.findViewById(R.id.status_layout);
 		status = (TextView) this.findViewById(R.id.status);
 
-		button.setOnClickListener(new OnClickListener() {
+		submitButton.setOnClickListener(new OnClickListener() {
+
 			@Override
 			public void onClick(View v) {
-				// TODO 进行认证操作；获取到 approve 重新加载视图
-				// 认证提交后
+				// 提交身份认证
+				if (user != null) {
+					IdentityVerificationVO identityVerification = new IdentityVerificationVO();
+					identityVerification.setUserId(user.getId());
+					identityVerification.setRealName(realname.getText().toString());
+					identityVerification.setIdNumber(idNum.getText().toString());
+					identityVerification.setIdCardInHand(idCardInHandFilePath);
 
+					new SubmitIdentityVerificationTask(ApproveActivity.this).setListener(
+							new DefaultTaskListener<Boolean>(ApproveActivity.this, "正在提交身份认证资料...") {
+
+								@Override
+								public void onSuccess(Boolean result) {
+									// 提交后加载数据并初始化视图
+									ApproveActivity.this.loadDataAndInitView();
+								}
+							}).execute(identityVerification);
+				}
 			}
 		});
 
-		// TODO:用户获取认证过程
-		// approve = new IdentityVerificationVO();
-		initLayout();
-
+		// 用户获取认证过程
+		this.loadDataAndInitView();
 	}
 
+	/**
+	 * 加载数据并初始化视图
+	 */
+	private void loadDataAndInitView() {
+		if (user != null) {
+			new GetIdentityVerificationTask(ApproveActivity.this).setListener(
+					new DefaultTaskListener<IdentityVerificationVO>(ApproveActivity.this, "正在加载数据...") {
+
+						@Override
+						public void onSuccess(IdentityVerificationVO result) {
+							approve = result;
+							ApproveActivity.this.initLayout();
+						}
+					}).execute();
+		}
+	}
+
+	/**
+	 * 初始化视图
+	 */
 	private void initLayout() {
 		// 如果认证过
 		if (approve != null) {
@@ -135,9 +172,9 @@ public class ApproveActivity extends Activity {
 		}
 
 		idCardInHand.setOnClickListener(new View.OnClickListener() {
+
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
 				if (approve == null
 						|| (approve != null && net.ipetty.ibang.vo.Constants.ID_VERIFICATION_UNAPPROVED.equals(approve
 								.getStatus()))) {
@@ -150,11 +187,11 @@ public class ApproveActivity extends Activity {
 	}
 
 	private void editImage() {
-		// TODO Auto-generated method stub
 		this.dialog = DialogUtils.modPopupDialog(this, cameraItems, dialog);
 	}
 
 	private final OnClickListener takePhotoClick = new OnClickListener() {
+
 		@Override
 		public void onClick(View view) {
 			DeviceUtils.takePicture(ApproveActivity.this, PathUtils.getCarmerDir(), ApproveActivity.this.mImageName);
@@ -163,6 +200,7 @@ public class ApproveActivity extends Activity {
 	};
 
 	private final OnClickListener pickPhotoClick = new OnClickListener() {
+
 		@Override
 		public void onClick(View view) {
 			DeviceUtils.chooserSysPics(ApproveActivity.this);
@@ -171,6 +209,7 @@ public class ApproveActivity extends Activity {
 	};
 
 	private final OnClickListener cancelClick = new OnClickListener() {
+
 		@Override
 		public void onClick(View v) {
 			dialog.cancel();
@@ -178,7 +217,6 @@ public class ApproveActivity extends Activity {
 	};
 
 	private void showImage() {
-		// TODO Auto-generated method stub
 		Intent intent = new Intent(this, LargerImageActivity.class);
 		intent.putExtra(Constants.INTENT_IMAGE_ORIGINAL_KEY, Constants.FILE_SERVER_BASE + approve.getIdCardInHand());
 		intent.putExtra(Constants.INTENT_IMAGE_SAMILL_KEY, Constants.FILE_SERVER_BASE + approve.getIdCardInHand());
@@ -207,7 +245,6 @@ public class ApproveActivity extends Activity {
 				String path = MyAppStateManager.getCameraTempFile(ApproveActivity.this);
 				compressImage(path);
 			}
-
 		}
 	}
 
@@ -220,7 +257,8 @@ public class ApproveActivity extends Activity {
 		}
 		File file = new File(PathUtils.getCarmerDir(), this.mImageName);
 		ImageUtils.compressImage(path, file.getAbsolutePath(), 1024);
+		idCardInHandFilePath = file.getAbsolutePath();
 		idCardInHand.setImageURI(Uri.fromFile(file));
-
 	}
+
 }
