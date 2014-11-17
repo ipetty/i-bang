@@ -45,10 +45,10 @@ function linuxIntiPrompt(){
 }
 
 function linuxInit(){
+    yum update -y
+    yum makecache
+
     yum install wget git ntp zip unzip mlocate -y
-
-    initGlobalDir
-
     chkconfig ntpd on
     service ntpd restart
     
@@ -73,6 +73,8 @@ function linuxInit(){
     service iptables save
     chkconfig iptables on
     service iptables restart
+
+    initGlobalDir
 }
 
 function installJpackageSource(){
