@@ -117,6 +117,7 @@ case "$1" in
         ;;
     probe)
         installProbe
+	service tomcat restart
         echo "probe OK"
         ;;
     *)
