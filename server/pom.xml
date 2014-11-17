@@ -46,17 +46,20 @@
 			<!-- jetty-maven-plugin -->
 			<plugin>
 				<groupId>org.mortbay.jetty</groupId>
-				<artifactId>jetty-maven-plugin</artifactId>
-				<version>${mortbay.jetty.version}</version>
+				<artifactId>maven-jetty-plugin</artifactId>
+				<version>6.1.26</version>
 				<configuration>
 					<webAppSourceDirectory>${basedir}/webapp</webAppSourceDirectory>
+					<contextPath>/</contextPath>
 					<scanIntervalSeconds>10</scanIntervalSeconds>
+					<jettyEnvXml></jettyEnvXml>
 					<stopKey>stop</stopKey>
 					<stopPort>9999</stopPort>
 					<webApp>
 						<contextPath>/</contextPath>
 						<!-- <descriptor>${basedir}/webapp/WEB-INF/web.xml</descriptor> -->
 					</webApp>
+					<webDefaultXml>${basedir}/src/main/resources/webdefault.xml</webDefaultXml>
 				</configuration>
 			</plugin>
 		</plugins>
@@ -410,6 +413,7 @@
 					<artifactId>javax.servlet</artifactId>
 				</exclusion>
 			</exclusions>
+			
 		</dependency>
 		<dependency>
 			<groupId>org.dbunit</groupId>

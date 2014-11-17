@@ -7,7 +7,7 @@
 <script type="text/javascript">
 $.namespace("Ibang.Config");
 Ibang.Config = {
-	appUrl: "${pageContext.request.contextPath}",
+	appUrl: "${RESOUCE_APP_URL}",
 	staticUrl: "${RESOUCE_STATIC_URL}"
 };
 </script>

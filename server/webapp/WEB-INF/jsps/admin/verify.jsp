@@ -13,6 +13,101 @@
 
 
 </head>
+<script>
+$(function(){
+		$(".prePage").bind("click", function(){
+			var cPage = "1";
+			var currentPage = $.trim($("#currentPage").val());
+			if (currentPage != "1") {
+				cPage = (parseInt(currentPage) - 1) + "";
+			}
+			$("#currentPage").val(cPage);
+			loadData();
+		});
+		
+		$(".nextPage").bind("click", function(){
+			var currentPage = $.trim($("#currentPage").val());
+			var totalPage = $(".totalPage").text();
+			var cPage = totalPage;
+			if (currentPage != totalPage) {
+				cPage = (parseInt(currentPage) + 1) + "";
+			}
+			$("#currentPage").val(cPage);
+			loadData();
+		});
+		
+		$("#currentPage").keydown(function(event){
+			if (event.keyCode == 13) {
+				var value = $.trim($("#currentPage").val());
+				if (value.length < 1) {
+					alert('请输入当前页数');
+					return false;
+				}
+				var reg = new RegExp("^\\d+$");
+				if(!reg.test(value)){
+					alert('当前页数只能输入数字');
+					return false;
+				}
+
+				if(parseInt(value) ==0){
+					$("#currentPage").val(1);
+				}
+
+				var totalPage = $(".totalPage", ".paging").text();
+				if (parseInt(value) > parseInt(totalPage)) {
+					//Ums.box.alert('当前页数不能大于总页数');
+					//return false;
+					$("#currentPage").val(totalPage);
+				}
+				
+				loadData();
+				return false;
+			}
+		});
+		
+
+		function loadData(){
+			location.href = Ibang.Config.appUrl+"/admin/verify/page/"+$("#currentPage").val();
+		}
+
+		function reloadData(){
+			location.reload();
+		}
+
+		$(".btnVerify").click(function(){
+			var id = ( $(this).data("id"));
+			var res = ( $(this).data("res"));
+			var url = "/admin/verify/"+id;
+			Ibang.Base.throttle.lock(url);
+
+			$.ajax({
+				type: 'post',
+				url: Ibang.Config.appUrl + "/admin/verify/",
+				data: {
+					userId:id,
+					approved:res,
+					verifyInfo:""
+				},
+				dataType: 'json',
+				success: function(msg){
+					if(msg.success) {
+						reloadData();
+					} else {
+						alert(msg.description);
+					}
+					Ibang.Base.throttle.unLock(url);
+				},
+				error: function(){
+		
+					alert("操作失败")
+				}
+			});
+		
+		})
+
+})
+</script>
+
 
 <body>
 	<div id="wrapper">
@@ -39,6 +134,29 @@
 						</tr>
 					</table>
 				</div>
+			
+				<!-- 模拟-->	
+				<div class="data-content">
+					<div class="data-table">
+						<table class="table-content">
+						
+							<tr id="${identityVerification.id }">
+								<td class="data-td c1" title="${identityVerification.realName }">
+									模拟数据请删除
+								</td>
+								<td class="data-td c2" title="${identityVerification.idNumber}">320501111111111111</td>
+								<td class="data-td c3" title="${identityVerification.idCardInHand}">
+									<a href="/static/images/test.jpg" target="_blank"><img src="/static/images/test.jpg" height="48" alt="" /></td>
+								<td class="data-td c4" title="${identityVerification.status }">
+									<a id="" class="btnVerify btn" href="javascript:" style="color:green" hidefocus="true" data-id="1" data-res="true">通过</a>
+									<a id="" class="btnVerify btn" href="javascript:" style="color:red" hidefocus="true" data-id="1" data-res="false">驳回</a>
+								</td>
+							</tr>
+						
+						</table>
+					</div>
+				</div>
+				<!-- 模拟end -->	
 				
 				<div class="data-content">
 					<div class="data-table">
@@ -50,7 +168,12 @@
 								</td>
 								<td class="data-td c2" title="${identityVerification.idNumber}">${identityVerification.idNumber}</td>
 								<td class="data-td c3" title="${identityVerification.idCardInHand}"><img src="${identityVerification.idCardInHand}" width="36" alt="" /></td>
-								<td class="data-td c4" title="${identityVerification.status }">${identityVerification.status}<a id="" class="btn" href="javascript:" hidefocus="true">审核</a></td>
+								<td class="data-td c4" title="${identityVerification.status }">
+								<!--TODO  如果已经审核
+								${identityVerification.status}
+								显示状态 否则显示操作-->
+								<a id="" class="btnVerify btn" href="javascript:" style="color:green" hidefocus="true" data-id="${identityVerification.id}" data-res="true">通过</a>
+								<a id="" class="btnVerify btn" href="javascript:" style="color:red" hidefocus="true" data-id="${identityVerification.id}" data-res="false">驳回</a>
 							</tr>
 							</c:forEach>
 						</table>
@@ -65,7 +188,7 @@
 							<span class="totalPage">1</span>
 						</c:when>
 						<c:otherwise>
-							<span class="totalPage">${totalPage }</span>
+							<span class="totalPage">${totalPage}</span>
 						</c:otherwise>
 						</c:choose>
 						<a class="prePage" href="javascript:" hidefocus="true"></a>

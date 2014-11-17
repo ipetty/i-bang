@@ -32,8 +32,13 @@ public class IdentityVerificationController {
 
 	@Resource
 	private IdentityVerificationService identityVerificationService;
-
 	@RequestMapping(value = "/verify", method = RequestMethod.GET)
+	public String verify(Model model, HttpServletRequest request, HttpServletResponse  response){
+		return verify(model, request, response,"1");
+	}
+	
+	
+	@RequestMapping(value = "/verify/page/{currentPage}", method = RequestMethod.GET)
 	public String verify(Model model, HttpServletRequest request, HttpServletResponse response, String currentPage) {
 		HttpSession session = request.getSession(false);
 		if (session == null) {
