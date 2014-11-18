@@ -32,12 +32,12 @@ public class IdentityVerificationController {
 
 	@Resource
 	private IdentityVerificationService identityVerificationService;
+
 	@RequestMapping(value = "/verify", method = RequestMethod.GET)
-	public String verify(Model model, HttpServletRequest request, HttpServletResponse  response){
-		return verify(model, request, response,"1");
+	public String verify(Model model, HttpServletRequest request, HttpServletResponse response) {
+		return verify(model, request, response, "1");
 	}
-	
-	
+
 	@RequestMapping(value = "/verify/page/{currentPage}", method = RequestMethod.GET)
 	public String verify(Model model, HttpServletRequest request, HttpServletResponse response, String currentPage) {
 		HttpSession session = request.getSession(false);
@@ -61,47 +61,30 @@ public class IdentityVerificationController {
 		}
 		int cPage = Integer.parseInt(currentPage);
 		// TODO:这里需要根据参数区分是全部还是部分
-		List<IdentityVerificationVO> listVerify = listVerifying(cPage - 1, PAGE_SIZE);
+		List<IdentityVerification> identityVerifications = identityVerificationService.listVerifying(cPage - 1,
+				PAGE_SIZE);
+		List<IdentityVerificationVO> verifies = IdentityVerification.listToVoList(identityVerifications);
 		int totalNum = identityVerificationService.getVerifyingTotalNum();
 		int totalPage = totalNum / PAGE_SIZE;
 		if (totalNum % PAGE_SIZE != 0) {
 			++totalPage;
 		}
 
-		model.addAttribute("listVerify", listVerify);
+		model.addAttribute("verifies", verifies);
 		model.addAttribute("currentPage", currentPage);
 		model.addAttribute("totalPage", totalPage);
 
-		return "admin/verify";
+		return "/admin/verify";
 	}
 
 	/**
 	 * 审核
 	 */
 	@RequestMapping(value = "/verify", method = RequestMethod.POST)
-	public void verify(Integer userId, boolean approved, String verifyInfo) {
+	@ResponseBody
+	public boolean verify(Integer userId, boolean approved, String verifyInfo) {
 		identityVerificationService.verify(userId, approved, verifyInfo);
-	}
-
-	/**
-	 * 获取待审核列表
-	 */
-	@RequestMapping(value = "/verify/listVerifying", method = RequestMethod.GET)
-	@ResponseBody
-	public List<IdentityVerificationVO> listVerifying(int pageNumber, int pageSize) {
-		List<IdentityVerification> identityVerifications = identityVerificationService.listVerifying(pageNumber,
-				pageSize);
-		return IdentityVerification.listToVoList(identityVerifications);
-	}
-
-	/**
-	 * 获取身份审核列表
-	 */
-	@RequestMapping(value = "/verify/listAll", method = RequestMethod.GET)
-	@ResponseBody
-	public List<IdentityVerificationVO> list(int pageNumber, int pageSize) {
-		List<IdentityVerification> identityVerifications = identityVerificationService.list(pageNumber, pageSize);
-		return IdentityVerification.listToVoList(identityVerifications);
+		return true;
 	}
 
 }

@@ -31,26 +31,29 @@ public class AdminInterceptor implements HandlerInterceptor {
 		HttpSession session = request.getSession(false);
 		if (session == null) {
 			logger.debug("session is null");
-			this.renderText(response, "您尚未登录，该界面需要登录后才能操作！");
+			// this.renderText(response, "您尚未登录，该界面需要登录后才能操作！");
+			response.sendRedirect("/admin/login");
 			return false;
 		}
 
 		User user = (User) session.getAttribute(AdminConstants.SESSION_NAME);
 		if (user == null) {
 			logger.debug("session user is null");
-			this.renderText(response, "您尚未登录，该界面需要登录后才能操作！");
+			// this.renderText(response, "您尚未登录，该界面需要登录后才能操作！");
+			response.sendRedirect("/admin/login");
 			return false;
 		}
 
 		if (!AdminConstants.ADMIN_USER_NAME.equals(user.getUsername())) {
-			this.renderText(response, "您不是管理员，该界面需要管理员身份才能操作！");
+			// this.renderText(response, "您不是管理员，该界面需要管理员身份才能操作！");
+			response.sendRedirect("/admin/login");
 			return false;
 		}
 
 		return true;
 	}
 
-	private void renderText(HttpServletResponse response, String content) throws IOException {
+	protected void renderText(HttpServletResponse response, String content) throws IOException {
 		response.setCharacterEncoding(DEFAULT_ENCODING);
 		response.setContentType(TEXT_CONTENT_TYPE);
 		response.getWriter().write(content);
