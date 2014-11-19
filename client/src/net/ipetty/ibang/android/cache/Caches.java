@@ -14,7 +14,7 @@ import java.util.Map;
 public class Caches {
 
 	private static final Map<Class, Map> cache = new HashMap<Class, Map>();
-	private static final Long expireTime = 30 * 60 * 1000l; // 30分钟过期
+	private static final Long expireTime = 10 * 60 * 1000l; // 10分钟过期
 	private static final int maxCacheSize = 50; // 缓存数上限
 
 	/**

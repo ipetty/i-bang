@@ -1,7 +1,7 @@
 {
-  "versionCode":3,
-  "versionName":"1.0.3",
-  "versionDescription":"当前已实现功能：\n1、帐号注册、登录、个人信息；\n2、发布求助/帮忙，应征、委托、评价；\n3、分类检索、查看求助/帮忙、应征、评价；\n4、消息通知与查看；\n5、搜索功能；\n",
+  "versionCode":4,
+  "versionName":"1.0.4",
+  "versionDescription":"当前已实现功能：\n1、帐号注册、登录、个人信息；\n2、发布求助/帮忙，应征、委托、评价；\n3、分类检索、查看求助/帮忙、应征、评价；\n4、消息通知与查看；\n5、搜索功能；\n6、修复界面卡屏的bug\n",
   "downloadUrl":"http://51bbm.com/files/ibang.apk",
   "forceUpdate":false
 }
