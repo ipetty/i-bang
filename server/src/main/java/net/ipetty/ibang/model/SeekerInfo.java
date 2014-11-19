@@ -1,12 +1,16 @@
 package net.ipetty.ibang.model;
 
+import java.io.Serializable;
+
 /**
  * 用户作为求助者身份的相应信息
- * 
  * @author luocanfeng
  * @date 2014年9月17日
  */
-public class SeekerInfo {
+public class SeekerInfo implements Serializable {
+
+	/** serialVersionUID */
+	private static final long serialVersionUID = 2016006370693751462L;
 
 	private Integer userId; // 用户ID
 	private int seekCount; // 总的完成求助次数

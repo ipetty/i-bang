@@ -1,5 +1,6 @@
 package net.ipetty.ibang.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,11 +8,13 @@ import net.ipetty.ibang.vo.SeekCategory;
 
 /**
  * 用户作为帮助者身份的相应信息
- * 
  * @author luocanfeng
  * @date 2014年9月17日
  */
-public class OffererInfo {
+public class OffererInfo implements Serializable {
+
+	/** serialVersionUID */
+	private static final long serialVersionUID = -8549979830611802071L;
 
 	private Integer userId; // 用户ID
 	private int offerCount; // 总的完成帮助次数
