@@ -51,6 +51,7 @@ public class EvaluationActivity extends Activity {
 
 		TextView evaluation = (TextView) this.findViewById(R.id.evaluation);
 		evaluation.setOnClickListener(new OnClickListener() {
+
 			@Override
 			public void onClick(View v) {
 				final List<File> files = uploadView.getFiles();
@@ -75,34 +76,35 @@ public class EvaluationActivity extends Activity {
 
 		RadioGroup group = (RadioGroup) this.findViewById(R.id.radioGroup);
 		group.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+
 			@Override
 			public void onCheckedChanged(RadioGroup group, int checkedId) {
 				int radioButtonId = group.getCheckedRadioButtonId();
 				switch (radioButtonId) {
-				case R.id.radio0: {
-					point = 10;
-					break;
-				}
-				case R.id.radio1: {
-					point = 7;
-					break;
-				}
-				case R.id.radio2: {
-					point = 4;
-					break;
-				}
-				case R.id.radio3: {
-					point = 2;
-					break;
-				}
-				case R.id.radio4: {
-					point = 1;
-					break;
-				}
-				case R.id.radio5: {
-					point = 0;
-					break;
-				}
+					case R.id.radio0: {
+						point = 10;
+						break;
+					}
+					case R.id.radio1: {
+						point = 7;
+						break;
+					}
+					case R.id.radio2: {
+						point = 4;
+						break;
+					}
+					case R.id.radio3: {
+						point = 2;
+						break;
+					}
+					case R.id.radio4: {
+						point = 1;
+						break;
+					}
+					case R.id.radio5: {
+						point = 0;
+						break;
+					}
 				}
 			}
 		});
@@ -113,4 +115,5 @@ public class EvaluationActivity extends Activity {
 		super.onActivityResult(requestCode, resultCode, data);
 		uploadView.onActivityResult(requestCode, resultCode, data);
 	}
+
 }

@@ -198,7 +198,7 @@ public class DelegationActivity extends Activity {
 						}
 
 						delegationId = delegationVO.getId();
-						offerer = delegationVO.getOfferer();
+						offerer = offerVO.getOfferer();
 
 						// 获取数据，seek
 						new GetSeekByIdTask(DelegationActivity.this).setListener(
