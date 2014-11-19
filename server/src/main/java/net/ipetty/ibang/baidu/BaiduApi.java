@@ -46,9 +46,8 @@ public interface BaiduApi {
     /**
      * 查
      */
-    @FormUrlEncoded
-    @POST("/geodata/v3/poi/detail")
-    public PoiRetVO lbsGetPoi(@Field("id") String id, @Field("ak") String ak, @Field("geotable_id") String geotable_id);
+    @GET("/geodata/v3/poi/detail")
+    public PoiRetVO lbsGetPoi(@Query("id") String id, @Query("ak") String ak, @Query("geotable_id") String geotable_id);
 
     /**
      * 查附近
@@ -62,16 +61,14 @@ public interface BaiduApi {
      * @param tags 标签,样例：美食 小吃
      * @param sortby 排序字段,格式为sortby={key1}:value1|{key2:val2|key3:val3}。 最多支持16个字段排序 {keyname}:1 升序 {keyname}:-1 降序
      * 以下keyname为系统预定义的： distance 距离排序 weight 权重排序
-     * @param filter
      * @param pageIndex
      * @param pageSize
      */
-    @FormUrlEncoded
-    @POST("/geosearch/v3/nearby")
-    public NearbyRetVO lbsGetNearby(@Field("ak") String ak, @Field("geotable_id") String geotable_id, @Field("q") String q,
-        @Field("location") String location, @Field("coord_type") Integer coordType, @Field("radius") Integer radius,
-        @Field("tags") String tags, @Field("sortby") String sortby, @Field("filter") String filter,
-        @Field("page_index") Integer pageIndex, @Field("page_size") Integer pageSize);
+    @GET("/geosearch/v3/nearby")
+    public NearbyRetVO lbsGetNearby(@Query("ak") String ak, @Query("geotable_id") String geotable_id, @Query("q") String q,
+        @Query("location") String location, @Query("coord_type") Integer coordType, @Query("radius") Integer radius,
+        @Query("tags") String tags, @Query("sortby") String sortby,
+        @Query("page_index") Integer pageIndex, @Query("page_size") Integer pageSize);
 
     /**
      * 地址转坐标

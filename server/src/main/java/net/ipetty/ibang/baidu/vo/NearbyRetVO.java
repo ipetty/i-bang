@@ -11,20 +11,50 @@ package net.ipetty.ibang.baidu.vo;
  */
 public class NearbyRetVO extends RetVO {
 
-    private PoiVO[] poi;
+    private PoiVO[] contents;
+    private Integer total;
+    private Integer size;
 
     /**
-     * @return the poi
+     * @return the contents
      */
-    public PoiVO[] getPoi() {
-        return poi;
+    public PoiVO[] getContents() {
+        return contents;
     }
 
     /**
-     * @param poi the poi to set
+     * @param contents the contents to set
      */
-    public void setPoi(PoiVO[] poi) {
-        this.poi = poi;
+    public void setContents(PoiVO[] contents) {
+        this.contents = contents;
+    }
+
+    /**
+     * @return the total
+     */
+    public Integer getTotal() {
+        return total;
+    }
+
+    /**
+     * @param total the total to set
+     */
+    public void setTotal(Integer total) {
+        this.total = total;
+    }
+
+    /**
+     * @return the size
+     */
+    public Integer getSize() {
+        return size;
+    }
+
+    /**
+     * @param size the size to set
+     */
+    public void setSize(Integer size) {
+        this.size = size;
     }
 
 }
