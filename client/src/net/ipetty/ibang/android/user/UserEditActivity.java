@@ -53,18 +53,25 @@ public class UserEditActivity extends Activity {
 		button = this.findViewById(R.id.button);
 
 		button.setOnClickListener(new OnClickListener() {
+
 			@Override
 			public void onClick(View v) {
+				UserVO currentUser = ApiContext.getInstance(UserEditActivity.this).getCurrentUser();
 				UserFormVO userForm = new UserFormVO();
-				userForm.setId(ApiContext.getInstance(UserEditActivity.this).getCurrentUserId());
+				userForm.setId(currentUser.getId());
 				userForm.setNickname(nickname.getText().toString());
-				// userForm.setGender(gender);
 				userForm.setJob(job.getText().toString());
 				userForm.setPhone(phone.getText().toString());
-				// userForm.setTelephone(telephone);
 				userForm.setSignature(signature.getText().toString());
 				userForm.setGender(user.getGender());
-				// userForm.setAddress(address);
+
+				userForm.setTelephone(currentUser.getTelephone());
+				userForm.setSpeciality(currentUser.getSpeciality());
+				userForm.setPreference(currentUser.getPreference());
+				userForm.setProvince(currentUser.getProvince());
+				userForm.setCity(currentUser.getCity());
+				userForm.setDistrict(currentUser.getDistrict());
+				userForm.setAddress(currentUser.getAddress());
 
 				// update user;
 				new UpdateProfileTask(UserEditActivity.this).setListener(
