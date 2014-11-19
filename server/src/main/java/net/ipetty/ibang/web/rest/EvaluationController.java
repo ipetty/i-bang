@@ -1,11 +1,14 @@
 package net.ipetty.ibang.web.rest;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
 
 import net.ipetty.ibang.model.Evaluation;
+import net.ipetty.ibang.model.User;
 import net.ipetty.ibang.service.EvaluationService;
+import net.ipetty.ibang.service.UserService;
 import net.ipetty.ibang.vo.EvaluationVO;
 
 import org.springframework.stereotype.Controller;
@@ -16,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 /**
  * EvaluationController
- * 
  * @author luocanfeng
  * @date 2014年10月16日
  */
@@ -25,6 +27,9 @@ public class EvaluationController extends BaseController {
 
 	@Resource
 	private EvaluationService evaluationService;
+
+	@Resource
+	private UserService userService;
 
 	/**
 	 * 评价
@@ -62,35 +67,52 @@ public class EvaluationController extends BaseController {
 		Assert.notNull(delegationId, "委托单ID不能为空");
 
 		List<Evaluation> evaluations = evaluationService.listByDelegationId(delegationId);
-		return Evaluation.listToVoList(evaluations);
+		return listToVoList(evaluations);
+	}
+
+	private List<EvaluationVO> listToVoList(List<Evaluation> list) {
+		List<EvaluationVO> voList = new ArrayList<EvaluationVO>();
+		for (Evaluation entity : list) {
+			EvaluationVO vo = entity.toVO();
+			Integer userId = entity.getEvaluatorId();
+			if (userId != null) {
+				User user = userService.getById(userId);
+				vo.setEvaluatorNickname(user.getNickname());
+				vo.setEvaluatorAvatar(user.getAvatar());
+			}
+			userId = entity.getEvaluateTargetId();
+			if (userId != null) {
+				User user = userService.getById(userId);
+				vo.setEvaluateTargetNickname(user.getNickname());
+				vo.setEvaluateTargetAvatar(user.getAvatar());
+			}
+			voList.add(vo);
+		}
+		return voList;
 	}
 
 	/**
 	 * 获取指定用户给出的评价列表
-	 * 
-	 * @param pageNumber
-	 *            分页页码，从0开始
+	 * @param pageNumber 分页页码，从0开始
 	 */
 	@RequestMapping(value = "/evaluationlist/byevaluator", method = RequestMethod.GET)
 	public List<EvaluationVO> listByEvaluatorId(Integer userId, int pageNumber, int pageSize) {
 		Assert.notNull(userId, "用户ID不能为空");
 
 		List<Evaluation> evaluations = evaluationService.listByEvaluatorId(userId, pageNumber, pageSize);
-		return Evaluation.listToVoList(evaluations);
+		return listToVoList(evaluations);
 	}
 
 	/**
 	 * 获取指定用户获得的评价列表
-	 * 
-	 * @param pageNumber
-	 *            分页页码，从0开始
+	 * @param pageNumber 分页页码，从0开始
 	 */
 	@RequestMapping(value = "/evaluationlist/byevaluatetarget", method = RequestMethod.GET)
 	public List<EvaluationVO> listByEvaluateTargetId(Integer userId, int pageNumber, int pageSize) {
 		Assert.notNull(userId, "用户ID不能为空");
 
 		List<Evaluation> evaluations = evaluationService.listByEvaluateTargetId(userId, pageNumber, pageSize);
-		return Evaluation.listToVoList(evaluations);
+		return listToVoList(evaluations);
 	}
 
 }

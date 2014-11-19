@@ -1,8 +1,6 @@
 package net.ipetty.ibang.model;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import net.ipetty.ibang.vo.DelegationVO;
 
@@ -10,7 +8,6 @@ import org.springframework.beans.BeanUtils;
 
 /**
  * 委托
- * 
  * @author luocanfeng
  * @date 2014年9月17日
  */
@@ -46,13 +43,14 @@ public class Delegation extends AbstractEntity {
 		return entity;
 	}
 
-	public static List<DelegationVO> listToVoList(List<Delegation> delegationList) {
-		List<DelegationVO> voList = new ArrayList<DelegationVO>();
-		for (Delegation delegation : delegationList) {
-			voList.add(delegation.toVO());
-		}
-		return voList;
-	}
+	// public static List<DelegationVO> listToVoList(List<Delegation>
+	// delegationList) {
+	// List<DelegationVO> voList = new ArrayList<DelegationVO>();
+	// for (Delegation delegation : delegationList) {
+	// voList.add(delegation.toVO());
+	// }
+	// return voList;
+	// }
 
 	public Long getId() {
 		return id;

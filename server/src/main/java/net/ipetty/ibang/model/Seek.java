@@ -77,13 +77,13 @@ public class Seek extends AbstractEntity {
 		return entity;
 	}
 
-	public static List<SeekVO> listToVoList(List<Seek> seekList) {
-		List<SeekVO> voList = new ArrayList<SeekVO>();
-		for (Seek seek : seekList) {
-			voList.add(seek.toVO());
-		}
-		return voList;
-	}
+	// public static List<SeekVO> listToVoList(List<Seek> seekList) {
+	// List<SeekVO> voList = new ArrayList<SeekVO>();
+	// for (Seek seek : seekList) {
+	// voList.add(seek.toVO());
+	// }
+	// return voList;
+	// }
 
 	public Long getId() {
 		return id;

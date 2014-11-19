@@ -1,5 +1,6 @@
 package net.ipetty.ibang.web.rest;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -7,7 +8,9 @@ import javax.annotation.Resource;
 import net.ipetty.ibang.context.UserContext;
 import net.ipetty.ibang.context.UserPrincipal;
 import net.ipetty.ibang.model.Offer;
+import net.ipetty.ibang.model.User;
 import net.ipetty.ibang.service.OfferService;
+import net.ipetty.ibang.service.UserService;
 import net.ipetty.ibang.vo.OfferVO;
 import net.ipetty.ibang.web.rest.exception.RestException;
 
@@ -19,7 +22,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 /**
  * OfferController
- * 
  * @author luocanfeng
  * @date 2014年10月14日
  */
@@ -28,6 +30,9 @@ public class OfferController extends BaseController {
 
 	@Resource
 	private OfferService offerService;
+
+	@Resource
+	private UserService userService;
 
 	/**
 	 * 应征
@@ -70,21 +75,34 @@ public class OfferController extends BaseController {
 		Assert.notNull(seekId, "应征单ID不能为空");
 
 		List<Offer> offers = offerService.listBySeekId(seekId);
-		return Offer.listToVoList(offers);
+		return listToVoList(offers);
+	}
+
+	private List<OfferVO> listToVoList(List<Offer> list) {
+		List<OfferVO> voList = new ArrayList<OfferVO>();
+		for (Offer entity : list) {
+			OfferVO vo = entity.toVO();
+			Integer userId = entity.getOffererId();
+			if (userId != null) {
+				User user = userService.getById(userId);
+				vo.setOffererNickname(user.getNickname());
+				vo.setOffererAvatar(user.getAvatar());
+			}
+			voList.add(vo);
+		}
+		return voList;
 	}
 
 	/**
 	 * 获取指定用户的应征列表
-	 * 
-	 * @param pageNumber
-	 *            分页页码，从0开始
+	 * @param pageNumber 分页页码，从0开始
 	 */
 	@RequestMapping(value = "/offerlist/byuser", method = RequestMethod.GET)
 	public List<OfferVO> listByUserId(Integer userId, int pageNumber, int pageSize) {
 		Assert.notNull(userId, "用户ID不能为空");
 
 		List<Offer> offers = offerService.listByUserId(userId, pageNumber, pageSize);
-		return Offer.listToVoList(offers);
+		return listToVoList(offers);
 	}
 
 	/**

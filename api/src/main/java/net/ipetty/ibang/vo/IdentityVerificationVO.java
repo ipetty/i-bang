@@ -13,6 +13,8 @@ public class IdentityVerificationVO extends BaseVO {
 	private static final long serialVersionUID = 3568443716375286837L;
 
 	private Integer userId; // 待审核身份的用户ID
+	private String userNickname; // 待审核用户昵称
+	private String userAvatar; // 待审核用户头像
 	private String realName; // 真实姓名
 	private String idNumber; // 身份证号
 	private String idCardFront; // 身份证正面照
@@ -35,6 +37,22 @@ public class IdentityVerificationVO extends BaseVO {
 
 	public void setUserId(Integer userId) {
 		this.userId = userId;
+	}
+
+	public String getUserNickname() {
+		return userNickname;
+	}
+
+	public void setUserNickname(String userNickname) {
+		this.userNickname = userNickname;
+	}
+
+	public String getUserAvatar() {
+		return userAvatar;
+	}
+
+	public void setUserAvatar(String userAvatar) {
+		this.userAvatar = userAvatar;
 	}
 
 	public String getRealName() {

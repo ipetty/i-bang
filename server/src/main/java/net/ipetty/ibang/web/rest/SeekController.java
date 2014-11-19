@@ -1,5 +1,6 @@
 package net.ipetty.ibang.web.rest;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -10,8 +11,10 @@ import net.ipetty.ibang.context.UserContext;
 import net.ipetty.ibang.context.UserPrincipal;
 import net.ipetty.ibang.model.Location;
 import net.ipetty.ibang.model.Seek;
+import net.ipetty.ibang.model.User;
 import net.ipetty.ibang.service.LocationService;
 import net.ipetty.ibang.service.SeekService;
+import net.ipetty.ibang.service.UserService;
 import net.ipetty.ibang.util.DateUtils;
 import net.ipetty.ibang.vo.Constants;
 import net.ipetty.ibang.vo.LocationVO;
@@ -28,7 +31,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 /**
  * SeekController
- * 
  * @author luocanfeng
  * @date 2014年10月10日
  */
@@ -40,6 +42,9 @@ public class SeekController extends BaseController {
 
 	@Resource
 	private LocationService locationService;
+
+	@Resource
+	private UserService userService;
 
 	/**
 	 * 发布求助
@@ -146,35 +151,44 @@ public class SeekController extends BaseController {
 
 	/**
 	 * 获取最新的未关闭求助列表
-	 * 
-	 * @param pageNumber
-	 *            分页页码，从0开始
+	 * @param pageNumber 分页页码，从0开始
 	 */
 	@RequestMapping(value = "/seeklist/latest", method = RequestMethod.GET)
 	public List<SeekVO> listLatest(String timeline, int pageNumber, int pageSize) {
 		Date date = StringUtils.isBlank(timeline) ? new Date() : DateUtils.fromDatetimeString(timeline);
 		List<Seek> seeks = seekService.listLatest(Constants.SEEK_TYPE_SEEK, date, pageNumber, pageSize);
-		return Seek.listToVoList(seeks);
+		return listToVoList(seeks);
+	}
+
+	private List<SeekVO> listToVoList(List<Seek> list) {
+		List<SeekVO> voList = new ArrayList<SeekVO>();
+		for (Seek entity : list) {
+			SeekVO vo = entity.toVO();
+			Integer userId = entity.getSeekerId();
+			if (userId != null) {
+				User user = userService.getById(userId);
+				vo.setSeekerNickname(user.getNickname());
+				vo.setSeekerAvatar(user.getAvatar());
+			}
+			voList.add(vo);
+		}
+		return voList;
 	}
 
 	/**
 	 * 获取最新的未关闭求助/帮忙列表
-	 * 
-	 * @param pageNumber
-	 *            分页页码，从0开始
+	 * @param pageNumber 分页页码，从0开始
 	 */
 	@RequestMapping(value = "/seeks/latest", method = RequestMethod.GET)
 	public List<SeekVO> listLatest(String type, String timeline, int pageNumber, int pageSize) {
 		Date date = StringUtils.isBlank(timeline) ? new Date() : DateUtils.fromDatetimeString(timeline);
 		List<Seek> seeks = seekService.listLatest(type, date, pageNumber, pageSize);
-		return Seek.listToVoList(seeks);
+		return listToVoList(seeks);
 	}
 
 	/**
 	 * 获取指定分类中最新的未关闭求助列表
-	 * 
-	 * @param pageNumber
-	 *            分页页码，从0开始
+	 * @param pageNumber 分页页码，从0开始
 	 */
 	@RequestMapping(value = "/seeklist/latestbycategory", method = RequestMethod.GET)
 	public List<SeekVO> listLatestByCategory(String categoryL1, String categoryL2, String timeline, int pageNumber,
@@ -182,28 +196,24 @@ public class SeekController extends BaseController {
 		Date date = StringUtils.isBlank(timeline) ? new Date() : DateUtils.fromDatetimeString(timeline);
 		List<Seek> seeks = seekService.listLatestByCategory(Constants.SEEK_TYPE_SEEK, categoryL1, categoryL2, date,
 				pageNumber, pageSize);
-		return Seek.listToVoList(seeks);
+		return listToVoList(seeks);
 	}
 
 	/**
 	 * 获取指定分类中最新的未关闭求助/帮忙列表
-	 * 
-	 * @param pageNumber
-	 *            分页页码，从0开始
+	 * @param pageNumber 分页页码，从0开始
 	 */
 	@RequestMapping(value = "/seeks/latestbycategory", method = RequestMethod.GET)
 	public List<SeekVO> listLatestByCategory(String type, String categoryL1, String categoryL2, String timeline,
 			int pageNumber, int pageSize) {
 		Date date = StringUtils.isBlank(timeline) ? new Date() : DateUtils.fromDatetimeString(timeline);
 		List<Seek> seeks = seekService.listLatestByCategory(type, categoryL1, categoryL2, date, pageNumber, pageSize);
-		return Seek.listToVoList(seeks);
+		return listToVoList(seeks);
 	}
 
 	/**
 	 * 获取所在城市指定分类中最新的未关闭求助列表
-	 * 
-	 * @param pageNumber
-	 *            分页页码，从0开始
+	 * @param pageNumber 分页页码，从0开始
 	 */
 	@RequestMapping(value = "/seeklist/latestbycityorcategory", method = RequestMethod.GET)
 	public List<SeekVO> listLatestByCityOrCategory(String city, String district, String categoryL1, String categoryL2,
@@ -211,14 +221,12 @@ public class SeekController extends BaseController {
 		Date date = StringUtils.isBlank(timeline) ? new Date() : DateUtils.fromDatetimeString(timeline);
 		List<Seek> seeks = seekService.listLatestByCityOrCategory(Constants.SEEK_TYPE_SEEK, city, district, categoryL1,
 				categoryL2, date, pageNumber, pageSize);
-		return Seek.listToVoList(seeks);
+		return listToVoList(seeks);
 	}
 
 	/**
 	 * 获取所在城市指定分类中最新的未关闭求助/帮忙列表
-	 * 
-	 * @param pageNumber
-	 *            分页页码，从0开始
+	 * @param pageNumber 分页页码，从0开始
 	 */
 	@RequestMapping(value = "/seeks/latestbycityorcategory", method = RequestMethod.GET)
 	public List<SeekVO> listLatestByCityOrCategory(String type, String city, String district, String categoryL1,
@@ -226,14 +234,12 @@ public class SeekController extends BaseController {
 		Date date = StringUtils.isBlank(timeline) ? new Date() : DateUtils.fromDatetimeString(timeline);
 		List<Seek> seeks = seekService.listLatestByCityOrCategory(type, city, district, categoryL1, categoryL2, date,
 				pageNumber, pageSize);
-		return Seek.listToVoList(seeks);
+		return listToVoList(seeks);
 	}
 
 	/**
 	 * 获取所在城市指定用户帮忙范围内的最新未关闭求助列表
-	 * 
-	 * @param pageNumber
-	 *            分页页码，从0开始
+	 * @param pageNumber 分页页码，从0开始
 	 */
 	@RequestMapping(value = "/seeklist/latestbycityAndOfferRange", method = RequestMethod.GET)
 	public List<SeekVO> listLatestByCityAndOfferRange(String city, String district, Integer userId, String timeline,
@@ -241,14 +247,12 @@ public class SeekController extends BaseController {
 		Date date = StringUtils.isBlank(timeline) ? new Date() : DateUtils.fromDatetimeString(timeline);
 		List<Seek> seeks = seekService.listLatestByCityAndOfferRange(Constants.SEEK_TYPE_SEEK, city, district, userId,
 				date, pageNumber, pageSize);
-		return Seek.listToVoList(seeks);
+		return listToVoList(seeks);
 	}
 
 	/**
 	 * 获取所在城市指定用户帮忙范围内的最新未关闭求助/帮忙列表
-	 * 
-	 * @param pageNumber
-	 *            分页页码，从0开始
+	 * @param pageNumber 分页页码，从0开始
 	 */
 	@RequestMapping(value = "/seeks/latestbycityAndOfferRange", method = RequestMethod.GET)
 	public List<SeekVO> listLatestByCityAndOfferRange(String type, String city, String district, Integer userId,
@@ -256,62 +260,54 @@ public class SeekController extends BaseController {
 		Date date = StringUtils.isBlank(timeline) ? new Date() : DateUtils.fromDatetimeString(timeline);
 		List<Seek> seeks = seekService.listLatestByCityAndOfferRange(type, city, district, userId, date, pageNumber,
 				pageSize);
-		return Seek.listToVoList(seeks);
+		return listToVoList(seeks);
 	}
 
 	/**
 	 * 根据关键字搜索最新的未关闭求助列表
-	 * 
-	 * @param pageNumber
-	 *            分页页码，从0开始
+	 * @param pageNumber 分页页码，从0开始
 	 */
 	@RequestMapping(value = "/seeklist/latestbykeyword", method = RequestMethod.GET)
 	public List<SeekVO> listLatestByKeyword(String keyword, String timeline, int pageNumber, int pageSize) {
 		Date date = StringUtils.isBlank(timeline) ? new Date() : DateUtils.fromDatetimeString(timeline);
 		List<Seek> seeks = seekService.listLatestByKeyword(Constants.SEEK_TYPE_SEEK, keyword, date, pageNumber,
 				pageSize);
-		return Seek.listToVoList(seeks);
+		return listToVoList(seeks);
 	}
 
 	/**
 	 * 根据关键字搜索最新的未关闭求助/帮忙列表
-	 * 
-	 * @param pageNumber
-	 *            分页页码，从0开始
+	 * @param pageNumber 分页页码，从0开始
 	 */
 	@RequestMapping(value = "/seeks/latestbykeyword", method = RequestMethod.GET)
 	public List<SeekVO> listLatestByKeyword(String type, String keyword, String timeline, int pageNumber, int pageSize) {
 		Date date = StringUtils.isBlank(timeline) ? new Date() : DateUtils.fromDatetimeString(timeline);
 		List<Seek> seeks = seekService.listLatestByKeyword(type, keyword, date, pageNumber, pageSize);
-		return Seek.listToVoList(seeks);
+		return listToVoList(seeks);
 	}
 
 	/**
 	 * 获取指定用户的求助列表
-	 * 
-	 * @param pageNumber
-	 *            分页页码，从0开始
+	 * @param pageNumber 分页页码，从0开始
 	 */
 	@RequestMapping(value = "/seeklist/byuser", method = RequestMethod.GET)
 	public List<SeekVO> listByUserId(Integer userId, int pageNumber, int pageSize) {
 		Assert.notNull(userId, "用户ID不能为空");
 
 		List<Seek> seeks = seekService.listByUserId(Constants.SEEK_TYPE_SEEK, userId, pageNumber, pageSize);
-		return Seek.listToVoList(seeks);
+		return listToVoList(seeks);
 	}
 
 	/**
 	 * 获取指定用户的求助/帮忙列表
-	 * 
-	 * @param pageNumber
-	 *            分页页码，从0开始
+	 * @param pageNumber 分页页码，从0开始
 	 */
 	@RequestMapping(value = "/seeks/byuser", method = RequestMethod.GET)
 	public List<SeekVO> listByUserId(String type, Integer userId, int pageNumber, int pageSize) {
 		Assert.notNull(userId, "用户ID不能为空");
 
 		List<Seek> seeks = seekService.listByUserId(type, userId, pageNumber, pageSize);
-		return Seek.listToVoList(seeks);
+		return listToVoList(seeks);
 	}
 
 	/**
@@ -322,7 +318,7 @@ public class SeekController extends BaseController {
 		Assert.notNull(seekIds, "ID列表不能为空");
 
 		List<Seek> seeks = seekService.listByIds(Arrays.asList(seekIds));
-		return Seek.listToVoList(seeks);
+		return listToVoList(seeks);
 	}
 
 	/**

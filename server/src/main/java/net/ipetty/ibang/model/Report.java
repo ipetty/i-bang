@@ -1,8 +1,6 @@
 package net.ipetty.ibang.model;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import net.ipetty.ibang.vo.ReportVO;
 
@@ -48,13 +46,13 @@ public class Report extends AbstractEntity {
 		return entity;
 	}
 
-	public static List<ReportVO> listToVoList(List<Report> list) {
-		List<ReportVO> voList = new ArrayList<ReportVO>();
-		for (Report entity : list) {
-			voList.add(entity.toVO());
-		}
-		return voList;
-	}
+	// public static List<ReportVO> listToVoList(List<Report> list) {
+	// List<ReportVO> voList = new ArrayList<ReportVO>();
+	// for (Report entity : list) {
+	// voList.add(entity.toVO());
+	// }
+	// return voList;
+	// }
 
 	public Long getId() {
 		return id;

@@ -7,6 +7,7 @@ import java.util.List;
 import javax.annotation.Resource;
 
 import net.ipetty.ibang.model.Letter;
+import net.ipetty.ibang.model.User;
 import net.ipetty.ibang.repository.LetterDao;
 import net.ipetty.ibang.vo.LetterContacts;
 
@@ -25,6 +26,9 @@ public class LetterService extends BaseService {
 
 	@Resource
 	private LetterDao letterDao;
+
+	@Resource
+	private UserService userService;
 
 	/**
 	 * 发送站内信
@@ -67,7 +71,15 @@ public class LetterService extends BaseService {
 	 * 获取指定用户的联系人列表
 	 */
 	public List<LetterContacts> listContactsByUserId(Integer userId, int pageNumber, int pageSize) {
-		return letterDao.listContactsByUserId(userId, pageNumber, pageSize);
+		List<LetterContacts> letterContactsList = letterDao.listContactsByUserId(userId, pageNumber, pageSize);
+		for (LetterContacts letterContacts : letterContactsList) {
+			if (letterContacts != null && letterContacts.getUserId() != null) {
+				User user = userService.getById(letterContacts.getUserId());
+				letterContacts.setUserNickname(user.getNickname());
+				letterContacts.setUserAvatar(user.getAvatar());
+			}
+		}
+		return letterContactsList;
 	}
 
 	/**

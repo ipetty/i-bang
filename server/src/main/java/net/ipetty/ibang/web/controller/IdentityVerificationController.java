@@ -1,5 +1,6 @@
 package net.ipetty.ibang.web.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -11,6 +12,7 @@ import net.ipetty.ibang.admin.AdminConstants;
 import net.ipetty.ibang.model.IdentityVerification;
 import net.ipetty.ibang.model.User;
 import net.ipetty.ibang.service.IdentityVerificationService;
+import net.ipetty.ibang.service.UserService;
 import net.ipetty.ibang.vo.IdentityVerificationVO;
 
 import org.apache.commons.lang3.StringUtils;
@@ -32,6 +34,9 @@ public class IdentityVerificationController {
 
 	@Resource
 	private IdentityVerificationService identityVerificationService;
+
+	@Resource
+	private UserService userService;
 
 	@RequestMapping(value = "/verify", method = RequestMethod.GET)
 	public String verify(Model model, HttpServletRequest request, HttpServletResponse response) {
@@ -63,7 +68,7 @@ public class IdentityVerificationController {
 		// TODO:这里需要根据参数区分是全部还是部分
 		List<IdentityVerification> identityVerifications = identityVerificationService.listVerifying(cPage - 1,
 				PAGE_SIZE);
-		List<IdentityVerificationVO> verifies = IdentityVerification.listToVoList(identityVerifications);
+		List<IdentityVerificationVO> verifies = listToVoList(identityVerifications);
 		int totalNum = identityVerificationService.getVerifyingTotalNum();
 		int totalPage = totalNum / PAGE_SIZE;
 		if (totalNum % PAGE_SIZE != 0) {
@@ -75,6 +80,21 @@ public class IdentityVerificationController {
 		model.addAttribute("totalPage", totalPage);
 
 		return "/admin/verify";
+	}
+
+	private List<IdentityVerificationVO> listToVoList(List<IdentityVerification> list) {
+		List<IdentityVerificationVO> voList = new ArrayList<IdentityVerificationVO>();
+		for (IdentityVerification entity : list) {
+			IdentityVerificationVO vo = entity.toVO();
+			Integer userId = entity.getUserId();
+			if (userId != null) {
+				User user = userService.getById(userId);
+				vo.setUserNickname(user.getNickname());
+				vo.setUserAvatar(user.getAvatar());
+			}
+			voList.add(vo);
+		}
+		return voList;
 	}
 
 	/**

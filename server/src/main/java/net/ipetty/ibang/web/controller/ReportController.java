@@ -1,5 +1,6 @@
 package net.ipetty.ibang.web.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -11,6 +12,7 @@ import net.ipetty.ibang.admin.AdminConstants;
 import net.ipetty.ibang.model.Report;
 import net.ipetty.ibang.model.User;
 import net.ipetty.ibang.service.ReportService;
+import net.ipetty.ibang.service.UserService;
 import net.ipetty.ibang.vo.ReportVO;
 
 import org.apache.commons.lang3.StringUtils;
@@ -31,6 +33,9 @@ public class ReportController {
 
 	@Resource
 	private ReportService reportService;
+
+	@Resource
+	private UserService userService;
 
 	@RequestMapping(value = "/reportlist", method = RequestMethod.GET)
 	public String listReports(Model model, HttpServletRequest request, HttpServletResponse response, String currentPage) {
@@ -55,7 +60,7 @@ public class ReportController {
 		}
 		int cPage = Integer.parseInt(currentPage);
 		// TODO:这里需要根据参数区分是全部还是部分
-		List<ReportVO> reportList = Report.listToVoList(reportService.listUndealed(cPage - 1, PAGE_SIZE));
+		List<ReportVO> reportList = listToVoList(reportService.listUndealed(cPage - 1, PAGE_SIZE));
 		int totalNum = reportService.getUndealedNum();
 		int totalPage = totalNum / PAGE_SIZE;
 		if (totalNum % PAGE_SIZE != 0) {
@@ -67,6 +72,27 @@ public class ReportController {
 		model.addAttribute("totalPage", totalPage);
 
 		return "admin/report";
+	}
+
+	private List<ReportVO> listToVoList(List<Report> list) {
+		List<ReportVO> voList = new ArrayList<ReportVO>();
+		for (Report entity : list) {
+			ReportVO vo = entity.toVO();
+			Integer userId = entity.getUserId();
+			if (userId != null) {
+				User user = userService.getById(userId);
+				vo.setUserNickname(user.getNickname());
+				vo.setUserAvatar(user.getAvatar());
+			}
+			userId = entity.getReporterId();
+			if (userId != null) {
+				User user = userService.getById(userId);
+				vo.setReporterNickname(user.getNickname());
+				vo.setReporterAvatar(user.getAvatar());
+			}
+			voList.add(vo);
+		}
+		return voList;
 	}
 
 	/**

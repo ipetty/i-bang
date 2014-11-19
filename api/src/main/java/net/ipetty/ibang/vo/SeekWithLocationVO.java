@@ -6,7 +6,6 @@ import java.util.List;
 
 /**
  * 求助（带地理位置）
- * 
  * @author luocanfeng
  * @date 2014年11月3日
  */
@@ -18,6 +17,8 @@ public class SeekWithLocationVO extends BaseVO {
 	private Long id; // 非业务主键
 	private String sn; // 求助单流水号
 	private Integer seekerId; // 求助者ID
+	private String seekerNickname; // 求助者昵称
+	private String seekerAvatar; // 求助者头像
 	private boolean contactInfoVisible; // 是否公开求助者联系信息，默认隐藏
 	private String categoryL1; // 一级分类
 	private String categoryL2; // 二级分类
@@ -66,6 +67,22 @@ public class SeekWithLocationVO extends BaseVO {
 
 	public void setSeekerId(Integer seekerId) {
 		this.seekerId = seekerId;
+	}
+
+	public String getSeekerNickname() {
+		return seekerNickname;
+	}
+
+	public void setSeekerNickname(String seekerNickname) {
+		this.seekerNickname = seekerNickname;
+	}
+
+	public String getSeekerAvatar() {
+		return seekerAvatar;
+	}
+
+	public void setSeekerAvatar(String seekerAvatar) {
+		this.seekerAvatar = seekerAvatar;
 	}
 
 	public boolean isContactInfoVisible() {

@@ -11,7 +11,6 @@ import org.springframework.beans.BeanUtils;
 
 /**
  * 评价
- * 
  * @author luocanfeng
  * @date 2014年9月17日
  */
@@ -52,13 +51,14 @@ public class Evaluation extends AbstractEntity {
 		return entity;
 	}
 
-	public static List<EvaluationVO> listToVoList(List<Evaluation> evaluationList) {
-		List<EvaluationVO> voList = new ArrayList<EvaluationVO>();
-		for (Evaluation evaluation : evaluationList) {
-			voList.add(evaluation.toVO());
-		}
-		return voList;
-	}
+	// public static List<EvaluationVO> listToVoList(List<Evaluation>
+	// evaluationList) {
+	// List<EvaluationVO> voList = new ArrayList<EvaluationVO>();
+	// for (Evaluation evaluation : evaluationList) {
+	// voList.add(evaluation.toVO());
+	// }
+	// return voList;
+	// }
 
 	public Long getId() {
 		return id;

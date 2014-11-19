@@ -19,9 +19,13 @@ public class ReportVO extends BaseVO {
 	private String seekType; // 类型，求助 | 帮忙
 	private Long offerId; // 举报的应征单ID
 	private Integer userId; // 要举报的人
+	private String userNickname; // 要举报人的昵称
+	private String userAvatar; // 要举报人的头像
 	private String behave; // 举报行为类型，垃圾营销 | 小广告 | 虚假信息 | 抄袭 | 敏感信息
 	private String content; // 举报备注内容
 	private Integer reporterId; // 举报人
+	private String reporterNickname; // 举报人的昵称
+	private String reporterAvatar; // 举报人的头像
 	private Date createdOn; // 举报时间
 	private String result; // 处理结果，严惩不贷 | 警告 | 暂不处理 | 虚假举报 | 恶意举报
 	private Date dealedOn; // 受理时间
@@ -86,6 +90,22 @@ public class ReportVO extends BaseVO {
 		this.userId = userId;
 	}
 
+	public String getUserNickname() {
+		return userNickname;
+	}
+
+	public void setUserNickname(String userNickname) {
+		this.userNickname = userNickname;
+	}
+
+	public String getUserAvatar() {
+		return userAvatar;
+	}
+
+	public void setUserAvatar(String userAvatar) {
+		this.userAvatar = userAvatar;
+	}
+
 	public String getBehave() {
 		return behave;
 	}
@@ -108,6 +128,22 @@ public class ReportVO extends BaseVO {
 
 	public void setReporterId(Integer reporterId) {
 		this.reporterId = reporterId;
+	}
+
+	public String getReporterNickname() {
+		return reporterNickname;
+	}
+
+	public void setReporterNickname(String reporterNickname) {
+		this.reporterNickname = reporterNickname;
+	}
+
+	public String getReporterAvatar() {
+		return reporterAvatar;
+	}
+
+	public void setReporterAvatar(String reporterAvatar) {
+		this.reporterAvatar = reporterAvatar;
 	}
 
 	public Date getCreatedOn() {

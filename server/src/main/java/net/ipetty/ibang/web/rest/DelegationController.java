@@ -1,5 +1,6 @@
 package net.ipetty.ibang.web.rest;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -9,9 +10,11 @@ import net.ipetty.ibang.context.UserPrincipal;
 import net.ipetty.ibang.model.Delegation;
 import net.ipetty.ibang.model.Offer;
 import net.ipetty.ibang.model.Seek;
+import net.ipetty.ibang.model.User;
 import net.ipetty.ibang.service.DelegationService;
 import net.ipetty.ibang.service.OfferService;
 import net.ipetty.ibang.service.SeekService;
+import net.ipetty.ibang.service.UserService;
 import net.ipetty.ibang.vo.DelegationVO;
 import net.ipetty.ibang.web.rest.exception.RestException;
 
@@ -23,7 +26,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 /**
  * DelegationController
- * 
  * @author luocanfeng
  * @date 2014年10月15日
  */
@@ -38,6 +40,9 @@ public class DelegationController extends BaseController {
 
 	@Resource
 	private OfferService offerService;
+
+	@Resource
+	private UserService userService;
 
 	/**
 	 * 接受应征
@@ -96,30 +101,47 @@ public class DelegationController extends BaseController {
 
 	/**
 	 * 获取指定用户的委托列表
-	 * 
-	 * @param pageNumber
-	 *            分页页码，从0开始
+	 * @param pageNumber 分页页码，从0开始
 	 */
 	@RequestMapping(value = "/delegationlist/byuser", method = RequestMethod.GET)
 	public List<DelegationVO> listByUserId(Integer userId, int pageNumber, int pageSize) {
 		Assert.notNull(userId, "用户ID不能为空");
 
 		List<Delegation> delegations = delegationService.listByUserId(userId, pageNumber, pageSize);
-		return Delegation.listToVoList(delegations);
+		return listToVoList(delegations);
+	}
+
+	private List<DelegationVO> listToVoList(List<Delegation> list) {
+		List<DelegationVO> voList = new ArrayList<DelegationVO>();
+		for (Delegation entity : list) {
+			DelegationVO vo = entity.toVO();
+			Integer userId = entity.getSeekerId();
+			if (userId != null) {
+				User user = userService.getById(userId);
+				vo.setSeekerNickname(user.getNickname());
+				vo.setSeekerAvatar(user.getAvatar());
+			}
+			userId = entity.getOffererId();
+			if (userId != null) {
+				User user = userService.getById(userId);
+				vo.setOffererNickname(user.getNickname());
+				vo.setOffererAvatar(user.getAvatar());
+			}
+			voList.add(vo);
+		}
+		return voList;
 	}
 
 	/**
 	 * 获取指定用户的指定状态的委托列表
-	 * 
-	 * @param pageNumber
-	 *            分页页码，从0开始
+	 * @param pageNumber 分页页码，从0开始
 	 */
 	@RequestMapping(value = "/delegationlist/byuserandstatus", method = RequestMethod.GET)
 	public List<DelegationVO> listByUserIdAndStatus(Integer userId, String status, int pageNumber, int pageSize) {
 		Assert.notNull(userId, "用户ID不能为空");
 
 		List<Delegation> delegations = delegationService.listByUserIdAndStatus(userId, status, pageNumber, pageSize);
-		return Delegation.listToVoList(delegations);
+		return listToVoList(delegations);
 	}
 
 	/**
@@ -130,7 +152,7 @@ public class DelegationController extends BaseController {
 		Assert.notNull(seekId, "求助单ID不能为空");
 
 		List<Delegation> delegations = delegationService.listBySeekId(seekId);
-		return Delegation.listToVoList(delegations);
+		return listToVoList(delegations);
 	}
 
 	/**

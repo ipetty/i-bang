@@ -11,6 +11,8 @@ public class LetterContacts extends BaseVO {
 	private static final long serialVersionUID = -5490871107502710908L;
 
 	private Integer userId; // 联系人ID
+	private String userNickname; // 联系人昵称
+	private String userAvatar; // 联系人头像
 	private String latestContent; // 最后一次交谈内容
 	private boolean read; // 是否已读所有沟通内容
 	private int unreadNumber; // 未读站内信条数
@@ -25,6 +27,22 @@ public class LetterContacts extends BaseVO {
 
 	public void setUserId(Integer userId) {
 		this.userId = userId;
+	}
+
+	public String getUserNickname() {
+		return userNickname;
+	}
+
+	public void setUserNickname(String userNickname) {
+		this.userNickname = userNickname;
+	}
+
+	public String getUserAvatar() {
+		return userAvatar;
+	}
+
+	public void setUserAvatar(String userAvatar) {
+		this.userAvatar = userAvatar;
 	}
 
 	public String getLatestContent() {

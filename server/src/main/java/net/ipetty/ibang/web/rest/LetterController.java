@@ -1,5 +1,6 @@
 package net.ipetty.ibang.web.rest;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -7,7 +8,9 @@ import javax.annotation.Resource;
 import net.ipetty.ibang.context.UserContext;
 import net.ipetty.ibang.context.UserPrincipal;
 import net.ipetty.ibang.model.Letter;
+import net.ipetty.ibang.model.User;
 import net.ipetty.ibang.service.LetterService;
+import net.ipetty.ibang.service.UserService;
 import net.ipetty.ibang.vo.LetterContacts;
 import net.ipetty.ibang.vo.LetterVO;
 import net.ipetty.ibang.web.rest.exception.RestException;
@@ -27,6 +30,9 @@ public class LetterController extends BaseController {
 
 	@Resource
 	private LetterService letterService;
+
+	@Resource
+	private UserService userService;
 
 	/**
 	 * 发送站内信
@@ -74,7 +80,22 @@ public class LetterController extends BaseController {
 
 		List<Letter> letters = letterService.listByUserIdAndContactUserId(currentUser.getId(), contactUserId,
 				pageNumber, pageSize);
-		return Letter.listToVoList(letters);
+		return listToVoList(letters);
+	}
+
+	private List<LetterVO> listToVoList(List<Letter> list) {
+		List<LetterVO> voList = new ArrayList<LetterVO>();
+		for (Letter entity : list) {
+			LetterVO vo = entity.toVO();
+			Integer userId = entity.getCooperatorId();
+			if (userId != null) {
+				User user = userService.getById(userId);
+				vo.setCooperatorNickname(user.getNickname());
+				vo.setCooperatorAvatar(user.getAvatar());
+			}
+			voList.add(vo);
+		}
+		return voList;
 	}
 
 	/**
