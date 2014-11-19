@@ -5,15 +5,16 @@ import java.util.Map;
 
 /**
  * Caches
- * 
  * @author luocanfeng
  * @date 2014年10月14日
  */
-@SuppressWarnings({ "rawtypes", "unchecked" })
+@SuppressWarnings({
+		"rawtypes", "unchecked"
+})
 public class Caches {
 
 	private static final Map<Class, Map> cache = new HashMap<Class, Map>();
-	private static final Long expireTime = 3 * 60 * 1000l; // 3分钟过期
+	private static final Long expireTime = 30 * 60 * 1000l; // 30分钟过期
 	private static final int maxCacheSize = 50; // 缓存数上限
 
 	/**
@@ -67,6 +68,7 @@ public class Caches {
 	 * 缓存中保存的数据对象
 	 */
 	public static class Entry<K extends Object, V extends Object> {
+
 		private K key;
 		private V value;
 		private Long expireOn; // 记录插入时间戳（毫秒数）
