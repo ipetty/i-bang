@@ -6,7 +6,6 @@ import net.ipetty.ibang.android.core.DefaultTaskListener;
 import net.ipetty.ibang.android.core.ui.MyPullToRefreshListView;
 import net.ipetty.ibang.android.seek.MyEvaluationActivity;
 import net.ipetty.ibang.android.seek.MyEvaluationActivity.EvaluationAdapter;
-import net.ipetty.ibang.android.seek.MyOfferActivity;
 import net.ipetty.ibang.vo.EvaluationVO;
 import android.app.Activity;
 import android.util.Log;
@@ -49,7 +48,7 @@ public class ListEvaluationByEvaluateTargetIdTaskListener extends DefaultTaskLis
 			adapter.addData(evaluations);
 		}
 		listView.onRefreshComplete();
-		if (activity instanceof MyOfferActivity) {
+		if (activity instanceof MyEvaluationActivity) {
 			((MyEvaluationActivity) activity).loadMoreForResult_to_me(evaluations);
 		}
 	}

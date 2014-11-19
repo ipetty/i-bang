@@ -198,7 +198,7 @@ public class DelegationActivity extends Activity {
 						}
 
 						delegationId = delegationVO.getId();
-						offerer = delegationVO.getOfferer();
+						offerer = offerVO.getOfferer();
 
 						// 获取数据，seek
 						new GetSeekByIdTask(DelegationActivity.this).setListener(
@@ -300,7 +300,7 @@ public class DelegationActivity extends Activity {
 									// 求助者对此次委托的评分信息
 									delegation_evaluation.setText(String.valueOf(evaluation.getPoint()));
 									delegation_evaluation.setVisibility(View.VISIBLE);
-									if (StringUtils.isNoneEmpty(evaluation.getContent())) {
+									if (StringUtils.isNotEmpty(evaluation.getContent())) {
 										delegation_evaluation_content.setText(evaluation.getContent());
 										delegation_evaluation_content.setVisibility(View.VISIBLE);
 									} else {
@@ -320,7 +320,7 @@ public class DelegationActivity extends Activity {
 									// 帮助者对此次委托的评分信息
 									seek_evaluation.setText(String.valueOf(evaluation.getPoint()));
 									seek_evaluation.setVisibility(View.VISIBLE);
-									if (StringUtils.isNoneEmpty(evaluation.getContent())) {
+									if (StringUtils.isNotEmpty(evaluation.getContent())) {
 										seek_evaluation_content.setText(evaluation.getContent());
 										seek_evaluation_content.setVisibility(View.VISIBLE);
 									} else {
