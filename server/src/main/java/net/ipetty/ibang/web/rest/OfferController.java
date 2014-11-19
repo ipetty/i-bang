@@ -53,7 +53,7 @@ public class OfferController extends BaseController {
 		offerService.offer(o);
 		o = offerService.getById(o.getId());
 
-		return o.toVO();
+		return entityToVo(o);
 	}
 
 	/**
@@ -63,7 +63,8 @@ public class OfferController extends BaseController {
 	public OfferVO getById(Long id) {
 		Assert.notNull(id, "应征单ID不能为空");
 
-		return offerService.getById(id).toVO();
+		Offer o = offerService.getById(id);
+		return entityToVo(o);
 	}
 
 	/**
@@ -80,14 +81,18 @@ public class OfferController extends BaseController {
 	private List<OfferVO> listToVoList(List<Offer> list) {
 		List<OfferVO> voList = new ArrayList<OfferVO>();
 		for (Offer entity : list) {
-			OfferVO vo = entity.toVO();
-			Integer userId = entity.getOffererId();
-			if (userId != null) {
-				vo.setOfferer(userService.getById(userId).toVO());
-			}
-			voList.add(vo);
+			voList.add(entityToVo(entity));
 		}
 		return voList;
+	}
+
+	private OfferVO entityToVo(Offer entity) {
+		OfferVO vo = entity.toVO();
+		Integer userId = entity.getOffererId();
+		if (userId != null) {
+			vo.setOfferer(userService.getById(userId).toVO());
+		}
+		return vo;
 	}
 
 	/**

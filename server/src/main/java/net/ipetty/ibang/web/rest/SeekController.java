@@ -65,7 +65,7 @@ public class SeekController extends BaseController {
 		seekService.publish(s);
 		s = seekService.getById(s.getId());
 
-		return s.toVO();
+		return entityToVo(s);
 	}
 
 	/**
@@ -100,7 +100,7 @@ public class SeekController extends BaseController {
 		seekService.publish(s);
 		s = seekService.getById(s.getId());
 
-		return s.toVO();
+		return entityToVo(s);
 	}
 
 	/**
@@ -135,7 +135,7 @@ public class SeekController extends BaseController {
 		seekService.publish(s);
 		s = seekService.getById(s.getId());
 
-		return s.toVO();
+		return entityToVo(s);
 	}
 
 	/**
@@ -145,7 +145,8 @@ public class SeekController extends BaseController {
 	public SeekVO getById(Long id) {
 		Assert.notNull(id, "求助单ID不能为空");
 
-		return seekService.getById(id).toVO();
+		Seek s = seekService.getById(id);
+		return entityToVo(s);
 	}
 
 	/**
@@ -162,14 +163,18 @@ public class SeekController extends BaseController {
 	private List<SeekVO> listToVoList(List<Seek> list) {
 		List<SeekVO> voList = new ArrayList<SeekVO>();
 		for (Seek entity : list) {
-			SeekVO vo = entity.toVO();
-			Integer userId = entity.getSeekerId();
-			if (userId != null) {
-				vo.setSeeker(userService.getById(userId).toVO());
-			}
-			voList.add(vo);
+			voList.add(entityToVo(entity));
 		}
 		return voList;
+	}
+
+	private SeekVO entityToVo(Seek entity) {
+		SeekVO vo = entity.toVO();
+		Integer userId = entity.getSeekerId();
+		if (userId != null) {
+			vo.setSeeker(userService.getById(userId).toVO());
+		}
+		return vo;
 	}
 
 	/**

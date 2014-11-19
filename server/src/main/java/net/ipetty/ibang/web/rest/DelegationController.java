@@ -74,7 +74,7 @@ public class DelegationController extends BaseController {
 		delegationService.delegate(d);
 		d = delegationService.getById(d.getId());
 
-		return d.toVO();
+		return entityToVo(d);
 	}
 
 	/**
@@ -83,8 +83,9 @@ public class DelegationController extends BaseController {
 	@RequestMapping(value = "/delegation", method = RequestMethod.GET)
 	public DelegationVO getById(Long id) {
 		Assert.notNull(id, "委托单ID不能为空");
+		Delegation d = delegationService.getById(id);
 
-		return delegationService.getById(id).toVO();
+		return entityToVo(d);
 	}
 
 	/**
@@ -94,8 +95,12 @@ public class DelegationController extends BaseController {
 	public DelegationVO getByOfferId(Long offerId) {
 		Assert.notNull(offerId, "委托单ID不能为空");
 
-		Delegation delegation = delegationService.getByOfferId(offerId);
-		return delegation == null ? null : delegation.toVO();
+		Delegation d = delegationService.getByOfferId(offerId);
+		if (d == null) {
+			return null;
+		}
+
+		return entityToVo(d);
 	}
 
 	/**
@@ -113,18 +118,22 @@ public class DelegationController extends BaseController {
 	private List<DelegationVO> listToVoList(List<Delegation> list) {
 		List<DelegationVO> voList = new ArrayList<DelegationVO>();
 		for (Delegation entity : list) {
-			DelegationVO vo = entity.toVO();
-			Integer userId = entity.getSeekerId();
-			if (userId != null) {
-				vo.setSeeker(userService.getById(userId).toVO());
-			}
-			userId = entity.getOffererId();
-			if (userId != null) {
-				vo.setOfferer(userService.getById(userId).toVO());
-			}
-			voList.add(vo);
+			voList.add(entityToVo(entity));
 		}
 		return voList;
+	}
+
+	private DelegationVO entityToVo(Delegation entity) {
+		DelegationVO vo = entity.toVO();
+		Integer userId = entity.getSeekerId();
+		if (userId != null) {
+			vo.setSeeker(userService.getById(userId).toVO());
+		}
+		userId = entity.getOffererId();
+		if (userId != null) {
+			vo.setOfferer(userService.getById(userId).toVO());
+		}
+		return vo;
 	}
 
 	/**

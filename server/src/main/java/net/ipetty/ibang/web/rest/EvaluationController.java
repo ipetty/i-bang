@@ -45,7 +45,7 @@ public class EvaluationController extends BaseController {
 		evaluationService.evaluate(e);
 		e = evaluationService.getById(e.getId());
 
-		return e.toVO();
+		return entityToVo(e);
 	}
 
 	/**
@@ -55,7 +55,8 @@ public class EvaluationController extends BaseController {
 	public EvaluationVO getById(Long id) {
 		Assert.notNull(id, "评价ID不能为空");
 
-		return evaluationService.getById(id).toVO();
+		Evaluation e = evaluationService.getById(id);
+		return entityToVo(e);
 	}
 
 	/**
@@ -72,18 +73,22 @@ public class EvaluationController extends BaseController {
 	private List<EvaluationVO> listToVoList(List<Evaluation> list) {
 		List<EvaluationVO> voList = new ArrayList<EvaluationVO>();
 		for (Evaluation entity : list) {
-			EvaluationVO vo = entity.toVO();
-			Integer userId = entity.getEvaluatorId();
-			if (userId != null) {
-				vo.setEvaluator(userService.getById(userId).toVO());
-			}
-			userId = entity.getEvaluateTargetId();
-			if (userId != null) {
-				vo.setEvaluateTarget(userService.getById(userId).toVO());
-			}
-			voList.add(vo);
+			voList.add(entityToVo(entity));
 		}
 		return voList;
+	}
+
+	private EvaluationVO entityToVo(Evaluation entity) {
+		EvaluationVO vo = entity.toVO();
+		Integer userId = entity.getEvaluatorId();
+		if (userId != null) {
+			vo.setEvaluator(userService.getById(userId).toVO());
+		}
+		userId = entity.getEvaluateTargetId();
+		if (userId != null) {
+			vo.setEvaluateTarget(userService.getById(userId).toVO());
+		}
+		return vo;
 	}
 
 	/**

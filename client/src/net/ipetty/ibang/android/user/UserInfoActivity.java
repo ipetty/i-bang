@@ -239,7 +239,7 @@ public class UserInfoActivity extends Activity {
 					for_help_load.showMoreView();
 				}
 			}
-		}).execute(net.ipetty.ibang.vo.Constants.SEEK_TYPE_ASSISTANCE, String.valueOf(seekUser.getId()),
+		}).execute(net.ipetty.ibang.vo.Constants.SEEK_TYPE_ASSISTANCE, String.valueOf(seekUserId),
 				String.valueOf(pageNumber_for_help++), String.valueOf(pageSize));
 	}
 
