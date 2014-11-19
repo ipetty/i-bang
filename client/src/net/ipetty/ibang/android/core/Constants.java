@@ -3,13 +3,12 @@ package net.ipetty.ibang.android.core;
 public class Constants {
 
 	// 文件服务器地址
-	public static final String FILE_SERVER_BASE = "http://51bbm.com";
-	// public static final String FILE_SERVER_BASE = "http://ibang.ipetty.net";
+	// public static final String FILE_SERVER_BASE = "http://51bbm.com";
+	public static final String FILE_SERVER_BASE = "http://ibang.ipetty.net";
 
 	// API服务器地址
-	public static final String API_SERVER_BASE = "http://51bbm.com/api";
-	// public static final String API_SERVER_BASE =
-	// "http://ibang.ipetty.net/api";
+	// public static final String API_SERVER_BASE = "http://51bbm.com/api";
+	public static final String API_SERVER_BASE = "http://ibang.ipetty.net/api";
 
 	public static final int MAX_DELEGATION = 999; // 不限制委托默认最大数
 	public static final int MAX_DELEGATION_CONDITION = 0; // 不限制委托的条件
