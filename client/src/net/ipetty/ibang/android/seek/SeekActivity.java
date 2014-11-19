@@ -16,7 +16,6 @@ import net.ipetty.ibang.android.core.util.JSONUtils;
 import net.ipetty.ibang.android.core.util.PrettyDateFormat;
 import net.ipetty.ibang.android.login.LoginActivity;
 import net.ipetty.ibang.android.sdk.context.ApiContext;
-import net.ipetty.ibang.android.user.GetUserByIdSynchronously;
 import net.ipetty.ibang.android.user.UserInfoActivity;
 import net.ipetty.ibang.vo.DelegationVO;
 import net.ipetty.ibang.vo.ImageVO;
@@ -198,7 +197,7 @@ public class SeekActivity extends Activity {
 		if (isSeekOwner()) {
 			seekUser = user;
 		} else {
-			seekUser = GetUserByIdSynchronously.get(SeekActivity.this, seekVO.getSeekerId());
+			seekUser = seekVO.getSeeker();
 		}
 	}
 
@@ -553,8 +552,7 @@ public class SeekActivity extends Activity {
 		bindTime(offer.getCreatedOn(), holder.created_at);
 		holder.content.setText(offer.getContent());
 
-		int userId = offer.getOffererId();
-		UserVO user = GetUserByIdSynchronously.get(SeekActivity.this, userId);
+		UserVO user = offer.getOfferer();
 		bindUser(user, holder.avator, holder.nickname);
 		holder.totalPoint.setText("等级:" + String.valueOf(user.getSeekerTitle()));
 		return view;

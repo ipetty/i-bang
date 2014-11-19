@@ -16,12 +16,10 @@ public class DelegationVO extends BaseVO {
 	private String sn; // 委托单流水号
 	private Long seekId; // 求助单ID
 	private Integer seekerId; // 求助者ID
-	private String seekerNickname; // 求助者昵称
-	private String seekerAvatar; // 求助者头像
+	private UserVO seeker;
 	private Long offerId; // 应征单ID
 	private Integer offererId; // 应征者ID
-	private String offererNickname; // 应征者昵称
-	private String offererAvatar; // 应征者头像
+	private UserVO offerer;
 	private Date deadline; // 应征者承诺完成委托的截止日期
 	private Date createdOn; // 委托单创建日期
 	private Date closedOn; // 关闭时间
@@ -63,20 +61,12 @@ public class DelegationVO extends BaseVO {
 		this.seekerId = seekerId;
 	}
 
-	public String getSeekerNickname() {
-		return seekerNickname;
+	public UserVO getSeeker() {
+		return seeker;
 	}
 
-	public void setSeekerNickname(String seekerNickname) {
-		this.seekerNickname = seekerNickname;
-	}
-
-	public String getSeekerAvatar() {
-		return seekerAvatar;
-	}
-
-	public void setSeekerAvatar(String seekerAvatar) {
-		this.seekerAvatar = seekerAvatar;
+	public void setSeeker(UserVO seeker) {
+		this.seeker = seeker;
 	}
 
 	public Long getOfferId() {
@@ -95,20 +85,12 @@ public class DelegationVO extends BaseVO {
 		this.offererId = offererId;
 	}
 
-	public String getOffererNickname() {
-		return offererNickname;
+	public UserVO getOfferer() {
+		return offerer;
 	}
 
-	public void setOffererNickname(String offererNickname) {
-		this.offererNickname = offererNickname;
-	}
-
-	public String getOffererAvatar() {
-		return offererAvatar;
-	}
-
-	public void setOffererAvatar(String offererAvatar) {
-		this.offererAvatar = offererAvatar;
+	public void setOfferer(UserVO offerer) {
+		this.offerer = offerer;
 	}
 
 	public Date getDeadline() {

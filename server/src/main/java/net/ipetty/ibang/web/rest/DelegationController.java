@@ -10,7 +10,6 @@ import net.ipetty.ibang.context.UserPrincipal;
 import net.ipetty.ibang.model.Delegation;
 import net.ipetty.ibang.model.Offer;
 import net.ipetty.ibang.model.Seek;
-import net.ipetty.ibang.model.User;
 import net.ipetty.ibang.service.DelegationService;
 import net.ipetty.ibang.service.OfferService;
 import net.ipetty.ibang.service.SeekService;
@@ -117,15 +116,11 @@ public class DelegationController extends BaseController {
 			DelegationVO vo = entity.toVO();
 			Integer userId = entity.getSeekerId();
 			if (userId != null) {
-				User user = userService.getById(userId);
-				vo.setSeekerNickname(user.getNickname());
-				vo.setSeekerAvatar(user.getAvatar());
+				vo.setSeeker(userService.getById(userId).toVO());
 			}
 			userId = entity.getOffererId();
 			if (userId != null) {
-				User user = userService.getById(userId);
-				vo.setOffererNickname(user.getNickname());
-				vo.setOffererAvatar(user.getAvatar());
+				vo.setOfferer(userService.getById(userId).toVO());
 			}
 			voList.add(vo);
 		}

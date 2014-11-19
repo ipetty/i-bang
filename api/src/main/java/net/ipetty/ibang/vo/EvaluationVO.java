@@ -18,11 +18,9 @@ public class EvaluationVO extends BaseVO {
 	private Long delegationId; // 委托单ID
 	private String type; // 评价类型，针对求助者的评价/针对应征者的评价
 	private Integer evaluatorId; // 评价发起人
-	private String evaluatorNickname; // 评价发起人昵称
-	private String evaluatorAvatar; // 评价发起人头像
+	private UserVO evaluator;
 	private Integer evaluateTargetId; // 评价对象人
-	private String evaluateTargetNickname; // 评价对象人昵称
-	private String evaluateTargetAvatar; // 评价对象人头像
+	private UserVO evaluateTarget;
 	private int point; // 评分
 	private String content; // 评价内容
 	private List<ImageVO> images = new ArrayList<ImageVO>(); // 图片
@@ -64,20 +62,12 @@ public class EvaluationVO extends BaseVO {
 		this.evaluatorId = evaluatorId;
 	}
 
-	public String getEvaluatorNickname() {
-		return evaluatorNickname;
+	public UserVO getEvaluator() {
+		return evaluator;
 	}
 
-	public void setEvaluatorNickname(String evaluatorNickname) {
-		this.evaluatorNickname = evaluatorNickname;
-	}
-
-	public String getEvaluatorAvatar() {
-		return evaluatorAvatar;
-	}
-
-	public void setEvaluatorAvatar(String evaluatorAvatar) {
-		this.evaluatorAvatar = evaluatorAvatar;
+	public void setEvaluator(UserVO evaluator) {
+		this.evaluator = evaluator;
 	}
 
 	public Integer getEvaluateTargetId() {
@@ -88,20 +78,12 @@ public class EvaluationVO extends BaseVO {
 		this.evaluateTargetId = evaluateTargetId;
 	}
 
-	public String getEvaluateTargetNickname() {
-		return evaluateTargetNickname;
+	public UserVO getEvaluateTarget() {
+		return evaluateTarget;
 	}
 
-	public void setEvaluateTargetNickname(String evaluateTargetNickname) {
-		this.evaluateTargetNickname = evaluateTargetNickname;
-	}
-
-	public String getEvaluateTargetAvatar() {
-		return evaluateTargetAvatar;
-	}
-
-	public void setEvaluateTargetAvatar(String evaluateTargetAvatar) {
-		this.evaluateTargetAvatar = evaluateTargetAvatar;
+	public void setEvaluateTarget(UserVO evaluateTarget) {
+		this.evaluateTarget = evaluateTarget;
 	}
 
 	public int getPoint() {

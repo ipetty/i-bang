@@ -15,8 +15,7 @@ public class OfferVO extends BaseVO {
 	private Long id; // 非业务主键
 	private String sn; // 应征单流水号
 	private Integer offererId; // 应征者ID
-	private String offererNickname; // 应征者昵称
-	private String offererAvatar; // 应征者头像
+	private UserVO offerer;
 	private Long seekId; // 应征的求助单ID
 	private String content; // 应征内容
 	private String description; // 应征描述
@@ -55,20 +54,12 @@ public class OfferVO extends BaseVO {
 		this.offererId = offererId;
 	}
 
-	public String getOffererNickname() {
-		return offererNickname;
+	public UserVO getOfferer() {
+		return offerer;
 	}
 
-	public void setOffererNickname(String offererNickname) {
-		this.offererNickname = offererNickname;
-	}
-
-	public String getOffererAvatar() {
-		return offererAvatar;
-	}
-
-	public void setOffererAvatar(String offererAvatar) {
-		this.offererAvatar = offererAvatar;
+	public void setOfferer(UserVO offerer) {
+		this.offerer = offerer;
 	}
 
 	public Long getSeekId() {

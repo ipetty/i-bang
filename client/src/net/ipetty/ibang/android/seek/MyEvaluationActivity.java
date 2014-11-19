@@ -19,7 +19,6 @@ import net.ipetty.ibang.android.evaluation.ListEvaluationByEvaluateTargetIdTaskL
 import net.ipetty.ibang.android.evaluation.ListEvaluationByEvaluatorIdTask;
 import net.ipetty.ibang.android.evaluation.ListEvaluationByEvaluatorIdTaskListener;
 import net.ipetty.ibang.android.sdk.context.ApiContext;
-import net.ipetty.ibang.android.user.GetUserByIdSynchronously;
 import net.ipetty.ibang.android.user.UserInfoActivity;
 import net.ipetty.ibang.vo.EvaluationVO;
 import net.ipetty.ibang.vo.UserVO;
@@ -51,6 +50,7 @@ import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 public class MyEvaluationActivity extends Activity {
+
 	private UserVO user;
 	private MyPullToRefreshListView listView_to_me; // 评价我的
 	private MyPullToRefreshListView listView_from_me; // 我评价的
@@ -105,6 +105,7 @@ public class MyEvaluationActivity extends Activity {
 		listView_from_me.setOnItemClickListener(itemClick);
 
 		listView_from_me.setOnRefreshListener(new OnRefreshListener<ListView>() {
+
 			@Override
 			public void onRefresh(PullToRefreshBase<ListView> refreshView) {
 				String label = DateUtils.formatDateTime(MyEvaluationActivity.this, getRefreshTime_from_me(),
@@ -115,6 +116,7 @@ public class MyEvaluationActivity extends Activity {
 		});
 
 		listView_from_me.setOnLastItemVisibleListener(new OnLastItemVisibleListener() {
+
 			@Override
 			public void onLastItemVisible() {
 				if (hasMore_from_me) {
@@ -132,6 +134,7 @@ public class MyEvaluationActivity extends Activity {
 		listView_to_me.setOnItemClickListener(itemClick);
 
 		listView_to_me.setOnRefreshListener(new OnRefreshListener<ListView>() {
+
 			@Override
 			public void onRefresh(PullToRefreshBase<ListView> refreshView) {
 				String label = DateUtils.formatDateTime(MyEvaluationActivity.this, getRefreshTime_to_me(),
@@ -142,6 +145,7 @@ public class MyEvaluationActivity extends Activity {
 		});
 
 		listView_to_me.setOnLastItemVisibleListener(new OnLastItemVisibleListener() {
+
 			@Override
 			public void onLastItemVisible() {
 				if (hasMore_to_me) {
@@ -213,6 +217,7 @@ public class MyEvaluationActivity extends Activity {
 	}
 
 	private OnItemClickListener itemClick = new OnItemClickListener() {
+
 		@Override
 		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 			EvaluationVO vo = (EvaluationVO) parent.getAdapter().getItem(position);
@@ -223,6 +228,7 @@ public class MyEvaluationActivity extends Activity {
 	};
 
 	public class EvaluationAdapter extends BaseAdapter implements OnScrollListener {
+
 		private List<EvaluationVO> list = new ArrayList<EvaluationVO>();
 
 		public void loadData(List<EvaluationVO> data) {
@@ -251,6 +257,7 @@ public class MyEvaluationActivity extends Activity {
 		}
 
 		private class ViewHolder {
+
 			View layout;
 			ImageView avator;
 			TextView nickname;
@@ -285,7 +292,7 @@ public class MyEvaluationActivity extends Activity {
 			if (vo.getEvaluatorId().equals(user.getId())) {
 				evaluator = user;
 			} else {
-				evaluator = GetUserByIdSynchronously.get(MyEvaluationActivity.this, vo.getEvaluatorId());
+				evaluator = vo.getEvaluator();
 			}
 			bindUser(evaluator, holder.avator, holder.nickname);
 			return view;
@@ -311,6 +318,7 @@ public class MyEvaluationActivity extends Activity {
 		}
 		nickname.setText(user.getNickname());
 		avatar.setOnClickListener(new OnClickListener() {
+
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent(MyEvaluationActivity.this, UserInfoActivity.class);
@@ -320,6 +328,7 @@ public class MyEvaluationActivity extends Activity {
 			}
 		});
 		nickname.setOnClickListener(new OnClickListener() {
+
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent(MyEvaluationActivity.this, UserInfoActivity.class);
@@ -331,6 +340,7 @@ public class MyEvaluationActivity extends Activity {
 	}
 
 	public class TabClickListener implements OnClickListener {
+
 		private int index = 0;
 
 		public TabClickListener(int i) {

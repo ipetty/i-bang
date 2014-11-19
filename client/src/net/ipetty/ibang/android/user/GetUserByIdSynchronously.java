@@ -19,7 +19,7 @@ public class GetUserByIdSynchronously {
 	private static final String TAG = GetUserByIdSynchronously.class.getSimpleName();
 	private static UserVO syncUser;
 
-	public static UserVO get(final Context context, final Integer id) {
+	private static UserVO get(final Context context, final Integer id) {
 		Log.d(TAG, "get user by id synchronously, id=" + id);
 		UserVO user = Caches.get(UserVO.class, id);
 		if (user != null) {

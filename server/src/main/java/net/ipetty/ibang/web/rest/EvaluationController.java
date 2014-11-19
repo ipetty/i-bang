@@ -6,7 +6,6 @@ import java.util.List;
 import javax.annotation.Resource;
 
 import net.ipetty.ibang.model.Evaluation;
-import net.ipetty.ibang.model.User;
 import net.ipetty.ibang.service.EvaluationService;
 import net.ipetty.ibang.service.UserService;
 import net.ipetty.ibang.vo.EvaluationVO;
@@ -76,15 +75,11 @@ public class EvaluationController extends BaseController {
 			EvaluationVO vo = entity.toVO();
 			Integer userId = entity.getEvaluatorId();
 			if (userId != null) {
-				User user = userService.getById(userId);
-				vo.setEvaluatorNickname(user.getNickname());
-				vo.setEvaluatorAvatar(user.getAvatar());
+				vo.setEvaluator(userService.getById(userId).toVO());
 			}
 			userId = entity.getEvaluateTargetId();
 			if (userId != null) {
-				User user = userService.getById(userId);
-				vo.setEvaluateTargetNickname(user.getNickname());
-				vo.setEvaluateTargetAvatar(user.getAvatar());
+				vo.setEvaluateTarget(userService.getById(userId).toVO());
 			}
 			voList.add(vo);
 		}

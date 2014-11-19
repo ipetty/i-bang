@@ -13,7 +13,6 @@ import net.ipetty.ibang.android.core.util.DateUtils;
 import net.ipetty.ibang.android.core.util.JSONUtils;
 import net.ipetty.ibang.android.core.util.PrettyDateFormat;
 import net.ipetty.ibang.android.sdk.context.ApiContext;
-import net.ipetty.ibang.android.user.GetUserByIdSynchronously;
 import net.ipetty.ibang.android.user.UserInfoActivity;
 import net.ipetty.ibang.vo.DelegationVO;
 import net.ipetty.ibang.vo.OfferVO;
@@ -127,7 +126,7 @@ public class OfferActivity extends Activity {
 			@Override
 			public void onSuccess(OfferVO result) {
 				offerVO = result;
-				offerer = GetUserByIdSynchronously.get(OfferActivity.this, offerVO.getOffererId());
+				offerer = offerVO.getOfferer();
 				bindUser(offerer, offer_avatar, offer_nickname);
 				bindTime(offerVO.getCreatedOn(), offer_created_at);
 				offer_content.setText(offerVO.getContent());
@@ -141,7 +140,7 @@ public class OfferActivity extends Activity {
 							@Override
 							public void onSuccess(SeekVO result) {
 								seekVO = result;
-								seeker = GetUserByIdSynchronously.get(OfferActivity.this, seekVO.getSeekerId());
+								seeker = seekVO.getSeeker();
 
 								// 填充界面
 								initView();

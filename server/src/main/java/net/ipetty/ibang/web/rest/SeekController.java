@@ -11,7 +11,6 @@ import net.ipetty.ibang.context.UserContext;
 import net.ipetty.ibang.context.UserPrincipal;
 import net.ipetty.ibang.model.Location;
 import net.ipetty.ibang.model.Seek;
-import net.ipetty.ibang.model.User;
 import net.ipetty.ibang.service.LocationService;
 import net.ipetty.ibang.service.SeekService;
 import net.ipetty.ibang.service.UserService;
@@ -166,9 +165,7 @@ public class SeekController extends BaseController {
 			SeekVO vo = entity.toVO();
 			Integer userId = entity.getSeekerId();
 			if (userId != null) {
-				User user = userService.getById(userId);
-				vo.setSeekerNickname(user.getNickname());
-				vo.setSeekerAvatar(user.getAvatar());
+				vo.setSeeker(userService.getById(userId).toVO());
 			}
 			voList.add(vo);
 		}

@@ -8,7 +8,6 @@ import javax.annotation.Resource;
 import net.ipetty.ibang.context.UserContext;
 import net.ipetty.ibang.context.UserPrincipal;
 import net.ipetty.ibang.model.Offer;
-import net.ipetty.ibang.model.User;
 import net.ipetty.ibang.service.OfferService;
 import net.ipetty.ibang.service.UserService;
 import net.ipetty.ibang.vo.OfferVO;
@@ -84,9 +83,7 @@ public class OfferController extends BaseController {
 			OfferVO vo = entity.toVO();
 			Integer userId = entity.getOffererId();
 			if (userId != null) {
-				User user = userService.getById(userId);
-				vo.setOffererNickname(user.getNickname());
-				vo.setOffererAvatar(user.getAvatar());
+				vo.setOfferer(userService.getById(userId).toVO());
 			}
 			voList.add(vo);
 		}

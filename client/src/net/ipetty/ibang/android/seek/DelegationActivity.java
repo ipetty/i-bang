@@ -17,7 +17,6 @@ import net.ipetty.ibang.android.core.util.PrettyDateFormat;
 import net.ipetty.ibang.android.evaluation.EvaluationActivity;
 import net.ipetty.ibang.android.evaluation.ListEvaluationByDelegationIdTask;
 import net.ipetty.ibang.android.sdk.context.ApiContext;
-import net.ipetty.ibang.android.user.GetUserByIdSynchronously;
 import net.ipetty.ibang.android.user.UserInfoActivity;
 import net.ipetty.ibang.vo.DelegationVO;
 import net.ipetty.ibang.vo.EvaluationVO;
@@ -167,6 +166,7 @@ public class DelegationActivity extends Activity {
 	private void loadDataByDelegationId() {
 		new GetDelegationByIdTask(DelegationActivity.this).setListener(
 				new DefaultTaskListener<DelegationVO>(DelegationActivity.this) {
+
 					@Override
 					public void onSuccess(DelegationVO result) {
 						delegationVO = result;
@@ -184,6 +184,7 @@ public class DelegationActivity extends Activity {
 		// 获取数据，offer
 		new GetOfferByIdTask(DelegationActivity.this).setListener(
 				new DefaultTaskListener<OfferVO>(DelegationActivity.this) {
+
 					@Override
 					public void onSuccess(OfferVO result) {
 						offerVO = result;
@@ -197,16 +198,16 @@ public class DelegationActivity extends Activity {
 						}
 
 						delegationId = delegationVO.getId();
-						offerer = GetUserByIdSynchronously.get(DelegationActivity.this, delegationVO.getOffererId());
+						offerer = delegationVO.getOfferer();
 
 						// 获取数据，seek
 						new GetSeekByIdTask(DelegationActivity.this).setListener(
 								new DefaultTaskListener<SeekVO>(DelegationActivity.this) {
+
 									@Override
 									public void onSuccess(SeekVO result) {
 										seekVO = result;
-										seeker = GetUserByIdSynchronously.get(DelegationActivity.this,
-												seekVO.getSeekerId());
+										seeker = seekVO.getSeeker();
 										initView();
 									}
 								}).execute(seekId);
@@ -284,6 +285,7 @@ public class DelegationActivity extends Activity {
 		if (net.ipetty.ibang.vo.Constants.DELEGATE_STATUS_BI_EVALUATED.equals(delegationVO.getStatus())) {
 			new ListEvaluationByDelegationIdTask(DelegationActivity.this).setListener(
 					new DefaultTaskListener<List<EvaluationVO>>(DelegationActivity.this) {
+
 						@Override
 						public void onSuccess(List<EvaluationVO> evaluations) {
 							seek_evaluation_layout.setVisibility(View.GONE);
@@ -377,6 +379,7 @@ public class DelegationActivity extends Activity {
 				)) {
 			evaluation_layout.setVisibility(View.VISIBLE);
 			evaluation.setOnClickListener(new OnClickListener() {
+
 				@Override
 				public void onClick(View v) {
 					Intent intent = new Intent(DelegationActivity.this, EvaluationActivity.class);
@@ -417,10 +420,12 @@ public class DelegationActivity extends Activity {
 				&& net.ipetty.ibang.vo.Constants.DELEGATE_STATUS_DELEGATED.equals(delegationVO.getStatus())) {
 			finish_delegation_btn_layout.setVisibility(View.VISIBLE);
 			finish_delegation_btn.setOnClickListener(new OnClickListener() {
+
 				@Override
 				public void onClick(View v) {
 					new FinishDelegationTask(DelegationActivity.this).setListener(
 							new DefaultTaskListener<Boolean>(DelegationActivity.this) {
+
 								@Override
 								public void onSuccess(Boolean result) {
 									// 刷新界面
@@ -442,10 +447,12 @@ public class DelegationActivity extends Activity {
 				&& net.ipetty.ibang.vo.Constants.DELEGATE_STATUS_DELEGATED.equals(delegationVO.getStatus())) {
 			close_delegation_btn_layout.setVisibility(View.VISIBLE);
 			close_delegation_btn.setOnClickListener(new OnClickListener() {
+
 				@Override
 				public void onClick(View v) {
 					new CloseDelegationTask(DelegationActivity.this).setListener(
 							new DefaultTaskListener<Boolean>(DelegationActivity.this) {
+
 								@Override
 								public void onSuccess(Boolean result) {
 									// TODO 关闭委托后的界面操作
@@ -538,6 +545,7 @@ public class DelegationActivity extends Activity {
 		}
 		nickname.setText(user.getNickname());
 		avatar.setOnClickListener(new OnClickListener() {
+
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent(DelegationActivity.this, UserInfoActivity.class);
@@ -549,6 +557,7 @@ public class DelegationActivity extends Activity {
 	}
 
 	private BroadcastReceiver broadcastreciver = new BroadcastReceiver() {
+
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			String action = intent.getAction();

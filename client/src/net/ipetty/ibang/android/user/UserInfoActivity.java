@@ -41,6 +41,7 @@ import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 public class UserInfoActivity extends Activity {
+
 	private UserVO user;
 	private UserVO seekUser;
 	private String seekUserJSON;
@@ -107,11 +108,18 @@ public class UserInfoActivity extends Activity {
 		// 先从传递的参数进行加载
 		if (user != null && seekUserId == user.getId()) {
 			seekUser = user;
+			initUser();
 		} else {
-			seekUser = GetUserByIdSynchronously.get(UserInfoActivity.this, seekUserId);
-		}
+			new GetUserByIdTask(UserInfoActivity.this).setListener(
+					new DefaultTaskListener<UserVO>(UserInfoActivity.this) {
 
-		initUser();
+						@Override
+						public void onSuccess(UserVO result) {
+							seekUser = result;
+							initUser();
+						}
+					}).execute(seekUserId);
+		}
 
 		View to_help_tab_layout = this.findViewById(R.id.to_help_tab_layout);
 		View for_help_tab_layout = this.findViewById(R.id.for_help_tab_layout);
@@ -136,31 +144,32 @@ public class UserInfoActivity extends Activity {
 
 		final ScrollView view = (ScrollView) findViewById(R.id.scrollView);
 		view.setOnTouchListener(new OnTouchListener() {
+
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
 				switch (event.getAction()) {
-				case MotionEvent.ACTION_DOWN:
-					break;
-				case MotionEvent.ACTION_MOVE:
-					if (v.getScrollY() <= 0) {
-						Log.d("scroll view", "top");
-					} else if (view.getChildAt(0).getMeasuredHeight() <= v.getHeight() + v.getScrollY()) {
-						Log.d("scroll view", "bottom");
-						switch (viewFlipper.getDisplayedChild()) {
-						case 0: {
-							loadSeek_to_help();
-							break;
-						}
-						case 1: {
-							loadSeek_for_help();
-							break;
-						}
-						}
+					case MotionEvent.ACTION_DOWN:
+						break;
+					case MotionEvent.ACTION_MOVE:
+						if (v.getScrollY() <= 0) {
+							Log.d("scroll view", "top");
+						} else if (view.getChildAt(0).getMeasuredHeight() <= v.getHeight() + v.getScrollY()) {
+							Log.d("scroll view", "bottom");
+							switch (viewFlipper.getDisplayedChild()) {
+								case 0: {
+									loadSeek_to_help();
+									break;
+								}
+								case 1: {
+									loadSeek_for_help();
+									break;
+								}
+							}
 
-					}
-					break;
-				default:
-					break;
+						}
+						break;
+					default:
+						break;
 				}
 				return false;
 			}
@@ -187,6 +196,7 @@ public class UserInfoActivity extends Activity {
 		}
 		// 我发布的求助
 		new ListSeeksByUserIdTask(this).setListener(new DefaultTaskListener<List<SeekVO>>(this) {
+
 			@Override
 			public void onSuccess(List<SeekVO> result) {
 				to_help_render.addData(result);
@@ -196,7 +206,7 @@ public class UserInfoActivity extends Activity {
 					to_help_load.showMoreView();
 				}
 			}
-		}).execute(net.ipetty.ibang.vo.Constants.SEEK_TYPE_SEEK, String.valueOf(seekUser.getId()),
+		}).execute(net.ipetty.ibang.vo.Constants.SEEK_TYPE_SEEK, String.valueOf(seekUserId),
 				String.valueOf(pageNumber_to_help++), String.valueOf(pageSize));
 	}
 
@@ -219,6 +229,7 @@ public class UserInfoActivity extends Activity {
 		}
 		// 我发布的求助
 		new ListSeeksByUserIdTask(this).setListener(new DefaultTaskListener<List<SeekVO>>(this) {
+
 			@Override
 			public void onSuccess(List<SeekVO> result) {
 				for_help_render.addData(result);
@@ -287,6 +298,7 @@ public class UserInfoActivity extends Activity {
 	}
 
 	public class TabClickListener implements OnClickListener {
+
 		private int index = 0;
 
 		public TabClickListener(int i) {
@@ -303,27 +315,29 @@ public class UserInfoActivity extends Activity {
 
 			switch (index) {
 
-			case 0: {
-				to_help_tab.setTextColor(UserInfoActivity.this.getResources().getColor(R.color.base_color));
-				break;
-			}
-			case 1: {
-				for_help_tab.setTextColor(UserInfoActivity.this.getResources().getColor(R.color.base_color));
-				break;
-			}
-			case 2: {
-				info_tab.setTextColor(UserInfoActivity.this.getResources().getColor(R.color.base_color));
-				break;
-			}
-			case 3: {
-				seekerTotalPoint_tab.setTextColor(UserInfoActivity.this.getResources().getColor(R.color.base_color));
-			}
+				case 0: {
+					to_help_tab.setTextColor(UserInfoActivity.this.getResources().getColor(R.color.base_color));
+					break;
+				}
+				case 1: {
+					for_help_tab.setTextColor(UserInfoActivity.this.getResources().getColor(R.color.base_color));
+					break;
+				}
+				case 2: {
+					info_tab.setTextColor(UserInfoActivity.this.getResources().getColor(R.color.base_color));
+					break;
+				}
+				case 3: {
+					seekerTotalPoint_tab
+							.setTextColor(UserInfoActivity.this.getResources().getColor(R.color.base_color));
+				}
 			}
 
 		}
 	}
 
 	public class LoadFooter {
+
 		private LayoutInflater mInflater;
 		private RelativeLayout mMoreView;
 		private TextView mText;
