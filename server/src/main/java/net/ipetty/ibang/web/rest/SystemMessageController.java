@@ -1,11 +1,14 @@
 package net.ipetty.ibang.web.rest;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
 
 import net.ipetty.ibang.model.SystemMessage;
+import net.ipetty.ibang.model.User;
 import net.ipetty.ibang.service.SystemMessageService;
+import net.ipetty.ibang.service.UserService;
 import net.ipetty.ibang.vo.SystemMessageVO;
 
 import org.springframework.stereotype.Controller;
@@ -15,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 /**
  * SystemMessageController
- * 
  * @author luocanfeng
  * @date 2014年10月15日
  */
@@ -24,6 +26,9 @@ public class SystemMessageController extends BaseController {
 
 	@Resource
 	private SystemMessageService systemMessageService;
+
+	@Resource
+	private UserService userService;
 
 	/**
 	 * 获取
@@ -51,7 +56,22 @@ public class SystemMessageController extends BaseController {
 	public List<SystemMessageVO> listByUserId(Integer userId, int pageNumber, int pageSize) {
 		Assert.notNull(userId, "用户ID不能为空");
 		List<SystemMessage> systemMessages = systemMessageService.listByUserId(userId, pageNumber, pageSize);
-		return SystemMessage.listToVoList(systemMessages);
+		return listToVoList(systemMessages);
+	}
+
+	private List<SystemMessageVO> listToVoList(List<SystemMessage> list) {
+		List<SystemMessageVO> voList = new ArrayList<SystemMessageVO>();
+		for (SystemMessage entity : list) {
+			SystemMessageVO vo = entity.toVO();
+			Integer userId = entity.getFromUserId();
+			if (userId != null) {
+				User user = userService.getById(userId);
+				vo.setFromUserNickname(user.getNickname());
+				vo.setFromUserAvatar(user.getAvatar());
+			}
+			voList.add(vo);
+		}
+		return voList;
 	}
 
 	/**
@@ -61,7 +81,7 @@ public class SystemMessageController extends BaseController {
 	public List<SystemMessageVO> listUnreadByUserId(Integer userId, int pageNumber, int pageSize) {
 		Assert.notNull(userId, "用户ID不能为空");
 		List<SystemMessage> systemMessages = systemMessageService.listUnreadByUserId(userId, pageNumber, pageSize);
-		return SystemMessage.listToVoList(systemMessages);
+		return listToVoList(systemMessages);
 	}
 
 	/**

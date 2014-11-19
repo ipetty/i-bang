@@ -1,8 +1,6 @@
 package net.ipetty.ibang.model;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import net.ipetty.ibang.vo.SystemMessageVO;
 
@@ -10,7 +8,6 @@ import org.springframework.beans.BeanUtils;
 
 /**
  * 系统消息
- * 
  * @author luocanfeng
  * @date 2014年9月17日
  */
@@ -57,13 +54,14 @@ public class SystemMessage extends AbstractEntity {
 		return entity;
 	}
 
-	public static List<SystemMessageVO> listToVoList(List<SystemMessage> systemMessageList) {
-		List<SystemMessageVO> voList = new ArrayList<SystemMessageVO>();
-		for (SystemMessage systemMessage : systemMessageList) {
-			voList.add(systemMessage.toVO());
-		}
-		return voList;
-	}
+	// public static List<SystemMessageVO> listToVoList(List<SystemMessage>
+	// systemMessageList) {
+	// List<SystemMessageVO> voList = new ArrayList<SystemMessageVO>();
+	// for (SystemMessage systemMessage : systemMessageList) {
+	// voList.add(systemMessage.toVO());
+	// }
+	// return voList;
+	// }
 
 	public Long getId() {
 		return id;

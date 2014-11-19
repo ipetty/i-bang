@@ -11,7 +11,6 @@ import android.util.Log;
 
 /**
  * GetUserByIdSynchronous
- * 
  * @author luocanfeng
  * @date 2014年10月14日
  */
@@ -29,6 +28,7 @@ public class GetUserByIdSynchronously {
 
 		final CountDownLatch latch = new CountDownLatch(1);
 		new Thread(new Runnable() {
+
 			@Override
 			public void run() {
 				syncUser = IbangApi.init(context).getUserApi().getById(id);

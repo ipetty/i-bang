@@ -18,9 +18,7 @@ import net.ipetty.ibang.android.sdk.context.ApiContext;
 import net.ipetty.ibang.android.seek.DelegationActivity;
 import net.ipetty.ibang.android.seek.OfferActivity;
 import net.ipetty.ibang.android.seek.SeekActivity;
-import net.ipetty.ibang.android.user.GetUserByIdSynchronously;
 import net.ipetty.ibang.vo.SystemMessageVO;
-import net.ipetty.ibang.vo.UserVO;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -295,10 +293,9 @@ public class MessageActivity extends Activity {
 			// 异步加载来源用户
 			Integer fromUserId = msg.getFromUserId();
 			if (fromUserId != null) {
-				final UserVO user = GetUserByIdSynchronously.get(MessageActivity.this, fromUserId);
-				holder.nickname.setText(user.getNickname());
-				if (StringUtils.isNotEmpty(user.getAvatar())) {
-					ImageLoader.getInstance().displayImage(Constants.FILE_SERVER_BASE + user.getAvatar(),
+				holder.nickname.setText(msg.getFromUserNickname());
+				if (StringUtils.isNotEmpty(msg.getFromUserAvatar())) {
+					ImageLoader.getInstance().displayImage(Constants.FILE_SERVER_BASE + msg.getFromUserAvatar(),
 							holder.avatar, options);
 				} else {
 					holder.avatar.setImageResource(R.drawable.default_avatar);

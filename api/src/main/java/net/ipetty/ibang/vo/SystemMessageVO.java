@@ -4,7 +4,6 @@ import java.util.Date;
 
 /**
  * 系统消息
- * 
  * @author luocanfeng
  * @date 2014年9月18日
  */
@@ -15,6 +14,8 @@ public class SystemMessageVO extends BaseVO {
 
 	private Long id; // 非业务主键
 	private Integer fromUserId; // 消息来源用户ID
+	private String fromUserNickname; // 求助者昵称
+	private String fromUserAvatar; // 求助者头像
 	private Integer receiverId; // 消息接收者用户ID
 	private String type; // 消息类型
 	private Long seekId; // 对应的求助单ID
@@ -54,6 +55,22 @@ public class SystemMessageVO extends BaseVO {
 
 	public void setFromUserId(Integer fromUserId) {
 		this.fromUserId = fromUserId;
+	}
+
+	public String getFromUserNickname() {
+		return fromUserNickname;
+	}
+
+	public void setFromUserNickname(String fromUserNickname) {
+		this.fromUserNickname = fromUserNickname;
+	}
+
+	public String getFromUserAvatar() {
+		return fromUserAvatar;
+	}
+
+	public void setFromUserAvatar(String fromUserAvatar) {
+		this.fromUserAvatar = fromUserAvatar;
 	}
 
 	public Integer getReceiverId() {
