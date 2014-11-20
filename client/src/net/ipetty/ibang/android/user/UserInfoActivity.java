@@ -1,5 +1,6 @@
 package net.ipetty.ibang.android.user;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import net.ipetty.ibang.R;
@@ -7,7 +8,11 @@ import net.ipetty.ibang.android.core.ActivityManager;
 import net.ipetty.ibang.android.core.Constants;
 import net.ipetty.ibang.android.core.DefaultTaskListener;
 import net.ipetty.ibang.android.core.ui.BackClickListener;
+import net.ipetty.ibang.android.core.ui.ModDialogItem;
+import net.ipetty.ibang.android.core.ui.ReportClickListener;
 import net.ipetty.ibang.android.core.util.AppUtils;
+import net.ipetty.ibang.android.core.util.DialogUtils;
+import net.ipetty.ibang.android.core.util.UserUtils;
 import net.ipetty.ibang.android.sdk.context.ApiContext;
 import net.ipetty.ibang.android.seek.ListSeeksByUserIdTask;
 import net.ipetty.ibang.vo.SeekCategory;
@@ -17,6 +22,7 @@ import net.ipetty.ibang.vo.UserVO;
 import org.apache.commons.lang3.StringUtils;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.Html;
@@ -66,12 +72,16 @@ public class UserInfoActivity extends Activity {
 	private TextView districtView;
 	private TextView seekerTitleView;
 	private TextView categoryView;
+	private ImageView approve;
+	private ImageView more;
 
 	private ViewFlipper viewFlipper;
 	TextView to_help_tab;
 	TextView for_help_tab;
 	TextView info_tab;
 	TextView seekerTotalPoint_tab;
+	private ArrayList<ModDialogItem> popItems = new ArrayList<ModDialogItem>(0);
+	private Dialog popDialog;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -104,6 +114,9 @@ public class UserInfoActivity extends Activity {
 		categoryView = (TextView) this.findViewById(R.id.category);
 
 		seekerTitleView = (TextView) this.findViewById(R.id.seekerTitle);
+
+		more = (ImageView) this.findViewById(R.id.more);
+		approve = (ImageView) this.findViewById(R.id.approve);
 
 		// 先从传递的参数进行加载
 		if (user != null && seekUserId == user.getId()) {
@@ -148,28 +161,28 @@ public class UserInfoActivity extends Activity {
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
 				switch (event.getAction()) {
-					case MotionEvent.ACTION_DOWN:
-						break;
-					case MotionEvent.ACTION_MOVE:
-						if (v.getScrollY() <= 0) {
-							Log.d("scroll view", "top");
-						} else if (view.getChildAt(0).getMeasuredHeight() <= v.getHeight() + v.getScrollY()) {
-							Log.d("scroll view", "bottom");
-							switch (viewFlipper.getDisplayedChild()) {
-								case 0: {
-									loadSeek_to_help();
-									break;
-								}
-								case 1: {
-									loadSeek_for_help();
-									break;
-								}
-							}
-
+				case MotionEvent.ACTION_DOWN:
+					break;
+				case MotionEvent.ACTION_MOVE:
+					if (v.getScrollY() <= 0) {
+						Log.d("scroll view", "top");
+					} else if (view.getChildAt(0).getMeasuredHeight() <= v.getHeight() + v.getScrollY()) {
+						Log.d("scroll view", "bottom");
+						switch (viewFlipper.getDisplayedChild()) {
+						case 0: {
+							loadSeek_to_help();
+							break;
 						}
-						break;
-					default:
-						break;
+						case 1: {
+							loadSeek_for_help();
+							break;
+						}
+						}
+
+					}
+					break;
+				default:
+					break;
 				}
 				return false;
 			}
@@ -257,6 +270,25 @@ public class UserInfoActivity extends Activity {
 		seekerTotalPoint.setText(String.valueOf(seekUser.getSeekerTotalPoint()));
 		seekerTitleView.setText("等级:" + seekUser.getSeekerTitle());
 
+		UserUtils.bindIdentityVerified(seekUser, approve);
+
+		more.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				popItems.clear();
+				popItems.add(new ModDialogItem(null, "举报", new ReportClickListener(UserInfoActivity.this,
+						ReportClickListener.TYPE_USER, seekUser.getId(), new OnClickListener() {
+							@Override
+							public void onClick(View v) {
+								// TODO Auto-generated method stub
+								popDialog.cancel();
+							}
+						})));
+				popDialog = DialogUtils.modPopupDialog(UserInfoActivity.this, popItems, popDialog);
+			}
+		});
+
 		// phoneView.setText(seekUser.getPhone());
 
 		gender.setText(seekUser.getGender());
@@ -315,22 +347,21 @@ public class UserInfoActivity extends Activity {
 
 			switch (index) {
 
-				case 0: {
-					to_help_tab.setTextColor(UserInfoActivity.this.getResources().getColor(R.color.base_color));
-					break;
-				}
-				case 1: {
-					for_help_tab.setTextColor(UserInfoActivity.this.getResources().getColor(R.color.base_color));
-					break;
-				}
-				case 2: {
-					info_tab.setTextColor(UserInfoActivity.this.getResources().getColor(R.color.base_color));
-					break;
-				}
-				case 3: {
-					seekerTotalPoint_tab
-							.setTextColor(UserInfoActivity.this.getResources().getColor(R.color.base_color));
-				}
+			case 0: {
+				to_help_tab.setTextColor(UserInfoActivity.this.getResources().getColor(R.color.base_color));
+				break;
+			}
+			case 1: {
+				for_help_tab.setTextColor(UserInfoActivity.this.getResources().getColor(R.color.base_color));
+				break;
+			}
+			case 2: {
+				info_tab.setTextColor(UserInfoActivity.this.getResources().getColor(R.color.base_color));
+				break;
+			}
+			case 3: {
+				seekerTotalPoint_tab.setTextColor(UserInfoActivity.this.getResources().getColor(R.color.base_color));
+			}
 			}
 
 		}

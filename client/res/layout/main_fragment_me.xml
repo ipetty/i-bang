@@ -150,7 +150,8 @@
 			         			         <ImageView
 			         			             android:id="@+id/approve"
 			         			             android:layout_width="wrap_content"
-			         			             android:layout_height="28dp"
+			         			             android:layout_height="20dp"
+			         			             android:layout_marginLeft="8dp"
 			         			             android:layout_alignParentTop="true"
 			         			             android:layout_toRightOf="@+id/nickname"
 			         			             android:src="@drawable/ic_approve" 

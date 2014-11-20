@@ -10,8 +10,10 @@ import net.ipetty.ibang.android.core.Constants;
 import net.ipetty.ibang.android.core.DefaultTaskListener;
 import net.ipetty.ibang.android.core.MyAppStateManager;
 import net.ipetty.ibang.android.core.ui.BackClickListener;
+import net.ipetty.ibang.android.core.ui.ModDialogItem;
 import net.ipetty.ibang.android.core.ui.MyPullToRefreshListView;
-import net.ipetty.ibang.android.core.util.AppUtils;
+import net.ipetty.ibang.android.core.ui.ReportClickListener;
+import net.ipetty.ibang.android.core.util.DialogUtils;
 import net.ipetty.ibang.android.core.util.JSONUtils;
 import net.ipetty.ibang.android.core.util.NetWorkUtils;
 import net.ipetty.ibang.android.core.util.PrettyDateFormat;
@@ -20,6 +22,7 @@ import net.ipetty.ibang.android.sdk.context.ApiContext;
 import net.ipetty.ibang.vo.OfferVO;
 import net.ipetty.ibang.vo.UserVO;
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -42,7 +45,6 @@ import android.widget.TextView;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshBase.OnLastItemVisibleListener;
 import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener;
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
 
 public class MyOfferActivity extends Activity {
 
@@ -56,7 +58,6 @@ public class MyOfferActivity extends Activity {
 	private UserVO user;
 
 	private List<OfferVO> offerList = new ArrayList<OfferVO>();
-	private DisplayImageOptions options = AppUtils.getNormalImageOptions();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -218,9 +219,12 @@ public class MyOfferActivity extends Activity {
 			TextView totalPoint;
 			TextView delegation_info_btn;
 			ImageView approve;
+			ImageView more;
 		}
 
 		public ViewHolder holder;
+		private ArrayList<ModDialogItem> popItems = new ArrayList<ModDialogItem>(0);
+		private Dialog popDialog;
 
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
@@ -239,6 +243,7 @@ public class MyOfferActivity extends Activity {
 				holder.totalPoint = (TextView) view.findViewById(R.id.totalPoint);
 				holder.delegation_info_btn = (TextView) view.findViewById(R.id.delegation_info_btn);
 				holder.approve = (ImageView) view.findViewById(R.id.approve);
+				holder.more = (ImageView) view.findViewById(R.id.more);
 
 				convertView = view;
 				convertView.setTag(holder);
@@ -248,6 +253,24 @@ public class MyOfferActivity extends Activity {
 			}
 
 			final OfferVO offer = (OfferVO) this.getItem(position);
+			holder.more.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					// TODO Auto-generated method stub
+					// TODO Auto-generated method stub
+					popItems.clear();
+					popItems.add(new ModDialogItem(null, "举报", new ReportClickListener(MyOfferActivity.this,
+							ReportClickListener.TYPE_OFFER, offer.getId(), new OnClickListener() {
+								@Override
+								public void onClick(View v) {
+									// TODO Auto-generated method stub
+									popDialog.cancel();
+								}
+							})));
+					popDialog = DialogUtils.modPopupDialog(MyOfferActivity.this, popItems, popDialog);
+				}
+			});
+
 			holder.status.setText(offer.getStatus());
 			holder.status.setVisibility(View.VISIBLE);
 

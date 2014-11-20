@@ -1,5 +1,6 @@
 package net.ipetty.ibang.android.seek;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -8,8 +9,10 @@ import net.ipetty.ibang.android.core.ActivityManager;
 import net.ipetty.ibang.android.core.Constants;
 import net.ipetty.ibang.android.core.DefaultTaskListener;
 import net.ipetty.ibang.android.core.ui.BackClickListener;
-import net.ipetty.ibang.android.core.util.AppUtils;
+import net.ipetty.ibang.android.core.ui.ModDialogItem;
+import net.ipetty.ibang.android.core.ui.ReportClickListener;
 import net.ipetty.ibang.android.core.util.DateUtils;
+import net.ipetty.ibang.android.core.util.DialogUtils;
 import net.ipetty.ibang.android.core.util.JSONUtils;
 import net.ipetty.ibang.android.core.util.PrettyDateFormat;
 import net.ipetty.ibang.android.core.util.UserUtils;
@@ -22,14 +25,13 @@ import net.ipetty.ibang.vo.UserVO;
 import org.apache.commons.lang3.StringUtils;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
 
 public class OfferActivity extends Activity {
 
@@ -41,7 +43,7 @@ public class OfferActivity extends Activity {
 	private TextView seek_phone;
 	private View seek_contact_layout;
 	private ImageView seek_approve;
-
+	private ImageView seek_more;
 	private ImageView offer_avatar;
 	private TextView offer_nickname;
 	private TextView offer_created_at;
@@ -52,6 +54,7 @@ public class OfferActivity extends Activity {
 	private TextView offer_close;
 	private View offer_close_layout;
 	private ImageView offer_approve;
+	private ImageView offer_more;
 	// private TextView offer_status;
 	private TextView seek_seekerTitle;
 
@@ -69,8 +72,8 @@ public class OfferActivity extends Activity {
 	private UserVO offerer;
 	private UserVO user;
 	private Long offerId;
-
-	private DisplayImageOptions options = AppUtils.getNormalImageOptions();
+	private ArrayList<ModDialogItem> popItems = new ArrayList<ModDialogItem>(0);
+	private Dialog popDialog;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -95,6 +98,7 @@ public class OfferActivity extends Activity {
 		seek_serviceDate = (TextView) this.findViewById(R.id.serviceDate);
 		seek_additionalReward_layout = this.findViewById(R.id.additionalReward_layout);
 		seek_approve = (ImageView) this.findViewById(R.id.seek_approve);
+		seek_more = (ImageView) this.findViewById(R.id.seek_more);
 
 		offer_avatar = (ImageView) this.findViewById(R.id.offer_avatar);
 		offer_content = (TextView) this.findViewById(R.id.offer_content);
@@ -106,6 +110,7 @@ public class OfferActivity extends Activity {
 		offer_wait_delegated_layout = this.findViewById(R.id.offer_wait_delegated_layout);
 		offer_self_closed_layout = this.findViewById(R.id.offer_self_closed_layout);
 		offer_approve = (ImageView) this.findViewById(R.id.offer_approve);
+		offer_more = (ImageView) this.findViewById(R.id.offer_more);
 		// offer_status = (TextView) this.findViewById(R.id.offer_status);
 
 		offer_close = (TextView) this.findViewById(R.id.offer_close);
@@ -191,12 +196,45 @@ public class OfferActivity extends Activity {
 			seek_contact_layout.setVisibility(View.VISIBLE);
 			offer_contact_layout.setVisibility(View.VISIBLE);
 		}
-
+		seek_more.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				popItems.clear();
+				popItems.add(new ModDialogItem(null, "举报", new ReportClickListener(OfferActivity.this,
+						ReportClickListener.TYPE_SEEK, seekVO.getId(), new OnClickListener() {
+							@Override
+							public void onClick(View v) {
+								// TODO Auto-generated method stub
+								popDialog.cancel();
+							}
+						})));
+				popDialog = DialogUtils.modPopupDialog(OfferActivity.this, popItems, popDialog);
+			}
+		});
 		// 接受帮助/查看委托按钮
 		initDelegateButton();
 
 		// 关闭帮助按钮
 		initCloseButton();
+
+		offer_more.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				// TODO Auto-generated method stub
+				popItems.clear();
+				popItems.add(new ModDialogItem(null, "举报", new ReportClickListener(OfferActivity.this,
+						ReportClickListener.TYPE_OFFER, offerVO.getId(), new OnClickListener() {
+							@Override
+							public void onClick(View v) {
+								// TODO Auto-generated method stub
+								popDialog.cancel();
+							}
+						})));
+				popDialog = DialogUtils.modPopupDialog(OfferActivity.this, popItems, popDialog);
+			}
+		});
 
 		if (offerVO.isEnable() && isOfferOwner()
 				&& (net.ipetty.ibang.vo.Constants.OFFER_STATUS_OFFERED.equals(offerVO.getStatus()))) {

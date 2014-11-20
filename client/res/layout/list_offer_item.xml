@@ -32,13 +32,20 @@
 				        android:id="@+id/created_at"
 				        android:layout_width="wrap_content"
 				        android:layout_height="wrap_content"
-				        android:layout_alignParentRight="true"
-				        android:layout_alignParentTop="true"
+					    android:layout_alignTop="@+id/more"
+				    android:layout_toLeftOf="@+id/more"
 				        android:gravity="center"
 				        android:text=""
 				        android:textColor="@color/gray_color"
 				        android:textSize="12sp" />
-
+<ImageView
+    android:id="@+id/more"
+    android:gravity="center"
+    android:layout_width="wrap_content"
+    android:layout_height="18dp"
+    android:layout_alignParentRight="true"
+    android:layout_alignTop="@+id/nickname"
+    android:src="@drawable/ic_arrow_down_gray" />
 				    <TextView
 				        android:id="@+id/nickname"
 				        android:layout_width="wrap_content"
@@ -47,7 +54,7 @@
 				        android:layout_alignParentTop="true"
 				        android:ellipsize="end"
 				        android:singleLine="true"
-				        android:text="123123"
+				        android:text=""
 				        android:textColor="@color/base_color"
 				        android:textSize="16sp"
 				        android:textStyle="bold" />

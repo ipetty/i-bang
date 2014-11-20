@@ -10,8 +10,11 @@ import net.ipetty.ibang.android.core.ActivityManager;
 import net.ipetty.ibang.android.core.Constants;
 import net.ipetty.ibang.android.core.DefaultTaskListener;
 import net.ipetty.ibang.android.core.ui.BackClickListener;
+import net.ipetty.ibang.android.core.ui.ModDialogItem;
+import net.ipetty.ibang.android.core.ui.ReportClickListener;
 import net.ipetty.ibang.android.core.util.AppUtils;
 import net.ipetty.ibang.android.core.util.DateUtils;
+import net.ipetty.ibang.android.core.util.DialogUtils;
 import net.ipetty.ibang.android.core.util.JSONUtils;
 import net.ipetty.ibang.android.core.util.PrettyDateFormat;
 import net.ipetty.ibang.android.core.util.UserUtils;
@@ -26,6 +29,7 @@ import net.ipetty.ibang.vo.UserVO;
 import org.apache.commons.lang3.StringUtils;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -84,6 +88,9 @@ public class SeekActivity extends Activity {
 	private View login_layout;
 	private View additionalReward_layout;
 	private View offerList_empty_layout;
+	private View more;
+	private ArrayList<ModDialogItem> popItems;
+	private Dialog popDialog;
 
 	List<DelegationVO> delegationList = new ArrayList<DelegationVO>();
 	List<OfferVO> offerList = new ArrayList<OfferVO>();
@@ -143,6 +150,26 @@ public class SeekActivity extends Activity {
 		closeBtn_layout.setVisibility(View.GONE);
 		login_layout = this.findViewById(R.id.login_layout);
 		additionalReward_layout = this.findViewById(R.id.additionalReward_layout);
+		more = this.findViewById(R.id.more);
+
+		popItems = new ArrayList<ModDialogItem>();
+
+		more.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				popItems.clear();
+				popItems.add(new ModDialogItem(null, "举报", new ReportClickListener(SeekActivity.this,
+						ReportClickListener.TYPE_SEEK, seekId, new OnClickListener() {
+							@Override
+							public void onClick(View v) {
+								// TODO Auto-generated method stub
+								popDialog.cancel();
+							}
+						})));
+				popDialog = DialogUtils.modPopupDialog(SeekActivity.this, popItems, popDialog);
+			}
+		});
 
 		// 事件绑定
 		offerBtn.setOnClickListener(new OnClickListener() {
@@ -429,6 +456,7 @@ public class SeekActivity extends Activity {
 		TextView totalPoint;
 		TextView delegation_info_btn;
 		ImageView approve;
+		ImageView more;
 	}
 
 	private void initOfferView() {
@@ -477,6 +505,25 @@ public class SeekActivity extends Activity {
 		holder.totalPoint = (TextView) view.findViewById(R.id.totalPoint);
 		holder.delegation_info_btn = (TextView) view.findViewById(R.id.delegation_info_btn);
 		holder.approve = (ImageView) view.findViewById(R.id.approve);
+		holder.more = (ImageView) view.findViewById(R.id.more);
+
+		holder.more.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				// TODO Auto-generated method stub
+				popItems.clear();
+				popItems.add(new ModDialogItem(null, "举报", new ReportClickListener(SeekActivity.this,
+						ReportClickListener.TYPE_OFFER, offer.getId(), new OnClickListener() {
+							@Override
+							public void onClick(View v) {
+								// TODO Auto-generated method stub
+								popDialog.cancel();
+							}
+						})));
+				popDialog = DialogUtils.modPopupDialog(SeekActivity.this, popItems, popDialog);
+			}
+		});
 
 		// 如果已帮助过，则帮助按钮不可见（不能重复帮助），求助者联系方式可见
 		if (user != null && offer.getOffererId().equals(user.getId())) {

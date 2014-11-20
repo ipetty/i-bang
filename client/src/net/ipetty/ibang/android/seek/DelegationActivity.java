@@ -1,5 +1,6 @@
 package net.ipetty.ibang.android.seek;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -9,9 +10,12 @@ import net.ipetty.ibang.android.core.ActivityManager;
 import net.ipetty.ibang.android.core.Constants;
 import net.ipetty.ibang.android.core.DefaultTaskListener;
 import net.ipetty.ibang.android.core.ui.BackClickListener;
+import net.ipetty.ibang.android.core.ui.ModDialogItem;
+import net.ipetty.ibang.android.core.ui.ReportClickListener;
 import net.ipetty.ibang.android.core.util.AnimUtils;
 import net.ipetty.ibang.android.core.util.AppUtils;
 import net.ipetty.ibang.android.core.util.DateUtils;
+import net.ipetty.ibang.android.core.util.DialogUtils;
 import net.ipetty.ibang.android.core.util.PrettyDateFormat;
 import net.ipetty.ibang.android.core.util.UserUtils;
 import net.ipetty.ibang.android.evaluation.EvaluationActivity;
@@ -27,6 +31,7 @@ import net.ipetty.ibang.vo.UserVO;
 import org.apache.commons.lang3.StringUtils;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -63,7 +68,7 @@ public class DelegationActivity extends Activity {
 	private TextView seek_serviceDate;
 	private View seek_additionalReward_layout;
 	private ImageView seek_approve;
-
+	private ImageView seek_more;
 	private ImageView delegation_avatar;
 	private TextView delegation_nickname;
 	private TextView delegation_created_on;
@@ -80,6 +85,7 @@ public class DelegationActivity extends Activity {
 	private LinearLayout delegation_evaluation_image_layout;
 	private TextView delegation_totalPoint;
 	private ImageView delegation_approve;
+	private ImageView delegation_more;
 
 	private View seek_wait_finish_layout;
 	private View evaluation_layout;
@@ -96,6 +102,8 @@ public class DelegationActivity extends Activity {
 	private UserVO currentUser;
 
 	private DisplayImageOptions options = AppUtils.getNormalImageOptions();
+	private ArrayList<ModDialogItem> popItems = new ArrayList<ModDialogItem>(0);
+	private Dialog popDialog;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -129,6 +137,7 @@ public class DelegationActivity extends Activity {
 		seek_additionalReward_layout = this.findViewById(R.id.additionalReward_layout);
 		seek_wait_finish_layout = this.findViewById(R.id.seek_wait_finish_layout);
 		seek_approve = (ImageView) this.findViewById(R.id.seek_approve);
+		seek_more = (ImageView) this.findViewById(R.id.seek_more);
 
 		delegation_avatar = (ImageView) this.findViewById(R.id.delegation_avatar);
 		delegation_nickname = (TextView) this.findViewById(R.id.delegation_nickname);
@@ -148,6 +157,7 @@ public class DelegationActivity extends Activity {
 		delegation_evaluation_image_layout = (LinearLayout) this.findViewById(R.id.delegation_evaluation_image_layout);
 		delegation_totalPoint = (TextView) this.findViewById(R.id.delegation_totalPoint);
 		delegation_approve = (ImageView) this.findViewById(R.id.delegation_approve);
+		delegation_more = (ImageView) this.findViewById(R.id.delegation_more);
 
 		evaluation_layout = this.findViewById(R.id.evaluation_layout); // 评价按钮根据权限显示不同的评价
 		evaluation = (TextView) this.findViewById(R.id.evaluation);
@@ -231,6 +241,23 @@ public class DelegationActivity extends Activity {
 		String str = seekVO.getAdditionalReward();
 		seek_additionalReward.setText("附加说明:" + str);
 
+		seek_more.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				popItems.clear();
+				popItems.add(new ModDialogItem(null, "举报", new ReportClickListener(DelegationActivity.this,
+						ReportClickListener.TYPE_SEEK, seekVO.getId(), new OnClickListener() {
+							@Override
+							public void onClick(View v) {
+								// TODO Auto-generated method stub
+								popDialog.cancel();
+							}
+						})));
+				popDialog = DialogUtils.modPopupDialog(DelegationActivity.this, popItems, popDialog);
+			}
+		});
+
 		if (!StringUtils.isNotEmpty(str)) {
 			seek_additionalReward_layout.setVisibility(View.GONE);
 		} else {
@@ -272,6 +299,24 @@ public class DelegationActivity extends Activity {
 		delegation_content.setText(offerVO.getContent());
 		delegation_phone.setText(offerer.getPhone());
 		delegation_totalPoint.setText("等级:" + offerer.getSeekerTitle());
+
+		delegation_more.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				// TODO Auto-generated method stub
+				popItems.clear();
+				popItems.add(new ModDialogItem(null, "举报", new ReportClickListener(DelegationActivity.this,
+						ReportClickListener.TYPE_OFFER, delegationVO.getOffererId(), new OnClickListener() {
+							@Override
+							public void onClick(View v) {
+								// TODO Auto-generated method stub
+								popDialog.cancel();
+							}
+						})));
+				popDialog = DialogUtils.modPopupDialog(DelegationActivity.this, popItems, popDialog);
+			}
+		});
 
 		// 完成委托按钮
 		initFinishDelegationButton();
