@@ -14,6 +14,7 @@ import net.ipetty.ibang.android.core.util.AppUtils;
 import net.ipetty.ibang.android.core.util.JSONUtils;
 import net.ipetty.ibang.android.core.util.NetWorkUtils;
 import net.ipetty.ibang.android.core.util.PrettyDateFormat;
+import net.ipetty.ibang.android.core.util.UserUtils;
 import net.ipetty.ibang.android.evaluation.ListEvaluationByEvaluateTargetIdTask;
 import net.ipetty.ibang.android.evaluation.ListEvaluationByEvaluateTargetIdTaskListener;
 import net.ipetty.ibang.android.evaluation.ListEvaluationByEvaluatorIdTask;
@@ -263,6 +264,7 @@ public class MyEvaluationActivity extends Activity {
 			TextView nickname;
 			TextView created_at;
 			TextView content;
+			ImageView approve;
 		}
 
 		public ViewHolder holder;
@@ -278,6 +280,7 @@ public class MyEvaluationActivity extends Activity {
 				holder.nickname = (TextView) view.findViewById(R.id.nickname);
 				holder.created_at = (TextView) view.findViewById(R.id.created_at);
 				holder.content = (TextView) view.findViewById(R.id.content);
+				holder.approve = (ImageView) view.findViewById(R.id.approve);
 				convertView = view;
 				convertView.setTag(holder);
 			} else {
@@ -294,7 +297,7 @@ public class MyEvaluationActivity extends Activity {
 			} else {
 				evaluator = vo.getEvaluator();
 			}
-			bindUser(evaluator, holder.avator, holder.nickname);
+			UserUtils.bindUser(evaluator, MyEvaluationActivity.this, holder.avator, holder.nickname, holder.approve);
 			return view;
 		}
 

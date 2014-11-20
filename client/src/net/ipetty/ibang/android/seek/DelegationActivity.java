@@ -12,12 +12,11 @@ import net.ipetty.ibang.android.core.ui.BackClickListener;
 import net.ipetty.ibang.android.core.util.AnimUtils;
 import net.ipetty.ibang.android.core.util.AppUtils;
 import net.ipetty.ibang.android.core.util.DateUtils;
-import net.ipetty.ibang.android.core.util.JSONUtils;
 import net.ipetty.ibang.android.core.util.PrettyDateFormat;
+import net.ipetty.ibang.android.core.util.UserUtils;
 import net.ipetty.ibang.android.evaluation.EvaluationActivity;
 import net.ipetty.ibang.android.evaluation.ListEvaluationByDelegationIdTask;
 import net.ipetty.ibang.android.sdk.context.ApiContext;
-import net.ipetty.ibang.android.user.UserInfoActivity;
 import net.ipetty.ibang.vo.DelegationVO;
 import net.ipetty.ibang.vo.EvaluationVO;
 import net.ipetty.ibang.vo.ImageVO;
@@ -63,6 +62,7 @@ public class DelegationActivity extends Activity {
 	private TextView seek_additionalReward;
 	private TextView seek_serviceDate;
 	private View seek_additionalReward_layout;
+	private ImageView seek_approve;
 
 	private ImageView delegation_avatar;
 	private TextView delegation_nickname;
@@ -79,6 +79,7 @@ public class DelegationActivity extends Activity {
 	private TextView delegation_evaluation_content;
 	private LinearLayout delegation_evaluation_image_layout;
 	private TextView delegation_totalPoint;
+	private ImageView delegation_approve;
 
 	private View seek_wait_finish_layout;
 	private View evaluation_layout;
@@ -127,6 +128,7 @@ public class DelegationActivity extends Activity {
 		seek_serviceDate = (TextView) this.findViewById(R.id.serviceDate);
 		seek_additionalReward_layout = this.findViewById(R.id.additionalReward_layout);
 		seek_wait_finish_layout = this.findViewById(R.id.seek_wait_finish_layout);
+		seek_approve = (ImageView) this.findViewById(R.id.seek_approve);
 
 		delegation_avatar = (ImageView) this.findViewById(R.id.delegation_avatar);
 		delegation_nickname = (TextView) this.findViewById(R.id.delegation_nickname);
@@ -145,6 +147,7 @@ public class DelegationActivity extends Activity {
 		delegation_evaluation_content = (TextView) this.findViewById(R.id.delegation_evaluation_content);
 		delegation_evaluation_image_layout = (LinearLayout) this.findViewById(R.id.delegation_evaluation_image_layout);
 		delegation_totalPoint = (TextView) this.findViewById(R.id.delegation_totalPoint);
+		delegation_approve = (ImageView) this.findViewById(R.id.delegation_approve);
 
 		evaluation_layout = this.findViewById(R.id.evaluation_layout); // 评价按钮根据权限显示不同的评价
 		evaluation = (TextView) this.findViewById(R.id.evaluation);
@@ -220,7 +223,7 @@ public class DelegationActivity extends Activity {
 	 */
 	private void initView() {
 		// 填充求助信息
-		bindUser(seeker, seek_avatar, seek_nickname);
+		UserUtils.bindUser(seeker, this, seek_avatar, seek_nickname, seek_approve);
 		bindTime(seekVO.getCreatedOn(), seek_created_at);
 		seek_content.setText(seekVO.getContent());
 		seek_phone.setText(seeker.getPhone());
@@ -264,7 +267,7 @@ public class DelegationActivity extends Activity {
 		}
 
 		// 求助/委托信息
-		bindUser(offerer, delegation_avatar, delegation_nickname);
+		UserUtils.bindUser(offerer, this, delegation_avatar, delegation_nickname, delegation_approve);
 		bindTime(delegationVO.getCreatedOn(), delegation_created_on);
 		delegation_content.setText(offerVO.getContent());
 		delegation_phone.setText(offerer.getPhone());
@@ -537,23 +540,6 @@ public class DelegationActivity extends Activity {
 	private void bindTime(Date date, TextView time) {
 		String creatAt = new PrettyDateFormat("@", "yyyy-MM-dd").format(date);
 		time.setText(creatAt);
-	}
-
-	private void bindUser(final UserVO user, ImageView avatar, TextView nickname) {
-		if (StringUtils.isNotBlank(user.getAvatar())) {
-			ImageLoader.getInstance().displayImage(Constants.FILE_SERVER_BASE + user.getAvatar(), avatar, options);
-		}
-		nickname.setText(user.getNickname());
-		avatar.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				Intent intent = new Intent(DelegationActivity.this, UserInfoActivity.class);
-				intent.putExtra(Constants.INTENT_USER_ID, user.getId());
-				intent.putExtra(Constants.INTENT_USER_JSON, JSONUtils.toJson(user).toString());
-				startActivity(intent);
-			}
-		});
 	}
 
 	private BroadcastReceiver broadcastreciver = new BroadcastReceiver() {

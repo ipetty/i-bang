@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 
 import net.ipetty.ibang.R;
+import net.ipetty.ibang.android.approve.ApproveActivity;
 import net.ipetty.ibang.android.city.ProvinceActivity;
 import net.ipetty.ibang.android.core.ActivityManager;
 import net.ipetty.ibang.android.core.Constants;
@@ -13,6 +14,7 @@ import net.ipetty.ibang.android.core.util.AppUtils;
 import net.ipetty.ibang.android.core.util.DeviceUtils;
 import net.ipetty.ibang.android.core.util.DialogUtils;
 import net.ipetty.ibang.android.core.util.PathUtils;
+import net.ipetty.ibang.android.core.util.UserUtils;
 import net.ipetty.ibang.android.sdk.context.ApiContext;
 import net.ipetty.ibang.vo.SeekCategory;
 import net.ipetty.ibang.vo.UserFormVO;
@@ -53,6 +55,8 @@ public class UserProfileActivity extends Activity {
 	private TextView districtView;
 	private TextView categoryView;
 	private TextView seekerTitleView;
+
+	private TextView approveView;
 
 	private ArrayList<ModDialogItem> genderItems;
 	private Dialog genderDialog;
@@ -106,6 +110,7 @@ public class UserProfileActivity extends Activity {
 		districtView = (TextView) this.findViewById(R.id.district);
 		categoryView = (TextView) this.findViewById(R.id.category);
 		seekerTitleView = (TextView) this.findViewById(R.id.seekerTitle);
+		approveView = (TextView) this.findViewById(R.id.approve);
 
 		avatar.setOnClickListener(changeAvatarClick);
 		nickname_layout.setOnClickListener(new EditOnClickListener(Constants.INTENT_USER_EDIT_TYPE_NICKNAME));
@@ -145,6 +150,16 @@ public class UserProfileActivity extends Activity {
 				// TODO Auto-generated method stub
 				Intent intent = new Intent(UserProfileActivity.this, SelectUserCategoryActivity.class);
 				startActivityForResult(intent, Constants.REQUEST_CODE_CATEGORY);
+			}
+		});
+
+		View approve_layout = this.findViewById(R.id.approve_layout);
+		approve_layout.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent intent = new Intent(UserProfileActivity.this, ApproveActivity.class);
+				startActivity(intent);
 			}
 		});
 	}
@@ -319,6 +334,7 @@ public class UserProfileActivity extends Activity {
 		cityView.setText(user.getCity());
 		districtView.setText(user.getDistrict());
 		seekerTitleView.setText(user.getSeekerTitle());
+		approveView.setText(UserUtils.getIdentityVerified(user));
 
 		StringBuffer str = new StringBuffer();
 		for (SeekCategory category : user.getOfferRange()) {

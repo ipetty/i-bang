@@ -14,9 +14,9 @@ import net.ipetty.ibang.android.core.util.AppUtils;
 import net.ipetty.ibang.android.core.util.DateUtils;
 import net.ipetty.ibang.android.core.util.JSONUtils;
 import net.ipetty.ibang.android.core.util.PrettyDateFormat;
+import net.ipetty.ibang.android.core.util.UserUtils;
 import net.ipetty.ibang.android.login.LoginActivity;
 import net.ipetty.ibang.android.sdk.context.ApiContext;
-import net.ipetty.ibang.android.user.UserInfoActivity;
 import net.ipetty.ibang.vo.DelegationVO;
 import net.ipetty.ibang.vo.ImageVO;
 import net.ipetty.ibang.vo.OfferVO;
@@ -64,6 +64,7 @@ public class SeekActivity extends Activity {
 	private TextView seekerTitle;
 	private TextView additionalReward;
 	private TextView serviceDate;
+	private ImageView seek_approve;
 
 	private List<ImageView> imageViews = new ArrayList<ImageView>(); // 滑动的图片
 	private int currentItem = 0;// 当前图片的索引号
@@ -128,6 +129,7 @@ public class SeekActivity extends Activity {
 		seekerTitle = (TextView) this.findViewById(R.id.seekerTitle);
 		additionalReward = (TextView) this.findViewById(R.id.additionalReward);
 		serviceDate = (TextView) this.findViewById(R.id.serviceDate);
+		seek_approve = (ImageView) this.findViewById(R.id.seek_approve);
 
 		contact_layout = this.findViewById(R.id.contact_layout);
 		contact_layout.setVisibility(View.GONE);
@@ -248,7 +250,7 @@ public class SeekActivity extends Activity {
 	}
 
 	private void initSeekUserLayout() {
-		bindUser(seekUser, seek_avatar, seek_username);
+		UserUtils.bindUser(seekUser, this, seek_avatar, seek_username, seek_approve);
 		// 填充手机号
 		phone.setText(seekUser.getPhone());
 		seekerTitle.setText("等级:" + seekUser.getSeekerTitle());
@@ -426,6 +428,7 @@ public class SeekActivity extends Activity {
 		TextView content;
 		TextView totalPoint;
 		TextView delegation_info_btn;
+		ImageView approve;
 	}
 
 	private void initOfferView() {
@@ -473,6 +476,7 @@ public class SeekActivity extends Activity {
 		holder.content = (TextView) view.findViewById(R.id.content);
 		holder.totalPoint = (TextView) view.findViewById(R.id.totalPoint);
 		holder.delegation_info_btn = (TextView) view.findViewById(R.id.delegation_info_btn);
+		holder.approve = (ImageView) view.findViewById(R.id.approve);
 
 		// 如果已帮助过，则帮助按钮不可见（不能重复帮助），求助者联系方式可见
 		if (user != null && offer.getOffererId().equals(user.getId())) {
@@ -553,7 +557,7 @@ public class SeekActivity extends Activity {
 		holder.content.setText(offer.getContent());
 
 		UserVO user = offer.getOfferer();
-		bindUser(user, holder.avator, holder.nickname);
+		UserUtils.bindUser(user, this, holder.avator, holder.nickname, holder.approve);
 		holder.totalPoint.setText("等级:" + String.valueOf(user.getSeekerTitle()));
 		return view;
 	}
@@ -561,33 +565,6 @@ public class SeekActivity extends Activity {
 	private void bindTime(Date date, TextView time) {
 		String creatAt = new PrettyDateFormat("@", "yyyy-MM-dd").format(date);
 		time.setText(creatAt);
-	}
-
-	private void bindUser(final UserVO user, ImageView avatar, TextView nickname) {
-		if (StringUtils.isNotBlank(user.getAvatar())) {
-			ImageLoader.getInstance().displayImage(Constants.FILE_SERVER_BASE + user.getAvatar(), avatar, options);
-		}
-		nickname.setText(user.getNickname());
-		avatar.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				Intent intent = new Intent(SeekActivity.this, UserInfoActivity.class);
-				intent.putExtra(Constants.INTENT_USER_ID, user.getId());
-				intent.putExtra(Constants.INTENT_USER_JSON, JSONUtils.toJson(user).toString());
-				startActivity(intent);
-			}
-		});
-		nickname.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				Intent intent = new Intent(SeekActivity.this, UserInfoActivity.class);
-				intent.putExtra(Constants.INTENT_USER_ID, user.getId());
-				intent.putExtra(Constants.INTENT_USER_JSON, JSONUtils.toJson(user).toString());
-				startActivity(intent);
-			}
-		});
 	}
 
 	private BroadcastReceiver broadcastreciver = new BroadcastReceiver() {

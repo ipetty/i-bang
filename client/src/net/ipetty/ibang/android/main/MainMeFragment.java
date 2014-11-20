@@ -1,10 +1,10 @@
 package net.ipetty.ibang.android.main;
 
 import net.ipetty.ibang.R;
-import net.ipetty.ibang.android.approve.ApproveActivity;
 import net.ipetty.ibang.android.core.Constants;
 import net.ipetty.ibang.android.core.ui.UnLoginView;
 import net.ipetty.ibang.android.core.util.AppUtils;
+import net.ipetty.ibang.android.core.util.UserUtils;
 import net.ipetty.ibang.android.sdk.context.ApiContext;
 import net.ipetty.ibang.android.seek.MyEvaluationActivity;
 import net.ipetty.ibang.android.seek.MyOfferActivity;
@@ -24,7 +24,6 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -49,6 +48,8 @@ public class MainMeFragment extends Fragment {
 	private TextView seekCount;
 	private TextView offerCount;
 	private TextView seekerTotalPoint;
+
+	private ImageView approve;
 
 	private View evaluation_layout;
 
@@ -104,17 +105,7 @@ public class MainMeFragment extends Fragment {
 		offerCount = (TextView) getView().findViewById(R.id.offerCount);
 		seekerTotalPoint = (TextView) getView().findViewById(R.id.seekerTotalPoint);
 
-		// TODO:toV2.0
-		nickname.setOnLongClickListener(new OnLongClickListener() {
-
-			@Override
-			public boolean onLongClick(View v) {
-				// TODO Auto-generated method stub
-				Intent intent = new Intent(getActivity(), ApproveActivity.class);
-				startActivity(intent);
-				return false;
-			}
-		});
+		approve = (ImageView) getView().findViewById(R.id.approve);
 
 		View seekerTotalPoint_layout = getView().findViewById(R.id.seekerTotalPoint_layout);
 		seekerTotalPoint_layout.setOnClickListener(new OnClickListener() {
@@ -202,6 +193,8 @@ public class MainMeFragment extends Fragment {
 		seekCount.setText(String.valueOf(user.getSeekCount()));
 		offerCount.setText(String.valueOf(user.getOfferCount()));
 		seekerTotalPoint.setText(String.valueOf(user.getSeekerTotalPoint()));
+
+		UserUtils.bindIdentityVerified(user, approve);
 
 		if (StringUtils.isNotBlank(user.getAvatar())) {
 			String str = Constants.FILE_SERVER_BASE + user.getAvatar();

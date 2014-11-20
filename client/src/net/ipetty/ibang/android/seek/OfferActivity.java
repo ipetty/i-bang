@@ -12,8 +12,8 @@ import net.ipetty.ibang.android.core.util.AppUtils;
 import net.ipetty.ibang.android.core.util.DateUtils;
 import net.ipetty.ibang.android.core.util.JSONUtils;
 import net.ipetty.ibang.android.core.util.PrettyDateFormat;
+import net.ipetty.ibang.android.core.util.UserUtils;
 import net.ipetty.ibang.android.sdk.context.ApiContext;
-import net.ipetty.ibang.android.user.UserInfoActivity;
 import net.ipetty.ibang.vo.DelegationVO;
 import net.ipetty.ibang.vo.OfferVO;
 import net.ipetty.ibang.vo.SeekVO;
@@ -30,7 +30,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
-import com.nostra13.universalimageloader.core.ImageLoader;
 
 public class OfferActivity extends Activity {
 
@@ -41,6 +40,7 @@ public class OfferActivity extends Activity {
 	private TextView seek_closedOn;
 	private TextView seek_phone;
 	private View seek_contact_layout;
+	private ImageView seek_approve;
 
 	private ImageView offer_avatar;
 	private TextView offer_nickname;
@@ -51,6 +51,7 @@ public class OfferActivity extends Activity {
 	private TextView offer_totalPoint;
 	private TextView offer_close;
 	private View offer_close_layout;
+	private ImageView offer_approve;
 	// private TextView offer_status;
 	private TextView seek_seekerTitle;
 
@@ -93,6 +94,7 @@ public class OfferActivity extends Activity {
 		seek_additionalReward = (TextView) this.findViewById(R.id.additionalReward);
 		seek_serviceDate = (TextView) this.findViewById(R.id.serviceDate);
 		seek_additionalReward_layout = this.findViewById(R.id.additionalReward_layout);
+		seek_approve = (ImageView) this.findViewById(R.id.seek_approve);
 
 		offer_avatar = (ImageView) this.findViewById(R.id.offer_avatar);
 		offer_content = (TextView) this.findViewById(R.id.offer_content);
@@ -103,6 +105,7 @@ public class OfferActivity extends Activity {
 		offer_totalPoint = (TextView) this.findViewById(R.id.offer_totalPoint);
 		offer_wait_delegated_layout = this.findViewById(R.id.offer_wait_delegated_layout);
 		offer_self_closed_layout = this.findViewById(R.id.offer_self_closed_layout);
+		offer_approve = (ImageView) this.findViewById(R.id.offer_approve);
 		// offer_status = (TextView) this.findViewById(R.id.offer_status);
 
 		offer_close = (TextView) this.findViewById(R.id.offer_close);
@@ -127,7 +130,7 @@ public class OfferActivity extends Activity {
 			public void onSuccess(OfferVO result) {
 				offerVO = result;
 				offerer = offerVO.getOfferer();
-				bindUser(offerer, offer_avatar, offer_nickname);
+				UserUtils.bindUser(offerer, OfferActivity.this, offer_avatar, offer_nickname, offer_approve);
 				bindTime(offerVO.getCreatedOn(), offer_created_at);
 				offer_content.setText(offerVO.getContent());
 				offer_totalPoint.setText("等级:" + String.valueOf(offerer.getSeekerTitle()));
@@ -159,7 +162,7 @@ public class OfferActivity extends Activity {
 		offer_close_layout.setVisibility(View.GONE);
 		delegation_layout.setVisibility(View.GONE);
 
-		bindUser(seeker, seek_avatar, seek_nickname);
+		UserUtils.bindUser(seeker, this, seek_avatar, seek_nickname, seek_approve);
 		bindTime(seekVO.getCreatedOn(), seek_created_at);
 		seek_content.setText(seekVO.getContent());
 		seek_phone.setText(seeker.getPhone());
@@ -332,23 +335,6 @@ public class OfferActivity extends Activity {
 	private void bindTime(Date date, TextView time) {
 		String creatAt = new PrettyDateFormat("@", "yyyy-MM-dd").format(date);
 		time.setText(creatAt);
-	}
-
-	private void bindUser(final UserVO user, ImageView avatar, TextView nickname) {
-		if (StringUtils.isNotBlank(user.getAvatar())) {
-			ImageLoader.getInstance().displayImage(Constants.FILE_SERVER_BASE + user.getAvatar(), avatar, options);
-		}
-		nickname.setText(user.getNickname());
-		avatar.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				Intent intent = new Intent(OfferActivity.this, UserInfoActivity.class);
-				intent.putExtra(Constants.INTENT_USER_ID, user.getId());
-				intent.putExtra(Constants.INTENT_USER_JSON, JSONUtils.toJson(user).toString());
-				startActivity(intent);
-			}
-		});
 	}
 
 }

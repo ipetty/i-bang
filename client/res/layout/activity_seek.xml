@@ -81,6 +81,16 @@
     android:textColor="@color/base_color"
     android:textSize="18dp" />
 
+     <ImageView
+			         			             android:id="@+id/seek_approve"
+			         			             android:layout_width="wrap_content"
+			         			             android:layout_height="20dp"
+			         			             android:layout_alignParentTop="true"
+			         			              android:layout_marginLeft="4dp"
+			         			             android:layout_toRightOf="@+id/seek_username"
+			         			             android:src="@drawable/ic_approve" 
+			         			             android:visibility="gone"/>
+
 <TextView
     android:id="@+id/seekerTitle"
     android:layout_width="wrap_content"

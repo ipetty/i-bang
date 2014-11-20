@@ -15,13 +15,10 @@ import net.ipetty.ibang.android.core.util.AppUtils;
 import net.ipetty.ibang.android.core.util.JSONUtils;
 import net.ipetty.ibang.android.core.util.NetWorkUtils;
 import net.ipetty.ibang.android.core.util.PrettyDateFormat;
+import net.ipetty.ibang.android.core.util.UserUtils;
 import net.ipetty.ibang.android.sdk.context.ApiContext;
-import net.ipetty.ibang.android.user.UserInfoActivity;
 import net.ipetty.ibang.vo.OfferVO;
 import net.ipetty.ibang.vo.UserVO;
-
-import org.apache.commons.lang3.StringUtils;
-
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -46,7 +43,6 @@ import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshBase.OnLastItemVisibleListener;
 import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
-import com.nostra13.universalimageloader.core.ImageLoader;
 
 public class MyOfferActivity extends Activity {
 
@@ -221,6 +217,7 @@ public class MyOfferActivity extends Activity {
 			TextView content;
 			TextView totalPoint;
 			TextView delegation_info_btn;
+			ImageView approve;
 		}
 
 		public ViewHolder holder;
@@ -241,6 +238,7 @@ public class MyOfferActivity extends Activity {
 				holder.content = (TextView) view.findViewById(R.id.content);
 				holder.totalPoint = (TextView) view.findViewById(R.id.totalPoint);
 				holder.delegation_info_btn = (TextView) view.findViewById(R.id.delegation_info_btn);
+				holder.approve = (ImageView) view.findViewById(R.id.approve);
 
 				convertView = view;
 				convertView.setTag(holder);
@@ -290,7 +288,7 @@ public class MyOfferActivity extends Activity {
 
 			bindTime(offer.getCreatedOn(), holder.created_at);
 			holder.content.setText(offer.getContent());
-			bindUser(user, holder.avator, holder.nickname);
+			UserUtils.bindUser(user, MyOfferActivity.this, holder.avator, holder.nickname, holder.approve);
 			holder.totalPoint.setText("等级:" + String.valueOf(user.getSeekerTitle()));
 			return view;
 		}
@@ -311,31 +309,6 @@ public class MyOfferActivity extends Activity {
 	private void bindTime(Date date, TextView time) {
 		String creatAt = new PrettyDateFormat("@", "yyyy-MM-dd").format(date);
 		time.setText(creatAt);
-	}
-
-	private void bindUser(final UserVO user, ImageView avatar, TextView nickname) {
-		if (StringUtils.isNotBlank(user.getAvatar())) {
-			ImageLoader.getInstance().displayImage(Constants.FILE_SERVER_BASE + user.getAvatar(), avatar, options);
-		}
-		nickname.setText(user.getNickname());
-		avatar.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				Intent intent = new Intent(MyOfferActivity.this, UserInfoActivity.class);
-				intent.putExtra(Constants.INTENT_USER_ID, user.getId());
-				intent.putExtra(Constants.INTENT_USER_JSON, JSONUtils.toJson(user).toString());
-				startActivity(intent);
-			}
-		});
-		nickname.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				Intent intent = new Intent(MyOfferActivity.this, UserInfoActivity.class);
-				intent.putExtra(Constants.INTENT_USER_ID, user.getId());
-				intent.putExtra(Constants.INTENT_USER_JSON, JSONUtils.toJson(user).toString());
-				startActivity(intent);
-			}
-		});
 	}
 
 	private BroadcastReceiver broadcastreciver = new BroadcastReceiver() {
