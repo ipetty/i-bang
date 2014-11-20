@@ -1,0 +1,191 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="@color/yellow_bg_color"
+    tools:context=".ReportActivity" >
+
+ 	 	<include
+        android:id="@+id/include"
+        layout="@layout/action_bar_simple_back" />
+
+ 	 	
+ 	 	<LinearLayout
+ 	 	    android:id="@+id/operation_layout"
+ 	 	    android:layout_width="match_parent"
+ 	 	    android:layout_height="wrap_content"
+ 	 	    android:layout_alignParentBottom="true"
+ 	 	    android:layout_alignParentLeft="true"
+ 	 	    android:orientation="vertical"
+ 	 	    android:background="@color/white_color" >
+			<include layout="@layout/line_horizontal_divider" />
+ 	 	    <TextView
+ 	 	        android:id="@+id/button"
+ 	 	        android:layout_width="match_parent"
+ 	 	        android:layout_height="46dp"
+ 	 	        android:layout_marginLeft="24dp"
+ 	 	        android:layout_marginRight="24dp"
+ 	 	        android:layout_marginTop="8dp"
+ 	 	           android:layout_marginBottom="8dp"
+ 	 	        android:background="@drawable/button_orange_shape"
+ 	 	        android:gravity="center"
+ 	 	        android:text="举报"
+ 	 	        android:textColor="@color/white_color"
+ 	 	        android:textSize="24sp" />
+ 	 	</LinearLayout>
+
+ 	 	<ScrollView
+ 	 	    android:id="@+id/scrollView1"
+ 	 	    android:layout_width="match_parent"
+ 	 	    android:layout_height="match_parent"
+ 	 	    android:layout_above="@+id/operation_layout"
+ 	 	    android:layout_alignParentLeft="true"
+ 	 	    android:layout_below="@+id/include" >
+
+ 	 	    <LinearLayout
+ 	 	        android:layout_width="match_parent"
+ 	 	        android:layout_height="match_parent"
+ 	 	        android:orientation="vertical" >
+
+ 	 	 <RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="left"
+    android:orientation="horizontal"
+	android:paddingTop="8dp" 
+	android:paddingLeft="8dp"
+	android:paddingRight="8dp"
+    android:background="@drawable/list_color_item_bg_white" >
+
+			    <ImageView
+			        android:id="@+id/user_avatar"
+			        android:layout_width="40dp"
+			        android:layout_height="40dp"
+			        android:layout_alignParentBottom="true"
+			        android:layout_marginRight="11.0dip"
+			        android:layout_alignParentLeft="true"
+			        android:scaleType="fitXY"
+			        android:src="@drawable/default_avatar" />
+
+				<TextView
+				    android:id="@+id/user_nickname"
+				    android:layout_width="wrap_content"
+				    android:layout_height="wrap_content"
+				    android:layout_alignTop="@+id/user_avatar"
+				    android:layout_toRightOf="@+id/user_avatar"
+				    android:ellipsize="end"
+				    android:gravity="left|center"
+				    android:singleLine="true"
+				    android:textColor="@color/base_color"
+				    android:textSize="18dp" />
+
+			</RelativeLayout>
+			<RelativeLayout
+			    	android:id="@+id/user_content_layout"
+ 	 	            android:layout_width="match_parent"
+ 	 	            android:layout_height="wrap_content"
+ 	 	            android:background="@color/white_color"
+ 	 	            android:padding="8dp" >
+ 	 	            <TextView
+ 	 	                android:id="@+id/user_content"
+ 	 	                android:layout_width="wrap_content"
+ 	 	                android:layout_height="wrap_content"
+ 	 	                android:layout_alignParentLeft="true"
+ 	 	                android:layout_alignParentTop="true"
+ 	 	                android:color="@color/black_color" 
+ 	 	                android:textSize="16dp" />
+ 	 	        </RelativeLayout>
+ 	 	        <include layout="@layout/line_horizontal_divider" />
+
+ 	 	        <LinearLayout
+ 	 	            android:layout_width="match_parent"
+ 	 	            android:layout_height="wrap_content" 
+ 	 	            android:background="@color/white_color">
+
+ 	 	            <CheckBox
+ 	 	                android:id="@+id/checkBox1"
+ 	 	                android:layout_width="match_parent"
+ 	 	                android:layout_weight="1"
+ 	 	                android:layout_height="wrap_content"
+ 	 	                android:textSize="14sp"
+ 	 	                android:text="垃圾营销" />
+ 	 	            
+ 	 	             <CheckBox
+ 	 	                android:id="@+id/checkBox2"
+ 	 	                 	 	                android:layout_width="match_parent"
+ 	 	                android:layout_weight="1"
+ 	 	                android:layout_height="wrap_content"
+ 	 	                android:textSize="14sp"
+ 	 	                android:text="小广告" />
+ 	 	             
+ 	 	                       <CheckBox
+ 	 	                android:id="@+id/checkBox3"
+ 	 	                 	 	                android:layout_width="match_parent"
+ 	 	                android:layout_weight="1"
+ 	 	                android:layout_height="wrap_content"
+ 	 	                android:textSize="14sp"
+ 	 	                android:text="虚假信息" />
+ 	 	                       </LinearLayout>
+ 	 	                         <LinearLayout
+ 	 	            android:layout_width="match_parent"
+ 	 	            android:layout_height="wrap_content" 
+ 	 	            android:background="@color/white_color">
+ 	 	              <CheckBox
+ 	 	                android:id="@+id/checkBox4"
+ 	 	                 	 	                android:layout_width="match_parent"
+ 	 	                android:layout_weight="1"
+ 	 	                android:layout_height="wrap_content"
+ 	 	                android:textSize="14sp"
+ 	 	                android:text="抄袭" />
+ 	 	                                 
+ 	 	                                           <CheckBox
+ 	 	                android:id="@+id/checkBox5"
+ 	 	                	 	                android:layout_width="match_parent"
+ 	 	                android:layout_weight="1"
+ 	 	                android:layout_height="wrap_content"
+ 	 	                android:textSize="14sp"
+ 	 	                android:text="敏感信息" />
+                                           <TextView
+ 	 	                android:id="@+id/checkBox6"
+ 	 	                	 	                android:layout_width="match_parent"
+ 	 	                android:layout_weight="1"
+ 	 	                android:layout_height="wrap_content"
+ 	 	                android:text=""
+ 	 	                android:visibility="visible" />
+ 	 	        </LinearLayout>
+ 	 	        
+ 	 	               <include layout="@layout/line_horizontal_divider" />
+ 	 	               
+ 	 	               <LinearLayout
+ 	 	            android:layout_width="match_parent"
+ 	 	            android:layout_height="120dp"
+ 	 	            android:background="@color/white_color"
+ 	 	            android:padding="8dp" >
+
+ 	 	            <EditText
+ 	 	                android:id="@+id/content"
+ 	 	                android:layout_width="0dp"
+ 	 	                android:layout_height="match_parent"
+ 	 	                android:layout_weight="1"
+ 	 	                android:background="@null"
+ 	 	                android:ems="10"
+ 	 	                android:gravity="center_vertical|top"
+ 	 	                android:hint="举报备注说明"
+ 	 	                android:inputType="textMultiLine"
+ 	 	                android:scrollbarStyle="insideInset"
+ 	 	                android:scrollbars="vertical"
+ 	 	                android:textColor="@color/gray_color"
+ 	 	                android:textSize="14sp" >
+
+ 	 	                <requestFocus />
+ 	 	            </EditText>
+ 	 	        </LinearLayout>
+ 	 	        <include layout="@layout/line_horizontal_divider" />
+ 	 	    </LinearLayout>
+ 	 	</ScrollView>
+
+</RelativeLayout>
