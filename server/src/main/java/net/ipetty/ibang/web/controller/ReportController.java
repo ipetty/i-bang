@@ -9,10 +9,12 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import net.ipetty.ibang.admin.AdminConstants;
+import net.ipetty.ibang.model.IdentityVerification;
 import net.ipetty.ibang.model.Report;
 import net.ipetty.ibang.model.User;
 import net.ipetty.ibang.service.ReportService;
 import net.ipetty.ibang.service.UserService;
+import net.ipetty.ibang.vo.IdentityVerificationVO;
 import net.ipetty.ibang.vo.ReportVO;
 
 import org.apache.commons.lang3.StringUtils;
@@ -37,7 +39,14 @@ public class ReportController {
 	@Resource
 	private UserService userService;
 
-	@RequestMapping(value = "/reportlist", method = RequestMethod.GET)
+	
+	@RequestMapping(value = "/report", method = RequestMethod.GET)
+	public String verify(Model model, HttpServletRequest request, HttpServletResponse response) {
+		return listReports(model, request, response, "1");
+	}
+	
+	
+	@RequestMapping(value = "/report/page/{currentPage}", method = RequestMethod.GET)
 	public String listReports(Model model, HttpServletRequest request, HttpServletResponse response, String currentPage) {
 		HttpSession session = request.getSession(false);
 		if (session == null) {

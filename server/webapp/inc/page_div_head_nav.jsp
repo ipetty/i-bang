@@ -5,7 +5,8 @@
 	<div class="head-nav-inner">
 		<ul class="head-nav-left">
 			<li class="logo"><a>51帮帮忙管理平台</a></li>
-	        <li class="item meeting"><a href="#" class="link">身份证审核</a></li>
+	        <li class="item meeting"><a href="${RESOUCE_APP_URL}/admin/verify" class="link">实名认证</a></li>
+			<li class="item meeting"><a href="${RESOUCE_APP_URL}/admin/report" class="link">举报处理</a></li>
         </ul>      
 		<ul class="head-nav-right">
 			<li class="item">

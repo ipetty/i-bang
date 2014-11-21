@@ -8,7 +8,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
 <meta name="renderer" content="webkit">
 <%@ include file="/inc/page_base.jsp"%>
-<link href="${RESOUCE_STATIC_URL}/css/verify.min.css?t=4.8.2668563615"
+<link href="${RESOUCE_STATIC_URL}/css/report.min.css?t=4.8.2668563615"
 	type="text/css" rel="stylesheet">
 </head>
 <script>
@@ -64,7 +64,7 @@
 		});
 
 		function loadData() {
-			location.href = Ibang.Config.appUrl + "/admin/verify/page/"
+			location.href = Ibang.Config.appUrl + "/admin/report/page/"
 					+ $("#currentPage").val();
 		}
 
@@ -75,12 +75,12 @@
 		$(".btnVerify").click(function() {
 			var id = ($(this).data("id"));
 			var res = ($(this).data("res"));
-			var url = "/admin/verify/" + id;
+			var url = "/admin/report/" + id;
 			Ibang.Base.throttle.lock(url);
 
 			$.ajax({
 				type : 'post',
-				url : Ibang.Config.appUrl + "/admin/verify/",
+				url : Ibang.Config.appUrl + "/admin/report/",
 				data : {
 					userId : id,
 					approved : res,
@@ -119,13 +119,15 @@
 					<div class="table-header-content">
 						<table>
 							<tr class="table-header">
-								<td class="c1">姓名</td>
+								<td class="c1">类型</td>
 								<td class="sep"></td>
-								<td class="c2">身份证号码</td>
+								<td class="c2">举报内容</td>
 								<td class="sep"></td>
-								<td class="c3">手持照片图片</td>
+								<td class="c3">行为类型</td>
 								<td class="sep"></td>
-								<td class="c4">状态</td>
+								<td class="c4">举报人</td>
+								<td class="sep"></td>
+								<td class="c5">状态</td>
 							</tr>
 						</table>
 					</div>
@@ -133,28 +135,43 @@
 					<div class="data-content">
 						<div class="data-table">
 							<table class="table-content">
-								<c:forEach items="${verifies}" var="identityVerification">
-									<tr id="${identityVerification.userId}">
+								
+									<tr id="">
 										<td class="data-td c1"
-											title="${identityVerification.realName}">
-											${identityVerification.realName}</td>
+											title="">
+											帖子</td>
 										<td class="data-td c2"
-											title="${identityVerification.idNumber}">${identityVerification.idNumber}</td>
+											title="">请打击大家爱啊大 </td>
 										<td class="data-td c3"
-											title="${identityVerification.idCardInHand}"><a href="${identityVerification.idCardInHand}" target="_blank"><img
-											src="${identityVerification.idCardInHand}" width="36" alt="" /></td>
-										<td class="data-td c4" title="${identityVerification.status}">
-											<c:choose>
-												<c:when test="${'待审核' eq identityVerification.status}">
-													<a id="" class="btnVerify btn" href="javascript:"
-														style="color: green" hidefocus="true"
-														data-id="${identityVerification.userId}" data-res="true">通过</a>
-													<a id="" class="btnVerify btn" href="javascript:"
-														style="color: red" hidefocus="true"
-														data-id="${identityVerification.userId}" data-res="false">驳回</a>
-												</c:when>
-												<c:otherwise>${identityVerification.status}</c:otherwise>
-											</c:choose>
+											title="">垃圾消息</td>
+										<td class="data-td c4" title="">
+										张三
+										</td>
+										<td class="data-td c5" title="">
+											待处理
+										</td>
+									</tr>
+					
+							</table>
+						</div>
+					</div>
+
+					<div class="data-content">
+						<div class="data-table">
+							<table class="table-content">
+								<c:forEach items="${reportList}" var="report">
+									<tr id="${report.id}">
+										<td class="data-td c1"
+											title="${report.type}">
+											${report.type}</td>
+										<td class="data-td c2"
+											title=""></td>
+										<td class="data-td c3"
+											title=""></td>
+										<td class="data-td c4" title="">
+										</td>
+										<td class="data-td c5" title="">
+											
 										</td>
 									</tr>
 								</c:forEach>
