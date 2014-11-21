@@ -6,7 +6,10 @@ import java.util.List;
 import net.ipetty.ibang.R;
 import net.ipetty.ibang.android.core.Constants;
 import net.ipetty.ibang.android.core.DefaultTaskListener;
+import net.ipetty.ibang.android.core.ui.BackClickListener;
+import net.ipetty.ibang.android.core.ui.UnLoginView;
 import net.ipetty.ibang.android.core.util.AppUtils;
+import net.ipetty.ibang.android.sdk.context.ApiContext;
 import net.ipetty.ibang.android.seek.GetOfferByIdTask;
 import net.ipetty.ibang.android.seek.GetSeekByIdTask;
 import net.ipetty.ibang.android.user.GetUserByIdTask;
@@ -18,6 +21,10 @@ import net.ipetty.ibang.vo.UserVO;
 import org.apache.commons.lang3.StringUtils;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.CheckBox;
@@ -30,7 +37,8 @@ import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 public class ReportActivity extends Activity {
-
+	private boolean isLogin = false;
+	public UnLoginView unLoginView;
 	private Long reportSeekId;
 	private String seekType;
 	private Long reportOfferId;
@@ -41,15 +49,25 @@ public class ReportActivity extends Activity {
 	private View user_content_layout;
 	private TextView user_content; // 被举报seek or offer内容
 	private TextView content;
-	private int[] check = {
-			R.id.checkBox1, R.id.checkBox2, R.id.checkBox3, R.id.checkBox4, R.id.checkBox5
-	};
+	private int[] check = { R.id.checkBox1, R.id.checkBox2, R.id.checkBox3, R.id.checkBox4, R.id.checkBox5 };
 	private List<String> checkList = new ArrayList<String>();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_report);
+
+		/* action bar */
+		ImageView btnBack = (ImageView) this.findViewById(R.id.action_bar_left_image);
+		btnBack.setOnClickListener(new BackClickListener(this));
+		TextView text = (TextView) this.findViewById(R.id.action_bar_title);
+		text.setText(this.getResources().getString(R.string.title_activity_report));
+
+		IntentFilter filter = new IntentFilter();
+		filter.addAction(Constants.BROADCAST_INTENT_IS_LOGIN);
+		registerReceiver(broadcastreciver, filter);
+
+		unLoginView = new UnLoginView(this, null, R.string.un_login_report);
 
 		// get data from intent
 		reportSeekId = this.getIntent().getExtras().getLong(Constants.INTENT_SEEK_ID);
@@ -114,9 +132,16 @@ public class ReportActivity extends Activity {
 			CheckBox checkbox = (CheckBox) this.findViewById(res);
 			checkbox.setOnCheckedChangeListener(myCheckedChangeListener);
 		}
-
+		isLogin = ApiContext.getInstance(this).isAuthorized();
+		if (isLogin) {
+			init();
+		}
 		// init data
 		initData();
+	}
+
+	private void init() {
+		unLoginView.hide();
 	}
 
 	/** report behave checkbox */
@@ -204,4 +229,13 @@ public class ReportActivity extends Activity {
 		}).execute(reportUserId);
 	}
 
+	private BroadcastReceiver broadcastreciver = new BroadcastReceiver() {
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			String action = intent.getAction();
+			if (Constants.BROADCAST_INTENT_IS_LOGIN.equals(action)) {
+				init();
+			}
+		}
+	};
 }
