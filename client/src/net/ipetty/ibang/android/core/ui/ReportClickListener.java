@@ -8,9 +8,10 @@ import android.view.View;
 import android.view.View.OnClickListener;
 
 public class ReportClickListener implements OnClickListener {
-	public static String TYPE_SEEK = "seek";
-	public static String TYPE_OFFER = "offer";
-	public static String TYPE_USER = "user";
+
+	public static String TYPE_SEEK = net.ipetty.ibang.vo.Constants.REPORT_TYPE_SEEK;
+	public static String TYPE_OFFER = net.ipetty.ibang.vo.Constants.REPORT_TYPE_OFFER;
+	public static String TYPE_USER = net.ipetty.ibang.vo.Constants.REPORT_TYPE_USER;
 
 	private Activity activity;
 	private String type;
@@ -31,22 +32,21 @@ public class ReportClickListener implements OnClickListener {
 	@Override
 	public void onClick(View v) {
 		Long reportSeekId = null;
-		Long reportUserId = null;
 		Long reportOfferId = null;
+		Integer reportUserId = null;
+
+		Intent intent = new Intent(activity, ReportActivity.class);
 		if (TYPE_SEEK.equals(type)) {
 			reportSeekId = id;
-		}
-		if (TYPE_OFFER.equals(type)) {
+			intent.putExtra(Constants.INTENT_SEEK_ID, reportSeekId);
+		} else if (TYPE_OFFER.equals(type)) {
 			reportOfferId = id;
+			intent.putExtra(Constants.INTENT_OFFER_ID, reportOfferId);
+		} else if (TYPE_USER.equals(type)) {
+			reportUserId = (int) id;
+			intent.putExtra(Constants.INTENT_USER_ID, reportUserId);
 		}
-		if (TYPE_USER.equals(type)) {
-			reportUserId = id;
-		}
-		// TODO Auto-generated method stub
-		Intent intent = new Intent(activity, ReportActivity.class);
-		intent.putExtra(Constants.INTENT_SEEK_ID, reportSeekId);
-		intent.putExtra(Constants.INTENT_OFFER_ID, reportOfferId);
-		intent.putExtra(Constants.INTENT_USER_ID, reportUserId);
+
 		activity.startActivity(intent);
 		ck.onClick(v);
 	}
