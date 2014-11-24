@@ -46,8 +46,8 @@ public class BaiduApiTest {
         Assert.assertNotNull(narbyRetVO.getContents());
 
         //删除POI
-        // ret = baiduApi.lbsDeletePoi(BaiduApiFactory.ak, BaiduApiFactory.lbsTableId, ret.getId());
-        // Assert.assertNotNull(ret.getId());
+        ret = baiduApi.lbsDeletePoi(BaiduApiFactory.ak, BaiduApiFactory.lbsTableId, ret.getId());
+        Assert.assertNotNull(ret.getId());
         //获取经纬度
         GeoGetByAdressRetVO geoGetByAdressRetVO = baiduApi.geoGetByAdress(BaiduApiFactory.ak, "上海市", "上海市", "json");
         Assert.assertNotNull(geoGetByAdressRetVO.getResult());
