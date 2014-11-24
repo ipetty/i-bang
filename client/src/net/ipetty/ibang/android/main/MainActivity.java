@@ -2,6 +2,8 @@ package net.ipetty.ibang.android.main;
 
 import net.ipetty.ibang.R;
 import net.ipetty.ibang.android.core.ActivityManager;
+import net.ipetty.ibang.android.local.NearlyActivity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -27,6 +29,7 @@ public class MainActivity extends FragmentActivity {
 	private View publish_layout;
 	private View discover_layout;
 	private View me_layout;
+	private View local_layout;
 
 	private TextView home_text;
 	private TextView publish_text;
@@ -68,6 +71,17 @@ public class MainActivity extends FragmentActivity {
 		publish_image = (ImageView) this.findViewById(R.id.publish_image);
 		discover_image = (ImageView) this.findViewById(R.id.discover_image);
 		me_image = (ImageView) this.findViewById(R.id.me_image);
+
+		local_layout = this.findViewById(R.id.local_layout);
+		local_layout.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent intent = new Intent(MainActivity.this, NearlyActivity.class);
+				startActivity(intent);
+			}
+		});
 
 		if (!isLogin) {
 			// viewPager.setCurrentItem(2);

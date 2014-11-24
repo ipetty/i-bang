@@ -230,6 +230,10 @@
             android:name="net.ipetty.ibang.android.report.ReportActivity"
             android:label="@string/title_activity_report" >
         </activity>
+        <activity
+            android:name="net.ipetty.ibang.android.local.NearlyActivity"
+            android:label="@string/title_activity_nearly" >
+        </activity>
     </application>
 
 </manifest>
