@@ -28,7 +28,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnLongClickListener;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -60,6 +59,7 @@ public class PublishActivity extends Activity {
 	private View help_me_layout;
 	private View to_help_layout;
 	private View num_layout;
+	private View local_layout;
 	private String type = net.ipetty.ibang.vo.Constants.SEEK_TYPE_SEEK;
 
 	@Override
@@ -83,16 +83,15 @@ public class PublishActivity extends Activity {
 		num_layout = this.findViewById(R.id.num_layout);
 
 		// 界面元素绑定
-		contentView = (EditText) this.findViewById(R.id.content);
-		// start-临时测试 V2.0地图定位临时测试代码
-		contentView.setOnLongClickListener(new OnLongClickListener() {
-			public boolean onLongClick(View view) {
-				Intent intent = new Intent(PublishActivity.this, LocateActivity.class);
+		local_layout = this.findViewById(R.id.local_layout);
+		local_layout.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				Intent intent = new Intent(PublishActivity.this, SelectAddressActivity.class);
 				startActivity(intent);
-				return true;
 			}
 		});
-		// end-临时测试
+
 		delegateNumberView = (EditText) this.findViewById(R.id.num);
 		additionalRewardView = (EditText) this.findViewById(R.id.additionalReward);
 		serviceDateView = (EditText) this.findViewById(R.id.serviceDate);

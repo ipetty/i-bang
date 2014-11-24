@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import net.ipetty.ibang.R;
+import net.ipetty.ibang.android.city.ProvinceActivity;
 import net.ipetty.ibang.android.core.Constants;
 import net.ipetty.ibang.android.core.DefaultTaskListener;
 import net.ipetty.ibang.android.core.MyAppStateManager;
@@ -105,32 +106,28 @@ public class MainHomeFragment extends Fragment {
 		super.onActivityCreated(savedInstanceState);
 
 		// get city from local store;
-		province = "";// ApiContext.getInstance(getActivity()).getLocationProvince();
-		city = "";// ApiContext.getInstance(getActivity()).getLocationCity();
-		district = "";// ApiContext.getInstance(getActivity()).getLocationDistrict();
+		province = ApiContext.getInstance(getActivity()).getLocationProvince();
+		city = ApiContext.getInstance(getActivity()).getLocationCity();
+		district = ApiContext.getInstance(getActivity()).getLocationDistrict();
 
 		cityView = (TextView) this.getView().findViewById(R.id.city);
 		search = (TextView) this.getView().findViewById(R.id.search);
 		msg = (ImageView) this.getView().findViewById(R.id.msg);
 
 		if (StringUtils.isNotBlank(city)) {
-			// cityView.setText(city);
+			cityView.setText(city);
 		} else {
 			// 如果未选择城市，则需要先选择城市
-			// Intent intent = new Intent(getActivity(),
-			// ProvinceActivity.class);
-			// intent.putExtra(Constants.INTENT_LOCATION_TYPE,
-			// Constants.INTENT_LOCATION_CITY);
-			// startActivityForResult(intent, Constants.REQUEST_CODE_CITY);
+			Intent intent = new Intent(getActivity(), ProvinceActivity.class);
+			intent.putExtra(Constants.INTENT_LOCATION_TYPE, Constants.INTENT_LOCATION_CITY);
+			startActivityForResult(intent, Constants.REQUEST_CODE_CITY);
 		}
 		cityView.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				// Intent intent = new Intent(getActivity(),
-				// ProvinceActivity.class);
-				// intent.putExtra(Constants.INTENT_LOCATION_TYPE,
-				// Constants.INTENT_LOCATION_CITY);
-				// startActivityForResult(intent, Constants.REQUEST_CODE_CITY);
+				Intent intent = new Intent(getActivity(), ProvinceActivity.class);
+				intent.putExtra(Constants.INTENT_LOCATION_TYPE, Constants.INTENT_LOCATION_CITY);
+				startActivityForResult(intent, Constants.REQUEST_CODE_CITY);
 			}
 		});
 
