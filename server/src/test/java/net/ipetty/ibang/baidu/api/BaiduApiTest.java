@@ -41,12 +41,13 @@ public class BaiduApiTest {
         Assert.assertNotNull(ret.getId());
 
         //附近
-        NearbyRetVO narbyRetVO = baiduApi.lbsGetNearby(BaiduApiFactory.ak, BaiduApiFactory.lbsTableId, "测试", "121.487899,31.249162", BaiduApiFactory.coordTypeValue, 1000,
+        NearbyRetVO narbyRetVO = baiduApi.lbsGetNearby(BaiduApiFactory.ak, BaiduApiFactory.lbsTableId, " ", "121.487899,31.249162", BaiduApiFactory.coordTypeValue, 1000,
             "测试", "distance:1", 0, 50);
         Assert.assertNotNull(narbyRetVO.getContents());
 
         //删除POI
-        ret = baiduApi.lbsDeletePoi(BaiduApiFactory.ak, BaiduApiFactory.lbsTableId, ret.getId());
+        // ret = baiduApi.lbsDeletePoi(BaiduApiFactory.ak, BaiduApiFactory.lbsTableId, ret.getId());
+        // Assert.assertNotNull(ret.getId());
         //获取经纬度
         GeoGetByAdressRetVO geoGetByAdressRetVO = baiduApi.geoGetByAdress(BaiduApiFactory.ak, "上海市", "上海市", "json");
         Assert.assertNotNull(geoGetByAdressRetVO.getResult());

@@ -2,6 +2,15 @@ package net.ipetty.ibang.baidu;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 import retrofit.RestAdapter;
 import retrofit.converter.GsonConverter;
 
@@ -13,14 +22,12 @@ import retrofit.converter.GsonConverter;
  */
 public class BaiduApiFactory {
 
-    //临时写死
-    public static String ak = "SzoDrDkx1rdGDHuGZUA3zgGC";
-    //临时写死
-    public static String lbsTableId = "84783";
-    //临时写死
-    public static Integer coordTypeValue = 3;
-
+    private static final String BAIDU_PROPERTIES_FILE = "baidu.properties";
     private static final String endPoint = "http://api.map.baidu.com/";
+
+    public static String ak;
+    public static String lbsTableId;
+    public static Integer coordTypeValue;
 
     private static RestAdapter restAdapter;
 
@@ -28,7 +35,36 @@ public class BaiduApiFactory {
 
     private static final Gson gson = new GsonBuilder().create();
 
-    private static void init() {
+    static {
+        Properties properties = new Properties();
+        InputStream inputStream = null;
+        try {
+            Resource resource = new ClassPathResource(BAIDU_PROPERTIES_FILE);
+            File file = resource.getFile();
+            inputStream = new FileInputStream(file);
+            properties.load(inputStream);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (inputStream != null) {
+                try {
+                    inputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        ak = properties.getProperty("baidu.ak");
+        lbsTableId = properties.getProperty("baidu.lbs.table.id");
+        coordTypeValue = Integer.valueOf(properties.getProperty("baidu.coord_type.value"));
+
+        initBaiduApi();
+    }
+
+    private static void initBaiduApi() {
         restAdapter = new RestAdapter.Builder()
             .setEndpoint(endPoint)
             .setConverter(new GsonConverter(gson)).setLogLevel(RestAdapter.LogLevel.FULL)
@@ -38,7 +74,7 @@ public class BaiduApiFactory {
 
     public static BaiduApi getBaiduApi() {
         if (baiduApi == null) {
-            init();
+            initBaiduApi();
         }
         return baiduApi;
     }
