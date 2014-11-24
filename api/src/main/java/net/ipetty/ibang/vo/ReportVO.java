@@ -21,6 +21,7 @@ public class ReportVO extends BaseVO {
 	private Integer userId; // 要举报的人
 	private String userNickname; // 要举报人的昵称
 	private String userAvatar; // 要举报人的头像
+	private String reportContent; // 要举报的内容
 	private String behave; // 举报行为类型，垃圾营销 | 小广告 | 虚假信息 | 抄袭 | 敏感信息
 	private String content; // 举报备注内容
 	private Integer reporterId; // 举报人
@@ -104,6 +105,14 @@ public class ReportVO extends BaseVO {
 
 	public void setUserAvatar(String userAvatar) {
 		this.userAvatar = userAvatar;
+	}
+
+	public String getReportContent() {
+		return reportContent;
+	}
+
+	public void setReportContent(String reportContent) {
+		this.reportContent = reportContent;
 	}
 
 	public String getBehave() {

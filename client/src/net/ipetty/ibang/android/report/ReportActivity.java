@@ -37,6 +37,7 @@ import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 public class ReportActivity extends Activity {
+
 	private boolean isLogin = false;
 	public UnLoginView unLoginView;
 	private Long reportSeekId;
@@ -49,7 +50,9 @@ public class ReportActivity extends Activity {
 	private View user_content_layout;
 	private TextView user_content; // 被举报seek or offer内容
 	private TextView content;
-	private int[] check = { R.id.checkBox1, R.id.checkBox2, R.id.checkBox3, R.id.checkBox4, R.id.checkBox5 };
+	private int[] check = {
+			R.id.checkBox1, R.id.checkBox2, R.id.checkBox3, R.id.checkBox4, R.id.checkBox5
+	};
 	private List<String> checkList = new ArrayList<String>();
 
 	@Override
@@ -110,6 +113,7 @@ public class ReportActivity extends Activity {
 					report.setType(net.ipetty.ibang.vo.Constants.REPORT_TYPE_USER);
 					report.setUserId(reportUserId);
 				}
+				report.setReportContent(user_content.getText() == null ? null : user_content.getText().toString());
 				report.setBehave(StringUtils.join(checkList, ","));
 				report.setContent(content.getText().toString());
 
@@ -230,6 +234,7 @@ public class ReportActivity extends Activity {
 	}
 
 	private BroadcastReceiver broadcastreciver = new BroadcastReceiver() {
+
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			String action = intent.getAction();

@@ -59,7 +59,7 @@ public class ReportController extends BaseController {
 	/**
 	 * 获取举报信息
 	 */
-	@RequestMapping(value = "/report.json", method = RequestMethod.GET)
+	@RequestMapping(value = "/report", method = RequestMethod.GET)
 	public ReportVO getById(Long id) {
 		UserPrincipal currentUser = UserContext.getContext();
 		if (currentUser == null || currentUser.getId() == null) {

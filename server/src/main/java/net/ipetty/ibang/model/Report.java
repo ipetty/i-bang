@@ -23,6 +23,7 @@ public class Report extends AbstractEntity {
 	private String seekType; // 类型，求助 | 帮忙
 	private Long offerId; // 举报的应征单ID
 	private Integer userId; // 要举报的人
+	private String reportContent; // 要举报的内容
 	private String behave; // 举报行为类型，垃圾营销 | 小广告 | 虚假信息 | 抄袭 | 敏感信息
 	private String content; // 举报备注内容
 	private Integer reporterId; // 举报人
@@ -108,6 +109,14 @@ public class Report extends AbstractEntity {
 
 	public void setUserId(Integer userId) {
 		this.userId = userId;
+	}
+
+	public String getReportContent() {
+		return reportContent;
+	}
+
+	public void setReportContent(String reportContent) {
+		this.reportContent = reportContent;
 	}
 
 	public String getBehave() {

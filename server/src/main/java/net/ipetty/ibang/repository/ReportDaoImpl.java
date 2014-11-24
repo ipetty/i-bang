@@ -31,8 +31,9 @@ public class ReportDaoImpl extends BaseJdbcDaoSupport implements ReportDao {
 
 		@Override
 		public Report mapRow(ResultSet rs, int rowNum) throws SQLException {
-			// id, sn, type, seek_id, seek_type, offer_id, user_id, behave,
-			// content, reporter_id, created_on, result, dealed_on
+			// id, sn, type, seek_id, seek_type, offer_id, user_id,
+			// report_content, behave, content, reporter_id, created_on, result,
+			// dealed_on
 			Report report = new Report();
 			report.setId(rs.getLong("id"));
 			report.setSn(rs.getString("sn"));
@@ -41,6 +42,7 @@ public class ReportDaoImpl extends BaseJdbcDaoSupport implements ReportDao {
 			report.setSeekType(rs.getString("seek_type"));
 			report.setOfferId(JdbcDaoUtils.getLong(rs, "offer_id"));
 			report.setUserId(JdbcDaoUtils.getInteger(rs, "user_id"));
+			report.setReportContent(rs.getString("report_content"));
 			report.setBehave(rs.getString("behave"));
 			report.setContent(rs.getString("content"));
 			report.setReporterId(JdbcDaoUtils.getInteger(rs, "reporter_id"));
@@ -51,7 +53,7 @@ public class ReportDaoImpl extends BaseJdbcDaoSupport implements ReportDao {
 		}
 	};
 
-	private static final String SAVE_SQL = "insert into report(sn, type, seek_id, seek_type, offer_id, user_id, behave, content, reporter_id, created_on) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+	private static final String SAVE_SQL = "insert into report(sn, type, seek_id, seek_type, offer_id, user_id, report_content, behave, content, reporter_id, created_on) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
 	/**
 	 * 举报
@@ -70,10 +72,11 @@ public class ReportDaoImpl extends BaseJdbcDaoSupport implements ReportDao {
 			statement.setString(4, report.getSeekType());
 			JdbcDaoUtils.setLong(statement, 5, report.getOfferId());
 			JdbcDaoUtils.setInteger(statement, 6, report.getUserId());
-			statement.setString(7, report.getBehave());
-			statement.setString(8, report.getContent());
-			JdbcDaoUtils.setInteger(statement, 9, report.getReporterId());
-			statement.setTimestamp(10, new Timestamp(report.getCreatedOn().getTime()));
+			statement.setString(7, report.getReportContent());
+			statement.setString(8, report.getBehave());
+			statement.setString(9, report.getContent());
+			JdbcDaoUtils.setInteger(statement, 10, report.getReporterId());
+			statement.setTimestamp(11, new Timestamp(report.getCreatedOn().getTime()));
 
 			statement.execute();
 			ResultSet rs = statement.getGeneratedKeys();

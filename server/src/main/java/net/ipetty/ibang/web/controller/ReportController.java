@@ -9,12 +9,11 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import net.ipetty.ibang.admin.AdminConstants;
-import net.ipetty.ibang.model.IdentityVerification;
 import net.ipetty.ibang.model.Report;
 import net.ipetty.ibang.model.User;
 import net.ipetty.ibang.service.ReportService;
 import net.ipetty.ibang.service.UserService;
-import net.ipetty.ibang.vo.IdentityVerificationVO;
+import net.ipetty.ibang.vo.Constants;
 import net.ipetty.ibang.vo.ReportVO;
 
 import org.apache.commons.lang3.StringUtils;
@@ -39,14 +38,12 @@ public class ReportController {
 	@Resource
 	private UserService userService;
 
-	
-	@RequestMapping(value = "/report", method = RequestMethod.GET)
+	@RequestMapping(value = "/reports", method = RequestMethod.GET)
 	public String verify(Model model, HttpServletRequest request, HttpServletResponse response) {
 		return listReports(model, request, response, "1");
 	}
-	
-	
-	@RequestMapping(value = "/report/page/{currentPage}", method = RequestMethod.GET)
+
+	@RequestMapping(value = "/reports/page/{currentPage}", method = RequestMethod.GET)
 	public String listReports(Model model, HttpServletRequest request, HttpServletResponse response, String currentPage) {
 		HttpSession session = request.getSession(false);
 		if (session == null) {
@@ -108,8 +105,21 @@ public class ReportController {
 	 * 审核
 	 */
 	@RequestMapping(value = "/dealreport", method = RequestMethod.POST)
-	public void dealReport(Long id, String result) {
-		reportService.deal(id, result);
+	public boolean dealReport(HttpServletRequest request, HttpServletResponse response, Long id, boolean result) {
+		HttpSession session = request.getSession(false);
+		if (session == null) {
+			return false;
+		}
+		User user = (User) session.getAttribute(AdminConstants.SESSION_NAME);
+		if (user == null) {
+			return false;
+		}
+		if (!AdminConstants.ADMIN_USER_NAME.equals(user.getUsername())) {
+			return false;
+		}
+
+		reportService.deal(id, result ? Constants.REPORT_RESULT_PUNISH : Constants.REPORT_RESULT_EVIL_REPORT);
+		return true;
 	}
 
 }

@@ -102,7 +102,20 @@ public class IdentityVerificationController {
 	 */
 	@RequestMapping(value = "/verify", method = RequestMethod.POST)
 	@ResponseBody
-	public boolean verify(Integer userId, boolean approved, String verifyInfo) {
+	public boolean verify(HttpServletRequest request, HttpServletResponse response, Integer userId, boolean approved,
+			String verifyInfo) {
+		HttpSession session = request.getSession(false);
+		if (session == null) {
+			return false;
+		}
+		User user = (User) session.getAttribute(AdminConstants.SESSION_NAME);
+		if (user == null) {
+			return false;
+		}
+		if (!AdminConstants.ADMIN_USER_NAME.equals(user.getUsername())) {
+			return false;
+		}
+
 		identityVerificationService.verify(userId, approved, verifyInfo);
 		return true;
 	}

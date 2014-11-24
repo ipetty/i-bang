@@ -135,16 +135,13 @@
 							<table class="table-content">
 								<c:forEach items="${verifies}" var="identityVerification">
 									<tr id="${identityVerification.userId}">
-										<td class="data-td c1"
-											title="${identityVerification.realName}">
+										<td class="data-td c1">
 											${identityVerification.realName}</td>
-										<td class="data-td c2"
-											title="${identityVerification.idNumber}">${identityVerification.idNumber}</td>
-										<td class="data-td c3"
-											title="${identityVerification.idCardInHand}"><a href="${identityVerification.idCardInHand}" target="_blank"><img
-											src="${identityVerification.idCardInHand}" width="36" alt="" /></td>
-										<td class="data-td c4" title="${identityVerification.status}">
-											<c:choose>
+										<td class="data-td c2">${identityVerification.idNumber}</td>
+										<td class="data-td c3"><a
+											href="${identityVerification.idCardInHand}" target="_blank"><img
+												src="${identityVerification.idCardInHand}" width="36" alt="" /></td>
+										<td class="data-td c4"><c:choose>
 												<c:when test="${'待审核' eq identityVerification.status}">
 													<a id="" class="btnVerify btn" href="javascript:"
 														style="color: green" hidefocus="true"
@@ -154,8 +151,7 @@
 														data-id="${identityVerification.userId}" data-res="false">驳回</a>
 												</c:when>
 												<c:otherwise>${identityVerification.status}</c:otherwise>
-											</c:choose>
-										</td>
+											</c:choose></td>
 									</tr>
 								</c:forEach>
 							</table>

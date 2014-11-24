@@ -64,7 +64,7 @@
 		});
 
 		function loadData() {
-			location.href = Ibang.Config.appUrl + "/admin/report/page/"
+			location.href = Ibang.Config.appUrl + "/admin/reports/page/"
 					+ $("#currentPage").val();
 		}
 
@@ -82,7 +82,7 @@
 				type : 'post',
 				url : Ibang.Config.appUrl + "/admin/report/",
 				data : {
-					userId : id,
+					id : id,
 					approved : res,
 					verifyInfo : ""
 				},
@@ -119,15 +119,17 @@
 					<div class="table-header-content">
 						<table>
 							<tr class="table-header">
-								<td class="c1">类型</td>
+								<td class="c1">被举报人</td>
 								<td class="sep"></td>
-								<td class="c2">举报内容</td>
+								<td class="c2">被举报内容</td>
 								<td class="sep"></td>
-								<td class="c3">行为类型</td>
+								<td class="c3">被举报行为</td>
 								<td class="sep"></td>
-								<td class="c4">举报人</td>
+								<td class="c4">举报描述</td>
 								<td class="sep"></td>
-								<td class="c5">状态</td>
+								<td class="c5">举报人</td>
+								<td class="sep"></td>
+								<td class="c6">处理结果</td>
 							</tr>
 						</table>
 					</div>
@@ -135,44 +137,24 @@
 					<div class="data-content">
 						<div class="data-table">
 							<table class="table-content">
-								
-									<tr id="">
-										<td class="data-td c1"
-											title="">
-											帖子</td>
-										<td class="data-td c2"
-											title="">请打击大家爱啊大 </td>
-										<td class="data-td c3"
-											title="">垃圾消息</td>
-										<td class="data-td c4" title="">
-										张三
-										</td>
-										<td class="data-td c5" title="">
-											待处理
-										</td>
-									</tr>
-					
-							</table>
-						</div>
-					</div>
-
-					<div class="data-content">
-						<div class="data-table">
-							<table class="table-content">
 								<c:forEach items="${reportList}" var="report">
 									<tr id="${report.id}">
-										<td class="data-td c1"
-											title="${report.type}">
-											${report.type}</td>
-										<td class="data-td c2"
-											title=""></td>
-										<td class="data-td c3"
-											title=""></td>
-										<td class="data-td c4" title="">
-										</td>
-										<td class="data-td c5" title="">
-											
-										</td>
+										<td class="data-td c1">${report.userNickname}</td>
+										<td class="data-td c2">${report.reportContent}</td>
+										<td class="data-td c3">${report.behave}</td>
+										<td class="data-td c4">${report.content}</td>
+										<td class="data-td c5">${report.reporterNickname}</td>
+										<td class="data-td c6"><c:choose>
+												<c:when test="${empty report.result}">
+													<a id="" class="btnVerify btn" href="javascript:"
+														style="color: green" hidefocus="true"
+														data-id="${report.id}" data-res="true">通过</a>
+													<a id="" class="btnVerify btn" href="javascript:"
+														style="color: red" hidefocus="true" data-id="${report.id}"
+														data-res="false">驳回</a>
+												</c:when>
+												<c:otherwise>${report.result}</c:otherwise>
+											</c:choose></td>
 									</tr>
 								</c:forEach>
 							</table>
