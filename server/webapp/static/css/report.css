@@ -80,12 +80,12 @@ html,body {
 
 .table-header td.c2 {
 	padding: 0 2px 0 6px;
-	width: 300px;
+	width: 240px;
 }
 
 .table-content td.c2 {
 	padding: 0 2px 0 6px;
-	width: 300px;
+	width: 240px;
 }
 
 .table-header td.c3 {
@@ -112,12 +112,23 @@ html,body {
 
 .table-header td.c5 {
 	padding: 0 2px 0 6px;
-	width: 210px;
+	width: 110px;
 }
 
 .table-content td.c5 {
 	padding: 0 2px 0 6px;
-	width:210px;
+	width:110px;
+}
+
+
+.table-header td.c6 {
+	padding: 0 2px 0 6px;
+	width: 100px;
+}
+
+.table-content td.c6 {
+	padding: 0 2px 0 6px;
+	width:100px;
 }
 
 
