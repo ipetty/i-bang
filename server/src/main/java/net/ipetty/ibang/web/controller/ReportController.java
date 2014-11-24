@@ -118,7 +118,7 @@ public class ReportController {
 			return false;
 		}
 
-		reportService.deal(id, result ? Constants.REPORT_RESULT_PUNISH : Constants.REPORT_RESULT_EVIL_REPORT);
+		reportService.deal(id, result ? Constants.REPORT_RESULT_PUNISH : Constants.REPORT_RESULT_FAKE_REPORT);
 		return true;
 	}
 

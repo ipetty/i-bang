@@ -25,6 +25,15 @@ public class ReportService extends BaseService {
 	@Resource
 	private ReportDao reportDao;
 
+	@Resource
+	private SeekService seekService;
+
+	@Resource
+	private OfferService offerService;
+
+	@Resource
+	private UserService userService;
+
 	/**
 	 * 举报
 	 */
@@ -57,8 +66,39 @@ public class ReportService extends BaseService {
 	 */
 	public void deal(Long id, String result) {
 		Assert.hasText(result, "举报处理结果不能为空");
-		// TODO 屏蔽相应信息，或禁用用户
+
 		reportDao.deal(id, result);
+		Report report = this.getById(id);
+
+		// 屏蔽相应信息，或禁用用户
+		if (Constants.REPORT_RESULT_PUNISH.equals(result)) {
+			// 严惩不贷，屏蔽信息或禁用用户帐号
+			if (Constants.REPORT_TYPE_SEEK.equals(report.getType())) {
+				seekService.disable(report.getSeekId());
+			} else if (Constants.REPORT_TYPE_OFFER.equals(report.getType())) {
+				offerService.disable(report.getOfferId());
+			} else if (Constants.REPORT_TYPE_USER.equals(report.getType())) {
+				userService.disable(report.getUserId());
+			}
+		} else if (Constants.REPORT_RESULT_WARNING.equals(result)) {
+			// 警告，如果是信息则屏蔽信息，如果是用户的话则暂时不禁用用户帐号，但会扣积分/降级
+			if (Constants.REPORT_TYPE_SEEK.equals(report.getType())) {
+				seekService.disable(report.getSeekId());
+			} else if (Constants.REPORT_TYPE_OFFER.equals(report.getType())) {
+				offerService.disable(report.getOfferId());
+			} else if (Constants.REPORT_TYPE_USER.equals(report.getType())) {
+				// userService.disable(report.getUserId());
+				// TODO 扣积分/降级
+			}
+		} else if (Constants.REPORT_RESULT_EVIL_REPORT.equals(result)) {
+			// 恶意举报，禁用举报人用户帐号
+			userService.disable(report.getReporterId());
+		} else if (Constants.REPORT_RESULT_FAKE_REPORT.equals(result)) {
+			// 虚假举报，扣举报人积分/降级
+			// TODO 扣积分/降级
+		} else if (Constants.REPORT_RESULT_PENDING.equals(result)) {
+			// 暂不处理，不作任何处理
+		}
 	}
 
 	/**
