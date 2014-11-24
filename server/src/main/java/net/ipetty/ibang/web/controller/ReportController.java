@@ -21,6 +21,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  * 举报Web Controller接口
@@ -105,6 +106,7 @@ public class ReportController {
 	 * 审核
 	 */
 	@RequestMapping(value = "/dealreport", method = RequestMethod.POST)
+	@ResponseBody
 	public boolean dealReport(HttpServletRequest request, HttpServletResponse response, Long id, boolean result) {
 		HttpSession session = request.getSession(false);
 		if (session == null) {

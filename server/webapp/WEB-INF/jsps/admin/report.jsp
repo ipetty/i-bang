@@ -75,16 +75,15 @@
 		$(".btnVerify").click(function() {
 			var id = ($(this).data("id"));
 			var res = ($(this).data("res"));
-			var url = "/admin/report/" + id;
+			var url = "/admin/dealreport/" + id;
 			Ibang.Base.throttle.lock(url);
 
 			$.ajax({
 				type : 'post',
-				url : Ibang.Config.appUrl + "/admin/report/",
+				url : Ibang.Config.appUrl + "/admin/dealreport/",
 				data : {
 					id : id,
-					approved : res,
-					verifyInfo : ""
+					result : res
 				},
 				dataType : 'json',
 				success : function(result) {
