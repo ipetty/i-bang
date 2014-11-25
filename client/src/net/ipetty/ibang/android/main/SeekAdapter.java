@@ -27,9 +27,15 @@ public class SeekAdapter extends BaseAdapter implements OnScrollListener {
 	private List<SeekVO> list = new ArrayList<SeekVO>();
 	private DisplayImageOptions options = AppUtils.getNormalImageOptions();
 	private LayoutInflater inflater;
+	private Integer resId;
 
 	public SeekAdapter(Activity activity) {
 		inflater = LayoutInflater.from(activity);
+	}
+
+	public SeekAdapter(Activity activity, int resId) {
+		inflater = LayoutInflater.from(activity);
+		this.resId = resId;
 	}
 
 	public void loadData(List<SeekVO> list) {
@@ -71,7 +77,10 @@ public class SeekAdapter extends BaseAdapter implements OnScrollListener {
 	public View getView(int position, View convertView, ViewGroup parent) {
 		View view;
 		if (convertView == null) {
-			view = inflater.inflate(R.layout.list_seek_item, null);
+			if (resId == null) {
+				resId = R.layout.list_seek_item;
+			}
+			view = inflater.inflate(resId, null);
 			holder = new ViewHolder();
 			holder.image = (ImageView) view.findViewById(R.id.imageView);
 			holder.content = (TextView) view.findViewById(R.id.content);
