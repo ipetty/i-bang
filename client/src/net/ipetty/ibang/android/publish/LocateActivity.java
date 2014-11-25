@@ -17,10 +17,14 @@ import org.apache.commons.lang3.StringUtils;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
@@ -51,6 +55,11 @@ import com.baidu.mapapi.search.geocode.ReverseGeoCodeResult;
  */
 public class LocateActivity extends Activity {
 
+	private ImageView btn;
+	private ImageView search_del;
+	private EditText search;
+	private String key;
+
 	private String TAG = getClass().getSimpleName();
 	private ProgressDialog progressDialog;
 	// 定位相关
@@ -72,9 +81,39 @@ public class LocateActivity extends Activity {
 		/* action bar */
 
 		ImageView btnBack = (ImageView) this.findViewById(R.id.action_bar_left_image);
-		TextView text = (TextView) this.findViewById(R.id.action_bar_title);
-		text.setText(R.string.title_activity_locate);
 		btnBack.setOnClickListener(new BackClickListener(this));
+
+		btn = (ImageView) this.findViewById(R.id.action_bar_right_image);
+		btn.setOnClickListener(searchOnClickListener);
+		search = (EditText) this.findViewById(R.id.search);
+		search_del = (ImageView) this.findViewById(R.id.search_del);
+
+		search.addTextChangedListener(new TextWatcher() {
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+			}
+
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before, int count) {
+			}
+
+			@Override
+			public void afterTextChanged(Editable s) {
+				if (s.toString().length() > 0) {
+					search_del.setVisibility(View.VISIBLE);
+				} else {
+					search_del.setVisibility(View.INVISIBLE);
+				}
+			}
+		});
+
+		search_del.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				search.setText("");
+			}
+		});
+		search_del.setVisibility(View.INVISIBLE);
 
 		address = (TextView) this.findViewById(R.id.address);
 
@@ -98,6 +137,14 @@ public class LocateActivity extends Activity {
 		showDialog();
 		Log.d(TAG, "onCreate OK");
 	}
+
+	private OnClickListener searchOnClickListener = new OnClickListener() {
+		@Override
+		public void onClick(View v) {
+			key = search.getText().toString();
+
+		}
+	};
 
 	@Override
 	protected void onPause() {
@@ -146,11 +193,13 @@ public class LocateActivity extends Activity {
 
 		public void onGetReverseGeoCodeResult(ReverseGeoCodeResult result) {
 			if (result == null || result.error != SearchResult.ERRORNO.NO_ERROR) {
-				//Toast.makeText(LocateActivity.this, "抱歉，未能找到结果", Toast.LENGTH_LONG).show();
+				// Toast.makeText(LocateActivity.this, "抱歉，未能找到结果",
+				// Toast.LENGTH_LONG).show();
 				address.setText("抱歉，未能找到结果");
 				return;
 			}
-			//Toast.makeText(LocateActivity.this, result.getAddress(), Toast.LENGTH_LONG).show();
+			// Toast.makeText(LocateActivity.this, result.getAddress(),
+			// Toast.LENGTH_LONG).show();
 			address.setText(result.getAddress());
 		}
 
@@ -192,7 +241,8 @@ public class LocateActivity extends Activity {
 			Log.d(TAG, "onReceiveLocation");
 			dismissDialog();
 			if (location == null || StringUtils.isBlank(location.getCity())) {
-				//Toast.makeText(LocateActivity.this, "定位失败，请返回再次重试", Toast.LENGTH_LONG).show();
+				// Toast.makeText(LocateActivity.this, "定位失败，请返回再次重试",
+				// Toast.LENGTH_LONG).show();
 				address.setText("定位失败，请手动选择");
 				Log.d(TAG, "定位失败");
 				return;

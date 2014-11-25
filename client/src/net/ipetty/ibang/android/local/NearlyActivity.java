@@ -20,6 +20,7 @@ public class NearlyActivity extends Activity {
 		ImageView btnBack = (ImageView) this.findViewById(R.id.action_bar_left_image);
 		btnBack.setOnClickListener(new BackClickListener(this));
 		((TextView) this.findViewById(R.id.action_bar_title)).setText(R.string.title_activity_nearly);
+
 	}
 
 }

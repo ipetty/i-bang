@@ -9,22 +9,86 @@
               android:paddingTop="@dimen/activity_vertical_margin"
               tools:context=".MyOfferActivity" >
 
-        <include
-                android:id="@+id/include"
-                layout="@layout/action_bar_simple_back" />
+<LinearLayout
+    android:id="@+id/action_bar"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/action_bar_bg"
+    android:gravity="center_vertical"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="48dp" >
+
+        <ImageView
+            android:id="@+id/action_bar_left_image"
+            style="@style/ActionBarButton"
+            android:src="@drawable/action_bar_back" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="32dp"
+             android:background="@drawable/button_white_shape"
+             android:layout_gravity="center"
+             android:layout_weight="1"
+            android:gravity="center" >
+
+            <EditText
+                android:id="@+id/search"
+                android:layout_width="wrap_content"
+                android:layout_height="32dp"
+                android:layout_marginLeft="8dp"
+             	android:layout_weight="1"
+               android:background="@null"
+                android:gravity="center|left"
+                android:paddingLeft="0dp"
+                android:paddingRight="0dp"
+                android:text=""
+                android:hint="输入您的地址"
+                android:textColor="@color/gray_color"
+                android:textSize="14sp">
+				   <requestFocus />
+            </EditText>
+
+             <ImageView 
+             android:id="@+id/search_del" 
+             android:src="@drawable/ic_search_del"
+             android:layout_marginRight="4dp"
+           	 android:layout_width="wrap_content"
+           	 android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+        
+                <ImageView
+                    android:id="@+id/action_bar_right_image"
+                    style="@style/ActionBarButton"
+                    android:src="@drawable/action_bar_search" />
+
+    </LinearLayout>
+
+       <include
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           layout="@layout/line_horizontal_divider" />
+       
+       
+</LinearLayout>
+
         <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 	 	    android:layout_above="@+id/operation_layout"
- 	 	  		  android:layout_below="@+id/include" 
+ 	 	  		  android:layout_below="@+id/action_bar" 
                 android:background="@drawable/list_color_item_bg_white"
                 android:gravity="center_vertical" >
 
                 <com.baidu.mapapi.map.MapView
-                        android:id="@+id/bmapView"
-                        android:layout_width="fill_parent"
-                        android:layout_height="fill_parent"
-                        android:clickable="true" />
+                    android:id="@+id/bmapView"
+                    android:layout_width="fill_parent"
+
+                    android:clickable="true" />
+
         </LinearLayout>
 <LinearLayout
  	 	    android:id="@+id/operation_layout"
@@ -64,5 +128,7 @@
 
 			</RelativeLayout>
  	 	</LinearLayout>
+
+
 
 </RelativeLayout>
