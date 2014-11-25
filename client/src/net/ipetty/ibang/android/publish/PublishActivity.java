@@ -40,9 +40,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.baidu.mapapi.search.geocode.ReverseGeoCodeResult;
-import com.baidu.mapapi.search.geocode.ReverseGeoCodeResult.AddressComponent;
-
 public class PublishActivity extends Activity {
 
 	private String TAG = getClass().getSimpleName();
@@ -74,7 +71,7 @@ public class PublishActivity extends Activity {
 	private String type = net.ipetty.ibang.vo.Constants.SEEK_TYPE_SEEK;
 
 	// 定位结果
-	private ReverseGeoCodeResult locationResult;
+	private LocationVO location;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -93,6 +90,8 @@ public class PublishActivity extends Activity {
 		categoryL1 = this.getIntent().getExtras().getString(Constants.INTENT_CATEGORY);
 		categoryL2 = this.getIntent().getExtras().getString(Constants.INTENT_SUB_CATEGORY);
 		((TextView) this.findViewById(R.id.action_bar_title)).setText(categoryL1 + "-" + categoryL2);
+
+		contentView = (EditText) this.findViewById(R.id.content);
 
 		help_me_layout = this.findViewById(R.id.help_me_layout);
 		to_help_layout = this.findViewById(R.id.to_help_layout);
@@ -220,22 +219,11 @@ public class PublishActivity extends Activity {
 					filePaths.add(file.getAbsolutePath());
 				}
 
-				if (locationResult != null) {
-					// location
-					LocationVO location = new LocationVO();
-					location.setAddress(locationResult.getAddress());
-					location.setLatitude(locationResult.getLocation().latitude);
-					location.setLongitude(locationResult.getLocation().longitude);
+				if (location != null) {
 					seek.setLocation(location);
-
-					// 省市县
-					AddressComponent address = locationResult.getAddressDetail();
-					location.setProvince(address.province);
-					location.setCity(address.city);
-					location.setDistrict(address.district);
-					seek.setProvince(address.province);
-					seek.setCity(address.city);
-					seek.setDistrict(address.district);
+					seek.setProvince(location.getProvince());
+					seek.setCity(location.getCity());
+					seek.setDistrict(location.getDistrict());
 				}
 
 				new PublishSeekTask(PublishActivity.this).setListener(
@@ -249,9 +237,9 @@ public class PublishActivity extends Activity {
 
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			String jsonStr = intent.getStringExtra(Constants.BROADCAST_INTENT_DATA_NAME);
+			String jsonStr = intent.getStringExtra(Constants.BROADCAST_INTENT_LOCATION_DATA);
 			Log.d(TAG, jsonStr);
-			locationResult = JSONUtils.fromJSON(jsonStr, ReverseGeoCodeResult.class);
+			location = JSONUtils.fromJSON(jsonStr, LocationVO.class);
 		}
 	};
 
