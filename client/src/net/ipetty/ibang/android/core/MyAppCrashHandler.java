@@ -52,7 +52,7 @@ public class MyAppCrashHandler implements UncaughtExceptionHandler {
 
     @Override
     public void uncaughtException(Thread thread, Throwable ex) {
-        //Log.e(TAG, ex.getMessage(), ex);
+        Log.e(TAG, ex.getMessage(), ex);
         String msg = "亲，出错了";
         showError(msg);
         collectDeviceInfo(thread, context);
