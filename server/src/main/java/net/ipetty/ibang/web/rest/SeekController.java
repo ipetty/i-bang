@@ -8,6 +8,7 @@ import java.util.List;
 import javax.annotation.Resource;
 import net.ipetty.ibang.baidu.BaiduApi;
 import net.ipetty.ibang.baidu.BaiduApiFactory;
+import net.ipetty.ibang.baidu.vo.RetVO;
 
 import net.ipetty.ibang.context.UserContext;
 import net.ipetty.ibang.context.UserPrincipal;
@@ -109,7 +110,7 @@ public class SeekController extends BaseController {
                 title = title.substring(0, 99);
             }
             BaiduApi baiduApi = BaiduApiFactory.getBaiduApi();
-            baiduApi.lbsCreatePoi(BaiduApiFactory.ak, BaiduApiFactory.lbsTableId,
+            RetVO ret = baiduApi.lbsCreatePoi(BaiduApiFactory.ak, BaiduApiFactory.lbsTableId,
                 BaiduApiFactory.coordTypeValue, loc.getLatitude(), loc.getLongitude(),
                 title, s.getCategoryL1() + " " + s.getCategoryL2(), s.getId().toString());
         }

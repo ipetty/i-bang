@@ -24,7 +24,7 @@ public interface BaiduApi {
     @FormUrlEncoded
     @POST("/geodata/v3/poi/create")
     public RetVO lbsCreatePoi(@Field("ak") String ak, @Field("geotable_id") String geotable_id, @Field("coord_type") Integer coord_type,
-        @Field("longitude") Double longitude, @Field("latitude") Double latitude, @Field("title") String title, @Field("tags") String tags,
+        @Field("latitude") Double latitude, @Field("longitude") Double longitude, @Field("title") String title, @Field("tags") String tags,
         @Field("bid") String bid);
 
     /**
