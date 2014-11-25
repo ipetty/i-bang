@@ -105,7 +105,9 @@ public class SeekController extends BaseController {
         //发布LBS
         if (loc != null) {
             String title = s.getContent();
-            title = title.substring(0, 100);
+            if (title.length() > 100) {
+                title = title.substring(0, 99);
+            }
             BaiduApi baiduApi = BaiduApiFactory.getBaiduApi();
             baiduApi.lbsCreatePoi(BaiduApiFactory.ak, BaiduApiFactory.lbsTableId,
                 BaiduApiFactory.coordTypeValue, loc.getLatitude(), loc.getLongitude(),
