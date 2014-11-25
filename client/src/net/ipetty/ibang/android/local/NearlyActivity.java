@@ -5,7 +5,6 @@ import java.util.List;
 import net.ipetty.ibang.R;
 import net.ipetty.ibang.android.core.ActivityManager;
 import net.ipetty.ibang.android.core.Constants;
-import net.ipetty.ibang.android.core.DefaultTaskListener;
 import net.ipetty.ibang.android.core.MyAppStateManager;
 import net.ipetty.ibang.android.core.ui.BackClickListener;
 import net.ipetty.ibang.android.core.ui.MyPullToRefreshListView;
@@ -16,10 +15,7 @@ import net.ipetty.ibang.android.sdk.context.ApiContext;
 import net.ipetty.ibang.android.seek.SeekActivity;
 import net.ipetty.ibang.android.type.SelectCategoryActivity;
 import net.ipetty.ibang.android.type.SelectSeekTypeActivity;
-import net.ipetty.ibang.android.user.UpdateProfileTask;
 import net.ipetty.ibang.vo.SeekVO;
-import net.ipetty.ibang.vo.UserFormVO;
-import net.ipetty.ibang.vo.UserVO;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -47,7 +43,6 @@ import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener;
 public class NearlyActivity extends Activity {
 
 	private boolean isLogin = false;
-	private TextView cityView;
 	private TextView search;
 	private String category = "";
 	private String subCategory = "";
@@ -60,10 +55,6 @@ public class NearlyActivity extends Activity {
 	private final Integer pageSize = 20;
 	private Long lastTimeMillis;
 	private Boolean hasMore = true;
-
-	private String province;
-	private String city;
-	private String district;
 
 	private Integer currentUserId; // 当前用户ID
 
@@ -85,16 +76,10 @@ public class NearlyActivity extends Activity {
 		btnBack.setOnClickListener(new BackClickListener(this));
 		((TextView) this.findViewById(R.id.action_bar_title)).setText(R.string.title_activity_nearly);
 
-		// get city from local store;
-		province = ApiContext.getInstance(this).getLocationProvince();
-		city = ApiContext.getInstance(this).getLocationCity();
-		district = ApiContext.getInstance(this).getLocationDistrict();
-
-		cityView = (TextView) this.findViewById(R.id.city);
-
 		categoryView = (Button) this.findViewById(R.id.category);
 		View category_layout = this.findViewById(R.id.category_layout);
 		categoryView.setOnClickListener(new OnClickListener() {
+
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent(NearlyActivity.this, SelectCategoryActivity.class);
@@ -104,6 +89,7 @@ public class NearlyActivity extends Activity {
 			}
 		});
 		category_layout.setOnClickListener(new OnClickListener() {
+
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent(NearlyActivity.this, SelectCategoryActivity.class);
@@ -116,6 +102,7 @@ public class NearlyActivity extends Activity {
 		typeView = (Button) this.findViewById(R.id.type);
 		View type_layout = this.findViewById(R.id.type_layout);
 		typeView.setOnClickListener(new OnClickListener() {
+
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent(NearlyActivity.this, SelectSeekTypeActivity.class);
@@ -124,6 +111,7 @@ public class NearlyActivity extends Activity {
 			}
 		});
 		type_layout.setOnClickListener(new OnClickListener() {
+
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent(NearlyActivity.this, SelectSeekTypeActivity.class);
@@ -136,6 +124,7 @@ public class NearlyActivity extends Activity {
 		adapter = new SeekAdapter(this, R.layout.list_seek_local_item);
 		listView.setAdapter(adapter);
 		listView.setOnItemClickListener(new OnItemClickListener() {
+
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				Intent intent = new Intent(NearlyActivity.this, SeekActivity.class);
@@ -146,27 +135,29 @@ public class NearlyActivity extends Activity {
 			}
 		});
 
-		// listView.hideMoreView();
 		listView.setOnRefreshListener(new OnRefreshListener<ListView>() {
+
 			@Override
 			public void onRefresh(PullToRefreshBase<ListView> refreshView) {
 				String label = DateUtils.formatDateTime(NearlyActivity.this.getApplicationContext(), getRefreshTime(),
 						DateUtils.FORMAT_SHOW_TIME | DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_ABBREV_ALL);
 				refreshView.getLoadingLayoutProxy().setLastUpdatedLabel(label);
-				loadSeeks(true);
+				loadNearlySeeks(true);
 			}
 		});
 
 		listView.setOnLastItemVisibleListener(new OnLastItemVisibleListener() {
+
 			@Override
 			public void onLastItemVisible() {
 				if (hasMore) {
-					loadSeeks(false);
+					loadNearlySeeks(false);
 				}
 			}
 		});
 
-		// loadSeeks(true);
+		// TODO 定位并加载附近数据
+		// loadNearlySeeks(true);
 		listView.hideMoreView();
 	}
 
@@ -177,6 +168,7 @@ public class NearlyActivity extends Activity {
 	}
 
 	private BroadcastReceiver broadcastreciver = new BroadcastReceiver() {
+
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			String action = intent.getAction();
@@ -188,7 +180,7 @@ public class NearlyActivity extends Activity {
 				initUser();
 			}
 			if (Constants.BROADCAST_INTENT_PUBLISH_SEEK.equals(action)) {
-				loadSeeks(true);
+				loadNearlySeeks(true);
 			}
 		}
 
@@ -199,7 +191,6 @@ public class NearlyActivity extends Activity {
 		private void initUser() {
 			adapter.notifyDataSetChanged();
 		}
-
 	};
 
 	@Override
@@ -213,7 +204,7 @@ public class NearlyActivity extends Activity {
 				subCategory = intent.getStringExtra(Constants.INTENT_SUB_CATEGORY);
 				setCategoryText(category, subCategory);
 
-				loadSeeks(true);
+				loadNearlySeeks(true);
 			}
 		}
 
@@ -223,70 +214,26 @@ public class NearlyActivity extends Activity {
 				type = intent.getStringExtra(Constants.INTENT_SEEK_TYPE);
 				typeView.setText(type);
 
-				loadSeeks(true);
-			}
-		}
-
-		else if (requestCode == Constants.REQUEST_CODE_CITY) {
-			if (resultCode == FragmentActivity.RESULT_OK) {
-				Intent intent = data;
-				province = intent.getStringExtra(Constants.INTENT_LOCATION_PROVINCE);
-				city = intent.getStringExtra(Constants.INTENT_LOCATION_CITY);
-				district = intent.getStringExtra(Constants.INTENT_LOCATION_DISTRICT);
-				cityView.setText(city);
-
-				loadSeeks(true);
-
-				// saveTOLocalStore;
-				ApiContext.getInstance(this).setLocationProvince(province);
-				ApiContext.getInstance(this).setLocationCity(city);
-				ApiContext.getInstance(this).setLocationDistrict(district);
-
-				UserVO user = ApiContext.getInstance(this).getCurrentUser();
-				if (user != null) {
-					user.setProvince(province);
-					user.setCity(city);
-					user.setDistrict(district);
-
-					UserFormVO userForm = new UserFormVO();
-					userForm.setId(user.getId());
-					userForm.setNickname(user.getNickname());
-					userForm.setGender(user.getGender());
-					userForm.setJob(user.getJob());
-					userForm.setPhone(user.getPhone());
-					userForm.setTelephone(user.getTelephone());
-					userForm.setSignature(user.getSignature());
-					userForm.setAddress(user.getAddress());
-					userForm.setCity(user.getCity());
-					userForm.setProvince(user.getProvince());
-					userForm.setDistrict(user.getDistrict());
-
-					// 更新用户所在地区
-					new UpdateProfileTask(this).setListener(new DefaultTaskListener<UserVO>(this) {
-						@Override
-						public void onSuccess(UserVO result) {
-						}
-					}).execute(userForm);
-				}
+				loadNearlySeeks(true);
 			}
 		}
 	}
 
-	private void loadSeeks(boolean refresh) {
+	private void loadNearlySeeks(boolean refresh) {
 		if (SelectCategoryActivity.CATEGORY_MY_STRING.equals(subCategory)) {
 			// 根据我的帮忙范围加载求助/帮忙列表
-			loadSeekByCityAndOfferRange(refresh);
+			loadNearlySeekByOfferRange(refresh);
 		} else {
 			// 根据城市与分类加载求助/帮忙列表
-			loadSeekByCityOrCategory(refresh);
+			loadNearlySeekCategory(refresh);
 		}
 	}
 
-	public void loadSeekByCityOrCategory(boolean isRefresh) {
+	public void loadNearlySeekCategory(boolean isRefresh) {
 		if (isRefresh) {
 			pageNumber = 0;
 		}
-		// 加载数据
+		// TODO 加载数据
 		// new ListLatestAvaliableSeeksByCityOrCategoryTask(this).setListener(
 		// new ListLatestAvaliableSeeksTaskListener(NearlyActivity.this,
 		// adapter, listView, isRefresh)).execute(
@@ -296,11 +243,11 @@ public class NearlyActivity extends Activity {
 		// String.valueOf(pageNumber++), String.valueOf(pageSize));
 	}
 
-	public void loadSeekByCityAndOfferRange(boolean isRefresh) {
+	public void loadNearlySeekByOfferRange(boolean isRefresh) {
 		if (isRefresh) {
 			pageNumber = 0;
 		}
-		// 加载数据
+		// TODO 加载数据
 		// new
 		// ListLatestAvaliableSeeksByCityAndOfferRangeTask(this).setListener(
 		// new ListLatestAvaliableSeeksTaskListener(NearlyActivity.this,
@@ -343,4 +290,5 @@ public class NearlyActivity extends Activity {
 			listView.showMoreView();
 		}
 	}
+
 }
