@@ -6,7 +6,6 @@ import java.util.List;
 import net.ipetty.ibang.R;
 import net.ipetty.ibang.android.city.ProvinceActivity;
 import net.ipetty.ibang.android.core.Constants;
-import net.ipetty.ibang.android.core.DefaultTaskListener;
 import net.ipetty.ibang.android.core.MyAppStateManager;
 import net.ipetty.ibang.android.core.ui.MyPullToRefreshListView;
 import net.ipetty.ibang.android.core.ui.UnLoginView;
@@ -21,10 +20,7 @@ import net.ipetty.ibang.android.seek.ListLatestAvaliableSeeksTaskListener;
 import net.ipetty.ibang.android.seek.SeekActivity;
 import net.ipetty.ibang.android.type.SelectCategoryActivity;
 import net.ipetty.ibang.android.type.SelectSeekTypeActivity;
-import net.ipetty.ibang.android.user.UpdateProfileTask;
 import net.ipetty.ibang.vo.SeekVO;
-import net.ipetty.ibang.vo.UserFormVO;
-import net.ipetty.ibang.vo.UserVO;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -115,14 +111,17 @@ public class MainHomeFragment extends Fragment {
 		msg = (ImageView) this.getView().findViewById(R.id.msg);
 
 		if (StringUtils.isNotBlank(city)) {
+			// 用户之前已选择城市
 			cityView.setText(city);
 		} else {
-			// 如果未选择城市，则需要先选择城市
+			// 用户之前未选择城市
+			// TODO 自动定位城市
 			Intent intent = new Intent(getActivity(), ProvinceActivity.class);
 			intent.putExtra(Constants.INTENT_LOCATION_TYPE, Constants.INTENT_LOCATION_CITY);
 			startActivityForResult(intent, Constants.REQUEST_CODE_CITY);
 		}
 		cityView.setOnClickListener(new OnClickListener() {
+
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent(getActivity(), ProvinceActivity.class);
@@ -132,6 +131,7 @@ public class MainHomeFragment extends Fragment {
 		});
 
 		search.setOnClickListener(new OnClickListener() {
+
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent(getActivity(), SearchActivity.class);
@@ -140,6 +140,7 @@ public class MainHomeFragment extends Fragment {
 		});
 
 		msg.setOnClickListener(new OnClickListener() {
+
 			@Override
 			public void onClick(View v) {
 				msg.setImageResource(R.drawable.action_bar_msg);
@@ -151,6 +152,7 @@ public class MainHomeFragment extends Fragment {
 		categoryView = (Button) getView().findViewById(R.id.category);
 		View category_layout = getView().findViewById(R.id.category_layout);
 		categoryView.setOnClickListener(new OnClickListener() {
+
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent();
@@ -161,6 +163,7 @@ public class MainHomeFragment extends Fragment {
 			}
 		});
 		category_layout.setOnClickListener(new OnClickListener() {
+
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent();
@@ -174,6 +177,7 @@ public class MainHomeFragment extends Fragment {
 		typeView = (Button) getView().findViewById(R.id.type);
 		View type_layout = getView().findViewById(R.id.type_layout);
 		typeView.setOnClickListener(new OnClickListener() {
+
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent();
@@ -183,6 +187,7 @@ public class MainHomeFragment extends Fragment {
 			}
 		});
 		type_layout.setOnClickListener(new OnClickListener() {
+
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent();
@@ -196,6 +201,7 @@ public class MainHomeFragment extends Fragment {
 		adapter = new SeekAdapter(getActivity());
 		listView.setAdapter(adapter);
 		listView.setOnItemClickListener(new OnItemClickListener() {
+
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				Intent intent = new Intent(getActivity(), SeekActivity.class);
@@ -208,6 +214,7 @@ public class MainHomeFragment extends Fragment {
 
 		// listView.hideMoreView();
 		listView.setOnRefreshListener(new OnRefreshListener<ListView>() {
+
 			@Override
 			public void onRefresh(PullToRefreshBase<ListView> refreshView) {
 				String label = DateUtils.formatDateTime(MainHomeFragment.this.getActivity().getApplicationContext(),
@@ -219,6 +226,7 @@ public class MainHomeFragment extends Fragment {
 		});
 
 		listView.setOnLastItemVisibleListener(new OnLastItemVisibleListener() {
+
 			@Override
 			public void onLastItemVisible() {
 				if (hasMore) {
@@ -231,6 +239,7 @@ public class MainHomeFragment extends Fragment {
 	}
 
 	private BroadcastReceiver broadcastreciver = new BroadcastReceiver() {
+
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			String action = intent.getAction();
@@ -302,32 +311,27 @@ public class MainHomeFragment extends Fragment {
 				ApiContext.getInstance(getActivity()).setLocationCity(city);
 				ApiContext.getInstance(getActivity()).setLocationDistrict(district);
 
-				UserVO user = ApiContext.getInstance(getActivity()).getCurrentUser();
-				if (user != null) {
-					user.setProvince(province);
-					user.setCity(city);
-					user.setDistrict(district);
-
-					UserFormVO userForm = new UserFormVO();
-					userForm.setId(user.getId());
-					userForm.setNickname(user.getNickname());
-					userForm.setGender(user.getGender());
-					userForm.setJob(user.getJob());
-					userForm.setPhone(user.getPhone());
-					userForm.setTelephone(user.getTelephone());
-					userForm.setSignature(user.getSignature());
-					userForm.setAddress(user.getAddress());
-					userForm.setCity(user.getCity());
-					userForm.setProvince(user.getProvince());
-					userForm.setDistrict(user.getDistrict());
-
-					// 更新用户所在地区
-					new UpdateProfileTask(getActivity()).setListener(new DefaultTaskListener<UserVO>(getActivity()) {
-						@Override
-						public void onSuccess(UserVO result) {
-						}
-					}).execute(userForm);
-				}
+				/*
+				 * UserVO user =
+				 * ApiContext.getInstance(getActivity()).getCurrentUser(); if
+				 * (user != null) { user.setProvince(province);
+				 * user.setCity(city); user.setDistrict(district); UserFormVO
+				 * userForm = new UserFormVO(); userForm.setId(user.getId());
+				 * userForm.setNickname(user.getNickname());
+				 * userForm.setGender(user.getGender());
+				 * userForm.setJob(user.getJob());
+				 * userForm.setPhone(user.getPhone());
+				 * userForm.setTelephone(user.getTelephone());
+				 * userForm.setSignature(user.getSignature());
+				 * userForm.setAddress(user.getAddress());
+				 * userForm.setCity(user.getCity());
+				 * userForm.setProvince(user.getProvince());
+				 * userForm.setDistrict(user.getDistrict()); // 更新用户所在地区 new
+				 * UpdateProfileTask(getActivity()).setListener(new
+				 * DefaultTaskListener<UserVO>(getActivity()) {
+				 * @Override public void onSuccess(UserVO result) { }
+				 * }).execute(userForm); }
+				 */
 			}
 		}
 	}
