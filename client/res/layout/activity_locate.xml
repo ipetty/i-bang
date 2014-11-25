@@ -24,6 +24,8 @@
         <ImageView
             android:id="@+id/action_bar_left_image"
             style="@style/ActionBarButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:src="@drawable/action_bar_back" />
 
         <LinearLayout
@@ -48,7 +50,7 @@
                 android:hint="输入您的地址"
                 android:textColor="@color/gray_color"
                 android:textSize="14sp">
-				   <requestFocus />
+
             </EditText>
 
              <ImageView 
@@ -63,6 +65,8 @@
                 <ImageView
                     android:id="@+id/action_bar_right_image"
                     style="@style/ActionBarButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:src="@drawable/action_bar_search" />
 
     </LinearLayout>
@@ -86,7 +90,7 @@
                 <com.baidu.mapapi.map.MapView
                     android:id="@+id/bmapView"
                     android:layout_width="fill_parent"
-
+                    android:layout_height="wrap_content"
                     android:clickable="true" />
 
         </LinearLayout>
