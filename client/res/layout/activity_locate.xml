@@ -1,4 +1,4 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
@@ -24,8 +24,8 @@
         <ImageView
             android:id="@+id/action_bar_left_image"
             style="@style/ActionBarButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:src="@drawable/action_bar_back" />
 
         <LinearLayout
@@ -35,7 +35,26 @@
              android:layout_gravity="center"
              android:layout_weight="1"
             android:gravity="center" >
+            
+            <LinearLayout
+                android:id="@+id/city_layout"
+                android:layout_width="wrap_content"
+                            android:layout_margin="1dp"
+                android:background="@drawable/news_bg"
+                android:padding="4dp"
+                android:layout_height="match_parent" >
 
+                <TextView
+                    android:id="@+id/city"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+    
+                    android:gravity="center"
+                    android:textColor="@color/gray_color"
+                    android:text="全国" />
+
+
+            </LinearLayout>
             <EditText
                 android:id="@+id/search"
                 android:layout_width="wrap_content"
@@ -79,60 +98,69 @@
        
 </LinearLayout>
 
+<LinearLayout
+    android:id="@+id/operation_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white_color"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="36dp"
+        android:background="@color/yellow_bg_color"
+        android:gravity="center|left"
+        android:orientation="horizontal"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp" >
+
+        <ImageView
+            android:id="@+id/imageView1"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:src="@drawable/tab_local_default" />
+
+        <TextView
+            android:id="@+id/address"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center|left"
+            android:padding="8dp"
+            android:singleLine="true"
+            android:text="正在定位..."
+            android:ellipsize="marquee"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/button"
+            android:layout_width="48dp"
+            android:layout_height="24dp"
+            android:background="@drawable/button_white_shape"
+            android:gravity="center"
+            android:text="选定"
+            android:textColor="@color/base_color"
+            android:textSize="12sp" />
+    </LinearLayout>
+
+    <include layout="@layout/line_horizontal_divider" />
+
+</LinearLayout>
+
         <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
-                	 	    android:layout_above="@+id/operation_layout"
- 	 	  		  android:layout_below="@+id/action_bar" 
                 android:background="@drawable/list_color_item_bg_white"
                 android:gravity="center_vertical" >
 
                 <com.baidu.mapapi.map.MapView
                     android:id="@+id/bmapView"
                     android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="fill_parent"
                     android:clickable="true" />
 
         </LinearLayout>
-<LinearLayout
- 	 	    android:id="@+id/operation_layout"
- 	 	    android:layout_width="match_parent"
- 	 	    android:layout_height="48dp"
- 	 	    android:layout_alignParentBottom="true"
- 	 	    android:layout_alignParentLeft="true"
- 	 	    android:orientation="vertical"
- 	 	    android:background="@color/white_color" >
-			<include layout="@layout/line_horizontal_divider" />
-
-			<RelativeLayout
-			    android:layout_width="match_parent"
-			    android:layout_height="wrap_content"
-			    android:gravity="center_vertical" >
-
-			    <TextView
-			        android:padding="8dp"
-			        android:id="@+id/address"
-			        android:layout_width="match_parent"
-			        android:layout_height="match_parent"
-			        android:layout_toLeftOf="@+id/button"
-			        android:gravity="center|left"
-			        android:text="正在定位..."
-			        android:textSize="12sp" />
-			    
-				<TextView
-				    android:id="@+id/button"
-				    android:layout_width="48dp"
-				    android:layout_height="match_parent"
-				    android:layout_alignParentRight="true"
-				    android:background="@color/base_color"
-				    android:gravity="center"
-				    android:text="确定"
-				    android:textColor="@color/white_color"
-				    android:textSize="12sp" />
-
-			</RelativeLayout>
- 	 	</LinearLayout>
 
 
 
-</RelativeLayout>
+</LinearLayout>
