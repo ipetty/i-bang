@@ -11,7 +11,6 @@ import org.springframework.util.Assert;
 
 /**
  * LocationService
- * 
  * @author luocanfeng
  * @date 2014年5月9日
  */
@@ -36,6 +35,13 @@ public class LocationService extends BaseService {
 	public Location getById(Long id) {
 		Assert.notNull(id, "ID不能为空");
 		return locationDao.getById(id);
+	}
+
+	/**
+	 * 设置lbsId字段信息
+	 */
+	public void setLbsId(Long id, String lbsId) {
+		locationDao.setLbsId(id, lbsId);
 	}
 
 }

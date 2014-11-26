@@ -6,7 +6,6 @@ import net.ipetty.ibang.model.Location;
 
 /**
  * LocationDao
- * 
  * @author luocanfeng
  * @date 2014年5月8日
  */
@@ -21,6 +20,11 @@ public interface LocationDao {
 	 * 根据ID获取位置信息
 	 */
 	public Location getById(Long id);
+
+	/**
+	 * 设置lbsId字段信息
+	 */
+	public void setLbsId(Long id, String lbsId);
 
 	/**
 	 * 获取指定求助列表的位置信息列表

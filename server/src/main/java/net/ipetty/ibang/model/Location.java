@@ -6,7 +6,6 @@ import org.springframework.beans.BeanUtils;
 
 /**
  * 位置
- * 
  * @author luocanfeng
  * @date 2014年10月22日
  */
@@ -29,6 +28,7 @@ public class Location extends AbstractEntity {
 	private String streetNumber; // 门牌号
 	private String address; // 地点文本信息
 	private boolean silent = true; // true为默默收集，界面不展现；false为用户指定，界面展现。
+	private String lbsId; // 百度地图lbsId
 
 	public Location() {
 		super();
@@ -210,6 +210,14 @@ public class Location extends AbstractEntity {
 
 	public void setSilent(boolean silent) {
 		this.silent = silent;
+	}
+
+	public String getLbsId() {
+		return lbsId;
+	}
+
+	public void setLbsId(String lbsId) {
+		this.lbsId = lbsId;
 	}
 
 }

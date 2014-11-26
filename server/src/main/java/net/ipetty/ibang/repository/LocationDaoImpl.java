@@ -9,6 +9,7 @@ import java.util.List;
 
 import net.ipetty.ibang.cache.CacheConstants;
 import net.ipetty.ibang.cache.annotation.LoadFromCache;
+import net.ipetty.ibang.cache.annotation.UpdateToCache;
 import net.ipetty.ibang.exception.BusinessException;
 import net.ipetty.ibang.model.Location;
 import net.ipetty.ibang.util.JdbcDaoUtils;
@@ -19,7 +20,6 @@ import org.springframework.util.StringUtils;
 
 /**
  * LocationDaoImpl
- * 
  * @author luocanfeng
  * @date 2014年5月8日
  */
@@ -27,10 +27,11 @@ import org.springframework.util.StringUtils;
 public class LocationDaoImpl extends BaseJdbcDaoSupport implements LocationDao {
 
 	static final RowMapper<Location> ROW_MAPPER = new RowMapper<Location>() {
+
 		@Override
 		public Location mapRow(ResultSet rs, int rowNum) throws SQLException {
 			// id, longitude, latitude, geo_hash, coor_type, radius, province,
-			// city, district, street, street_number, address, silent
+			// city, district, street, street_number, address, silent, lbs_id
 			Location location = new Location();
 			location.setId(rs.getLong("id"));
 			location.setLongitude(JdbcDaoUtils.getDouble(rs, "longitude"));
@@ -45,11 +46,12 @@ public class LocationDaoImpl extends BaseJdbcDaoSupport implements LocationDao {
 			location.setStreetNumber(rs.getString("street_number"));
 			location.setAddress(rs.getString("address"));
 			location.setSilent(rs.getBoolean("silent"));
+			location.setLbsId(rs.getString("lbs_id"));
 			return location;
 		}
 	};
 
-	private static final String SAVE_SQL = "insert into location(longitude, latitude, geo_hash, coor_type, radius, province, city, district, street, street_number, address, silent) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+	private static final String SAVE_SQL = "insert into location(longitude, latitude, geo_hash, coor_type, radius, province, city, district, street, street_number, address, silent, lbs_id) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
 	/**
 	 * 保存位置信息
@@ -71,6 +73,7 @@ public class LocationDaoImpl extends BaseJdbcDaoSupport implements LocationDao {
 			statement.setString(10, location.getStreetNumber());
 			statement.setString(11, location.getAddress());
 			statement.setBoolean(12, location.isSilent());
+			statement.setString(13, location.getLbsId());
 			statement.execute();
 			ResultSet rs = statement.getGeneratedKeys();
 			while (rs.next()) {
@@ -93,6 +96,17 @@ public class LocationDaoImpl extends BaseJdbcDaoSupport implements LocationDao {
 	@LoadFromCache(mapName = CacheConstants.CACHE_LOCATION_ID_TO_LOCATION, key = "${id}")
 	public Location getById(Long id) {
 		return super.queryUniqueEntity(GET_BY_ID_SQL, ROW_MAPPER, id);
+	}
+
+	private static final String SET_LBS_ID_SQL = "update location set lbs_id=? where id=?";
+
+	/**
+	 * 设置lbsId字段信息
+	 */
+	@Override
+	@UpdateToCache(mapName = CacheConstants.CACHE_LOCATION_ID_TO_LOCATION, key = "${id}")
+	public void setLbsId(Long id, String lbsId) {
+		super.getJdbcTemplate().update(SET_LBS_ID_SQL, lbsId, id);
 	}
 
 	private static final String LIST_BY_SEEK_IDS_SQL = "select l.* from location l inner join (select location_id from seek where id in (?)) lid on l.id=lid.location_id";
