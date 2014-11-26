@@ -107,6 +107,8 @@ public class LocateActivity extends Activity {
 		city = ApiContext.getInstance(this).getLocationCity();
 		cityView.setText(city);
 
+		// TODO: 如果用户选择过位置了~再次打开是否应该获取定位到之前选择的位置！
+
 		search_btn = (ImageView) this.findViewById(R.id.action_bar_right_image);
 		search_btn.setOnClickListener(searchOnClickListener);
 		search = (EditText) this.findViewById(R.id.search);
@@ -199,7 +201,8 @@ public class LocateActivity extends Activity {
 			showDialog("正在搜索");
 			key = search.getText().toString();
 			GeoCodeOption geoCodeOption = new GeoCodeOption();
-			geoCodeOption.address(key).city("");
+			// TODO: 这里增加了city
+			geoCodeOption.address(key).city(city);
 			mSearch.geocode(geoCodeOption);
 		}
 	};
@@ -282,6 +285,13 @@ public class LocateActivity extends Activity {
 			// Toast.LENGTH_LONG).show();
 			address.setText(result.getAddress());
 			locationResult = result;
+			// 这里增加了一个判断
+			String localCity = locationResult.getAddressDetail().city;
+			if (!localCity.equals(city)) {
+				Toast.makeText(LocateActivity.this, "您当前位置与选择城市不一致，请返回首页进行城市切换", Toast.LENGTH_LONG).show();
+				return;
+			}
+
 		}
 
 	}

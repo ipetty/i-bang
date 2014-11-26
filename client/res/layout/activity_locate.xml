@@ -65,6 +65,7 @@
                 android:gravity="center|left"
                 android:paddingLeft="0dp"
                 android:paddingRight="0dp"
+                android:singleLine="true"
                 android:text=""
                 android:hint="输入您的地址"
                 android:textColor="@color/gray_color"
