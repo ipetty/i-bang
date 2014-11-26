@@ -93,6 +93,7 @@ public class SeekController extends BaseController {
         Location loc = null;
         if (location != null) {
             loc = Location.fromVO(location);
+            loc.setCoorType(BaiduApiFactory.coordTypeValue.toString());
             locationService.save(loc);
         }
 
@@ -149,6 +150,7 @@ public class SeekController extends BaseController {
         Location loc = null;
         if (location != null) {
             loc = Location.fromVO(location);
+            loc.setCoorType(BaiduApiFactory.coordTypeValue.toString());
             locationService.save(loc);
         }
 
