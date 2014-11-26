@@ -42,320 +42,355 @@ import android.widget.Toast;
 
 public class PublishActivity extends Activity {
 
-    private String TAG = getClass().getSimpleName();
+	private String TAG = getClass().getSimpleName();
 
-    private String categoryL1;
-    private String categoryL2;
-    private EditText contentView;
-    private EditText exipireDateView;
-    private TextView nicknameView;
-    private TextView phoneView;
-    private UserVO user;
-    private EditText delegateNumberView;
-    private TextView button;
-    private EditText additionalRewardView;
-    private EditText serviceDateView;
+	private String categoryL1;
+	private String categoryL2;
+	private EditText contentView;
+	private EditText exipireDateView;
+	private TextView nicknameView;
+	private TextView phoneView;
+	private UserVO user;
+	private EditText delegateNumberView;
+	private TextView button;
+	private EditText additionalRewardView;
+	private EditText serviceDateView;
 
-    private UploadView uploadView;
+	private UploadView uploadView;
 
-    private Dialog exipireDateDialog;
-    private Dialog serviceDateDialog;
+	private Dialog exipireDateDialog;
+	private Dialog serviceDateDialog;
 
-    private ArrayList<ModDialogItem> serviceDateItems;
-    private ArrayList<ModDialogItem> exipireDateItems;
+	private ArrayList<ModDialogItem> serviceDateItems;
+	private ArrayList<ModDialogItem> exipireDateItems;
 
-    private View help_me_layout;
-    private View to_help_layout;
-    private View num_layout;
-    private View local_layout;
-    private String type = net.ipetty.ibang.vo.Constants.SEEK_TYPE_SEEK;
+	private View help_me_layout;
+	private View to_help_layout;
+	private View num_layout;
+	private View local_layout;
 
-    // 定位结果
-    private LocationVO location;
+	private String type = net.ipetty.ibang.vo.Constants.SEEK_TYPE_SEEK;
 
-    private TextView adressText;
+	// 定位结果
+	private LocationVO location;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_publish);
-        ActivityManager.getInstance().addActivity(this);
+	private TextView addressText;
+	private View local_more_layout;
+	private TextView local_more;
 
-        // 选择位置事件侦听
-        IntentFilter filter = new IntentFilter();
-        filter.addAction(Constants.BROADCAST_INTENT_LOCATION);
-        this.registerReceiver(broadcastreciver, filter);
+	private ArrayList<ModDialogItem> localItems;
+	private Dialog localDialog;
 
-        /* action bar */
-        ImageView btnBack = (ImageView) this.findViewById(R.id.action_bar_left_image);
-        btnBack.setOnClickListener(new BackClickListener(this));
-        categoryL1 = this.getIntent().getExtras().getString(Constants.INTENT_CATEGORY);
-        categoryL2 = this.getIntent().getExtras().getString(Constants.INTENT_SUB_CATEGORY);
-        ((TextView) this.findViewById(R.id.action_bar_title)).setText(categoryL1 + "-" + categoryL2);
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_publish);
+		ActivityManager.getInstance().addActivity(this);
 
-        contentView = (EditText) this.findViewById(R.id.content);
+		// 选择位置事件侦听
+		IntentFilter filter = new IntentFilter();
+		filter.addAction(Constants.BROADCAST_INTENT_LOCATION);
+		this.registerReceiver(broadcastreciver, filter);
 
-        help_me_layout = this.findViewById(R.id.help_me_layout);
-        to_help_layout = this.findViewById(R.id.to_help_layout);
-        help_me_layout.setOnClickListener(new TabClickListener(0));
-        to_help_layout.setOnClickListener(new TabClickListener(1));
+		/* action bar */
+		ImageView btnBack = (ImageView) this.findViewById(R.id.action_bar_left_image);
+		btnBack.setOnClickListener(new BackClickListener(this));
+		categoryL1 = this.getIntent().getExtras().getString(Constants.INTENT_CATEGORY);
+		categoryL2 = this.getIntent().getExtras().getString(Constants.INTENT_SUB_CATEGORY);
+		((TextView) this.findViewById(R.id.action_bar_title)).setText(categoryL1 + "-" + categoryL2);
 
-        num_layout = this.findViewById(R.id.num_layout);
+		contentView = (EditText) this.findViewById(R.id.content);
 
-        adressText = (TextView) this.findViewById(R.id.local);
+		help_me_layout = this.findViewById(R.id.help_me_layout);
+		to_help_layout = this.findViewById(R.id.to_help_layout);
+		help_me_layout.setOnClickListener(new TabClickListener(0));
+		to_help_layout.setOnClickListener(new TabClickListener(1));
 
-        // 界面元素绑定
-        local_layout = this.findViewById(R.id.local_layout);
-        local_layout.setOnClickListener(new OnClickListener() {
+		num_layout = this.findViewById(R.id.num_layout);
 
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(PublishActivity.this, LocateActivity.class);
-                startActivity(intent);
-            }
-        });
+		addressText = (TextView) this.findViewById(R.id.local);
 
-        delegateNumberView = (EditText) this.findViewById(R.id.num);
-        additionalRewardView = (EditText) this.findViewById(R.id.additionalReward);
-        serviceDateView = (EditText) this.findViewById(R.id.serviceDate);
+		local_layout = this.findViewById(R.id.local_layout);
+		local_more_layout = this.findViewById(R.id.local_more_layout);
+		local_more = (TextView) this.findViewById(R.id.local_more);
 
-        exipireDateItems = new ArrayList<ModDialogItem>();
-        exipireDateItems.add(new ModDialogItem(null, Constants.MAX_EXIPIREDATE_CONDITION,
-            Constants.MAX_EXIPIREDATE_CONDITION, new OnClickListener() {
+		localItems = new ArrayList<ModDialogItem>();
+		localItems.add(new ModDialogItem(null, "无", localNullClick));
+		localItems.add(new ModDialogItem(null, "地图选择", localMapClick));
 
-                @Override
-                public void onClick(View view) {
-                    String label = ((TextView) view.findViewById(R.id.text)).getText().toString();
-                    String value = ((TextView) view.findViewById(R.id.value)).getText().toString();
-                    exipireDateView.setText(label);
-                    exipireDateDialog.cancel();
-                }
-            }));
-        exipireDateItems.add(new ModDialogItem(null, "指定日期", "指定日期", new OnClickListener() {
+		local_layout.setOnClickListener(new OnClickListener() {
 
-            @Override
-            public void onClick(View v) {
-                exipireDateDialog.cancel();
-                String str = exipireDateView.getText().toString();
-                if (Constants.MAX_EXIPIREDATE_CONDITION.equals(str)) {
-                    Calendar c = Calendar.getInstance();
-                    c.setTime(new Date());
-                    // c.add(Calendar.MONTH, 3);
-                    str = DateUtils.toDateString(c.getTime());
-                }
-                exipireDateDialog = DialogUtils.datePopupDialog(PublishActivity.this, exipireDateClick, str,
-                    exipireDateDialog);
-            }
-        }));
-        // 事件初始化
-        exipireDateView = (EditText) this.findViewById(R.id.exipireDate);
-        exipireDateView.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				localDialog = DialogUtils.modPopupDialog(PublishActivity.this, localItems, localDialog);
+			}
+		});
 
-            @Override
-            public void onClick(View v) {
-                exipireDateDialog = DialogUtils.modPopupDialog(PublishActivity.this, exipireDateItems,
-                    exipireDateDialog);
-            }
-        });
+		delegateNumberView = (EditText) this.findViewById(R.id.num);
+		additionalRewardView = (EditText) this.findViewById(R.id.additionalReward);
+		serviceDateView = (EditText) this.findViewById(R.id.serviceDate);
 
-        exipireDateView.setText(Constants.MAX_EXIPIREDATE_CONDITION);
+		exipireDateItems = new ArrayList<ModDialogItem>();
+		exipireDateItems.add(new ModDialogItem(null, Constants.MAX_EXIPIREDATE_CONDITION,
+				Constants.MAX_EXIPIREDATE_CONDITION, new OnClickListener() {
 
-        nicknameView = (TextView) this.findViewById(R.id.nickname);
-        phoneView = (TextView) this.findViewById(R.id.phone);
-        nicknameView.setOnClickListener(new EditOnClickListener(Constants.INTENT_USER_EDIT_TYPE_NICKNAME));
-        phoneView.setOnClickListener(new EditOnClickListener(Constants.INTENT_USER_EDIT_TYPE_PHONE));
+					@Override
+					public void onClick(View view) {
+						String label = ((TextView) view.findViewById(R.id.text)).getText().toString();
+						String value = ((TextView) view.findViewById(R.id.value)).getText().toString();
+						exipireDateView.setText(label);
+						exipireDateDialog.cancel();
+					}
+				}));
+		exipireDateItems.add(new ModDialogItem(null, "指定日期", "指定日期", new OnClickListener() {
 
-        initFileUpload();
-        initUserInfo();
+			@Override
+			public void onClick(View v) {
+				exipireDateDialog.cancel();
+				String str = exipireDateView.getText().toString();
+				if (Constants.MAX_EXIPIREDATE_CONDITION.equals(str)) {
+					Calendar c = Calendar.getInstance();
+					c.setTime(new Date());
+					// c.add(Calendar.MONTH, 3);
+					str = DateUtils.toDateString(c.getTime());
+				}
+				exipireDateDialog = DialogUtils.datePopupDialog(PublishActivity.this, exipireDateClick, str,
+						exipireDateDialog);
+			}
+		}));
+		// 事件初始化
+		exipireDateView = (EditText) this.findViewById(R.id.exipireDate);
+		exipireDateView.setOnClickListener(new OnClickListener() {
 
-        serviceDateItems = new ArrayList<ModDialogItem>();
-        serviceDateItems.add(new ModDialogItem(null, "不限", "不限", serviceDateClick));
-        serviceDateItems.add(new ModDialogItem(null, "工作日", "工作日", serviceDateClick));
-        serviceDateItems.add(new ModDialogItem(null, "双休日", "双休日", serviceDateClick));
-        serviceDateItems.add(new ModDialogItem(null, "指定日期", "指定日期", selectServiceDateClick));
+			@Override
+			public void onClick(View v) {
+				exipireDateDialog = DialogUtils.modPopupDialog(PublishActivity.this, exipireDateItems,
+						exipireDateDialog);
+			}
+		});
 
-        serviceDateView.setOnClickListener(new OnClickListener() {
+		exipireDateView.setText(Constants.MAX_EXIPIREDATE_CONDITION);
 
-            @Override
-            public void onClick(View v) {
-                serviceDateDialog = DialogUtils.modPopupDialog(PublishActivity.this, serviceDateItems,
-                    serviceDateDialog);
-            }
-        });
+		nicknameView = (TextView) this.findViewById(R.id.nickname);
+		phoneView = (TextView) this.findViewById(R.id.phone);
+		nicknameView.setOnClickListener(new EditOnClickListener(Constants.INTENT_USER_EDIT_TYPE_NICKNAME));
+		phoneView.setOnClickListener(new EditOnClickListener(Constants.INTENT_USER_EDIT_TYPE_PHONE));
 
-        // 发布
-        button = (TextView) this.findViewById(R.id.button);
-        button.setOnClickListener(new OnClickListener() {
+		initFileUpload();
+		initUserInfo();
 
-            @Override
-            public void onClick(View v) {
-                if (StringUtils.isBlank(contentView.getText().toString())) {
-                    Toast.makeText(PublishActivity.this, "内容不能为空", Toast.LENGTH_SHORT).show();
-                    contentView.requestFocus();
-                    return;
-                }
+		serviceDateItems = new ArrayList<ModDialogItem>();
+		serviceDateItems.add(new ModDialogItem(null, "不限", "不限", serviceDateClick));
+		serviceDateItems.add(new ModDialogItem(null, "工作日", "工作日", serviceDateClick));
+		serviceDateItems.add(new ModDialogItem(null, "双休日", "双休日", serviceDateClick));
+		serviceDateItems.add(new ModDialogItem(null, "指定日期", "指定日期", selectServiceDateClick));
 
-                final SeekWithLocationVO seek = new SeekWithLocationVO();
-                seek.setType(type);
-                seek.setSeekerId(user.getId());
-                seek.setCategoryL1(categoryL1);
-                seek.setCategoryL2(categoryL2);
-                seek.setContent(contentView.getText().toString());
+		serviceDateView.setOnClickListener(new OnClickListener() {
 
-                int num = Integer.valueOf(delegateNumberView.getText().toString());
-                if (Constants.MAX_DELEGATION_CONDITION == num) {
-                    num = Constants.MAX_DELEGATION;
-                }
-                seek.setDelegateNumber(num);
-                seek.setAdditionalReward(additionalRewardView.getText().toString());
+			@Override
+			public void onClick(View v) {
+				serviceDateDialog = DialogUtils.modPopupDialog(PublishActivity.this, serviceDateItems,
+						serviceDateDialog);
+			}
+		});
 
-                String exipireDateStr = exipireDateView.getText().toString();
-                if (Constants.MAX_EXIPIREDATE_CONDITION.equals(exipireDateStr)) {
-                    exipireDateStr = Constants.MAX_EXIPIREDATE;
-                }
-                seek.setServiceDate(serviceDateView.getText().toString());
-                seek.setExipireDate(DateUtils.fromDateString(exipireDateStr));
+		// 发布
+		button = (TextView) this.findViewById(R.id.button);
+		button.setOnClickListener(new OnClickListener() {
 
-                // 上传图片文件
-                final List<File> files = uploadView.getFiles();
-                final List<String> filePaths = new ArrayList<String>();
-                for (File file : files) {
-                    filePaths.add(file.getAbsolutePath());
-                }
+			@Override
+			public void onClick(View v) {
+				if (StringUtils.isBlank(contentView.getText().toString())) {
+					Toast.makeText(PublishActivity.this, "内容不能为空", Toast.LENGTH_SHORT).show();
+					contentView.requestFocus();
+					return;
+				}
 
-                if (location != null) {
-                    seek.setLocation(location);
-                    seek.setProvince(location.getProvince());
-                    seek.setCity(location.getCity());
-                    seek.setDistrict(location.getDistrict());
-                    seek.setAddress(location.getAddress());
-                }
+				final SeekWithLocationVO seek = new SeekWithLocationVO();
+				seek.setType(type);
+				seek.setSeekerId(user.getId());
+				seek.setCategoryL1(categoryL1);
+				seek.setCategoryL2(categoryL2);
+				seek.setContent(contentView.getText().toString());
 
-                new PublishSeekTask(PublishActivity.this).setListener(
-                    new PublishSeekTaskListener(PublishActivity.this, type)).execute(
-                        new SeekWithLocationForm(seek, filePaths));
-            }
-        });
-    }
+				int num = Integer.valueOf(delegateNumberView.getText().toString());
+				if (Constants.MAX_DELEGATION_CONDITION == num) {
+					num = Constants.MAX_DELEGATION;
+				}
+				seek.setDelegateNumber(num);
+				seek.setAdditionalReward(additionalRewardView.getText().toString());
 
-    private BroadcastReceiver broadcastreciver = new BroadcastReceiver() {
+				String exipireDateStr = exipireDateView.getText().toString();
+				if (Constants.MAX_EXIPIREDATE_CONDITION.equals(exipireDateStr)) {
+					exipireDateStr = Constants.MAX_EXIPIREDATE;
+				}
+				seek.setServiceDate(serviceDateView.getText().toString());
+				seek.setExipireDate(DateUtils.fromDateString(exipireDateStr));
 
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            String jsonStr = intent.getStringExtra(Constants.BROADCAST_INTENT_LOCATION_DATA);
-            Log.d(TAG, jsonStr);
-            location = JSONUtils.fromJSON(jsonStr, LocationVO.class);
-            adressText.setText(location.getAddress());
-        }
-    };
+				// 上传图片文件
+				final List<File> files = uploadView.getFiles();
+				final List<String> filePaths = new ArrayList<String>();
+				for (File file : files) {
+					filePaths.add(file.getAbsolutePath());
+				}
 
-    private OnClickListener selectServiceDateClick = new OnClickListener() {
+				if (location != null) {
+					seek.setLocation(location);
+					seek.setProvince(location.getProvince());
+					seek.setCity(location.getCity());
+					seek.setDistrict(location.getDistrict());
+					seek.setAddress(location.getAddress() + "(" + local_more.getText().toString() + ")");
+				}
 
-        @Override
-        public void onClick(View v) {
-            serviceDateDialog.cancel();
-            Calendar c = Calendar.getInstance();
-            c.setTime(new Date());
-            String str = DateUtils.toDateString(c.getTime());
-            serviceDateDialog = DialogUtils.datePopupDialog(PublishActivity.this, serviceDateDialogClick, str,
-                serviceDateDialog);
-        }
-    };
+				new PublishSeekTask(PublishActivity.this).setListener(
+						new PublishSeekTaskListener(PublishActivity.this, type)).execute(
+						new SeekWithLocationForm(seek, filePaths));
+			}
+		});
+	}
 
-    private OnClickListener serviceDateClick = new OnClickListener() {
+	private OnClickListener localNullClick = new OnClickListener() {
 
-        @Override
-        public void onClick(View view) {
-            String label = ((TextView) view.findViewById(R.id.text)).getText().toString();
-            String value = ((TextView) view.findViewById(R.id.value)).getText().toString();
-            serviceDateView.setText(label);
-            serviceDateDialog.cancel();
-        }
-    };
-    private OnDateSetListener serviceDateDialogClick = new OnDateSetListener() {
+		@Override
+		public void onClick(View v) {
+			// TODO Auto-generated method stub
+			local_more_layout.setVisibility(View.GONE);
+			addressText.setText("无");
+			localDialog.cancel();
+		}
+	};
 
-        @Override
-        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-            Calendar c = Calendar.getInstance();
-            c.set(year, monthOfYear, dayOfMonth);
-            String str = DateUtils.toDateString(c.getTime());
-            serviceDateView.setText(str);
-            serviceDateDialog.cancel();
-        }
-    };
+	private OnClickListener localMapClick = new OnClickListener() {
 
-    private void initUserInfo() {
-        user = ApiContext.getInstance(PublishActivity.this).getCurrentUser();
-        nicknameView.setText(user.getNickname());
-        phoneView.setText(user.getPhone());
-    }
+		@Override
+		public void onClick(View v) {
+			// TODO Auto-generated method stub
+			local_more_layout.setVisibility(View.VISIBLE);
+			Intent intent = new Intent(PublishActivity.this, LocateActivity.class);
+			startActivity(intent);
+			localDialog.cancel();
+		}
+	};
 
-    private class EditOnClickListener implements OnClickListener {
+	private BroadcastReceiver broadcastreciver = new BroadcastReceiver() {
 
-        private String type = null;
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			String jsonStr = intent.getStringExtra(Constants.BROADCAST_INTENT_LOCATION_DATA);
+			Log.d(TAG, jsonStr);
+			location = JSONUtils.fromJSON(jsonStr, LocationVO.class);
+			addressText.setText(location.getAddress());
+		}
+	};
 
-        public EditOnClickListener(String type) {
-            this.type = type;
-        }
+	private OnClickListener selectServiceDateClick = new OnClickListener() {
 
-        @Override
-        public void onClick(View v) {
-            Intent intent = new Intent(PublishActivity.this, UserEditActivity.class);
-            intent.putExtra(Constants.INTENT_USER_EDIT_TYPE, this.type);
-            PublishActivity.this.startActivityForResult(intent, Constants.REQUEST_CODE_USER_EDIT);
-        }
-    };
+		@Override
+		public void onClick(View v) {
+			serviceDateDialog.cancel();
+			Calendar c = Calendar.getInstance();
+			c.setTime(new Date());
+			String str = DateUtils.toDateString(c.getTime());
+			serviceDateDialog = DialogUtils.datePopupDialog(PublishActivity.this, serviceDateDialogClick, str,
+					serviceDateDialog);
+		}
+	};
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        uploadView.onActivityResult(requestCode, resultCode, data);
+	private OnClickListener serviceDateClick = new OnClickListener() {
 
-        if (requestCode == Constants.REQUEST_CODE_USER_EDIT) {
-            // 从上下文重新获取用户信息
-            initUserInfo();
-        }
-    }
+		@Override
+		public void onClick(View view) {
+			String label = ((TextView) view.findViewById(R.id.text)).getText().toString();
+			String value = ((TextView) view.findViewById(R.id.value)).getText().toString();
+			serviceDateView.setText(label);
+			serviceDateDialog.cancel();
+		}
+	};
+	private OnDateSetListener serviceDateDialogClick = new OnDateSetListener() {
 
-    private OnDateSetListener exipireDateClick = new OnDateSetListener() {
+		@Override
+		public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+			Calendar c = Calendar.getInstance();
+			c.set(year, monthOfYear, dayOfMonth);
+			String str = DateUtils.toDateString(c.getTime());
+			serviceDateView.setText(str);
+			serviceDateDialog.cancel();
+		}
+	};
 
-        @Override
-        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-            Calendar c = Calendar.getInstance();
-            c.set(year, monthOfYear, dayOfMonth);
-            String str = DateUtils.toDateString(c.getTime());
-            exipireDateView.setText(str);
-        }
-    };
+	private void initUserInfo() {
+		user = ApiContext.getInstance(PublishActivity.this).getCurrentUser();
+		nicknameView.setText(user.getNickname());
+		phoneView.setText(user.getPhone());
+	}
 
-    private void initFileUpload() {
-        uploadView = new UploadView(this);
-    }
+	private class EditOnClickListener implements OnClickListener {
 
-    public class TabClickListener implements OnClickListener {
+		private String type = null;
 
-        private int index = 0;
+		public EditOnClickListener(String type) {
+			this.type = type;
+		}
 
-        public TabClickListener(int i) {
-            index = i;
-        }
+		@Override
+		public void onClick(View v) {
+			Intent intent = new Intent(PublishActivity.this, UserEditActivity.class);
+			intent.putExtra(Constants.INTENT_USER_EDIT_TYPE, this.type);
+			PublishActivity.this.startActivityForResult(intent, Constants.REQUEST_CODE_USER_EDIT);
+		}
+	};
 
-        @Override
-        public void onClick(View v) {
-            if (index == 0) {
-                help_me_layout.setBackgroundResource(R.drawable.news_tab_selected);
-                to_help_layout.setBackgroundResource(R.drawable.trans);
-                // 发布求助
-                type = net.ipetty.ibang.vo.Constants.SEEK_TYPE_SEEK;
-                num_layout.setVisibility(View.VISIBLE);
-            } else {
-                help_me_layout.setBackgroundResource(R.drawable.trans);
-                to_help_layout.setBackgroundResource(R.drawable.news_tab_selected);
-                // 发布帮助
-                type = net.ipetty.ibang.vo.Constants.SEEK_TYPE_ASSISTANCE;
-                num_layout.setVisibility(View.GONE);
-            }
-        }
-    }
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		uploadView.onActivityResult(requestCode, resultCode, data);
+
+		if (requestCode == Constants.REQUEST_CODE_USER_EDIT) {
+			// 从上下文重新获取用户信息
+			initUserInfo();
+		}
+	}
+
+	private OnDateSetListener exipireDateClick = new OnDateSetListener() {
+
+		@Override
+		public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+			Calendar c = Calendar.getInstance();
+			c.set(year, monthOfYear, dayOfMonth);
+			String str = DateUtils.toDateString(c.getTime());
+			exipireDateView.setText(str);
+		}
+	};
+
+	private void initFileUpload() {
+		uploadView = new UploadView(this);
+	}
+
+	public class TabClickListener implements OnClickListener {
+
+		private int index = 0;
+
+		public TabClickListener(int i) {
+			index = i;
+		}
+
+		@Override
+		public void onClick(View v) {
+			if (index == 0) {
+				help_me_layout.setBackgroundResource(R.drawable.news_tab_selected);
+				to_help_layout.setBackgroundResource(R.drawable.trans);
+				// 发布求助
+				type = net.ipetty.ibang.vo.Constants.SEEK_TYPE_SEEK;
+				num_layout.setVisibility(View.VISIBLE);
+			} else {
+				help_me_layout.setBackgroundResource(R.drawable.trans);
+				to_help_layout.setBackgroundResource(R.drawable.news_tab_selected);
+				// 发布帮助
+				type = net.ipetty.ibang.vo.Constants.SEEK_TYPE_ASSISTANCE;
+				num_layout.setVisibility(View.GONE);
+			}
+		}
+	}
 
 }
