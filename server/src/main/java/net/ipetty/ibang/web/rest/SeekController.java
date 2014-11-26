@@ -370,7 +370,19 @@ public class SeekController extends BaseController {
     public boolean close(Long seekId) {
         Assert.notNull(seekId, "求助单ID不能为空");
 
+        Seek s = seekService.getById(seekId);
+        Long loId = s.getLocationId();
+        if (loId != null) {
+            Location lo = locationService.getById(loId);
+            if (lo != null && StringUtils.isNotEmpty(lo.getLbsId())) {
+                //删除LBS位置
+                BaiduApi baiduApi = BaiduApiFactory.getBaiduApi();
+                baiduApi.lbsDeletePoi(BaiduApiFactory.ak, BaiduApiFactory.lbsTableId, lo.getLbsId());
+            }
+        }
+
         seekService.close(seekId);
+
         return true;
     }
 
