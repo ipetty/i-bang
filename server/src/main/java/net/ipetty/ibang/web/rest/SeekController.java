@@ -103,19 +103,29 @@ public class SeekController extends BaseController {
         }
         seekService.publish(s);
         s = seekService.getById(s.getId());
-        //发布LBS
-        if (loc != null) {
-            String title = s.getContent();
-            if (title.length() > 100) {
-                title = title.substring(0, 99);
-            }
-            BaiduApi baiduApi = BaiduApiFactory.getBaiduApi();
-            RetVO ret = baiduApi.lbsCreatePoi(BaiduApiFactory.ak, BaiduApiFactory.lbsTableId,
-                BaiduApiFactory.coordTypeValue, loc.getLatitude(), loc.getLongitude(),
-                title, s.getCategoryL1() + " " + s.getCategoryL2(), s.getId().toString());
-        }
+        publishLocation(s, loc);
 
         return entityToVo(s);
+    }
+
+    /**
+     * 发送到百度LBS
+     */
+    private void publishLocation(Seek s, Location loc) {
+        if (loc == null) {
+            return;
+        }
+
+        String title = s.getContent();
+        if (title.length() > 100) {
+            title = title.substring(0, 99);
+        }
+        BaiduApi baiduApi = BaiduApiFactory.getBaiduApi();
+        RetVO ret = baiduApi.lbsCreatePoi(BaiduApiFactory.ak, BaiduApiFactory.lbsTableId,
+            BaiduApiFactory.coordTypeValue, loc.getLatitude(), loc.getLongitude(),
+            title, s.getCategoryL1() + " " + s.getCategoryL2(), s.getId().toString());
+        locationService.setLbsId(loc.getId(), ret.getId());
+
     }
 
     /**
@@ -149,6 +159,7 @@ public class SeekController extends BaseController {
         }
         seekService.publish(s);
         s = seekService.getById(s.getId());
+        publishLocation(s, loc);
 
         return entityToVo(s);
     }
