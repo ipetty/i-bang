@@ -28,7 +28,7 @@ public class BaiduApiTest {
 
         //创建POI
         RetVO ret = baiduApi.lbsCreatePoi(BaiduApiFactory.ak, BaiduApiFactory.lbsTableId, BaiduApiFactory.coordTypeValue, 121.487899, 31.249162,
-            "测试Title", "测试 LBS", "测试Bid");
+            "测试Title", "测试 LBS", "测试Bid", 1);
         Assert.assertNotNull(ret.getId());
 
         //Get
@@ -37,12 +37,12 @@ public class BaiduApiTest {
 
         //Update
         ret = baiduApi.lbsUpdatePoi(ret.getId(), BaiduApiFactory.ak, BaiduApiFactory.lbsTableId, BaiduApiFactory.coordTypeValue, 121.487899, 31.249162,
-            "测试Title-Update", "测试 LBS", "测试Bid");
+            "测试Title-Update", "测试 LBS", "测试Bid", 2);
         Assert.assertNotNull(ret.getId());
 
         //附近
-        NearbyRetVO narbyRetVO = baiduApi.lbsGetNearby(BaiduApiFactory.ak, BaiduApiFactory.lbsTableId, " ", "121.487899,31.249162", BaiduApiFactory.coordTypeValue, 1000,
-            "测试", "distance:1", 0, 50);
+        NearbyRetVO narbyRetVO = baiduApi.lbsGetNearby(BaiduApiFactory.ak, BaiduApiFactory.lbsTableId, "", "121.487899,31.249162", BaiduApiFactory.coordTypeValue, 1000,
+            "测试", "distance:1", "btype:[2]", 0, 50);
         Assert.assertNotNull(narbyRetVO.getContents());
 
         //删除POI
@@ -56,7 +56,6 @@ public class BaiduApiTest {
         //获取详细地址
         GeoGetByXYRetVO geoGetByXYRetVO = baiduApi.geoGetByXY(BaiduApiFactory.ak, "31.249162,121.487899", "json");
         Assert.assertNotNull(geoGetByXYRetVO.getResult());
-
     }
 
 }

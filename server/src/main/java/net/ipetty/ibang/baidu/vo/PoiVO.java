@@ -21,6 +21,7 @@ public class PoiVO {
     private Double[] location;
     //自定义
     private String bid;
+    private String btype;
 
     /**
      * @return the id
@@ -146,6 +147,20 @@ public class PoiVO {
      */
     public void setBid(String bid) {
         this.bid = bid;
+    }
+
+    /**
+     * @return the btype
+     */
+    public String getBtype() {
+        return btype;
+    }
+
+    /**
+     * @param btype the btype to set
+     */
+    public void setBtype(String btype) {
+        this.btype = btype;
     }
 
 }

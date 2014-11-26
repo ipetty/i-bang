@@ -8,6 +8,8 @@ import java.util.List;
 import javax.annotation.Resource;
 import net.ipetty.ibang.baidu.BaiduApi;
 import net.ipetty.ibang.baidu.BaiduApiFactory;
+import net.ipetty.ibang.baidu.vo.NearbyRetVO;
+import net.ipetty.ibang.baidu.vo.PoiVO;
 import net.ipetty.ibang.baidu.vo.RetVO;
 
 import net.ipetty.ibang.context.UserContext;
@@ -121,10 +123,15 @@ public class SeekController extends BaseController {
         if (title.length() > 100) {
             title = title.substring(0, 99);
         }
+        Integer type = 1;
+        if (s.getType().equals("帮忙")) {
+            type = 2;
+        }
+
         BaiduApi baiduApi = BaiduApiFactory.getBaiduApi();
         RetVO ret = baiduApi.lbsCreatePoi(BaiduApiFactory.ak, BaiduApiFactory.lbsTableId,
             BaiduApiFactory.coordTypeValue, loc.getLatitude(), loc.getLongitude(),
-            title, s.getCategoryL1() + " " + s.getCategoryL2(), s.getId().toString());
+            title, s.getCategoryL1() + " " + s.getCategoryL2(), s.getId().toString(), type);
         locationService.setLbsId(loc.getId(), ret.getId());
 
     }
@@ -229,6 +236,45 @@ public class SeekController extends BaseController {
         Date date = StringUtils.isBlank(timeline) ? new Date() : DateUtils.fromDatetimeString(timeline);
         List<Seek> seeks = seekService.listLatestByCategory(Constants.SEEK_TYPE_SEEK, categoryL1, categoryL2, date,
             pageNumber, pageSize);
+        return listToVoList(seeks);
+    }
+
+    /**
+     * 获取附近指定分类中未关闭求助/帮忙，按距离排序
+     *
+     * @param pageNumber 分页页码，从0开始
+     * @param radius 搜索半径(米)
+     * @param type 类型，1:求助 | 2:帮忙
+     */
+    @RequestMapping(value = "/seeklist/nearlybycategory", method = RequestMethod.GET)
+    public List<SeekVO> listNearlyByCategory(String latitude, String longitude, String categoryL1, String categoryL2,
+        Integer type, int radius, int pageNumber, int pageSize) {
+        Assert.notNull(latitude, "精度值不能为空");
+        Assert.notNull(longitude, "纬度值不能为空");
+        Assert.notNull(type, "类型不能为空");
+        //参数处理
+        String location = latitude + "," + longitude;
+        String filter = "btype:[" + type + "]";
+        String keyword = "";
+        String tags = "";
+        if (StringUtils.isNotEmpty(categoryL1)) {
+            tags = tags + categoryL1 + " ";
+        }
+        if (StringUtils.isNotEmpty(categoryL2)) {
+            tags = tags + categoryL2;
+        }
+
+        BaiduApi baiduApi = BaiduApiFactory.getBaiduApi();
+
+        //附近
+        NearbyRetVO nearbyRetVO = baiduApi.lbsGetNearby(BaiduApiFactory.ak, BaiduApiFactory.lbsTableId, keyword, location, BaiduApiFactory.coordTypeValue, radius,
+            tags, "distance:1", filter, pageNumber, pageSize);
+        List<Long> seekIds = new ArrayList<Long>();
+
+        for (PoiVO poi : nearbyRetVO.getContents()) {
+            seekIds.add(Long.valueOf(poi.getBid()));
+        }
+        List<Seek> seeks = seekService.listByIds(seekIds);
         return listToVoList(seeks);
     }
 

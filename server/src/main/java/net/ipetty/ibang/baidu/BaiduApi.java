@@ -12,7 +12,8 @@ import retrofit.http.POST;
 import retrofit.http.Query;
 
 /**
- *
+ * btype 建表注意 POST:http://api.map.baidu.com/geodata/v3/column/create
+ * ak=xxx&geotable_id=yyy&name=类型&key=btype&type=1&is_sortfilter_field=1&is_search_field=0&is_index_field=1
  *
  * @author yenos
  */
@@ -25,7 +26,7 @@ public interface BaiduApi {
     @POST("/geodata/v3/poi/create")
     public RetVO lbsCreatePoi(@Field("ak") String ak, @Field("geotable_id") String geotable_id, @Field("coord_type") Integer coord_type,
         @Field("latitude") Double latitude, @Field("longitude") Double longitude, @Field("title") String title, @Field("tags") String tags,
-        @Field("bid") String bid);
+        @Field("bid") String bid, @Field("btype") Integer btype);
 
     /**
      * 删除
@@ -41,7 +42,7 @@ public interface BaiduApi {
     @POST("/geodata/v3/poi/update")
     public RetVO lbsUpdatePoi(@Field("id") String id, @Field("ak") String ak, @Field("geotable_id") String geotable_id, @Field("coord_type") Integer coord_type,
         @Field("longitude") Double longitude, @Field("latitude") Double latitude, @Field("title") String title, @Field("tags") String tags,
-        @Field("bid") String bid);
+        @Field("bid") String bid, @Field("btype") Integer btype);
 
     /**
      * 查
@@ -67,7 +68,7 @@ public interface BaiduApi {
     @GET("/geosearch/v3/nearby")
     public NearbyRetVO lbsGetNearby(@Query("ak") String ak, @Query("geotable_id") String geotable_id, @Query("q") String q,
         @Query("location") String location, @Query("coord_type") Integer coordType, @Query("radius") Integer radius,
-        @Query("tags") String tags, @Query("sortby") String sortby,
+        @Query("tags") String tags, @Query("sortby") String sortby, @Query("filter") String filter,
         @Query("page_index") Integer pageIndex, @Query("page_size") Integer pageSize);
 
     /**
