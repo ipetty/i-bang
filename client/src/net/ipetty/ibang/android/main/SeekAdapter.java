@@ -69,6 +69,7 @@ public class SeekAdapter extends BaseAdapter implements OnScrollListener {
 		public ImageView image;
 		public TextView category;
 		public TextView time;
+		public TextView local;
 	}
 
 	public ViewHolder holder;
@@ -85,7 +86,12 @@ public class SeekAdapter extends BaseAdapter implements OnScrollListener {
 			holder.image = (ImageView) view.findViewById(R.id.imageView);
 			holder.content = (TextView) view.findViewById(R.id.content);
 			holder.category = (TextView) view.findViewById(R.id.category);
-			holder.time = (TextView) view.findViewById(R.id.time);
+
+			if (resId == R.layout.list_seek_item) {
+				holder.time = (TextView) view.findViewById(R.id.time);
+			} else {
+				holder.local = (TextView) view.findViewById(R.id.local);
+			}
 
 			convertView = view;
 			convertView.setTag(holder);
@@ -108,7 +114,13 @@ public class SeekAdapter extends BaseAdapter implements OnScrollListener {
 		holder.content.setText(seek.getContent());
 
 		String creatAt = new PrettyDateFormat("@", "yyyy-MM-dd").format(seek.getCreatedOn());
-		holder.time.setText(creatAt);
+
+		if (resId == R.layout.list_seek_item) {
+			holder.time.setText(creatAt);
+		} else {
+			// TODO:距离远近
+			holder.local.setText("3公里");
+		}
 
 		return view;
 	}
