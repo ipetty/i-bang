@@ -19,6 +19,8 @@ public class PoiVO {
     private String title;
     private String tags;
     private Double[] location;
+    //距离
+    private Integer distance;
     //自定义
     private String bid;
     private String btype;
@@ -132,7 +134,7 @@ public class PoiVO {
      * @param location the location to set
      */
     public void setLocation(Double[] location) {
-        this.location = location;
+        this.setLocation(location);
     }
 
     /**
@@ -161,6 +163,20 @@ public class PoiVO {
      */
     public void setBtype(String btype) {
         this.btype = btype;
+    }
+
+    /**
+     * @return the distance
+     */
+    public Integer getDistance() {
+        return distance;
+    }
+
+    /**
+     * @param distance the distance to set
+     */
+    public void setDistance(Integer distance) {
+        this.distance = distance;
     }
 
 }
