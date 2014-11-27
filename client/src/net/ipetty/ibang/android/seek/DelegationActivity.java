@@ -69,6 +69,8 @@ public class DelegationActivity extends Activity {
 	private View seek_additionalReward_layout;
 	private ImageView seek_approve;
 	private ImageView seek_more;
+	private TextView seek_address;
+
 	private ImageView delegation_avatar;
 	private TextView delegation_nickname;
 	private TextView delegation_created_on;
@@ -138,6 +140,7 @@ public class DelegationActivity extends Activity {
 		seek_wait_finish_layout = this.findViewById(R.id.seek_wait_finish_layout);
 		seek_approve = (ImageView) this.findViewById(R.id.seek_approve);
 		seek_more = (ImageView) this.findViewById(R.id.seek_more);
+		seek_address = (TextView) this.findViewById(R.id.address);
 
 		delegation_avatar = (ImageView) this.findViewById(R.id.delegation_avatar);
 		delegation_nickname = (TextView) this.findViewById(R.id.delegation_nickname);
@@ -240,6 +243,9 @@ public class DelegationActivity extends Activity {
 		seek_seekerTitle.setText("等级:" + seeker.getSeekerTitle());
 		String str = seekVO.getAdditionalReward();
 		seek_additionalReward.setText("附加说明:" + str);
+		if (StringUtils.isNotEmpty(seekVO.getAddress())) {
+			seek_address.setText(seekVO.getAddress());
+		}
 
 		seek_more.setOnClickListener(new OnClickListener() {
 			@Override

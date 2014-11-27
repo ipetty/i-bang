@@ -182,7 +182,46 @@
  	 	                     android:textSize="16sp"
  	 	                     android:windowSoftInputMode="stateHidden" />
  	 	             </LinearLayout>
+ 	 	             <include layout="@layout/line_horizontal_divider" />
+  <LinearLayout
+ 	 	                 android:layout_width="fill_parent"
+ 	 	                 android:layout_height="wrap_content"
+        android:minHeight="46dp"
+         android:paddingRight="16dp"
+ 	 	                 android:background="@drawable/list_color_item_bg_white"
+ 	 	                 android:gravity="center_vertical" >
 
+ 	 	                 <TextView
+ 	 	                     android:layout_width="wrap_content"
+ 	 	                     android:layout_height="wrap_content"
+ 	 	                     android:layout_marginLeft="8dp"
+ 	 	                     android:text="地址"
+ 	 	                     android:textColor="@color/black_color"
+ 	 	                     android:textSize="16sp" />
+			<LinearLayout
+			            android:layout_width="0dp"
+			            android:layout_height="wrap_content"
+			            android:layout_marginLeft="16dp"
+			            android:layout_weight="1"
+			            android:gravity="center"
+			            android:orientation="vertical" >
+			
+			            <TextView
+			                android:id="@+id/address"
+			                android:layout_width="wrap_content"
+			                android:layout_height="wrap_content"
+			                android:layout_gravity="right"
+			                android:background="@null"
+			                android:gravity="left"
+			                android:paddingBottom="5dp"
+			                android:paddingTop="5dp"
+			                android:textColor="@color/gray_color"
+			                  android:text="无"
+			                android:textSize="16sp" />
+
+        </LinearLayout>
+ 	 	              
+ 	 	             </LinearLayout>
  	 	      
  	 	         </LinearLayout>
  	 	          <include layout="@layout/line_horizontal_divider" />

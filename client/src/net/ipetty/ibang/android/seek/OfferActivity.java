@@ -65,6 +65,7 @@ public class OfferActivity extends Activity {
 	private View seek_additionalReward_layout;
 	private View offer_wait_delegated_layout;
 	private View offer_self_closed_layout;
+	private TextView seek_address;
 
 	private SeekVO seekVO;
 	private OfferVO offerVO;
@@ -99,6 +100,7 @@ public class OfferActivity extends Activity {
 		seek_additionalReward_layout = this.findViewById(R.id.additionalReward_layout);
 		seek_approve = (ImageView) this.findViewById(R.id.seek_approve);
 		seek_more = (ImageView) this.findViewById(R.id.seek_more);
+		seek_address = (TextView) this.findViewById(R.id.address);
 
 		offer_avatar = (ImageView) this.findViewById(R.id.offer_avatar);
 		offer_content = (TextView) this.findViewById(R.id.offer_content);
@@ -172,6 +174,9 @@ public class OfferActivity extends Activity {
 		seek_content.setText(seekVO.getContent());
 		seek_phone.setText(seeker.getPhone());
 		seek_seekerTitle.setText("等级:" + seeker.getSeekerTitle());
+		if (StringUtils.isNotEmpty(seekVO.getAddress())) {
+			seek_address.setText(seekVO.getAddress());
+		}
 
 		String str = seekVO.getAdditionalReward();
 		seek_additionalReward.setText("附加说明:" + str);
