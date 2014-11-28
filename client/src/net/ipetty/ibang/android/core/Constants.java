@@ -48,6 +48,8 @@ public class Constants {
 	public static final String INTENT_LOCATION_DISTRICT = "INTENT_LOCATION_DISTRICT";
 	public static final String INTENT_LOCATION_TYPE = "INTENT_LOCATION_TYPE";
 
+	public static final String INTENT_LETTER_USER_ID = "INTENT_LETTER_USER_ID";
+
 	public final static float COMPRESS_IMAGE_MAX_WIDTH = 960f;
 	public final static float COMPRESS_IMAGE_MAX_HEIGHT = 1280f;
 	public final static float COMPRESS_IMAGE_MIN_WIDTH = 64f;

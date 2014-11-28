@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/yellow_bg_color">
+<RelativeLayout  
+   android:id="@+id/other_send_layout"
+  android:layout_width="fill_parent"  
+  android:layout_height="wrap_content"  
+  android:orientation="horizontal"  
+  android:layout_marginTop="8dp"
+  android:layout_marginBottom="8dp"
+  android:paddingLeft="8dp" 
+  android:paddingRight="60dp">
+  
+  <ImageView
+        android:id="@+id/avatar"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/default_avatar" />
+
+  <LinearLayout
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_alignParentTop="true"
+      android:layout_toRightOf="@+id/avatar"
+      android:background="@drawable/ppl_popo_white_bg"
+      android:orientation="vertical"
+      android:layout_marginLeft="4dp"
+      android:paddingBottom="4dp"
+      android:paddingLeft="16dp"
+      android:paddingRight="6dp"
+      android:paddingTop="8dp" >
+
+      <TextView
+          android:id="@+id/content"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="测试我们的系统可以测试我们的系统可以测试我们的系统可以测试我们的系统可以测试我们的系统可以测试我们的系统可以"
+          android:textSize="14dp" />
+  </LinearLayout>
+
+</RelativeLayout>
+
+<RelativeLayout  
+  android:id="@+id/my_send_layout"
+  android:layout_width="fill_parent"  
+  android:layout_height="wrap_content"  
+  android:orientation="horizontal"  
+  android:layout_marginTop="8dp"
+  android:layout_marginBottom="8dp"
+  android:paddingLeft="60dp" 
+  android:paddingRight="8dp">
+  
+ 
+
+  <LinearLayout
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_alignParentTop="true"
+      android:layout_toLeftOf="@+id/avatar"
+      android:background="@drawable/ppl_popo_green_bg"
+      android:orientation="vertical"
+      android:layout_marginRight="4dp"
+      android:paddingBottom="8dp"
+      android:paddingLeft="6dp"
+      android:paddingRight="16dp"
+      android:paddingTop="8dp" >
+
+      <TextView
+          android:id="@+id/content"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="测试我们的"
+          android:textSize="14dp" />
+  </LinearLayout>
+
+   <ImageView
+       android:id="@+id/avatar"
+       android:layout_width="36dp"
+       android:layout_height="36dp"
+       android:layout_alignParentRight="true"
+       android:layout_alignParentTop="true"
+       android:scaleType="fitXY"
+       android:src="@drawable/default_avatar" />
+
+</RelativeLayout>
+
+</LinearLayout>

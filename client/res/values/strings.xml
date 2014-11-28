@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">帮帮忙</string>
+    <string name="app_name">51帮帮忙</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_splash">SplashActivity</string>
-    <string name="app_copyright">CopyRight 2014 帮帮忙</string>
+    <string name="app_copyright">CopyRight 2014 51帮帮忙</string>
     <string name="app_version">v%1s</string>
 
     <!-- update -->
@@ -94,5 +94,6 @@
     <string name="title_activity_report">举报</string>
     <string name="un_login_report">登录后，您可以进行举报操作</string>
     <string name="title_activity_nearly">附近</string>
+    <string name="title_activity_letter">LetterActivity</string>
 
 </resources>

@@ -234,6 +234,10 @@
             android:name="net.ipetty.ibang.android.local.NearlyActivity"
             android:label="@string/title_activity_nearly" >
         </activity>
+        <activity
+            android:name="net.ipetty.ibang.android.letter.LetterActivity"
+            android:label="@string/title_activity_letter" >
+        </activity>
     </application>
 
 </manifest>

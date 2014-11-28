@@ -14,10 +14,12 @@ import net.ipetty.ibang.android.core.ui.UnLoginView;
 import net.ipetty.ibang.android.core.util.AppUtils;
 import net.ipetty.ibang.android.core.util.NetWorkUtils;
 import net.ipetty.ibang.android.core.util.PrettyDateFormat;
+import net.ipetty.ibang.android.letter.LetterActivity;
 import net.ipetty.ibang.android.sdk.context.ApiContext;
 import net.ipetty.ibang.android.seek.DelegationActivity;
 import net.ipetty.ibang.android.seek.OfferActivity;
 import net.ipetty.ibang.android.seek.SeekActivity;
+import net.ipetty.ibang.vo.LetterContacts;
 import net.ipetty.ibang.vo.SystemMessageVO;
 
 import org.apache.commons.lang3.StringUtils;
@@ -31,6 +33,7 @@ import android.os.Bundle;
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
@@ -40,6 +43,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.ViewFlipper;
 
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshBase.OnLastItemVisibleListener;
@@ -52,6 +56,7 @@ public class MessageActivity extends Activity {
 	private boolean isLogin = false;
 	public UnLoginView unLoginView;
 	public MyPullToRefreshListView listView;
+
 	public MessageAdapter adapter;
 	public List<SystemMessageVO> list = new ArrayList<SystemMessageVO>();
 	private DisplayImageOptions options = AppUtils.getNormalImageOptions();
@@ -68,6 +73,14 @@ public class MessageActivity extends Activity {
 	public String SYS_MSG_TYPE_NEW_EVALUATION = "评价了您"; // 您收到了新的评价
 	public String SYS_MSG_TYPE_SEEK_FINISHED = "您的求助已完成"; // 您（求助者）的一个求助单已完成
 	public String SYS_MSG_TYPE_SEEK_CLOSED = "帮助已关闭"; // 您（帮助者）帮助的一个求助单已被求助者关闭
+
+	private ViewFlipper viewFlipper;
+	// 站内信
+	public MyPullToRefreshListView listView_letter;
+	private LetterContactsAdapter adapter_letter;
+	private View message_layout;
+	private View letter_layout;
+	public List<LetterContacts> list_letter = new ArrayList<LetterContacts>();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -88,6 +101,28 @@ public class MessageActivity extends Activity {
 		isLogin = ApiContext.getInstance(MessageActivity.this).isAuthorized();
 
 		unLoginView = new UnLoginView(this, null, R.string.un_login_message);
+
+		viewFlipper = (ViewFlipper) this.findViewById(R.id.viewFlipper);
+		viewFlipper.setDisplayedChild(0);
+
+		message_layout = this.findViewById(R.id.message_layout);
+		letter_layout = this.findViewById(R.id.letter_layout);
+		message_layout.setOnClickListener(new TabClickListener(0));
+		letter_layout.setOnClickListener(new TabClickListener(1));
+
+		listView_letter = (MyPullToRefreshListView) this.findViewById(R.id.listView_letter);
+		adapter_letter = new LetterContactsAdapter();
+		listView_letter.setAdapter(adapter_letter);
+		listView_letter.setOnItemClickListener(new OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+				// TODO Auto-generated method stub
+				Intent intent = new Intent(MessageActivity.this, LetterActivity.class);
+				intent.putExtra(Constants.INTENT_LETTER_USER_ID, id);
+				startActivity(intent);
+			}
+
+		});
 
 		listView = (MyPullToRefreshListView) this.findViewById(R.id.listView);
 		adapter = new MessageAdapter();
@@ -317,6 +352,124 @@ public class MessageActivity extends Activity {
 	public void onDestroy() {
 		super.onDestroy();
 		this.unregisterReceiver(broadcastreciver);
+	}
+
+	public class TabClickListener implements OnClickListener {
+		private int index = 0;
+
+		public TabClickListener(int i) {
+			index = i;
+		}
+
+		@Override
+		public void onClick(View v) {
+			viewFlipper.setDisplayedChild(index);
+			if (index == 0) {
+				message_layout.setBackgroundResource(R.drawable.news_tab_selected);
+				letter_layout.setBackgroundResource(R.drawable.trans);
+
+			} else {
+				message_layout.setBackgroundResource(R.drawable.trans);
+				letter_layout.setBackgroundResource(R.drawable.news_tab_selected);
+			}
+		}
+	}
+
+	public void loadLetter(boolean isRefresh) {
+		if (isRefresh) {
+			pageNumber = 0;
+		}
+		// TODO: 联系人建议不用加载更多的方式，如果用也可以 这里进一步进行完善
+	}
+
+	public class LetterContactsAdapter extends BaseAdapter implements OnScrollListener {
+
+		public void loadData(List<LetterContacts> data) {
+			list_letter.clear();
+			this.addData(data);
+		}
+
+		public void addData(List<LetterContacts> data) {
+			list_letter.addAll(data);
+			this.notifyDataSetChanged();
+		}
+
+		@Override
+		public int getCount() {
+			return list_letter.size();
+		}
+
+		@Override
+		public Object getItem(int position) {
+			return list_letter.get(position);
+		}
+
+		@Override
+		public long getItemId(int position) {
+			return ((LetterContacts) getItem(position)).getUserId();
+		}
+
+		private class ViewHolder {
+
+			public View item;
+			public TextView nickname;
+			public ImageView avatar;
+			public TextView message;
+			public TextView timestamp;
+		}
+
+		public ViewHolder holder;
+
+		@Override
+		public View getView(int position, View convertView, ViewGroup parent) {
+			View view;
+			if (convertView == null) {
+				LayoutInflater inflater = LayoutInflater.from(MessageActivity.this);
+				view = inflater.inflate(R.layout.list_message_item, null);
+				holder = new ViewHolder();
+				holder.item = view.findViewById(R.id.item);
+				holder.nickname = (TextView) view.findViewById(R.id.nickname);
+				holder.avatar = (ImageView) view.findViewById(R.id.avatar);
+				holder.message = (TextView) view.findViewById(R.id.message);
+				holder.timestamp = (TextView) view.findViewById(R.id.timestamp);
+
+				convertView = view;
+				convertView.setTag(holder);
+			} else {
+				view = convertView;
+				holder = (ViewHolder) view.getTag();
+			}
+			LetterContacts letterContacts = (LetterContacts) this.getItem(position);
+			holder.message.setText(letterContacts.getLatestContent());
+			holder.timestamp.setVisibility(View.VISIBLE);
+
+			if (letterContacts.isRead()) {
+				holder.item.setBackgroundResource(R.drawable.list_color_item_bg_white);
+			} else {
+				holder.item.setBackgroundResource(R.color.news_item_bg_news);
+			}
+
+			// 异步加载联系人
+			Integer fromUserId = letterContacts.getUserId();
+			if (fromUserId != null) {
+				holder.nickname.setText(letterContacts.getUserNickname());
+				if (StringUtils.isNotEmpty(letterContacts.getUserAvatar())) {
+					ImageLoader.getInstance().displayImage(Constants.FILE_SERVER_BASE + letterContacts.getUserAvatar(),
+							holder.avatar, options);
+				} else {
+					holder.avatar.setImageResource(R.drawable.default_avatar);
+				}
+			}
+			return view;
+		}
+
+		@Override
+		public void onScrollStateChanged(AbsListView view, int scrollState) {
+		}
+
+		@Override
+		public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+		}
 	}
 
 }
