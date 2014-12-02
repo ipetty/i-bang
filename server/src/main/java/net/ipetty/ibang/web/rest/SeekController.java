@@ -18,15 +18,18 @@ import net.ipetty.ibang.context.UserContext;
 import net.ipetty.ibang.context.UserPrincipal;
 import net.ipetty.ibang.model.Location;
 import net.ipetty.ibang.model.Seek;
+import net.ipetty.ibang.model.User;
 import net.ipetty.ibang.service.LocationService;
 import net.ipetty.ibang.service.SeekService;
 import net.ipetty.ibang.service.UserService;
 import net.ipetty.ibang.util.DateUtils;
 import net.ipetty.ibang.vo.Constants;
 import net.ipetty.ibang.vo.LocationVO;
+import net.ipetty.ibang.vo.SeekCategory;
 import net.ipetty.ibang.vo.SeekVO;
 import net.ipetty.ibang.vo.SeekWithLocationVO;
 import net.ipetty.ibang.web.rest.exception.RestException;
+import org.apache.commons.collections.CollectionUtils;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
@@ -52,6 +55,8 @@ public class SeekController extends BaseController {
 
     @Resource
     private UserService userService;
+
+    private String CATEGORY_MY_STRING = "我的特长";
 
     /**
      * 发布求助
@@ -263,7 +268,16 @@ public class SeekController extends BaseController {
             tags = tags + categoryL1 + " ";
         }
         if (StringUtils.isNotEmpty(categoryL2)) {
-            tags = tags + categoryL2;
+            if (CATEGORY_MY_STRING.equals(categoryL2)) {
+                UserPrincipal currentUser = UserContext.getContext();
+                if (currentUser == null || currentUser.getId() == null) {
+                    throw new RestException("用户登录后才能获取特长范围");
+                }
+                tags = getMyOfferRangeStr(currentUser.getId());
+
+            } else {
+                tags = tags + categoryL2;
+            }
         }
 
         BaiduApi baiduApi = BaiduApiFactory.getBaiduApi();
@@ -292,6 +306,19 @@ public class SeekController extends BaseController {
             }
         }
         return seekVOList;
+    }
+
+    //获取我的特长字符串，以空格分割
+    private String getMyOfferRangeStr(Integer userId) {
+        String tags = "";
+        User user = userService.getById(userId);
+        List<SeekCategory> offerRange = user.getOffererInfo().getOfferRange();
+        if (CollectionUtils.isNotEmpty(offerRange)) {
+            for (SeekCategory c : offerRange) {
+                tags += c.getCategoryL1() + " " + c.getCategoryL2() + " ";
+            }
+        }
+        return tags;
     }
 
     /**
