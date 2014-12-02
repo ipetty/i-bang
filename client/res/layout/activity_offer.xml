@@ -170,7 +170,7 @@
  	 	                     android:layout_width="0.0dip"
  	 	                     android:layout_height="wrap_content"
  	 	                     android:layout_marginLeft="16dp"
- 	 	                     android:layout_marginRight="16dp"
+ 	 	                     android:layout_marginRight="0dp"
  	 	                     android:layout_weight="1.0"
  	 	                     android:background="@null"
  	 	                     android:focusable="false"
@@ -181,6 +181,13 @@
  	 	                     android:textColorHint="@color/gray_color"
  	 	                     android:textSize="16sp"
  	 	                     android:windowSoftInputMode="stateHidden" />
+ 	 	                 
+ 	 	                     <ImageView
+                        android:id="@+id/msg"
+                        android:layout_marginLeft="0dp"
+                        android:layout_width="48dp"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/action_bar_msg" />
  	 	             </LinearLayout>
  	 	             <include layout="@layout/line_horizontal_divider" />
   <LinearLayout
@@ -295,85 +302,6 @@
  	 	        
  	 	        <include layout="@layout/line_horizontal_divider" />
  	 	         <include layout="@layout/line_space" />
-
- 	 	         <LinearLayout
- 	 	             android:layout_width="match_parent"
- 	 	             android:layout_height="wrap_content"
- 	 	             android:orientation="vertical"
- 	 	             android:id="@+id/contact"
- 	 	             android:visibility="gone" >
-
- 	 	             <include layout="@layout/line_horizontal_divider" />
-
- 	 	             <LinearLayout
- 	 	                 android:layout_width="fill_parent"
- 	 	                 android:layout_height="46dp"
- 	 	                 android:background="@drawable/list_color_item_bg_white"
- 	 	                 android:gravity="center_vertical" >
-
- 	 	                 <TextView
- 	 	                     android:layout_width="wrap_content"
- 	 	                     android:layout_height="wrap_content"
- 	 	                     android:layout_marginLeft="16dp"
- 	 	                     android:text="姓名"
- 	 	                     android:textColor="@color/black_color"
- 	 	                     android:textSize="16sp" />
-
- 	 	                 <TextView
- 	 	                     android:id="@+id/nickname"
- 	 	                     android:layout_width="0.0dip"
- 	 	                     android:layout_height="wrap_content"
- 	 	                     android:layout_marginLeft="16dp"
- 	 	                     android:layout_marginRight="16dp"
- 	 	                     android:layout_weight="1.0"
- 	 	                     android:background="@null"
- 	 	                     android:focusable="false"
- 	 	                     android:gravity="right|center_vertical"
- 	 	                     android:hint="请输入姓名"
- 	 	                     android:singleLine="true"
- 	 	                     android:textColor="@color/gray_color"
- 	 	                     android:textColorHint="@color/gray_color"
- 	 	                     android:textSize="16sp"
- 	 	                     android:windowSoftInputMode="stateHidden" />
- 	 	             </LinearLayout>
-
- 	 	             <include layout="@layout/line_horizontal_divider" />
-
- 	 	             <LinearLayout
- 	 	                 android:layout_width="fill_parent"
- 	 	                 android:layout_height="46dp"
- 	 	                 android:background="@drawable/list_color_item_bg_white"
- 	 	                 android:gravity="center_vertical" >
-
- 	 	                 <TextView
- 	 	                     android:layout_width="wrap_content"
- 	 	                     android:layout_height="wrap_content"
- 	 	                     android:layout_marginLeft="16dp"
- 	 	                     android:text="手机"
- 	 	                     android:textColor="@color/black_color"
- 	 	                     android:textSize="16sp" />
-
- 	 	                 <TextView
- 	 	                     android:id="@+id/phone"
- 	 	                     android:layout_width="0.0dip"
- 	 	                     android:layout_height="wrap_content"
- 	 	                     android:layout_marginLeft="16dp"
- 	 	                     android:layout_marginRight="16dp"
- 	 	                     android:layout_weight="1.0"
- 	 	                     android:background="@null"
- 	 	                     android:focusable="false"
- 	 	                     android:gravity="right|center_vertical"
- 	 	                     android:hint="请输入手机"
- 	 	                     android:singleLine="true"
- 	 	                     android:textColor="@color/gray_color"
- 	 	                     android:textColorHint="@color/gray_color"
- 	 	                     android:textSize="16sp"
- 	 	                     android:windowSoftInputMode="stateHidden" />
- 	 	             </LinearLayout>
-
- 	 	             <include layout="@layout/line_horizontal_divider" />
-					<include layout="@layout/line_space" />
- 	 	         </LinearLayout>
 
  	 	         
  	 	         
@@ -521,12 +449,19 @@
  	 	                     android:background="@null"
  	 	                     android:focusable="false"
  	 	                     android:gravity="right|center_vertical"
- 	 	                     android:text="13913440000"
+ 	 	                     android:text=""
  	 	    	              android:singleLine="true"
  	 	                     android:textColor="@color/gray_color"
  	 	                     android:textColorHint="@color/gray_color"
  	 	                     android:textSize="16sp"
  	 	                     android:windowSoftInputMode="stateHidden" />
+ 	 	                 
+ 	 	                  <ImageView
+                        android:id="@+id/offer_msg"
+                        android:layout_marginLeft="0dp"
+                        android:layout_width="48dp"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/action_bar_msg" />
  	 	             </LinearLayout>
 
  	 	      

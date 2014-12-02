@@ -50,6 +50,8 @@ public class LetterActivity extends Activity {
 		user = ApiContext.getInstance(this).getCurrentUser();
 		cooperatorId = this.getIntent().getExtras().getInt(Constants.INTENT_LETTER_USER_ID);
 
+		cooperator = new UserVO();
+
 		/* action bar */
 		ImageView btnBack = (ImageView) this.findViewById(R.id.action_bar_left_image);
 		TextView text = (TextView) this.findViewById(R.id.action_bar_title);

@@ -165,20 +165,28 @@
 
                     <TextView
                         android:id="@+id/phone"
-                        android:layout_width="0.0dip"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="16dp"
-                        android:layout_marginRight="16dp"
+                        android:layout_marginRight="0dp"
                         android:layout_weight="1.0"
                         android:background="@null"
                         android:focusable="false"
                         android:gravity="right|center_vertical"
                         android:singleLine="true"
-                        android:text=""
+                        android:text="13913554444"
                         android:textColor="@color/gray_color"
                         android:textColorHint="@color/gray_color"
                         android:textSize="16sp"
                         android:windowSoftInputMode="stateHidden" />
+
+                    <ImageView
+                        android:id="@+id/msg"
+                        android:layout_marginLeft="0dp"
+                        android:layout_width="48dp"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/action_bar_msg" />
+
                 </LinearLayout>
                    <include layout="@layout/line_horizontal_divider" />
                 <LinearLayout
@@ -514,7 +522,7 @@
                             android:layout_width="0.0dip"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="16dp"
-                            android:layout_marginRight="16dp"
+                            android:layout_marginRight="0dp"
                             android:layout_weight="1.0"
                             android:background="@null"
                             android:focusable="false"
@@ -524,6 +532,13 @@
                             android:textColorHint="@color/gray_color"
                             android:textSize="16sp"
                             android:windowSoftInputMode="stateHidden" />
+                            <ImageView
+                        android:id="@+id/delegation_msg"
+                        android:layout_marginLeft="0dp"
+                        android:layout_width="48dp"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/action_bar_msg" />
+                        
                     </LinearLayout>
                 </LinearLayout>
 

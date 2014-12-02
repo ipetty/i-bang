@@ -11,6 +11,7 @@ import net.ipetty.ibang.android.core.DefaultTaskListener;
 import net.ipetty.ibang.android.core.ui.BackClickListener;
 import net.ipetty.ibang.android.core.ui.ModDialogItem;
 import net.ipetty.ibang.android.core.ui.ReportClickListener;
+import net.ipetty.ibang.android.core.ui.SendMsgClickListener;
 import net.ipetty.ibang.android.core.util.DateUtils;
 import net.ipetty.ibang.android.core.util.DialogUtils;
 import net.ipetty.ibang.android.core.util.JSONUtils;
@@ -57,6 +58,7 @@ public class OfferActivity extends Activity {
 	private ImageView offer_more;
 	// private TextView offer_status;
 	private TextView seek_seekerTitle;
+	private ImageView seek_msg;
 
 	private View delegation_layout;
 	private TextView delegation;
@@ -66,6 +68,7 @@ public class OfferActivity extends Activity {
 	private View offer_wait_delegated_layout;
 	private View offer_self_closed_layout;
 	private TextView seek_address;
+	private ImageView offer_msg;
 
 	private SeekVO seekVO;
 	private OfferVO offerVO;
@@ -101,6 +104,7 @@ public class OfferActivity extends Activity {
 		seek_approve = (ImageView) this.findViewById(R.id.seek_approve);
 		seek_more = (ImageView) this.findViewById(R.id.seek_more);
 		seek_address = (TextView) this.findViewById(R.id.address);
+		seek_msg = (ImageView) this.findViewById(R.id.msg);
 
 		offer_avatar = (ImageView) this.findViewById(R.id.offer_avatar);
 		offer_content = (TextView) this.findViewById(R.id.offer_content);
@@ -114,6 +118,7 @@ public class OfferActivity extends Activity {
 		offer_approve = (ImageView) this.findViewById(R.id.offer_approve);
 		offer_more = (ImageView) this.findViewById(R.id.offer_more);
 		// offer_status = (TextView) this.findViewById(R.id.offer_status);
+		offer_msg = (ImageView) this.findViewById(R.id.offer_msg);
 
 		offer_close = (TextView) this.findViewById(R.id.offer_close);
 		offer_close_layout = this.findViewById(R.id.offer_close_layout);
@@ -201,6 +206,9 @@ public class OfferActivity extends Activity {
 			seek_contact_layout.setVisibility(View.VISIBLE);
 			offer_contact_layout.setVisibility(View.VISIBLE);
 		}
+
+		seek_msg.setOnClickListener(new SendMsgClickListener(this, seekVO.getSeekerId()));
+
 		seek_more.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -254,6 +262,8 @@ public class OfferActivity extends Activity {
 		} else {
 			offer_self_closed_layout.setVisibility(View.GONE);
 		}
+
+		offer_msg.setOnClickListener(new SendMsgClickListener(this, offerVO.getOffererId()));
 	}
 
 	/**

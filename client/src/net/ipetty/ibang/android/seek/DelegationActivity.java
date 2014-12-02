@@ -12,6 +12,7 @@ import net.ipetty.ibang.android.core.DefaultTaskListener;
 import net.ipetty.ibang.android.core.ui.BackClickListener;
 import net.ipetty.ibang.android.core.ui.ModDialogItem;
 import net.ipetty.ibang.android.core.ui.ReportClickListener;
+import net.ipetty.ibang.android.core.ui.SendMsgClickListener;
 import net.ipetty.ibang.android.core.util.AnimUtils;
 import net.ipetty.ibang.android.core.util.AppUtils;
 import net.ipetty.ibang.android.core.util.DateUtils;
@@ -70,6 +71,7 @@ public class DelegationActivity extends Activity {
 	private ImageView seek_approve;
 	private ImageView seek_more;
 	private TextView seek_address;
+	private ImageView seek_msg;
 
 	private ImageView delegation_avatar;
 	private TextView delegation_nickname;
@@ -88,6 +90,7 @@ public class DelegationActivity extends Activity {
 	private TextView delegation_totalPoint;
 	private ImageView delegation_approve;
 	private ImageView delegation_more;
+	private ImageView delegation_msg;
 
 	private View seek_wait_finish_layout;
 	private View evaluation_layout;
@@ -141,6 +144,7 @@ public class DelegationActivity extends Activity {
 		seek_approve = (ImageView) this.findViewById(R.id.seek_approve);
 		seek_more = (ImageView) this.findViewById(R.id.seek_more);
 		seek_address = (TextView) this.findViewById(R.id.address);
+		seek_msg = (ImageView) this.findViewById(R.id.msg);
 
 		delegation_avatar = (ImageView) this.findViewById(R.id.delegation_avatar);
 		delegation_nickname = (TextView) this.findViewById(R.id.delegation_nickname);
@@ -161,6 +165,7 @@ public class DelegationActivity extends Activity {
 		delegation_totalPoint = (TextView) this.findViewById(R.id.delegation_totalPoint);
 		delegation_approve = (ImageView) this.findViewById(R.id.delegation_approve);
 		delegation_more = (ImageView) this.findViewById(R.id.delegation_more);
+		delegation_msg = (ImageView) this.findViewById(R.id.delegation_msg);
 
 		evaluation_layout = this.findViewById(R.id.evaluation_layout); // 评价按钮根据权限显示不同的评价
 		evaluation = (TextView) this.findViewById(R.id.evaluation);
@@ -246,6 +251,7 @@ public class DelegationActivity extends Activity {
 		if (StringUtils.isNotEmpty(seekVO.getAddress())) {
 			seek_address.setText(seekVO.getAddress());
 		}
+		seek_msg.setOnClickListener(new SendMsgClickListener(this, seekVO.getSeekerId()));
 
 		seek_more.setOnClickListener(new OnClickListener() {
 			@Override
@@ -305,7 +311,7 @@ public class DelegationActivity extends Activity {
 		delegation_content.setText(offerVO.getContent());
 		delegation_phone.setText(offerer.getPhone());
 		delegation_totalPoint.setText("等级:" + offerer.getSeekerTitle());
-
+		delegation_msg.setOnClickListener(new SendMsgClickListener(this, delegationVO.getOffererId()));
 		delegation_more.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
