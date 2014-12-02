@@ -3,7 +3,9 @@ package net.ipetty.ibang.web.rest;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 import net.ipetty.ibang.baidu.BaiduApi;
@@ -249,7 +251,7 @@ public class SeekController extends BaseController {
     @RequestMapping(value = "/seeklist/nearlybycategory", method = RequestMethod.GET)
     public List<SeekVO> listNearlyByCategory(String latitude, String longitude, String categoryL1, String categoryL2,
         Integer type, int radius, int pageNumber, int pageSize) {
-        Assert.notNull(latitude, "精度值不能为空");
+        Assert.notNull(latitude, "经度值不能为空");
         Assert.notNull(longitude, "纬度值不能为空");
         Assert.notNull(type, "类型不能为空");
         //参数处理
@@ -274,14 +276,20 @@ public class SeekController extends BaseController {
         }
 
         List<Long> seekIds = new ArrayList<Long>();
-
+        Map<String, PoiVO> poiMap = new HashMap<String, PoiVO>();
         for (PoiVO poi : nearbyRetVO.getContents()) {
             if (poi != null && StringUtils.isNotEmpty(poi.getBid())) {
                 seekIds.add(Long.valueOf(poi.getBid()));
+                poiMap.put(poi.getBid(), poi);
             }
         }
         List<Seek> seeks = seekService.listByIds(seekIds);
-        return listToVoList(seeks);
+        List<SeekVO> seekVOList = listToVoList(seeks);
+        //填写距离字段
+        for (SeekVO seekVO : seekVOList) {
+            seekVO.setDistance(poiMap.get(seekVO.getId()).getDistance());
+        }
+        return seekVOList;
     }
 
     /**
