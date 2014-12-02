@@ -120,7 +120,7 @@ public class SeekAdapter extends BaseAdapter implements OnScrollListener {
             holder.time.setText(creatAt);
         } else {
             // TODO:距离远近
-            holder.local.setText(seek.getDistance().toString());
+            holder.local.setText(seek.getDistance().toString() + "米");
         }
 
         return view;
