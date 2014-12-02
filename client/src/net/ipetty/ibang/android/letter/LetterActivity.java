@@ -5,10 +5,12 @@ import java.util.List;
 
 import net.ipetty.ibang.R;
 import net.ipetty.ibang.android.core.Constants;
+import net.ipetty.ibang.android.core.DefaultTaskListener;
 import net.ipetty.ibang.android.core.ui.BackClickListener;
 import net.ipetty.ibang.android.core.ui.MyPullToRefreshListView;
 import net.ipetty.ibang.android.core.util.AppUtils;
 import net.ipetty.ibang.android.sdk.context.ApiContext;
+import net.ipetty.ibang.android.user.GetUserByIdTask;
 import net.ipetty.ibang.vo.LetterVO;
 import net.ipetty.ibang.vo.UserVO;
 
@@ -36,6 +38,7 @@ public class LetterActivity extends Activity {
 	private int cooperatorId;
 	private UserVO cooperator;
 	private UserVO user;
+	TextView text;
 
 	public List<LetterVO> list = new ArrayList<LetterVO>();
 	private static DisplayImageOptions options = AppUtils.getCacheImageBublder()
@@ -50,13 +53,19 @@ public class LetterActivity extends Activity {
 		user = ApiContext.getInstance(this).getCurrentUser();
 		cooperatorId = this.getIntent().getExtras().getInt(Constants.INTENT_LETTER_USER_ID);
 
-		cooperator = new UserVO();
-
 		/* action bar */
 		ImageView btnBack = (ImageView) this.findViewById(R.id.action_bar_left_image);
-		TextView text = (TextView) this.findViewById(R.id.action_bar_title);
-		text.setText(cooperator.getUsername());
+		text = (TextView) this.findViewById(R.id.action_bar_title);
+
 		btnBack.setOnClickListener(new BackClickListener(this));
+
+		new GetUserByIdTask(LetterActivity.this).setListener(new DefaultTaskListener<UserVO>(LetterActivity.this) {
+			@Override
+			public void onSuccess(UserVO result) {
+				cooperator = result;
+				text.setText(cooperator.getNickname());
+			}
+		}).execute(cooperatorId);
 
 		listView = (MyPullToRefreshListView) this.findViewById(R.id.listView);
 		contentView = (EditText) this.findViewById(R.id.editText);
