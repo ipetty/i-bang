@@ -260,13 +260,15 @@ public class NearlyActivity extends Activity {
     }
 
     private void loadNearlySeeks(boolean refresh) {
-        if (SelectCategoryActivity.CATEGORY_MY_STRING.equals(subCategory)) {
-            // 根据我的帮忙范围加载求助/帮忙列表
-            loadNearlySeekByOfferRange(refresh);
-        } else {
-            // 根据城市与分类加载求助/帮忙列表
-            loadNearlySeekByCategory(refresh);
-        }
+        // 根据城市与分类加载求助/帮忙列表 特长部分在Controller中处理
+        loadNearlySeekByCategory(refresh);
+//        if (SelectCategoryActivity.CATEGORY_MY_STRING.equals(subCategory)) {
+//            // 根据我的帮忙范围加载求助/帮忙列表
+//            loadNearlySeekByOfferRange(refresh);
+//        } else {
+//            // 根据城市与分类加载求助/帮忙列表
+//            loadNearlySeekByCategory(refresh);
+//        }
     }
 
     public void loadNearlySeekByCategory(boolean isRefresh) {
