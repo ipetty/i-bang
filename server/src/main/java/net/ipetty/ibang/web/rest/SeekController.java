@@ -287,7 +287,9 @@ public class SeekController extends BaseController {
         List<SeekVO> seekVOList = listToVoList(seeks);
         //填写距离字段
         for (SeekVO seekVO : seekVOList) {
-            seekVO.setDistance(poiMap.get(seekVO.getId()).getDistance());
+            if (seekVO != null && seekVO.getId() != null) {
+                seekVO.setDistance(poiMap.get(seekVO.getId().toString()).getDistance());
+            }
         }
         return seekVOList;
     }
