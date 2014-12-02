@@ -20,6 +20,7 @@ import net.ipetty.ibang.vo.SeekCategory;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.CollectionUtils;
 
 /**
  * SeekDaoImpl
@@ -126,7 +127,7 @@ public class SeekDaoImpl extends BaseJdbcDaoSupport implements SeekDao {
 		return super.queryUniqueEntity(GET_BY_ID_SQL, ROW_MAPPER, id);
 	}
 
-	private static final String FRAGMENT_SELECT_FROM_WHERE = "select id from seek where type=?";
+	private static final String FRAGMENT_SELECT_FROM_WHERE = "select id from seek where type=? ";
 	private static final String FRAGMENT_TIME_STATUS_ORDER_LIMIT = " and enable and created_on<=? and (status=? or status=?) order by created_on desc limit ?,?";
 
 	private static final String LIST_LATEST_SQL = FRAGMENT_SELECT_FROM_WHERE + FRAGMENT_TIME_STATUS_ORDER_LIMIT;
@@ -256,6 +257,10 @@ public class SeekDaoImpl extends BaseJdbcDaoSupport implements SeekDao {
 	}
 
 	private String populateOfferRangeClause(List<SeekCategory> offerRange) {
+		if (CollectionUtils.isEmpty(offerRange)) {
+			return "";
+		}
+
 		StringBuffer sb = new StringBuffer("and (");
 		for (int i = 0; i < offerRange.size(); i++) {
 			SeekCategory category = offerRange.get(i);
