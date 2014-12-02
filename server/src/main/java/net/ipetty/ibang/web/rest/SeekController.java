@@ -253,7 +253,7 @@ public class SeekController extends BaseController {
         Assert.notNull(longitude, "纬度值不能为空");
         Assert.notNull(type, "类型不能为空");
         //参数处理
-        String location = latitude + "," + longitude;
+        String location = longitude + "," + latitude;
         String filter = "btype:[" + type + "]";
         String keyword = "";
         String tags = "";
@@ -269,10 +269,16 @@ public class SeekController extends BaseController {
         //附近
         NearbyRetVO nearbyRetVO = baiduApi.lbsGetNearby(BaiduApiFactory.ak, BaiduApiFactory.lbsTableId, keyword, location, BaiduApiFactory.coordTypeValue, radius,
             tags, "distance:1", filter, pageNumber, pageSize);
+        if (nearbyRetVO.getStatus() != 0) {
+            throw new RestException(nearbyRetVO.getMessage());
+        }
+
         List<Long> seekIds = new ArrayList<Long>();
 
         for (PoiVO poi : nearbyRetVO.getContents()) {
-            seekIds.add(Long.valueOf(poi.getBid()));
+            if (poi != null && StringUtils.isNotEmpty(poi.getBid())) {
+                seekIds.add(Long.valueOf(poi.getBid()));
+            }
         }
         List<Seek> seeks = seekService.listByIds(seekIds);
         return listToVoList(seeks);
