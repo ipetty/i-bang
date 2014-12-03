@@ -236,7 +236,8 @@
         </activity>
         <activity
             android:name="net.ipetty.ibang.android.letter.LetterActivity"
-            android:label="@string/title_activity_letter" >
+            android:label="@string/title_activity_letter" 
+            android:windowSoftInputMode ="adjustResize">
         </activity>
     </application>
 

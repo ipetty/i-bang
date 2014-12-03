@@ -1,8 +1,11 @@
 package net.ipetty.ibang.android.letter;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
+import m.framework.ui.widget.pulltorefresh.OnScrollListener;
+import m.framework.ui.widget.pulltorefresh.Scrollable;
 import net.ipetty.ibang.R;
 import net.ipetty.ibang.android.core.Constants;
 import net.ipetty.ibang.android.core.DefaultTaskListener;
@@ -21,13 +24,14 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
-import android.widget.AbsListView.OnScrollListener;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
+import com.handmark.pulltorefresh.library.PullToRefreshBase;
+import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
@@ -36,7 +40,7 @@ public class LetterActivity extends Activity {
 	private LetterAdapter adapter; // 定义适配器
 	private MyPullToRefreshListView listView;
 	private Integer pageNumber = 0;
-	private final Integer pageSize = 20;
+	private final Integer pageSize = 5;
 	private Boolean hasMore = true;
 
 	private EditText contentView;
@@ -92,6 +96,21 @@ public class LetterActivity extends Activity {
 		adapter = new LetterAdapter();
 		listView.setAdapter(adapter);
 		loadData(true);
+		listView.setOnRefreshListener(new OnRefreshListener<ListView>() {
+
+			@Override
+			public void onRefresh(PullToRefreshBase<ListView> refreshView) {
+				// TODO Auto-generated method stub
+				loadData(false);
+			}
+
+		});
+
+	}
+
+	public void publicSuccess() {
+		listView.getRefreshableView().setSelection(list.size() - 1);
+		contentView.setText("");
 	}
 
 	// 获取聊天信息
@@ -107,14 +126,27 @@ public class LetterActivity extends Activity {
 
 	public class LetterAdapter extends BaseAdapter implements OnScrollListener {
 
+		// 第一次加载刷新
 		public void loadData(List<LetterVO> data) {
 			list.clear();
+			// TODO 这个看看是否需要修复
+			Collections.reverse(data);
 			this.addData(data);
 		}
 
+		// 认为发布完成后增加的
 		public void addData(List<LetterVO> data) {
 			list.addAll(data);
 			this.notifyDataSetChanged();
+		}
+
+		// 加载更多你是消息
+		public void addBeforeData(List<LetterVO> data) {
+			Collections.reverse(data);
+			list.addAll(0, data);
+			this.notifyDataSetChanged();
+			// listView.getRefreshableView().setSelection(data.size() - 1);
+
 		}
 
 		@Override
@@ -169,7 +201,7 @@ public class LetterActivity extends Activity {
 				holder.other_send_layout.setVisibility(View.VISIBLE);
 				holder.my_send_layout.setVisibility(View.GONE);
 
-				holder.other_content.setText(vo.getContent() + vo.getCooperatorNickname());
+				holder.other_content.setText(vo.getContent());
 				if (StringUtils.isNotBlank(vo.getCooperatorAvatar())) {
 					ImageLoader.getInstance().displayImage(Constants.FILE_SERVER_BASE + vo.getCooperatorAvatar(),
 							holder.other_avatar, options);
@@ -178,9 +210,9 @@ public class LetterActivity extends Activity {
 				// 发出的
 				holder.other_send_layout.setVisibility(View.GONE);
 				holder.my_send_layout.setVisibility(View.VISIBLE);
-				holder.my_content.setText(vo.getContent() + vo.getCooperatorNickname());
-				if (StringUtils.isNotBlank(vo.getCooperatorAvatar())) {
-					ImageLoader.getInstance().displayImage(Constants.FILE_SERVER_BASE + vo.getCooperatorAvatar(),
+				holder.my_content.setText(vo.getContent());
+				if (StringUtils.isNotBlank(user.getAvatar())) {
+					ImageLoader.getInstance().displayImage(Constants.FILE_SERVER_BASE + user.getAvatar(),
 							holder.my_avatar, options);
 				}
 			}
@@ -189,11 +221,9 @@ public class LetterActivity extends Activity {
 		}
 
 		@Override
-		public void onScrollStateChanged(AbsListView view, int scrollState) {
-		}
+		public void onScrollChanged(Scrollable arg0, int arg1, int arg2, int arg3, int arg4) {
+			// TODO Auto-generated method stub
 
-		@Override
-		public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
 		}
 
 	}
@@ -202,9 +232,10 @@ public class LetterActivity extends Activity {
 		if (result.size() < pageSize) {
 			hasMore = false;
 			listView.hideMoreView();
+
 		} else {
 			hasMore = true;
-			listView.showMoreView();
+			listView.hideMoreView();
 		}
 	}
 

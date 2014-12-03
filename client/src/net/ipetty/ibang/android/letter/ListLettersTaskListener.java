@@ -11,6 +11,7 @@ import android.util.Log;
 
 /**
  * SendLetterTaskListener
+ * 
  * @author luocanfeng
  * @date 2014年12月2日
  */
@@ -33,15 +34,10 @@ public class ListLettersTaskListener extends DefaultTaskListener<List<LetterVO>>
 	@Override
 	public void onSuccess(List<LetterVO> letters) {
 		Log.d(TAG, "list letters success");
-		adapter.loadData(letters);
-		if (null != listView) {
-			listView.onRefreshComplete();
-		}
-
 		if (isRefresh) {
 			adapter.loadData(letters);
 		} else {
-			adapter.addData(letters);
+			adapter.addBeforeData(letters);
 		}
 		listView.onRefreshComplete();
 		if (activity instanceof LetterActivity) {

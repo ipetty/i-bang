@@ -11,6 +11,7 @@ import android.util.Log;
 
 /**
  * SendLetterTaskListener
+ * 
  * @author luocanfeng
  * @date 2014年12月2日
  */
@@ -23,6 +24,7 @@ public class SendLetterTaskListener extends DefaultTaskListener<LetterVO> {
 	public SendLetterTaskListener(Activity activity, LetterAdapter adapter) {
 		super(activity);
 		this.adapter = adapter;
+
 	}
 
 	@Override
@@ -32,6 +34,9 @@ public class SendLetterTaskListener extends DefaultTaskListener<LetterVO> {
 		List<LetterVO> letters = new ArrayList<LetterVO>();
 		letters.add(letter);
 		adapter.addData(letters);
+		if (activity instanceof LetterActivity) {
+			((LetterActivity) activity).publicSuccess();
+		}
 	}
 
 }
