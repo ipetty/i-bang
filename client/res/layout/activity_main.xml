@@ -69,7 +69,7 @@
                 android:id="@+id/local_image"
                 android:layout_width="26dp"
                 android:layout_height="26dp"
-                android:src="@drawable/tab_local_default" />
+                android:src="@drawable/tab_local_default2" />
 
             <TextView
                   android:id="@+id/local_text"

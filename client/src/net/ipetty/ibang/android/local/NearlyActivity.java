@@ -48,297 +48,298 @@ import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener;
 
 public class NearlyActivity extends Activity {
 
-    private String TAG = getClass().getSimpleName();
-    // 定位相关
-    private LocationClient mLocationClient;
-    private TextView myLocationTextView;
-    private boolean isLogin = false;
-    private TextView search;
-    private Double latitude;
-    private Double longitude;
-    private String category = "";
-    private String subCategory = "";
-    private String type = net.ipetty.ibang.vo.Constants.SEEK_TYPE_SEEK;
-    private static String radius = "5000";
+	private String TAG = getClass().getSimpleName();
+	// 定位相关
+	private LocationClient mLocationClient;
+	private TextView myLocationTextView;
+	private boolean isLogin = false;
+	private TextView search;
+	private Double latitude;
+	private Double longitude;
+	private String category = "";
+	private String subCategory = "";
+	private String type = net.ipetty.ibang.vo.Constants.SEEK_TYPE_SEEK;
+	private static String radius = "5000";
 
-    private MyPullToRefreshListView listView;
-    private SeekAdapter adapter;
+	private MyPullToRefreshListView listView;
+	private SeekAdapter adapter;
 
-    private Button categoryView, typeView;
-    private Integer pageNumber = 0;
-    private final Integer pageSize = 20;
-    private Long lastTimeMillis;
-    private Boolean hasMore = true;
+	private Button categoryView, typeView;
+	private Integer pageNumber = 0;
+	private final Integer pageSize = 20;
+	private Long lastTimeMillis;
+	private Boolean hasMore = true;
 
-    private Integer currentUserId; // 当前用户ID
+	private Integer currentUserId; // 当前用户ID
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_nearly);
-        ActivityManager.getInstance().addActivity(this);
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_nearly);
+		ActivityManager.getInstance().addActivity(this);
 
-        // 获取当前用户
-        currentUserId = ApiContext.getInstance(this).getCurrentUserId();
+		// 获取当前用户
+		currentUserId = ApiContext.getInstance(this).getCurrentUserId();
 
-        IntentFilter filter = new IntentFilter();
-        filter.addAction(Constants.BROADCAST_INTENT_IS_LOGIN);
-        registerReceiver(broadcastreciver, filter);
+		IntentFilter filter = new IntentFilter();
+		filter.addAction(Constants.BROADCAST_INTENT_IS_LOGIN);
+		registerReceiver(broadcastreciver, filter);
 
-        /* action bar */
-        ImageView btnBack = (ImageView) this.findViewById(R.id.action_bar_left_image);
-        btnBack.setOnClickListener(new BackClickListener(this));
-        ((TextView) this.findViewById(R.id.action_bar_title)).setText(R.string.title_activity_nearly);
+		/* action bar */
+		ImageView btnBack = (ImageView) this.findViewById(R.id.action_bar_left_image);
+		btnBack.setOnClickListener(new BackClickListener(this));
+		((TextView) this.findViewById(R.id.action_bar_title)).setText(R.string.title_activity_nearly);
 
-        categoryView = (Button) this.findViewById(R.id.category);
-        View category_layout = this.findViewById(R.id.category_layout);
-        categoryView.setOnClickListener(new OnClickListener() {
+		categoryView = (Button) this.findViewById(R.id.category);
+		View category_layout = this.findViewById(R.id.category_layout);
+		categoryView.setOnClickListener(new OnClickListener() {
 
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(NearlyActivity.this, SelectCategoryActivity.class);
-                intent.putExtra(Constants.INTENT_CATEGORY, category);
-                intent.putExtra(Constants.INTENT_SUB_CATEGORY, subCategory);
-                startActivityForResult(intent, Constants.REQUEST_CODE_CATEGORY);
-            }
-        });
-        category_layout.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(NearlyActivity.this, SelectCategoryActivity.class);
+				intent.putExtra(Constants.INTENT_CATEGORY, category);
+				intent.putExtra(Constants.INTENT_SUB_CATEGORY, subCategory);
+				startActivityForResult(intent, Constants.REQUEST_CODE_CATEGORY);
+			}
+		});
+		category_layout.setOnClickListener(new OnClickListener() {
 
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(NearlyActivity.this, SelectCategoryActivity.class);
-                intent.putExtra(Constants.INTENT_CATEGORY, category);
-                intent.putExtra(Constants.INTENT_SUB_CATEGORY, subCategory);
-                startActivityForResult(intent, Constants.REQUEST_CODE_CATEGORY);
-            }
-        });
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(NearlyActivity.this, SelectCategoryActivity.class);
+				intent.putExtra(Constants.INTENT_CATEGORY, category);
+				intent.putExtra(Constants.INTENT_SUB_CATEGORY, subCategory);
+				startActivityForResult(intent, Constants.REQUEST_CODE_CATEGORY);
+			}
+		});
 
-        typeView = (Button) this.findViewById(R.id.type);
-        View type_layout = this.findViewById(R.id.type_layout);
-        typeView.setOnClickListener(new OnClickListener() {
+		typeView = (Button) this.findViewById(R.id.type);
+		View type_layout = this.findViewById(R.id.type_layout);
+		typeView.setOnClickListener(new OnClickListener() {
 
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(NearlyActivity.this, SelectSeekTypeActivity.class);
-                intent.putExtra(Constants.INTENT_SEEK_TYPE, type);
-                startActivityForResult(intent, Constants.REQUEST_CODE_TYPE);
-            }
-        });
-        type_layout.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(NearlyActivity.this, SelectSeekTypeActivity.class);
+				intent.putExtra(Constants.INTENT_SEEK_TYPE, type);
+				startActivityForResult(intent, Constants.REQUEST_CODE_TYPE);
+			}
+		});
+		type_layout.setOnClickListener(new OnClickListener() {
 
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(NearlyActivity.this, SelectSeekTypeActivity.class);
-                intent.putExtra(Constants.INTENT_SEEK_TYPE, type);
-                startActivityForResult(intent, Constants.REQUEST_CODE_TYPE);
-            }
-        });
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(NearlyActivity.this, SelectSeekTypeActivity.class);
+				intent.putExtra(Constants.INTENT_SEEK_TYPE, type);
+				startActivityForResult(intent, Constants.REQUEST_CODE_TYPE);
+			}
+		});
 
-        listView = (MyPullToRefreshListView) this.findViewById(R.id.listView);
-        adapter = new SeekAdapter(this, R.layout.list_seek_local_item);
-        listView.setAdapter(adapter);
-        listView.setOnItemClickListener(new OnItemClickListener() {
+		listView = (MyPullToRefreshListView) this.findViewById(R.id.listView);
+		adapter = new SeekAdapter(this, R.layout.list_seek_local_item);
+		listView.setAdapter(adapter);
+		listView.setOnItemClickListener(new OnItemClickListener() {
 
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(NearlyActivity.this, SeekActivity.class);
-                intent.putExtra(Constants.INTENT_SEEK_ID, id);
-                intent.putExtra(Constants.INTENT_SEEK_JSON, JSONUtils.toJson(parent.getAdapter().getItem(position))
-                    .toString());
-                startActivity(intent);
-            }
-        });
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+				Intent intent = new Intent(NearlyActivity.this, SeekActivity.class);
+				intent.putExtra(Constants.INTENT_SEEK_ID, id);
+				intent.putExtra(Constants.INTENT_SEEK_JSON, JSONUtils.toJson(parent.getAdapter().getItem(position))
+						.toString());
+				startActivity(intent);
+			}
+		});
 
-        listView.setOnRefreshListener(new OnRefreshListener<ListView>() {
+		listView.setOnRefreshListener(new OnRefreshListener<ListView>() {
 
-            @Override
-            public void onRefresh(PullToRefreshBase<ListView> refreshView) {
-                String label = DateUtils.formatDateTime(NearlyActivity.this.getApplicationContext(), getRefreshTime(),
-                    DateUtils.FORMAT_SHOW_TIME | DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_ABBREV_ALL);
-                refreshView.getLoadingLayoutProxy().setLastUpdatedLabel(label);
-                loadNearlySeeks(true);
-            }
-        });
+			@Override
+			public void onRefresh(PullToRefreshBase<ListView> refreshView) {
+				String label = DateUtils.formatDateTime(NearlyActivity.this.getApplicationContext(), getRefreshTime(),
+						DateUtils.FORMAT_SHOW_TIME | DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_ABBREV_ALL);
+				refreshView.getLoadingLayoutProxy().setLastUpdatedLabel(label);
+				loadNearlySeeks(true);
+			}
+		});
 
-        listView.setOnLastItemVisibleListener(new OnLastItemVisibleListener() {
+		listView.setOnLastItemVisibleListener(new OnLastItemVisibleListener() {
 
-            @Override
-            public void onLastItemVisible() {
-                if (hasMore) {
-                    loadNearlySeeks(false);
-                }
-            }
-        });
+			@Override
+			public void onLastItemVisible() {
+				if (hasMore) {
+					loadNearlySeeks(false);
+				}
+			}
+		});
 
-        myLocationTextView = (TextView) this.findViewById(R.id.my_local);
+		myLocationTextView = (TextView) this.findViewById(R.id.my_local);
 
-        // 定位初始化
-        mLocationClient = ((MyApplication) getApplication()).mLocationClient;
-        // 位置监听函数
-        mLocationClient.registerLocationListener(new BDLocationListener() {
+		// 定位初始化
+		mLocationClient = ((MyApplication) getApplication()).mLocationClient;
+		// 位置监听函数
+		mLocationClient.registerLocationListener(new BDLocationListener() {
 
-            @Override
-            public void onReceiveLocation(final BDLocation location) {
-                if (location == null || StringUtils.isBlank(location.getCity())) {
-                    myLocationTextView.setText("定位失败，请重新打开界面");
-                    Log.d(TAG, "定位失败");
-                    return;
-                }
-                myLocationTextView.setText(location.getAddrStr());
-                latitude = location.getLatitude();
-                longitude = location.getLongitude();
-                // 定位后加载数据
-                loadNearlySeeks(true);
-            }
-        });
-        mLocationClient.start();
-        listView.hideMoreView();
-    }
+			@Override
+			public void onReceiveLocation(final BDLocation location) {
+				if (location == null || StringUtils.isBlank(location.getCity())) {
+					myLocationTextView.setText("定位失败，请重新打开界面");
+					Log.d(TAG, "定位失败");
+					return;
+				}
+				myLocationTextView.setText(location.getAddrStr());
+				latitude = location.getLatitude();
+				longitude = location.getLongitude();
+				// 定位后加载数据
+				listView.showMoreView();
+				loadNearlySeeks(true);
+			}
+		});
+		mLocationClient.start();
+		listView.hideMoreView();
+	}
 
-    @Override
-    protected void onStop() {
-        Log.d(TAG, "onStop");
-        // 关闭定位组件
-        mLocationClient.stop();
-        super.onStop();
-    }
+	@Override
+	protected void onStop() {
+		Log.d(TAG, "onStop");
+		// 关闭定位组件
+		mLocationClient.stop();
+		super.onStop();
+	}
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        unregisterReceiver(broadcastreciver);
-    }
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+		unregisterReceiver(broadcastreciver);
+	}
 
-    private BroadcastReceiver broadcastreciver = new BroadcastReceiver() {
+	private BroadcastReceiver broadcastreciver = new BroadcastReceiver() {
 
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            String action = intent.getAction();
-            if (Constants.BROADCAST_INTENT_IS_LOGIN.equals(action)) {
-                isLogin = true;
-                init();
-            }
-            if (Constants.BROADCAST_INTENT_UPDATA_USER.equals(action)) {
-                initUser();
-            }
-            if (Constants.BROADCAST_INTENT_PUBLISH_SEEK.equals(action)) {
-                loadNearlySeeks(true);
-            }
-        }
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			String action = intent.getAction();
+			if (Constants.BROADCAST_INTENT_IS_LOGIN.equals(action)) {
+				isLogin = true;
+				init();
+			}
+			if (Constants.BROADCAST_INTENT_UPDATA_USER.equals(action)) {
+				initUser();
+			}
+			if (Constants.BROADCAST_INTENT_PUBLISH_SEEK.equals(action)) {
+				loadNearlySeeks(true);
+			}
+		}
 
-        private void init() {
-            adapter.notifyDataSetChanged();
-        }
+		private void init() {
+			adapter.notifyDataSetChanged();
+		}
 
-        private void initUser() {
-            adapter.notifyDataSetChanged();
-        }
-    };
+		private void initUser() {
+			adapter.notifyDataSetChanged();
+		}
+	};
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == Constants.REQUEST_CODE_CATEGORY) {
-            if (resultCode == FragmentActivity.RESULT_OK) {
-                Intent intent = data;
-                category = intent.getStringExtra(Constants.INTENT_CATEGORY);
-                subCategory = intent.getStringExtra(Constants.INTENT_SUB_CATEGORY);
-                setCategoryText(category, subCategory);
+		if (requestCode == Constants.REQUEST_CODE_CATEGORY) {
+			if (resultCode == FragmentActivity.RESULT_OK) {
+				Intent intent = data;
+				category = intent.getStringExtra(Constants.INTENT_CATEGORY);
+				subCategory = intent.getStringExtra(Constants.INTENT_SUB_CATEGORY);
+				setCategoryText(category, subCategory);
 
-                loadNearlySeeks(true);
-            }
-        } else if (requestCode == Constants.REQUEST_CODE_TYPE) {
-            if (resultCode == FragmentActivity.RESULT_OK) {
-                Intent intent = data;
-                type = intent.getStringExtra(Constants.INTENT_SEEK_TYPE);
-                typeView.setText(type);
+				loadNearlySeeks(true);
+			}
+		} else if (requestCode == Constants.REQUEST_CODE_TYPE) {
+			if (resultCode == FragmentActivity.RESULT_OK) {
+				Intent intent = data;
+				type = intent.getStringExtra(Constants.INTENT_SEEK_TYPE);
+				typeView.setText(type);
 
-                loadNearlySeeks(true);
-            }
-        }
-    }
+				loadNearlySeeks(true);
+			}
+		}
+	}
 
-    private void loadNearlySeeks(boolean refresh) {
-        // 根据城市与分类加载求助/帮忙列表 特长部分在Controller中处理
-        loadNearlySeekByCategory(refresh);
-//        if (SelectCategoryActivity.CATEGORY_MY_STRING.equals(subCategory)) {
-//            // 根据我的帮忙范围加载求助/帮忙列表
-//            loadNearlySeekByOfferRange(refresh);
-//        } else {
-//            // 根据城市与分类加载求助/帮忙列表
-//            loadNearlySeekByCategory(refresh);
-//        }
-    }
+	private void loadNearlySeeks(boolean refresh) {
+		// 根据城市与分类加载求助/帮忙列表 特长部分在Controller中处理
+		loadNearlySeekByCategory(refresh);
+		// if (SelectCategoryActivity.CATEGORY_MY_STRING.equals(subCategory)) {
+		// // 根据我的帮忙范围加载求助/帮忙列表
+		// loadNearlySeekByOfferRange(refresh);
+		// } else {
+		// // 根据城市与分类加载求助/帮忙列表
+		// loadNearlySeekByCategory(refresh);
+		// }
+	}
 
-    public void loadNearlySeekByCategory(boolean isRefresh) {
-        if (isRefresh) {
-            pageNumber = 0;
-        }
-        if (latitude == null || longitude == null) {
-            Toast.makeText(NearlyActivity.this, "定位成功后才能搜索附近数据", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        // 加载数据
-        new ListNearlySeeksByCategoryTask(this).setListener(
-            new ListNearlySeeksByCategoryTaskListener(NearlyActivity.this, adapter, listView, isRefresh)).execute(
-                String.valueOf(latitude), String.valueOf(longitude), category, subCategory, convertType(type), radius,
-                String.valueOf(pageNumber++), String.valueOf(pageSize));
-    }
+	public void loadNearlySeekByCategory(boolean isRefresh) {
+		if (isRefresh) {
+			pageNumber = 0;
+		}
+		if (latitude == null || longitude == null) {
+			Toast.makeText(NearlyActivity.this, "定位成功后才能搜索附近数据", Toast.LENGTH_SHORT).show();
+			return;
+		}
+		// 加载数据
+		new ListNearlySeeksByCategoryTask(this).setListener(
+				new ListNearlySeeksByCategoryTaskListener(NearlyActivity.this, adapter, listView, isRefresh)).execute(
+				String.valueOf(latitude), String.valueOf(longitude), category, subCategory, convertType(type), radius,
+				String.valueOf(pageNumber++), String.valueOf(pageSize));
+	}
 
-    public void loadNearlySeekByOfferRange(boolean isRefresh) {
-        if (isRefresh) {
-            pageNumber = 0;
-        }
-        if (latitude == null || longitude == null) {
-            Toast.makeText(NearlyActivity.this, "定位成功后才能搜索附近数据", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        // 加载数据
-        // FIXME 目前加载的是所有附近数据，未按我的特长搜索
-        new ListNearlySeeksByCategoryTask(this).setListener(
-            new ListNearlySeeksByCategoryTaskListener(NearlyActivity.this, adapter, listView, isRefresh)).execute(
-                String.valueOf(latitude), String.valueOf(longitude), null, null, convertType(type), radius,
-                String.valueOf(pageNumber++), String.valueOf(pageSize));
-    }
+	public void loadNearlySeekByOfferRange(boolean isRefresh) {
+		if (isRefresh) {
+			pageNumber = 0;
+		}
+		if (latitude == null || longitude == null) {
+			Toast.makeText(NearlyActivity.this, "定位成功后才能搜索附近数据", Toast.LENGTH_SHORT).show();
+			return;
+		}
+		// 加载数据
+		// FIXME 目前加载的是所有附近数据，未按我的特长搜索
+		new ListNearlySeeksByCategoryTask(this).setListener(
+				new ListNearlySeeksByCategoryTaskListener(NearlyActivity.this, adapter, listView, isRefresh)).execute(
+				String.valueOf(latitude), String.valueOf(longitude), null, null, convertType(type), radius,
+				String.valueOf(pageNumber++), String.valueOf(pageSize));
+	}
 
-    private static final String TYPE_SEEK = "1";
-    private static final String TYPE_ASSISTANCE = "2";
+	private static final String TYPE_SEEK = "1";
+	private static final String TYPE_ASSISTANCE = "2";
 
-    private static String convertType(String type) {
-        return net.ipetty.ibang.vo.Constants.SEEK_TYPE_SEEK.equals(type) ? TYPE_SEEK : TYPE_ASSISTANCE;
-    }
+	private static String convertType(String type) {
+		return net.ipetty.ibang.vo.Constants.SEEK_TYPE_SEEK.equals(type) ? TYPE_SEEK : TYPE_ASSISTANCE;
+	}
 
-    // 获取刷新时间，若网络不可用则取最后一次刷新时间
-    private Long getRefreshTime() {
-        if (NetWorkUtils.isNetworkConnected(this)) {
-            this.lastTimeMillis = System.currentTimeMillis();
-            MyAppStateManager.setLastRefrsh4Home(this, this.lastTimeMillis);
-            return this.lastTimeMillis;
-        }
+	// 获取刷新时间，若网络不可用则取最后一次刷新时间
+	private Long getRefreshTime() {
+		if (NetWorkUtils.isNetworkConnected(this)) {
+			this.lastTimeMillis = System.currentTimeMillis();
+			MyAppStateManager.setLastRefrsh4Home(this, this.lastTimeMillis);
+			return this.lastTimeMillis;
+		}
 
-        return MyAppStateManager.getLastRefrsh4Home(this);
-    }
+		return MyAppStateManager.getLastRefrsh4Home(this);
+	}
 
-    private void setCategoryText(String category, String subCategory) {
-        String str = subCategory;
-        if (StringUtils.isEmpty(str)) {
-            str = category;
-        }
-        if (StringUtils.isEmpty(str)) {
-            str = "全部分类";
-        }
-        categoryView.setText(str);
-    }
+	private void setCategoryText(String category, String subCategory) {
+		String str = subCategory;
+		if (StringUtils.isEmpty(str)) {
+			str = category;
+		}
+		if (StringUtils.isEmpty(str)) {
+			str = "全部分类";
+		}
+		categoryView.setText(str);
+	}
 
-    public void loadMoreForResult(List<SeekVO> result) {
-        if (result.size() < pageSize) {
-            hasMore = false;
-            listView.hideMoreView();
-        } else {
-            hasMore = true;
-            listView.showMoreView();
-        }
-    }
+	public void loadMoreForResult(List<SeekVO> result) {
+		if (result.size() < pageSize) {
+			hasMore = false;
+			listView.hideMoreView();
+		} else {
+			hasMore = true;
+			listView.showMoreView();
+		}
+	}
 
 }
