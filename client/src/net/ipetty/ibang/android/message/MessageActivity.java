@@ -15,6 +15,8 @@ import net.ipetty.ibang.android.core.util.AppUtils;
 import net.ipetty.ibang.android.core.util.NetWorkUtils;
 import net.ipetty.ibang.android.core.util.PrettyDateFormat;
 import net.ipetty.ibang.android.letter.LetterActivity;
+import net.ipetty.ibang.android.letter.ListContactsTask;
+import net.ipetty.ibang.android.letter.ListContactsTaskListener;
 import net.ipetty.ibang.android.sdk.context.ApiContext;
 import net.ipetty.ibang.android.seek.DelegationActivity;
 import net.ipetty.ibang.android.seek.OfferActivity;
@@ -76,8 +78,11 @@ public class MessageActivity extends Activity {
 
 	private ViewFlipper viewFlipper;
 	// 站内信
-	public MyPullToRefreshListView listView_letter;
-	private LetterContactsAdapter adapter_letter;
+	public MyPullToRefreshListView contactsListView;
+	private LetterContactsAdapter contactsAdapter;
+	private Integer contactsPageNumber = 0;
+	private Boolean contactsHasMore = true;
+
 	private View message_layout;
 	private View letter_layout;
 	public List<LetterContacts> list_letter = new ArrayList<LetterContacts>();
@@ -110,10 +115,11 @@ public class MessageActivity extends Activity {
 		message_layout.setOnClickListener(new TabClickListener(0));
 		letter_layout.setOnClickListener(new TabClickListener(1));
 
-		listView_letter = (MyPullToRefreshListView) this.findViewById(R.id.listView_letter);
-		adapter_letter = new LetterContactsAdapter();
-		listView_letter.setAdapter(adapter_letter);
-		listView_letter.setOnItemClickListener(new OnItemClickListener() {
+		contactsListView = (MyPullToRefreshListView) this.findViewById(R.id.listView_letter);
+		contactsAdapter = new LetterContactsAdapter();
+		contactsListView.setAdapter(contactsAdapter);
+		contactsListView.setOnItemClickListener(new OnItemClickListener() {
+
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				// TODO Auto-generated method stub
@@ -355,6 +361,7 @@ public class MessageActivity extends Activity {
 	}
 
 	public class TabClickListener implements OnClickListener {
+
 		private int index = 0;
 
 		public TabClickListener(int i) {
@@ -375,11 +382,25 @@ public class MessageActivity extends Activity {
 		}
 	}
 
-	public void loadLetter(boolean isRefresh) {
+	/** 加载联系人列表 */
+	public void loadContacts(boolean isRefresh) {
 		if (isRefresh) {
-			pageNumber = 0;
+			contactsPageNumber = 0;
 		}
-		// TODO: 联系人建议不用加载更多的方式，如果用也可以 这里进一步进行完善
+		new ListContactsTask(MessageActivity.this).setListener(
+				new ListContactsTaskListener(MessageActivity.this, contactsAdapter, contactsListView, isRefresh))
+				.execute(contactsPageNumber++, pageSize);
+	}
+
+	/** 加载联系人列表完成 */
+	public void loadMoreContactsForResult(List<LetterContacts> contacts) {
+		if (contacts.size() < pageSize) {
+			contactsHasMore = false;
+			contactsListView.hideMoreView();
+		} else {
+			contactsHasMore = true;
+			contactsListView.showMoreView();
+		}
 	}
 
 	public class LetterContactsAdapter extends BaseAdapter implements OnScrollListener {

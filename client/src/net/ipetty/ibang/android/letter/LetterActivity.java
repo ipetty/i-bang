@@ -32,8 +32,13 @@ import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 public class LetterActivity extends Activity {
+
 	private LetterAdapter adapter; // 定义适配器
 	private MyPullToRefreshListView listView;
+	private Integer pageNumber = 0;
+	private final Integer pageSize = 20;
+	private Boolean hasMore = true;
+
 	private EditText contentView;
 	private int cooperatorId;
 	private UserVO cooperator;
@@ -49,17 +54,17 @@ public class LetterActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_letter);
 
-		// TODO:根据传递进来的ID 获取用户~ 或者在之前界面就传递 聊天对象的JSON格式过来也可以
 		user = ApiContext.getInstance(this).getCurrentUser();
 		cooperatorId = this.getIntent().getExtras().getInt(Constants.INTENT_LETTER_USER_ID);
 
 		/* action bar */
 		ImageView btnBack = (ImageView) this.findViewById(R.id.action_bar_left_image);
+		btnBack.setOnClickListener(new BackClickListener(this));
 		text = (TextView) this.findViewById(R.id.action_bar_title);
 
-		btnBack.setOnClickListener(new BackClickListener(this));
-
+		// 获取聊天对象信息
 		new GetUserByIdTask(LetterActivity.this).setListener(new DefaultTaskListener<UserVO>(LetterActivity.this) {
+
 			@Override
 			public void onSuccess(UserVO result) {
 				cooperator = result;
@@ -75,17 +80,29 @@ public class LetterActivity extends Activity {
 
 			@Override
 			public void onClick(View v) {
-				// TODO 点击发送消息
+				// 点击发送消息
 				String content = contentView.getText().toString();
-
+				new SendLetterTask(LetterActivity.this).setListener(
+						new SendLetterTaskListener(LetterActivity.this, adapter)).execute(String.valueOf(cooperatorId),
+						content);
 			}
-
 		});
 
 		// list加载显示
 		adapter = new LetterAdapter();
 		listView.setAdapter(adapter);
+		loadData(true);
+	}
 
+	// 获取聊天信息
+	public void loadData(boolean isRefresh) {
+		if (isRefresh) {
+			pageNumber = 0;
+		}
+		// 加载聊天信息
+		new ListLettersTask(LetterActivity.this).setListener(
+				new ListLettersTaskListener(LetterActivity.this, adapter, listView, isRefresh)).execute(cooperatorId,
+				pageNumber++, pageSize);
 	}
 
 	public class LetterAdapter extends BaseAdapter implements OnScrollListener {
@@ -116,6 +133,7 @@ public class LetterActivity extends Activity {
 		}
 
 		private class ViewHolder {
+
 			View other_send_layout;
 			View my_send_layout;
 			ImageView my_avatar;
@@ -128,7 +146,6 @@ public class LetterActivity extends Activity {
 
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
-
 			View view;
 			if (convertView == null) {
 				view = LayoutInflater.from(LetterActivity.this).inflate(R.layout.list_letter_item, null);
@@ -178,5 +195,17 @@ public class LetterActivity extends Activity {
 		@Override
 		public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
 		}
+
 	}
+
+	public void loadMoreForResult(List<LetterVO> result) {
+		if (result.size() < pageSize) {
+			hasMore = false;
+			listView.hideMoreView();
+		} else {
+			hasMore = true;
+			listView.showMoreView();
+		}
+	}
+
 }
