@@ -12,6 +12,7 @@ import android.util.Log;
 
 /**
  * ListContactsTaskListener
+ * 
  * @author luocanfeng
  * @date 2014年12月2日
  */
@@ -45,7 +46,8 @@ public class ListContactsTaskListener extends DefaultTaskListener<List<LetterCon
 			adapter.addData(contacts);
 		}
 		listView.onRefreshComplete();
-		if (activity instanceof LetterActivity) {
+
+		if (adapter instanceof LetterContactsAdapter) {
 			((MessageActivity) activity).loadMoreContactsForResult(contacts);
 		}
 	}

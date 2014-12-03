@@ -33,6 +33,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.text.format.DateUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -123,8 +124,10 @@ public class MessageActivity extends Activity {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				// TODO Auto-generated method stub
+				int userId = ((LetterContacts) parent.getAdapter().getItem(position)).getUserId();
+				Log.i("TTTT", userId + "");
 				Intent intent = new Intent(MessageActivity.this, LetterActivity.class);
-				intent.putExtra(Constants.INTENT_LETTER_USER_ID, id);
+				intent.putExtra(Constants.INTENT_LETTER_USER_ID, userId);
 				startActivity(intent);
 			}
 
@@ -211,6 +214,7 @@ public class MessageActivity extends Activity {
 	private void init() {
 		unLoginView.hide();
 		loadSystemMessage(true);
+		loadContacts(true);
 	}
 
 	public void loadSystemMessage(boolean isRefresh) {

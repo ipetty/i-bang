@@ -169,7 +169,7 @@ public class LetterActivity extends Activity {
 				holder.other_send_layout.setVisibility(View.VISIBLE);
 				holder.my_send_layout.setVisibility(View.GONE);
 
-				holder.other_content.setText(vo.getContent());
+				holder.other_content.setText(vo.getContent() + vo.getCooperatorNickname());
 				if (StringUtils.isNotBlank(vo.getCooperatorAvatar())) {
 					ImageLoader.getInstance().displayImage(Constants.FILE_SERVER_BASE + vo.getCooperatorAvatar(),
 							holder.other_avatar, options);
@@ -178,7 +178,7 @@ public class LetterActivity extends Activity {
 				// 发出的
 				holder.other_send_layout.setVisibility(View.GONE);
 				holder.my_send_layout.setVisibility(View.VISIBLE);
-				holder.my_content.setText(vo.getContent());
+				holder.my_content.setText(vo.getContent() + vo.getCooperatorNickname());
 				if (StringUtils.isNotBlank(vo.getCooperatorAvatar())) {
 					ImageLoader.getInstance().displayImage(Constants.FILE_SERVER_BASE + vo.getCooperatorAvatar(),
 							holder.my_avatar, options);

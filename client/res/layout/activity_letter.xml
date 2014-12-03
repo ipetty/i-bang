@@ -17,7 +17,8 @@
  <net.ipetty.ibang.android.core.ui.MyPullToRefreshListView
                     android:id="@+id/listView"
                         android:layout_above="@+id/letter_layout"
-	    android:layout_below="@+id/include"
+	    			android:layout_below="@+id/include"
+	    			android:divider="@android:color/transparent"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" >
                 </net.ipetty.ibang.android.core.ui.MyPullToRefreshListView>
