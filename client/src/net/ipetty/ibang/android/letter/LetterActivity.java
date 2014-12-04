@@ -29,6 +29,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener;
@@ -111,6 +112,8 @@ public class LetterActivity extends Activity {
 	public void publicSuccess() {
 		listView.getRefreshableView().setSelection(list.size() - 1);
 		contentView.setText("");
+		Toast.makeText(this, "消息发送成功", Toast.LENGTH_SHORT).show();
+		finish();
 	}
 
 	// 获取聊天信息
