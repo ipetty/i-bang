@@ -81,6 +81,7 @@ public class MainHomeFragment extends Fragment {
 		IntentFilter filter = new IntentFilter();
 		filter.addAction(Constants.BROADCAST_INTENT_IS_LOGIN);
 		filter.addAction(Constants.BROADCAST_INTENT_NEW_MESSAGE);
+		filter.addAction(Constants.BROADCAST_INTENT_NEW_LETTER);
 		filter.addAction(Constants.BROADCAST_INTENT_PUBLISH_SEEK);
 
 		this.getActivity().registerReceiver(broadcastreciver, filter);
@@ -250,6 +251,9 @@ public class MainHomeFragment extends Fragment {
 			if (Constants.BROADCAST_INTENT_NEW_MESSAGE.equals(action)) {
 				setNewMessage();
 			}
+			if (Constants.BROADCAST_INTENT_NEW_LETTER.equals(action)) {
+				setNewMessage();
+			}
 			if (Constants.BROADCAST_INTENT_UPDATA_USER.equals(action)) {
 				initUser();
 			}
@@ -329,6 +333,7 @@ public class MainHomeFragment extends Fragment {
 				 * userForm.setDistrict(user.getDistrict()); // 更新用户所在地区 new
 				 * UpdateProfileTask(getActivity()).setListener(new
 				 * DefaultTaskListener<UserVO>(getActivity()) {
+				 * 
 				 * @Override public void onSuccess(UserVO result) { }
 				 * }).execute(userForm); }
 				 */

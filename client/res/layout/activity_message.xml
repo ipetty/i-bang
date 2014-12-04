@@ -16,7 +16,8 @@
     <FrameLayout
         android:id="@+id/fragment_unlogin"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="match_parent"
+        android:visibility="gone" >
 
         <include layout="@layout/common_unlogin" />
     </FrameLayout>
@@ -68,6 +69,13 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="站内信" />
+
+            <ImageView
+                android:id="@+id/letter_new"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/dot_news" 
+                android:visibility="invisible"/>
 
         </LinearLayout>
         </LinearLayout>

@@ -33,7 +33,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.text.format.DateUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -68,6 +67,7 @@ public class MessageActivity extends Activity {
 	private final Integer pageSize = 20;
 	private Long lastTimeMillis;
 	private Boolean hasMore = true;
+	private View letter_new;
 
 	public String SYS_MSG_TYPE_NEW_OFFER = "帮助您的求助"; // 您的求助单有了新的帮助
 	public String SYS_MSG_TYPE_NEW_DELEGATION = "接受了您的帮助"; // 您的帮助已被求助者接受
@@ -96,6 +96,7 @@ public class MessageActivity extends Activity {
 		IntentFilter filter = new IntentFilter();
 		filter.addAction(Constants.BROADCAST_INTENT_IS_LOGIN);
 		filter.addAction(Constants.BROADCAST_INTENT_UPDATA_USER);
+		filter.addAction(Constants.BROADCAST_INTENT_NEW_LETTER);
 		registerReceiver(broadcastreciver, filter);
 
 		/* action bar */
@@ -115,6 +116,7 @@ public class MessageActivity extends Activity {
 		letter_layout = this.findViewById(R.id.letter_layout);
 		message_layout.setOnClickListener(new TabClickListener(0));
 		letter_layout.setOnClickListener(new TabClickListener(1));
+		letter_new = this.findViewById(R.id.letter_new);
 
 		contactsListView = (MyPullToRefreshListView) this.findViewById(R.id.listView_letter);
 		contactsAdapter = new LetterContactsAdapter();
@@ -125,7 +127,6 @@ public class MessageActivity extends Activity {
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				// TODO Auto-generated method stub
 				int userId = ((LetterContacts) parent.getAdapter().getItem(position)).getUserId();
-				Log.i("TTTT", userId + "");
 				Intent intent = new Intent(MessageActivity.this, LetterActivity.class);
 				intent.putExtra(Constants.INTENT_LETTER_USER_ID, userId);
 				startActivity(intent);
@@ -256,6 +257,9 @@ public class MessageActivity extends Activity {
 			if (Constants.BROADCAST_INTENT_IS_LOGIN.equals(action)) {
 				init();
 			}
+			if (Constants.BROADCAST_INTENT_NEW_LETTER.equals(action)) {
+				letter_new.setVisibility(View.VISIBLE);
+			}
 		}
 	};
 
@@ -382,6 +386,8 @@ public class MessageActivity extends Activity {
 			} else {
 				message_layout.setBackgroundResource(R.drawable.trans);
 				letter_layout.setBackgroundResource(R.drawable.news_tab_selected);
+				letter_new.setVisibility(View.INVISIBLE);
+				loadContacts(true);
 			}
 		}
 	}
@@ -390,6 +396,7 @@ public class MessageActivity extends Activity {
 	public void loadContacts(boolean isRefresh) {
 		if (isRefresh) {
 			contactsPageNumber = 0;
+			letter_new.setVisibility(View.INVISIBLE);
 		}
 		new ListContactsTask(MessageActivity.this).setListener(
 				new ListContactsTaskListener(MessageActivity.this, contactsAdapter, contactsListView, isRefresh))
