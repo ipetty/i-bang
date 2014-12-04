@@ -4,6 +4,7 @@ import net.ipetty.ibang.api.context.ApiContext;
 import net.ipetty.ibang.api.factory.IbangApi;
 import net.ipetty.ibang.vo.LoginResultVO;
 import net.ipetty.ibang.vo.RegisterVO;
+import net.ipetty.ibang.vo.Unread;
 import net.ipetty.ibang.vo.UserFormVO;
 import net.ipetty.ibang.vo.UserOfferRange;
 import net.ipetty.ibang.vo.UserVO;
@@ -13,7 +14,6 @@ import retrofit.mime.TypedFile;
 /**
  * UserApiImpl<br />
  * 由于Retrofit 没法进行Post 拦截进行ApiContext 操作，故这里进行了一下ApiContext 的操作；<br />
- * 
  * @author luocanfeng
  * @date 2014年10月11日
  */
@@ -88,6 +88,11 @@ public class UserApiImpl implements UserApi {
 	@Override
 	public UserVO updateOfferRange(@Body UserOfferRange userOfferRange) {
 		return userApi.updateOfferRange(userOfferRange);
+	}
+
+	@Override
+	public Unread getUnread() {
+		return userApi.getUnread();
 	}
 
 }

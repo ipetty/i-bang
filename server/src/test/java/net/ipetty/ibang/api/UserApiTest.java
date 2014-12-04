@@ -17,7 +17,6 @@ import org.junit.Test;
 
 /**
  * UserApiTest
- * 
  * @author luocanfeng
  * @date 2014年9月28日
  */
@@ -193,6 +192,12 @@ public class UserApiTest extends BaseApiTest {
 		offerRange.add(new SeekCategory("IT服务", "电脑软件"));
 		UserVO user = userApi.updateOfferRange(new UserOfferRange(result.getUserVo().getId(), offerRange));
 		logger.debug("updated offer range = {}", user);
+	}
+
+	@Test
+	public void getUnread() {
+		userApi.login(TEST_ACCOUNT_USERNAME, TEST_ACCOUNT_PASSWORD);
+		userApi.getUnread();
 	}
 
 }

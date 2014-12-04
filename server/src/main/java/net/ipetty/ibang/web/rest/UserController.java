@@ -11,11 +11,14 @@ import net.ipetty.ibang.context.UserPrincipal;
 import net.ipetty.ibang.exception.BusinessException;
 import net.ipetty.ibang.model.User;
 import net.ipetty.ibang.model.UserRefreshToken;
+import net.ipetty.ibang.service.LetterService;
+import net.ipetty.ibang.service.SystemMessageService;
 import net.ipetty.ibang.service.UserService;
 import net.ipetty.ibang.util.Encodes;
 import net.ipetty.ibang.util.UUIDUtils;
 import net.ipetty.ibang.vo.LoginResultVO;
 import net.ipetty.ibang.vo.RegisterVO;
+import net.ipetty.ibang.vo.Unread;
 import net.ipetty.ibang.vo.UserFormVO;
 import net.ipetty.ibang.vo.UserOfferRange;
 import net.ipetty.ibang.vo.UserVO;
@@ -32,7 +35,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 /**
  * UserController
- * 
  * @author luocanfeng
  * @date 2014年9月28日
  */
@@ -41,6 +43,12 @@ public class UserController extends BaseController {
 
 	@Resource
 	private UserService userService;
+
+	@Resource
+	private SystemMessageService systemMessageService;
+
+	@Resource
+	private LetterService letterService;
 
 	@Resource
 	private HttpServletRequest request;
@@ -273,6 +281,21 @@ public class UserController extends BaseController {
 
 		userService.updateOfferRange(userOfferRange.getUserId(), userOfferRange.getOfferRange());
 		return userService.getById(userOfferRange.getUserId()).toVO();
+	}
+
+	/**
+	 * 获取未读消息数
+	 */
+	@RequestMapping(value = "/getunread", method = RequestMethod.GET)
+	public Unread getUnread() {
+		UserPrincipal currentUser = UserContext.getContext();
+		if (currentUser == null || currentUser.getId() == null) {
+			throw new RestException("用户登录后才能获取未读消息数");
+		}
+
+		Integer userId = currentUser.getId();
+		return new Unread(systemMessageService.getUnreadNumberByUserId(userId),
+				letterService.getUnreadNumberByUserId(userId));
 	}
 
 }

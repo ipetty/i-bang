@@ -2,6 +2,7 @@ package net.ipetty.ibang.api;
 
 import net.ipetty.ibang.vo.LoginResultVO;
 import net.ipetty.ibang.vo.RegisterVO;
+import net.ipetty.ibang.vo.Unread;
 import net.ipetty.ibang.vo.UserFormVO;
 import net.ipetty.ibang.vo.UserOfferRange;
 import net.ipetty.ibang.vo.UserVO;
@@ -18,7 +19,6 @@ import retrofit.mime.TypedFile;
 
 /**
  * UserApi
- * 
  * @author luocanfeng
  * @date 2014年9月23日
  */
@@ -93,5 +93,11 @@ public interface UserApi {
 	 */
 	@POST("/user/updateOfferRange")
 	public UserVO updateOfferRange(@Body UserOfferRange userOfferRange);
+
+	/**
+	 * 获取未读消息数
+	 */
+	@GET("/getunread")
+	public Unread getUnread();
 
 }

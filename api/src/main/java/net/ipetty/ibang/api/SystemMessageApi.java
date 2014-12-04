@@ -9,7 +9,6 @@ import retrofit.http.Query;
 
 /**
  * SystemMessageApi
- * 
  * @author luocanfeng
  * @date 2014年10月15日
  */

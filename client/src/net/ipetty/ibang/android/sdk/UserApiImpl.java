@@ -1,11 +1,12 @@
 package net.ipetty.ibang.android.sdk;
 
-import net.ipetty.ibang.android.message.RequestSystemMessageThread;
 import net.ipetty.ibang.android.sdk.context.ApiContext;
 import net.ipetty.ibang.android.sdk.factory.IbangApi;
+import net.ipetty.ibang.android.user.GetUnreadThread;
 import net.ipetty.ibang.api.UserApi;
 import net.ipetty.ibang.vo.LoginResultVO;
 import net.ipetty.ibang.vo.RegisterVO;
+import net.ipetty.ibang.vo.Unread;
 import net.ipetty.ibang.vo.UserFormVO;
 import net.ipetty.ibang.vo.UserOfferRange;
 import net.ipetty.ibang.vo.UserVO;
@@ -15,7 +16,6 @@ import android.content.Context;
 /**
  * UserApiImpl<br />
  * 由于Retrofit 没法进行Post 拦截进行ApiContext 操作，故这里进行了一下ApiContext 的操作；<br />
- * 
  * @author luocanfeng
  * @date 2014年10月11日
  */
@@ -38,7 +38,7 @@ public class UserApiImpl implements UserApi {
 		ApiContext.getInstance(context).setCurrentUser(result.getUserVo());
 		ApiContext.getInstance(context).setCurrentUserId(result.getUserVo().getId());
 
-		RequestSystemMessageThread.start(context, result.getUserVo().getId());
+		GetUnreadThread.start(context, 60);
 
 		return result;
 	}
@@ -53,7 +53,7 @@ public class UserApiImpl implements UserApi {
 			ApiContext.getInstance(context).setCurrentUser(result.getUserVo());
 			ApiContext.getInstance(context).setCurrentUserId(result.getUserVo().getId());
 
-			RequestSystemMessageThread.start(context, result.getUserVo().getId());
+			GetUnreadThread.start(context, 60);
 		} else {
 			ApiContext.getInstance(context).setUserToken(null);
 			ApiContext.getInstance(context).setRefreshToken(null);
@@ -73,7 +73,7 @@ public class UserApiImpl implements UserApi {
 			ApiContext.getInstance(context).setCurrentUser(null);
 			ApiContext.getInstance(context).setCurrentUserId(null);
 
-			RequestSystemMessageThread.stop();
+			GetUnreadThread.stop();
 
 			return true;
 		}
@@ -89,7 +89,7 @@ public class UserApiImpl implements UserApi {
 		ApiContext.getInstance(context).setCurrentUser(result.getUserVo());
 		ApiContext.getInstance(context).setCurrentUserId(result.getUserVo().getId());
 
-		RequestSystemMessageThread.start(context, result.getUserVo().getId());
+		GetUnreadThread.start(context, 60);
 
 		return result;
 	}
@@ -133,6 +133,11 @@ public class UserApiImpl implements UserApi {
 		UserVO user = userApi.updateOfferRange(userOfferRange);
 		ApiContext.getInstance(context).setCurrentUser(user);
 		return user;
+	}
+
+	@Override
+	public Unread getUnread() {
+		return userApi.getUnread();
 	}
 
 }
