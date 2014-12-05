@@ -1,7 +1,7 @@
 {
-  "versionCode":4,
-  "versionName":"1.0.4",
-  "versionDescription":"当前已实现功能：\n1、帐号注册、登录、个人信息；\n2、发布求助/帮忙，应征、委托、评价；\n3、分类检索、查看求助/帮忙、应征、评价；\n4、消息通知与查看；\n5、搜索功能；\n6、修复界面卡顿的问题\n",
+  "versionCode":5,
+  "versionName":"2.0",
+  "versionDescription":"新增功能：\n1、发布求助/帮忙时可以通过地图定位保存地理要帮忙的地理位置了，保存地理位置的求助/帮忙可以在附近搜索中被搜索到；\n2、真实身份审核，审核通过后加V显示；\n3、举报不良信息与用户；\n4、可以和其他小伙伴通过站内信进行站内联系了；\n",
   "downloadUrl":"http://51bbm.com/files/ibang.apk",
   "forceUpdate":false
 }
