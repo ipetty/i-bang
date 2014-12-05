@@ -1,5 +1,5 @@
 {
-  "versionCode":5,
+  "versionCode":6,
   "versionName":"2.0",
   "versionDescription":"新增功能：\n1、发布求助/帮忙时可以通过地图定位保存地理要帮忙的地理位置了，保存地理位置的求助/帮忙可以在附近搜索中被搜索到；\n2、真实身份审核，审核通过后加V显示；\n3、举报不良信息与用户；\n4、可以和其他小伙伴通过站内信进行站内联系了；\n",
   "downloadUrl":"http://51bbm.com/files/ibang.apk",
