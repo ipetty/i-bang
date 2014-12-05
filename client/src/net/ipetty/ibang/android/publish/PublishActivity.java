@@ -241,6 +241,13 @@ public class PublishActivity extends Activity {
 					seek.setCity(location.getCity());
 					seek.setDistrict(location.getDistrict());
 					seek.setAddress(location.getAddress() + "(" + local_more.getText().toString() + ")");
+				} else {
+					String province = ApiContext.getInstance(PublishActivity.this).getLocationProvince();
+					String city = ApiContext.getInstance(PublishActivity.this).getLocationCity();
+					String district = ApiContext.getInstance(PublishActivity.this).getLocationDistrict();
+					seek.setProvince(province);
+					seek.setCity(city);
+					seek.setDistrict(district);
 				}
 
 				new PublishSeekTask(PublishActivity.this).setListener(
